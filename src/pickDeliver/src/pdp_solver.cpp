@@ -104,10 +104,11 @@ int64_t Solver(
     // TODO DEPOT: verify id, demand, Etime, Stime, Pindex, Dindex are all 0 
 
 
-
+#if 0
     if (total_tuples != 107) {
         return 0;
     }
+#endif
 
 
     // Customer Data
@@ -121,11 +122,13 @@ int64_t Solver(
         }
     }
 
+#if 0
     if (pickups.size() != 53) {
         (*results) = NULL;
         length_results_struct = 0;
         return 0;
     }
+#endif
 
     /* Sort Pickup's
      * The sequential construction inserts from largest distance to smallest
