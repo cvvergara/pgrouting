@@ -268,135 +268,28 @@ Examples
 .. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q19
    :end-before: -- q20
-	NOTICE:  PROCESSING:
-	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','true')
-	NOTICE:  Performing checks, pelase wait...
-	NOTICE:  Analyzing for dead ends. Please wait...
-	NOTICE:  Analyzing for gaps. Please wait...
-	NOTICE:  Analyzing for isolated edges. Please wait...
-	NOTICE:  Analyzing for ring geometries. Please wait...
-	NOTICE:  Analyzing for intersections. Please wait...
-	NOTICE:              ANALYSIS RESULTS FOR SELECTED EDGES:
-	NOTICE:                    Isolated segments: 2
-	NOTICE:                            Dead ends: 7
-	NOTICE:  Potential gaps found near dead ends: 1
-	NOTICE:               Intersections detected: 1
-	NOTICE:                      Ring geometries: 0
-	
-	 pgr_analizeGraph 
-	--------------------
-	 OK
-	(1 row)
 
 .. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q20
    :end-before: -- q21
-	NOTICE:  PROCESSING:
-	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','id < 10')
-	NOTICE:  Performing checks, pelase wait...
-	NOTICE:  Analyzing for dead ends. Please wait...
-	NOTICE:  Analyzing for gaps. Please wait...
-	NOTICE:  Analyzing for isolated edges. Please wait...
-	NOTICE:  Analyzing for ring geometries. Please wait...
-	NOTICE:  Analyzing for intersections. Please wait...
-	NOTICE:              ANALYSIS RESULTS FOR SELECTED EDGES:
-	NOTICE:                    Isolated segments: 0
-	NOTICE:                            Dead ends: 4
-	NOTICE:  Potential gaps found near dead ends: 0
-	NOTICE:               Intersections detected: 0
-	NOTICE:                      Ring geometries: 0
-
-	 pgr_analizeGraph 
-	--------------------
-	 OK
-	(1 row)
 
 .. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q21
    :end-before: -- q22
-	NOTICE:  PROCESSING:
-	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','id >= 10')
-	NOTICE:  Performing checks, pelase wait...
-	NOTICE:  Analyzing for dead ends. Please wait...
-	NOTICE:  Analyzing for gaps. Please wait...
-	NOTICE:  Analyzing for isolated edges. Please wait...
-	NOTICE:  Analyzing for ring geometries. Please wait...
-	NOTICE:  Analyzing for intersections. Please wait...
-	NOTICE:              ANALYSIS RESULTS FOR SELECTED EDGES:
-	NOTICE:                    Isolated segments: 2
-	NOTICE:                            Dead ends: 8
-	NOTICE:  Potential gaps found near dead ends: 1
-	NOTICE:               Intersections detected: 1
-	NOTICE:                      Ring geometries: 0
 	
-	 pgr_analizeGraph 
-	--------------------
-	 OK
-	(1 row)
 
-	-- Simulate removal of edges
+-- Simulate removal of edges
 .. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q22
    :end-before: -- q23
-	NOTICE:  PROCESSING:
-	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','true')
-	NOTICE:  Performing checks, pelase wait...
-	NOTICE:  Analyzing for dead ends. Please wait...
-	NOTICE:  Analyzing for gaps. Please wait...
-	NOTICE:  Analyzing for isolated edges. Please wait...
-	NOTICE:  Analyzing for ring geometries. Please wait...
-	NOTICE:  Analyzing for intersections. Please wait...
-	NOTICE:              ANALYSIS RESULTS FOR SELECTED EDGES:
-	NOTICE:                    Isolated segments: 0
-	NOTICE:                            Dead ends: 3
-	NOTICE:  Potential gaps found near dead ends: 0
-	NOTICE:               Intersections detected: 0
-	NOTICE:                      Ring geometries: 0
-	
-	 pgr_analizeGraph 
-	--------------------
-	 OK
-	(1 row)
+
  .. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q23
    :end-before: -- q24
-    NOTICE:  PROCESSING:
-    NOTICE:  pgr_createTopology('edge_table',0.001,'the_geom','id','source','target','id <17')
-    NOTICE:  Performing checks, pelase wait .....
-    NOTICE:  Creating Topology, Please wait...
-    NOTICE:  -------------> TOPOLOGY CREATED FOR  16 edges
-    NOTICE:  Rows with NULL geometry or NULL id: 0
-    NOTICE:  Vertices table for table public.edge_table is: public.edge_table_vertices_pgr
-    NOTICE:  ----------------------------------------------
-	
-	 pgr_analizeGraph 
-	--------------------
-	 OK
-	(1 row)
 
 .. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q24
-   :end-before: -- q25
-    NOTICE:  PROCESSING:
-    NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','true')
-    NOTICE:  Performing checks, pelase wait...
-    NOTICE:  Analyzing for dead ends. Please wait...
-    NOTICE:  Analyzing for gaps. Please wait...
-    NOTICE:  Analyzing for isolated edges. Please wait...
-    NOTICE:  Analyzing for ring geometries. Please wait...
-    NOTICE:  Analyzing for intersections. Please wait...
-    NOTICE:              ANALYSIS RESULTS FOR SELECTED EDGES:
-    NOTICE:                    Isolated segments: 0
-    NOTICE:                            Dead ends: 3
-    NOTICE:  Potential gaps found near dead ends: 0
-    NOTICE:               Intersections detected: 0
-    NOTICE:                      Ring geometries: 0
-	
-	 pgr_analizeGraph 
-	--------------------
-	 OK
-	(1 row)
-                         
+   :end-before: -- q25                   
 
 The examples use the :ref:`sampledata` network.
 
