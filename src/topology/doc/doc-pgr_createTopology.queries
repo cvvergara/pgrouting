@@ -9,7 +9,7 @@ UPDATE 18
 --q1
 SELECT  pgr_createTopology('edge_table', 0.001);
 NOTICE:  PROCESSING:
-NOTICE:  pgr_createTopology('edge_table', 0.001, 'the_geom', 'id', 'source', 'target', rows_where := 'true', clean := f)
+NOTICE:  pgr_createTopology('edge_table',0.001,'the_geom','id','source','target','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  Creating Topology, Please wait...
 NOTICE:  -------------> TOPOLOGY CREATED FOR  18 edges
@@ -30,7 +30,7 @@ UPDATE 18
 SELECT  pgr_createTopology('edge_table', 0.001,
         'the_geom', 'id', 'source', 'target');
 NOTICE:  PROCESSING:
-NOTICE:  pgr_createTopology('edge_table', 0.001, 'the_geom', 'id', 'source', 'target', rows_where := 'true', clean := f)
+NOTICE:  pgr_createTopology('edge_table',0.001,'the_geom','id','source','target','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  Creating Topology, Please wait...
 NOTICE:  -------------> TOPOLOGY CREATED FOR  18 edges
@@ -49,7 +49,7 @@ SET
 SELECT  pgr_createTopology('edge_table', 0.001,
         'id', 'the_geom');
 NOTICE:  PROCESSING:
-NOTICE:  pgr_createTopology('edge_table', 0.001, 'id', 'the_geom', 'source', 'target', rows_where := 'true', clean := f)
+NOTICE:  pgr_createTopology('edge_table',0.001,'id','the_geom','source','target','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  ----> PGR ERROR in pgr_createTopology: Wrong type of Column id:the_geom
 NOTICE:  Unexpected error raise_exception
@@ -148,7 +148,7 @@ SET
 --q12
 SELECT  pgr_createTopology('mytable', 0.001, 'gid', 'mygeom', 'src', 'tgt');
 NOTICE:  PROCESSING:
-NOTICE:  pgr_createTopology('mytable', 0.001, 'gid', 'mygeom', 'src', 'tgt', rows_where := 'true', clean := f)
+NOTICE:  pgr_createTopology('mytable',0.001,'gid','mygeom','src','tgt','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  ----> PGR ERROR in pgr_createTopology: Wrong type of Column id:mygeom
 NOTICE:  Unexpected error raise_exception
@@ -229,7 +229,7 @@ SET
 --q17
 SELECT pgr_createTopology('edge_table',  0.001, rows_where:='id < 6', clean := true);
 NOTICE:  PROCESSING:
-NOTICE:  pgr_createTopology('edge_table', 0.001, 'the_geom', 'id', 'source', 'target', rows_where := 'id < 6', clean := t)
+NOTICE:  pgr_createTopology('edge_table',0.001,'the_geom','id','source','target','id < 6')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  Creating Topology, Please wait...
 NOTICE:  -------------> TOPOLOGY CREATED FOR  5 edges
@@ -243,10 +243,10 @@ NOTICE:  ----------------------------------------------
 
 SELECT pgr_createTopology('edge_table',  0.001);
 NOTICE:  PROCESSING:
-NOTICE:  pgr_createTopology('edge_table', 0.001, 'the_geom', 'id', 'source', 'target', rows_where := 'true', clean := f)
+NOTICE:  pgr_createTopology('edge_table',0.001,'the_geom','id','source','target','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  Creating Topology, Please wait...
-NOTICE:  -------------> TOPOLOGY CREATED FOR  13 edges
+NOTICE:  -------------> TOPOLOGY CREATED FOR  18 edges
 NOTICE:  Rows with NULL geometry or NULL id: 0
 NOTICE:  Vertices table for table public.edge_table is: public.edge_table_vertices_pgr
 NOTICE:  ----------------------------------------------
