@@ -8,7 +8,7 @@ BEGIN;
     ------------------------------------------------------------------------------------------------------
     ------------------------------------------------------------------------------------------------------
     --q01
-    SELECT  pgr_create_topology('edge_table',0.001);
+    SELECT  pgr_createTopology('edge_table',0.001);
     SELECT  pgr_analyzeGraph('edge_table',0.001);
     --q02
     SELECT  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target');
@@ -56,7 +56,7 @@ BEGIN;
     SELECT  pgr_analyzeGraph('mytable',0.001,source:='src',id:='gid',target:='tgt',the_geom:='mygeom',
                  rows_where:='mygeom && (SELECT st_buffer(other_geom,1) FROM otherTable WHERE place='||quote_literal('myhouse')||')');
     --q19
-    SELECT  pgr_create_topology('edge_table',0.001);
+    SELECT  pgr_createTopology('edge_table',0.001);
     SELECT pgr_analyzeGraph('edge_table', 0.001);
     --q20
     SELECT  pgr_analyzeGraph('edge_table',0.001,rows_where:='id < 10');
