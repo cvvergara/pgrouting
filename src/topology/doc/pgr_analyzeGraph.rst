@@ -283,7 +283,7 @@ Examples
    :start-after: -- q22
    :end-before: -- q23
 
- .. literalinclude::      doc-pgr_analyzeGraph.queries
+.. literalinclude::      doc-pgr_analyzeGraph.queries
    :start-after: -- q23
    :end-before: -- q24
 
