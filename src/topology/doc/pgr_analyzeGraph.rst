@@ -99,14 +99,17 @@ Usage when the edge table's columns MATCH the default values:
 
 .. code-block:: sql
 
-	 SELECT  pgr_create_topology('edge_table',0.001);
-	 SELECT  pgr_analyzeGraph('edge_table',0.001);
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q01
+   :end-before: -- q02
 
 .. rubric:: When the arguments are given in the order described in the parameters:
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q02
+   :end-before: -- q03
 
 We get the same result as the simplest way to use the function.
 
@@ -120,17 +123,23 @@ The order of the parameters do not matter:
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('edge_table',0.001,the_geom:='the_geom',id:='id',source:='source',target:='target');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q03
+   :end-before: -- q04
 
 .. code-block:: sql
-
-	 SELECT  pgr_analyzeGraph('edge_table',0.001,source:='source',id:='id',target:='target',the_geom:='the_geom');
+	
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q04
+   :end-before: -- q05
 
 Parameters defined with a default value can be ommited, as long as the value matches the default:
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('edge_table',0.001,source:='source');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q05
+   :end-before: -- q06
 
 .. rubric:: Selecting rows using rows_where parameter
 
@@ -138,21 +147,25 @@ Selecting rows based on the id. Displays the analysis a the section of the netwo
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('edge_table',0.001,rows_where:='id < 10');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q06
+   :end-before: -- q07
 
 Selecting the rows where the geometry is near the geometry of row with ``id`` =5 .
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('edge_table',0.001,rows_where:='the_geom && (SELECT st_buffer(the_geom,0.05) FROM edge_table WHERE id=5)');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q07
+   :end-before: -- q08
 
 Selecting the rows where the geometry is near the geometry of the row with ``gid`` =100 of the table ``othertable``.
 
 .. code-block:: sql
 
-        DROP TABLE IF EXISTS otherTable;
-	CREATE TABLE otherTable AS  (SELECT 100 AS gid, st_point(2.5,2.5) AS other_geom) ;
-	SELECT  pgr_analyzeGraph('edge_table',0.001,rows_where:='the_geom && (SELECT st_buffer(other_geom,1) FROM otherTable WHERE gid=100)');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q08
+   :end-before: -- q09
 
 
 
@@ -163,9 +176,9 @@ For the following table
 
 .. code-block:: sql
 
-	DROP TABLE IF EXISTS mytable;
-	CREATE TABLE mytable AS (SELECT id AS gid, source AS src ,target AS tgt , the_geom AS mygeom FROM edge_table);
-	SELECT pgr_createTopology('mytable',0.001,'mygeom','gid','src','tgt');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q09
+   :end-before: -- q10
 
 .. rubric:: Using positional notation: 
 
@@ -173,7 +186,9 @@ The arguments need to be given in the order described in the parameters:
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,'mygeom','gid','src','tgt');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q10
+   :end-before: -- q11
 
 .. warning::  | An error would occur when the arguments are not given in the appropriate order: In this example, the column ``gid`` of the table ``mytable`` is passed to the function as the geometry column, and the geometry column ``mygeom`` is passed to the function as the id column.
  | ``SELECT  pgr_analyzeGraph('mytable',0.001,'gid','mygeom','src','tgt');``
@@ -186,11 +201,15 @@ The order of the parameters do not matter:
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,the_geom:='mygeom',id:='gid',source:='src',target:='tgt');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q11
+   :end-before: -- q12
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,source:='src',id:='gid',target:='tgt',the_geom:='mygeom');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q12
+   :end-before: -- q13
 
 In this scenario omitting a parameter would create an error because the default values for the column names do not match the column names of the table.
 
@@ -201,37 +220,43 @@ Selecting rows based on the id.
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,'mygeom','gid','src','tgt',rows_where:='gid < 10');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q13
+   :end-before: -- q14
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,source:='src',id:='gid',target:='tgt',the_geom:='mygeom',rows_where:='gid < 10');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q14
+   :end-before: -- q15
 
 Selecting the rows WHERE the geometry is near the geometry of row with ``id`` =5 .
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,'mygeom','gid','src','tgt',
-	                            rows_where:='mygeom && (SELECT st_buffer(mygeom,1) FROM mytable WHERE gid=5)');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q15
+   :end-before: -- q16
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,source:='src',id:='gid',target:='tgt',the_geom:='mygeom',
-	                            rows_where:='mygeom && (SELECT st_buffer(mygeom,1) FROM mytable WHERE gid=5)');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q16
+   :end-before: -- q17
 
 Selecting the rows WHERE the geometry is near the place='myhouse' of the table ``othertable``. (note the use of quote_literal)
 
 .. code-block:: sql
 
-        DROP TABLE IF EXISTS otherTable;
-	CREATE TABLE otherTable AS  (SELECT 'myhouse'::text AS place, st_point(2.5,2.5) AS other_geom) ;
-	SELECT  pgr_analyzeGraph('mytable',0.001,'mygeom','gid','src','tgt',
-                 rows_where:='mygeom && (SELECT st_buffer(other_geom,1) FROM otherTable WHERE place='||quote_literal('myhouse')||')');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q17
+   :end-before: -- q18
 
 .. code-block:: sql
 
-	 SELECT  pgr_analyzeGraph('mytable',0.001,source:='src',id:='gid',target:='tgt',the_geom:='mygeom',
-                 rows_where:='mygeom && (SELECT st_buffer(other_geom,1) FROM otherTable WHERE place='||quote_literal('myhouse')||')');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q18
+   :end-before: -- q19
 
 
 
@@ -240,8 +265,9 @@ Examples
 
 .. code-block:: sql
 
-	SELECT  pgr_create_topology('edge_table',0.001);
-	SELECT pgr_analyzeGraph('edge_table', 0.001);
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q19
+   :end-before: -- q20
 	NOTICE:  PROCESSING:
 	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','true')
 	NOTICE:  Performing checks, pelase wait...
@@ -262,7 +288,9 @@ Examples
 	 OK
 	(1 row)
 
-	SELECT  pgr_analyzeGraph('edge_table',0.001,rows_where:='id < 10');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q20
+   :end-before: -- q21
 	NOTICE:  PROCESSING:
 	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','id < 10')
 	NOTICE:  Performing checks, pelase wait...
@@ -283,7 +311,9 @@ Examples
 	 OK
 	(1 row)
 
-	SELECT  pgr_analyzeGraph('edge_table',0.001,rows_where:='id >= 10');
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q21
+   :end-before: -- q22
 	NOTICE:  PROCESSING:
 	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','id >= 10')
 	NOTICE:  Performing checks, pelase wait...
@@ -305,8 +335,9 @@ Examples
 	(1 row)
 
 	-- Simulate removal of edges
-	SELECT pgr_createTopology('edge_table', 0.001,rows_where:='id <17');
-	SELECT pgr_analyzeGraph('edge_table', 0.001);
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q22
+   :end-before: -- q23
 	NOTICE:  PROCESSING:
 	NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','true')
 	NOTICE:  Performing checks, pelase wait...
@@ -326,7 +357,9 @@ Examples
 	--------------------
 	 OK
 	(1 row)
-    SELECT pgr_createTopology('edge_table', 0.001,rows_where:='id <17');
+ .. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q23
+   :end-before: -- q24
     NOTICE:  PROCESSING:
     NOTICE:  pgr_createTopology('edge_table',0.001,'the_geom','id','source','target','id <17')
     NOTICE:  Performing checks, pelase wait .....
@@ -341,7 +374,9 @@ Examples
 	 OK
 	(1 row)
 
-    SELECT pgr_analyzeGraph('edge_table', 0.001);
+.. literalinclude::      doc-pgr_analyzeGraph.queries
+   :start-after: -- q24
+   :end-before: -- q25
     NOTICE:  PROCESSING:
     NOTICE:  pgr_analyzeGraph('edge_table',0.001,'the_geom','id','source','target','true')
     NOTICE:  Performing checks, pelase wait...
