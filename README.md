@@ -6,8 +6,8 @@
 
 ### Branches
 
-* The *master* branch has the latest minor release. (2.3.2)
-* The *develop* branch has the next minor release. (2.4.0)
+* The *master* branch has the latest minor release. (2.4.0)
+* The *develop* branch has the next minor release. (2.5.0-dev)
 
 For the complete list of releases go to:
 https://github.com/pgRouting/pgrouting/releases
@@ -41,7 +41,6 @@ https://github.com/pgRouting/pgrouting/releases
         <td><img src="http://winnie.postgis.net:1500/buildStatus/icon?job=pgRouting_matrix_branch_develop" alt="Jenkins Status"/></td>
 		<td></td>
 	</tr>
-
 	<tr>
 		<td>gh-pages</td>
 		<td><img src="https://travis-ci.org/pgRouting/pgrouting.png?branch=gh-pages" alt="Build Status"/></td>
@@ -51,11 +50,10 @@ https://github.com/pgRouting/pgrouting/releases
 	</tr>
 </table>
 
-* travis: Postgis 2.3.0 for  Postgres 9.4, 9.5, 9.6
+* travis: Postgis 2.2 for  Postgres 9.1, 9.2, 9.3, 9.4, 9.5
   * precise
-  * trusty (except 9.4)
-* jenkins: g++ 4.8 on 32 & 64 bits for Postgis 2.3.0 and Postgres 9.4, 9.5, 9.6
-* appveyor: vs1013 Postgis 2.3.0 Postgres 9.4
+* jenkins: g++ 4.8 on 32 & 64 bits for Postgis 2.3.0dev and Postgres 9.4, 9.5, 9.6
+* appveyor: vs1013 Postgis 2.2 Postgres 9.4
 
 
 
@@ -95,17 +93,23 @@ Family of functions include:
 
 ## REQUIREMENTS
 
+Building reqirements
+--------------------
+* Perl 
 * C and C++ compilers
-  * g++ >= 4.6
-* Postgresql version >= 9.1
-* PostGIS version >= 2.0
-* The Boost Graph Library (BGL).
-  * Version >= 1.46
-* Version >= 1.55 for linux
-* Version >= 1.58 for MAC
+  * GNU >= 4.6
+  * MSVC >= 18.0
+* Postgresql >= 9.2
+* The Boost Graph Library (BGL) >= 1.46
 * CMake >= 2.8.8
 * CGAL >= 4.4
 * Sphinx >= 1.2
+
+
+User's reqirements
+--------------------
+
+* PostGIS  >= 2.0
 
 ## INSTALLATION
 
@@ -121,7 +125,7 @@ For MinGW on Windows
 	make
 	make install
 
-Also pre-built Windows binaries can be downloaded from http://.postgis.net/windows_downloads
+Also pre-built Windows binaries can be downloaded from https://postgis.net/windows_downloads
 
 For Linux
 	
@@ -135,7 +139,7 @@ Build with documentation (requires [Sphinx](http://sphinx-doc.org/))
 
 	cmake -DWITH_DOC=ON ..
 
-Postgresql 9.1+
+Postgresql 9.2+
 
 	createdb mydatabase
 	psql mydatabase -c "CREATE EXTENSION postgis"
