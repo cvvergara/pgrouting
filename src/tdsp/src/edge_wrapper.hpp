@@ -1,6 +1,6 @@
 #include <vector>
 #include <postgres.h>
-#include <tdsp.h>
+#include "./tdsp.h"
 
 #define DEBUG_CONSOLE 0
 

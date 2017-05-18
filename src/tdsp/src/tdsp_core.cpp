@@ -22,10 +22,10 @@
 #include <utility>
 #include <queue>
 
-#include <binary_heap.hpp>
-#include <weight_map.hpp>
-#include <edge_wrapper.hpp>
-#include <tdsp.h>
+#include "./binary_heap.hpp"
+#include "./weight_map.hpp"
+#include "./edge_wrapper.hpp"
+#include "./tdsp.h"
 #include <boost/config.hpp>
 
 #include <boost/graph/graph_traits.hpp>
@@ -820,6 +820,7 @@ void tdsp_wrapper_test()
 }
 
 
+#if 0
 int main(int argc , char * argv[])
 {
 	
@@ -828,4 +829,4 @@ int main(int argc , char * argv[])
     //tdsp_wrapper_test();
     boost_dijkstra_test();
 }
-
+#endif
