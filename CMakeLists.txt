@@ -108,6 +108,7 @@ set(PgRouting_SOURCE_NAMES
     "vrp_basic"   # 2.0 
     "withPoints"  # 2.2
 
+    "tdsp"
     # template generated name
     #"funnyDijkstra"
 
