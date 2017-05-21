@@ -110,6 +110,8 @@ set(PgRouting_SOURCE_NAMES
 
     # template generated name
     "mgDijkstra"
+    "vickyDijkstra"
+    #"funnyDijkstra"
 
     )
 
