@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 /**
- *  postgres_connection.h 
+ *  postgres_connection.h
  *
  *  - should allways be first in the C code
  */
@@ -74,8 +74,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 // TODO move to include/drivers directory
 #include "./ankurDijkstra_driver.h"  // the C++ code of the function
 
-PG_FUNCTION_INFO_V1(ankurDijkstra);
 PGDLLEXPORT Datum ankurDijkstra(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(ankurDijkstra);
 
 
 /******************************************************************************/

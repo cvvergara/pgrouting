@@ -5,7 +5,7 @@ Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer: 
+Function's developer:
 Copyright (c) 2017 Ankur Shukla
 Mail: work.ankurshukla@gmail.com
 
@@ -28,17 +28,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
 
+#include "./ankurDijkstra_driver.h"
+
 #include <sstream>
 #include <deque>
 #include <vector>
 
-#include "./ankurDijkstra_driver.h"
-
+#include "dijkstra/pgr_dijkstra.hpp"
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
-#include "dijkstra/pgr_dijkstra.hpp"
 
 
 
