@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: MY_FUNCTION_NAME.c
+File: vickyDijkstra.c
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) YEAR DEVELOPER_NAME
-Mail: DEVELOPER_EMAIL
+Copyright (c) 2017 Celia Virginia Vergara Castillo
+Mail: vicky_vergara@hotmail.com
 
 
 ------
@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-/** @file MY_FUNCTION_NAME.c
+/** @file vickyDijkstra.c
  * @brief Conecting code with postgres.
  *
  * This file is fully documented for understanding
@@ -72,10 +72,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/edges_input.h" // for functions to get edges informtion
 
 // TODO move to include/drivers directory
-#include "./MY_FUNCTION_NAME_driver.h"  // the C++ code of the function
+#include "./vickyDijkstra_driver.h"  // the C++ code of the function
 
-PGDLLEXPORT Datum MY_FUNCTION_NAME(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(MY_FUNCTION_NAME);
+PGDLLEXPORT Datum vickyDijkstra(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(vickyDijkstra);
 
 
 /******************************************************************************/
@@ -95,7 +95,7 @@ process(
 #endif
         bool directed,
         bool only_cost,
-        MY_RETURN_VALUE_TYPE **result_tuples,
+        General_path_element_t **result_tuples,
         size_t *result_count) {
 
     /* https://www.postgresql.org/docs/current/static/spi-spi-connect.html */
@@ -125,7 +125,7 @@ process(
     (*result_count) = 0;
 
     PGR_DBG("Load data");
-    MY_EDGE_TYPE *edges = NULL;
+    pgr_edge_t *edges = NULL;
     size_t total_edges = 0;
 
     if (start_vid == end_vid) {
@@ -134,7 +134,7 @@ process(
         return;
     }
 
-    MY_EDGE_FUNCTION(edges_sql, &edges, &total_edges);
+    pgr_get_edges(edges_sql, &edges, &total_edges);
     PGR_DBG("Total %ld edges in query:", total_edges);
 
     if (total_edges == 0) {
@@ -148,7 +148,7 @@ process(
     char *log_msg = NULL;
     char *notice_msg = NULL;
     char *err_msg = NULL;
-    do_pgr_MY_FUNCTION_NAME(
+    do_pgr_vickyDijkstra(
             edges,
             total_edges,
             start_vid,
@@ -170,7 +170,7 @@ process(
             &notice_msg,
             &err_msg);
 
-    time_msg(" processing pgr_MY_FUNCTION_NAME", start_t, clock());
+    time_msg(" processing pgr_vickyDijkstra", start_t, clock());
     PGR_DBG("Returning %ld tuples", *result_count);
 
     if (err_msg) {
@@ -196,14 +196,14 @@ process(
 /*                                                                            */
 /******************************************************************************/
 
-PGDLLEXPORT Datum MY_FUNCTION_NAME(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum vickyDijkstra(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
     /**************************************************************************/
     /*                          MODIFY AS NEEDED                              */
     /*                                                                        */
-    MY_RETURN_VALUE_TYPE  *result_tuples = NULL;
+    General_path_element_t  *result_tuples = NULL;
     size_t result_count = 0;
     /*                                                                        */
     /**************************************************************************/
@@ -217,7 +217,11 @@ PGDLLEXPORT Datum MY_FUNCTION_NAME(PG_FUNCTION_ARGS) {
         /**********************************************************************/
         /*                          MODIFY AS NEEDED                          */
         /*
-           MY_QUERY_LINE1
+           TEXT,
+    BIGINT,
+    BIGINT,
+    directed BOOLEAN DEFAULT true,
+    only_cost BOOLEAN DEFAULT false,
          **********************************************************************/
 
 
@@ -263,7 +267,7 @@ PGDLLEXPORT Datum MY_FUNCTION_NAME(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (MY_RETURN_VALUE_TYPE*) funcctx->user_fctx;
+    result_tuples = (General_path_element_t*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -274,7 +278,12 @@ PGDLLEXPORT Datum MY_FUNCTION_NAME(PG_FUNCTION_ARGS) {
         /**********************************************************************/
         /*                          MODIFY AS NEEDED                          */
         /*
-           MY_QUERY_LINE2
+               OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT
          ***********************************************************************/
 
         values = palloc(6 * sizeof(Datum));

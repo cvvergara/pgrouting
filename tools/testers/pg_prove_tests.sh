@@ -71,8 +71,11 @@ pg_prove ../../src/tsp/test/pgtap/* -d $PGDATABASE  -U $PGUSER
 
 pg_prove ../../src/withPoints/test/pgtap/* -d $PGDATABASE  -U $PGUSER
 pg_prove ../../src/ankurDijkstra/test/pgtap/* -d $PGDATABASE  -U $PGUSER
+pg_prove ../../src/vickyDijkstra/test/pgtap/* -d $PGDATABASE  -U $PGUSER
 #deprecated for 3.0
 pg_prove ../../src/deprecated/test/pgtap/* -d $PGDATABASE  -U $PGUSER
+
+pg_prove ../../src/mgDijkstra/test/pgtap/* -d $PGDATABASE  -U $PGUSER
 
 if [ "$?" -ne 0 ]
 then
