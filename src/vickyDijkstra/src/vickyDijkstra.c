@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: vidhanDijkstra.c
+File: vickyDijkstra.c
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2017 Vidhan Jain
-Mail: vidhanj1307@gmail.com
+Copyright (c) 2017 Celia Virginia Vergara Castillo
+Mail: vicky_vergara@hotmail.com
 
 
 ------
@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-/** @file vidhanDijkstra.c
+/** @file vickyDijkstra.c
  * @brief Conecting code with postgres.
  *
  * This file is fully documented for understanding
@@ -72,10 +72,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/edges_input.h" // for functions to get edges informtion
 
 // TODO move to include/drivers directory
-#include "./vidhanDijkstra_driver.h"  // the C++ code of the function
+#include "./vickyDijkstra_driver.h"  // the C++ code of the function
 
-PGDLLEXPORT Datum vidhanDijkstra(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(vidhanDijkstra);
+PGDLLEXPORT Datum vickyDijkstra(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(vickyDijkstra);
 
 
 /******************************************************************************/
@@ -148,7 +148,7 @@ process(
     char *log_msg = NULL;
     char *notice_msg = NULL;
     char *err_msg = NULL;
-    do_pgr_vidhanDijkstra(
+    do_pgr_vickyDijkstra(
             edges,
             total_edges,
             start_vid,
@@ -170,7 +170,7 @@ process(
             &notice_msg,
             &err_msg);
 
-    time_msg(" processing pgr_vidhanDijkstra", start_t, clock());
+    time_msg(" processing pgr_vickyDijkstra", start_t, clock());
     PGR_DBG("Returning %ld tuples", *result_count);
 
     if (err_msg) {
@@ -196,7 +196,7 @@ process(
 /*                                                                            */
 /******************************************************************************/
 
-PGDLLEXPORT Datum vidhanDijkstra(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum vickyDijkstra(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 

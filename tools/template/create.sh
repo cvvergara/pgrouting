@@ -161,3 +161,4 @@ mv "$MY_FUNCTION_NAME/sql" "../../sql/$MY_FUNCTION_NAME"
 mv "$MY_FUNCTION_NAME" ../../src/"$MY_FUNCTION_NAME"
 
 exit
+
