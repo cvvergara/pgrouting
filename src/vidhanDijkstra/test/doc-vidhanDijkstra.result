@@ -3,11 +3,11 @@ BEGIN
 SET client_min_messages TO NOTICE;
 SET
 -- q1
-SELECT * FROM pgr_funnyDijkstra(
+SELECT * FROM pgr_vidhanDijkstra(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
     2, 3
 );
- seq | path_seq | node | edge | cost | agg_cost 
+ seq | path_seq | node | edge | cost | agg_cost
 -----+----------+------+------+------+----------
    1 |        1 |    2 |    4 |    1 |        0
    2 |        2 |    5 |    8 |    1 |        1
@@ -18,12 +18,12 @@ SELECT * FROM pgr_funnyDijkstra(
 (6 rows)
 
 -- q2
-SELECT * FROM pgr_funnyDijkstra(
+SELECT * FROM pgr_vidhanDijkstra(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
     2, 3,
     FALSE
 );
- seq | path_seq | node | edge | cost | agg_cost 
+ seq | path_seq | node | edge | cost | agg_cost
 -----+----------+------+------+------+----------
    1 |        1 |    2 |    2 |    1 |        0
    2 |        2 |    3 |   -1 |    0 |        1
