@@ -351,7 +351,7 @@ Datum alphashape(PG_FUNCTION_ARGS)
       HeapTuple    tuple;
       Datum        result;
       Datum *values;
-      char* nulls;
+      bool* nulls;
 
       /* This will work for some compilers. If it crashes with segfault, try to change the following block with this one    
 
@@ -359,24 +359,24 @@ Datum alphashape(PG_FUNCTION_ARGS)
       nulls = palloc(3 * sizeof(char));
 
       values[0] = call_cntr;
-      nulls[0] = ' ';
+      nulls[0] = false;
       values[1] = Float8GetDatum(res[call_cntr].x);
-      nulls[1] = ' ';
+      nulls[1] = false;
       values[2] = Float8GetDatum(res[call_cntr].y);
-      nulls[2] = ' ';
+      nulls[2] = false;
       */
     
       values = palloc(2 * sizeof(Datum));
       nulls = palloc(2 * sizeof(char));
 
       values[0] = Float8GetDatum(res[call_cntr].x);
-      nulls[0] = ' ';
+      nulls[0] = false;
       values[1] = Float8GetDatum(res[call_cntr].y);
-      nulls[1] = ' ';
+      nulls[1] = false;
 	
       DBG("Heap making\n");
 
-      tuple = heap_formtuple(tuple_desc, values, nulls);
+      tuple = heap_form_tuple(tuple_desc, values, nulls);
 
       DBG("Datum making\n");
 

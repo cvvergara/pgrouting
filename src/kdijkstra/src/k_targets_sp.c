@@ -521,7 +521,7 @@ Datum onetomany_dijkstra_dist(PG_FUNCTION_ARGS)
     HeapTuple    tuple;
     Datum        result;
     Datum *values;
-    char* nulls;    
+    bool* nulls;    
 
     /* stuff done only on the first call of the function */
     if (SRF_IS_FIRSTCALL()) {
@@ -593,31 +593,31 @@ Datum onetomany_dijkstra_dist(PG_FUNCTION_ARGS)
         nulls = palloc(4 * sizeof(char));
 
         values[0] = Int32GetDatum(dist[call_cntr].seq);
-        nulls[0] = ' ';
+        nulls[0] = false;
         values[1] = Int32GetDatum(dist[call_cntr].id1);
-        nulls[1] = ' ';
+        nulls[1] = false;
         values[2] = Int32GetDatum(dist[call_cntr].id2);
-        nulls[2] = ' ';
+        nulls[2] = false;
         values[3] = Float8GetDatum(dist[call_cntr].cost);
-        nulls[3] = ' ';
+        nulls[3] = false;
 #else
         values = palloc(5 * sizeof(Datum));
         nulls = palloc(5 * sizeof(char));
 
         values[0] = Int32GetDatum(dist[call_cntr].vertex_id_source);
-        nulls[0] = ' ';
+        nulls[0] = false;
         values[1] = Int32GetDatum(dist[call_cntr].edge_id_source);
-        nulls[1] = ' ';
+        nulls[1] = false;
         values[2] = Int32GetDatum(dist[call_cntr].vertex_id_target);
-        nulls[2] = ' ';
+        nulls[2] = false;
         values[3] = Int32GetDatum(dist[call_cntr].edge_id_target);
-        nulls[4] = ' ';
+        nulls[4] = false;
         values[4] = Float8GetDatum(dist[call_cntr].cost);
-        nulls[4] = ' ';
+        nulls[4] = false;
 #endif
 
         DBG("Create the tuple");
-        tuple = heap_formtuple(tuple_desc, values, nulls);
+        tuple = heap_form_tuple(tuple_desc, values, nulls);
 
         /* make the tuple into a datum */
 
@@ -872,7 +872,7 @@ onetomany_dijkstra_path(PG_FUNCTION_ARGS)
     HeapTuple    tuple;
     Datum        result;
     Datum *values;
-    char* nulls;    
+    bool* nulls;    
 
     /* stuff done only on the first call of the function */
     if (SRF_IS_FIRSTCALL()) {
@@ -941,35 +941,35 @@ onetomany_dijkstra_path(PG_FUNCTION_ARGS)
         nulls = palloc(5 * sizeof(char));
 
         values[0] = Int32GetDatum(path_res[call_cntr].seq);
-        nulls[0] = ' ';
+        nulls[0] = false;
         values[1] = Int32GetDatum(path_res[call_cntr].id1);
-        nulls[1] = ' ';
+        nulls[1] = false;
         values[2] = Int32GetDatum(path_res[call_cntr].id2);
-        nulls[2] = ' ';
+        nulls[2] = false;
         values[3] = Int32GetDatum(path_res[call_cntr].id3);
-        nulls[3] = ' ';
+        nulls[3] = false;
         values[4] = Float8GetDatum(path_res[call_cntr].cost);
-        nulls[4] = ' ';
+        nulls[4] = false;
 #else
         values = palloc(6 * sizeof(Datum));
         nulls = palloc(6 * sizeof(char));
 
         values[0] = Int32GetDatum(path_res[call_cntr].vertex_id_source);
-        nulls[0] = ' ';
+        nulls[0] = false;
         values[1] = Int32GetDatum(path_res[call_cntr].edge_id_source);
-        nulls[1] = ' ';
+        nulls[1] = false;
         values[2] = Int32GetDatum(path_res[call_cntr].vertex_id_target);
-        nulls[2] = ' ';
+        nulls[2] = false;
         values[3] = Int32GetDatum(path_res[call_cntr].edge_id_target);
-        nulls[3] = ' ';
+        nulls[3] = false;
         values[4] = Float8GetDatum(path_res[call_cntr].cost);
-        nulls[4] = ' ';
+        nulls[4] = false;
         values[5] = PointerGetDatum(char2text(path_res[call_cntr].the_way));
-        nulls[5] = ' ';
+        nulls[5] = false;
 #endif
 
         DBG("Create the tuple");
-        tuple = heap_formtuple(tuple_desc, values, nulls);
+        tuple = heap_form_tuple(tuple_desc, values, nulls);
 
         /* make the tuple into a datum */
         DBG("HeapTupleGetDatum");

@@ -33,7 +33,7 @@ option(BUILD_MAN
 # PGROUTING version number.
 set(PGROUTING_VERSION_MAJOR "2")
 set(PGROUTING_VERSION_MINOR "0")
-set(PGROUTING_VERSION_PATCH "0")
+set(PGROUTING_VERSION_PATCH "2")
 
 set(PGROUTING_VERSION_STRING "${PGROUTING_VERSION_MAJOR}.${PGROUTING_VERSION_MINOR}.${PGROUTING_VERSION_PATCH}")
 
@@ -41,10 +41,10 @@ set(POSTGRESQL_MINIMUM_VERSION "8.4.0")
 
 file(STRINGS "${PGROUTING_SOURCE_DIR}/VERSION" PGROUTING_BUILD_STRING)
 
-string(REGEX REPLACE "^(.+)-([0-9]+)-g([0-9a-f]+) (.*)$" "\\1" PGROUTING_GIT_TAG ${PGROUTING_BUILD_STRING})
-string(REGEX REPLACE "^(.+)-([0-9]+)-g([0-9a-f]+) (.*)$" "\\2" PGROUTING_GIT_BUILD ${PGROUTING_BUILD_STRING})
-string(REGEX REPLACE "^(.+)-([0-9]+)-g([0-9a-f]+) (.*)$" "\\3" PGROUTING_GIT_HASH ${PGROUTING_BUILD_STRING})
-string(REGEX REPLACE "^(.+)-([0-9]+)-g([0-9a-f]+) (.*)$" "\\4" PGROUTING_GIT_BRANCH ${PGROUTING_BUILD_STRING})
+string(REGEX REPLACE "^(.+)-([0-9]+)-([0-9a-f]+) (.*)$" "\\1" PGROUTING_GIT_TAG ${PGROUTING_BUILD_STRING})
+string(REGEX REPLACE "^(.+)-([0-9]+)-([0-9a-f]+) (.*)$" "\\2" PGROUTING_GIT_BUILD ${PGROUTING_BUILD_STRING})
+string(REGEX REPLACE "^(.+)-([0-9]+)-([0-9a-f]+) (.*)$" "\\3" PGROUTING_GIT_HASH ${PGROUTING_BUILD_STRING})
+string(REGEX REPLACE "^(.+)-([0-9]+)-([0-9a-f]+) (.*)$" "\\4" PGROUTING_GIT_BRANCH ${PGROUTING_BUILD_STRING})
 
 set(PGROUTING_VERSION_REVISION_NAME "${PGROUTING_GIT_HASH} ${PGROUTING_GIT_BRANCH}")
 set(PGROUTING_VERSION_REVISION_HASH "${PGROUTING_GIT_HASH}")
@@ -225,8 +225,8 @@ if(APPLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -O2 -g -Wno-deprecated")
   endif()
 elseif(UNIX) # UNIX system variable include UNIX like system(i.e. APPLE and CYGWIN)
-  set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -fPIC -O2 -g -frounding-math")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -O2 -g -frounding-math -Wno-deprecated")
+  set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -fPIC -O2 -g -frounding-math -Wall -Wconversion -pedantic -Wmissing-prototypes -W -Wunused -Wuninitialized -Wextra -Wdouble-promotion")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -O2 -g -frounding-math -Wno-deprecated -Wall -fno-implicit-inline-templates -Wconversion -pedantic -W -Wunused -Wuninitialized -Wextra -Wdouble-promotion")
 elseif(WIN32)
   # currently, support MinGW only
   set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS} -O2 -g -frounding-math")

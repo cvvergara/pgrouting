@@ -16,6 +16,6 @@ OK
  NOTICE:  Analysis 100% complete ...
  NOTICE:  Found 3 potential problems in directionality
 OK
-17|||2|0|POINT(1 1.5)
-15|||2|0|POINT(2 0.5)
 14|||0|2|POINT(1 0.5)
+15|||2|0|POINT(2 0.5)
+17|||2|0|POINT(1 1.5)
