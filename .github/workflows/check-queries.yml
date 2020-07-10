@@ -1,4 +1,4 @@
-name: Check files
+name: Check queries
 
 jobs:
   build:
