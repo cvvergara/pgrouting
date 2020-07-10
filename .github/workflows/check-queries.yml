@@ -57,5 +57,5 @@ jobs:
           PGPORT=5433
           if [ "${{ matrix.psql }}" == "12" ]; then PGPORT=5432; fi
           sudo -u postgres createdb -p ${PGPORT}  ____sigs_routing____
-          sh tools/release-scripts/get_signatures.sh -U postgres -p ${PGPORT}
+          sudo -u postgres sh tools/release-scripts/get_signatures.sh -p ${PGPORT}
           git diff sql/sigs git diff --exit-code --quiet develop sql/sigs/*.sig
