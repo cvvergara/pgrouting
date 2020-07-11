@@ -32,4 +32,3 @@ jobs:
         run: |
           tools/release-scripts/notes2news.pl
           git status | grep 'NEWS' ; echo "$?"
-          git status | grep 'NEWS' ; echo "$?" | grep '1'
