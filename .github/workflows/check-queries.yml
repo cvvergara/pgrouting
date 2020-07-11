@@ -59,7 +59,4 @@ jobs:
           sudo -u postgres createdb -p ${PGPORT}  ____sigs_routing____
           sudo -u postgres psql -c "CREATE ROLE runner SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN" -d ____sigs_routing____
           sh tools/release-scripts/get_signatures.sh -p ${PGPORT}
-          psql -p ${PGPORT} ____sigs_routing____ -c '\dx+ pgrouting' -A | grep '^function' | cut -d ' ' -f2- | sort -d
-
-          git diff sql/sigs/*.sig
           git diff --exit-code --quiet sql/sigs/*.sig
