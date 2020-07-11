@@ -31,4 +31,5 @@ jobs:
       - name: News file up to date
         run: |
           tools/release-scripts/notes2news.pl
+          git status
           #git status | grep 'NEWS' ; echo "$?"
