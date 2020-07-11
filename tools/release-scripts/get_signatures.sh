@@ -38,4 +38,3 @@ psql $DB_ARGS $DB_NAME -c '\dx+ pgrouting' -A | grep '^type' | cut -d ' ' -f2- |
 echo "#FUNCTIONS" >> "$FILE"
 psql $DB_ARGS $DB_NAME -c '\dx+ pgrouting' -A | grep '^function' | cut -d ' ' -f2- | sort >> $FILE
 
-dropdb --if-exists $DB_ARGS $DB_NAME
