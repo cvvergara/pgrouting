@@ -28,3 +28,8 @@ jobs:
             diff "sql/sigs/pgrouting--${value}.sig" "sql/sigs/pgrouting--${RELEASE[0]}.sig" | wc -l | grep 4
           done
 
+      - name: News file up to date
+        run: |
+          tools/release-scripts/notes2news.pl
+          git status | grep 'NEWS'
+          git status | grep 'NEWS1'
