@@ -66,6 +66,8 @@ jobs:
           #sudo service postgresql start
           #PGPORT=5433
           #if [ "${{ matrix.psql }}" == "12" ]; then PGPORT=5432; fi
+          PGPORT=5433
+          if [ "${{ matrix.psql }}" == "12" ]; then PGPORT=5432; fi
           sudo -u postgres createdb -p ${PGPORT}  pgr_test__db__test
           TESTDIRS="version"
           for d in ${TESTDIRS}
@@ -74,5 +76,3 @@ jobs:
           done
 
           ./tools/testers/doc_queries_generator.pl -pgver "${POSTGRESQL_VERSION}" -pguser "${PGUSER}"
-
-
