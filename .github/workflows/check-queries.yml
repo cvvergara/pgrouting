@@ -72,7 +72,7 @@ jobs:
           TESTDIRS="version"
           for d in ${TESTDIRS}
           do
-            ./tools/testers/doc_queries_generator.pl -pgver "${POSTGRESQL_VERSION}" -pguser "${PGUSER}" -documentation -alg "${d}"
+            ./tools/testers/doc_queries_generator.pl -pgver "${{ matrix.psql }}" -pguser runner -documentation -alg "${d}"
           done
 
-          ./tools/testers/doc_queries_generator.pl -pgver "${POSTGRESQL_VERSION}" -pguser "${PGUSER}"
+          ./tools/testers/doc_queries_generator.pl -pgver "${{ matrix.psql }}"
