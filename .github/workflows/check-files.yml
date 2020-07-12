@@ -1,6 +1,11 @@
 name: Check files
 
-on: [push,pull_request]
+on:
+  push:
+    branches-ignore:
+      - 'translations_*'
+    tag:
+    pull_request:
 
 jobs:
   build:
