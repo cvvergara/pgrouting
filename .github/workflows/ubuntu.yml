@@ -6,7 +6,10 @@ on:
       - 'translations_*'
     tags: []
   pull_request:
-    paths-ignore: '**.po'
+    paths-ignore:
+      - '**.po'
+      - '.github/workflows/ubuntu.yml'
+
 
 
 jobs:
