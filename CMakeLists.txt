@@ -6,6 +6,7 @@
 #
 
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+set(CMAKE_CXX_STANDARD 14)
 
 if(POLICY CMP0046)
     cmake_policy(SET CMP0046 OLD)

@@ -35,6 +35,7 @@
 #undef Min
 #endif
 
+#include <type_traits>
 #include <CGAL/Simple_cartesian.h>
 #include <vector>
 
