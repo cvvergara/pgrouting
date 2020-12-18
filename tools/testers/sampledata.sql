@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS vertex_table;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS combinations;
 
 --EDGE TABLE CREATE start
 CREATE TABLE edge_table (
@@ -199,12 +200,12 @@ INSERT INTO orders
 --ORDERS TABLE END
 
 --COMBINATIONS CREATE start
-CREATE TABLE combinations_table (
+CREATE TABLE combinations (
     source BIGINT,
     target BIGINT
 );
 
-INSERT INTO combinations_table (
+INSERT INTO combinations (
     source, target) VALUES
 (1, 2),
 (1, 4),
