@@ -12,7 +12,7 @@ BEGIN
     RETURN query SELECT is_empty(
       'SELECT path_seq,  start_vid,  end_vid, node, edge, cost, agg_cost FROM pgr_dijkstra(
         ''SELECT id, source, target, cost, reverse_cost FROM edge_table'',
-        ''SELECT * FROM combinations_table WHERE source=-1'' ) '
+        ''SELECT * FROM combinations WHERE source=-1'' ) '
 	);
     RETURN;
 END

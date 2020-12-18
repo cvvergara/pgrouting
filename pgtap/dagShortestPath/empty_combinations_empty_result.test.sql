@@ -10,7 +10,7 @@ BEGIN
     RETURN query SELECT is_empty(
       'SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_dagShortestPath(
         ''SELECT id, source, target, cost FROM edge_table'',
-        ''SELECT * FROM combinations_table WHERE source IN (-1)'' ) '
+        ''SELECT * FROM combinations WHERE source IN (-1)'' ) '
     );
     RETURN;
 END

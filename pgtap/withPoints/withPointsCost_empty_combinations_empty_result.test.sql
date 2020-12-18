@@ -12,7 +12,7 @@ BEGIN
       'SELECT start_pid,  end_pid, agg_cost FROM pgr_withPointsCost(
         ''SELECT id, source, target, cost, reverse_cost FROM edge_table'',
         ''SELECT pid, edge_id, fraction, side from pointsOfInterest'',
-        ''SELECT * FROM combinations_table WHERE source IN (-1)'' ) '
+        ''SELECT * FROM combinations WHERE source IN (-1)'' ) '
     );
     RETURN;
 END
