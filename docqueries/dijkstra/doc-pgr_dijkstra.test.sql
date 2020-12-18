@@ -283,7 +283,7 @@ SELECT * FROM pgr_dijkstra(
 
 SELECT * FROM pgr_dijkstra(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
-    'SELECT * FROM combinations_table',
+    'SELECT * FROM combinations',
     FALSE
 );
 

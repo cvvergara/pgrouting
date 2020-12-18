@@ -690,7 +690,7 @@ SELECT * FROM pgr_dijkstra(
 -- q19
 SELECT * FROM pgr_dijkstra(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
-    'SELECT * FROM combinations_table',
+    'SELECT * FROM combinations',
     FALSE
 );
  seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
