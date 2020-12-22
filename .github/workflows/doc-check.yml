@@ -31,7 +31,7 @@ jobs:
       - name: Get commit message
         run: |
            PROCESS=${{ false }}
-           if [[ $(git log --format=%B -n 2 | tr -d "'" | grep -q " ${LANG_MSG} language" ]]; then
+           if [[ $(git log --format=%B -n 2 | tr -d "'" | grep -q " ${LANG_MSG} language") ]]; then
              PROCESS=${{ true }}
            fi
            if [[ "${{ matrix.language }}" == "en" ]]; then
