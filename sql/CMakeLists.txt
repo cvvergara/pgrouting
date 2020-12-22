@@ -60,9 +60,9 @@ foreach (old_s ${OLD_SIGNATURES})
     add_custom_command(
         OUTPUT ${PROJECT_NAME_LOWER}--${old_s}--${PROJECT_VERSION}.sql
 
-        COMMAND ${PERL_EXECUTABLE} ./scripts/build-extension-update-files1.pl "${PROJECT_VERSION}" "${old_s}" "${CMAKE_CURRENT_BINARY_DIR}/sigs" "${CMAKE_CURRENT_BINARY_DIR}" "${PROJECT_DEBUG}"
+        COMMAND ${PERL_EXECUTABLE} ./scripts/build-extension-update-files.pl "${PROJECT_VERSION}" "${old_s}" "${CMAKE_CURRENT_BINARY_DIR}/sigs" "${CMAKE_CURRENT_BINARY_DIR}" "${PROJECT_DEBUG}"
         DEPENDS
-        ./scripts/build-extension-update-files1.pl
+        ./scripts/build-extension-update-files.pl
         ${PROJECT_EXTENSION_FILE}
         extension_file
         ./sigs/${PROJECT_NAME_LOWER}--${minor_s}.sig
