@@ -32,7 +32,7 @@ jobs:
         run: |
            PROCESS=${{ false }}
 
-           if [[ ! $(git log --format=%B -n 2 | tr -d "'" | grep -q " in ${LANG_MSG}") ]]; then
+           if git log --format=%B -n 2 | tr -d "'" | grep -q " in ${LANG_MSG}"; then
              PROCESS=${{ true }}
            fi
            if [[ "${{ matrix.language }}" == "en" ]]; then
