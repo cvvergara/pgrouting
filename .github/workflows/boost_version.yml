@@ -18,7 +18,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [53, 54, 55, 56, 75]
+          boost_minor: [55, 56, 75]
           os: [ubuntu-latest]
 
     steps:
@@ -58,7 +58,6 @@ jobs:
           #wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
-          ls /usr/include/boost/*
 
 
       - name: Configure
