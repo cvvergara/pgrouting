@@ -18,7 +18,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [56, 64, 75]
+          boost_minor: [53, 54, 55, 56, 64, 73, 74, 75]
           os: [ubuntu-latest]
 
     steps:
@@ -56,7 +56,7 @@ jobs:
           pip install -r requirements.txt
           wget https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           #wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          sudo tar --bzip2 -xvf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
+          sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
 
 
