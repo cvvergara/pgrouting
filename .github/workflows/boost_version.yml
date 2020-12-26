@@ -18,7 +18,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          postgis: [3]
+          boost_minor: [64]
           os: [ubuntu-latest]
 
     steps:
@@ -54,9 +54,9 @@ jobs:
 
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          wget https://dl.bintray.com/boostorg/release/1.64.0/source/boost_1_64_0.tar.bz2
-          sudo tar --bzip2 -xvf  boost_1_64_0.tar.bz2
-          sudo mv boost_1_64_0/boost /usr/include/
+          wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
+          sudo tar --bzip2 -xvf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
+          sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
 
 
       - name: Configure
