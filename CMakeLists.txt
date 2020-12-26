@@ -76,7 +76,7 @@ endif()
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
 message(STATUS "BOOST_VERSION '${BOOST_VERSION}'")
-add_compile_options(-DBoost_VERSION=${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION})
+add_compile_options(-DBoost_VERSION_${Boost_MAJOR_VERSION}_${Boost_MINOR_VERSION})
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
