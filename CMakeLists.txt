@@ -52,7 +52,7 @@ include(pgr/Configure)
 set(DOXYGEN_MINIMUM_VERSION "1.7")
 set(SPHINX_MINIMUM_VERSION "1.8")
 set(POSTGRESQL_MINIMUM_VERSION "9.2.0")
-set(BOOST_MINIMUM_VERSION "1.53")
+set(BOOST_MINIMUM_VERSION "1.53.0")
 set(POSTGIS_MINIMUM_VERSION "2.0.0")
 
 message(STATUS "DOXYGEN_MINIMUM_VERSION=${DOXYGEN_MINIMUM_VERSION}")
@@ -191,6 +191,7 @@ message(STATUS "PGSQL_VERSION=${PGSQL_VERSION}")
 #---------------------------------------------
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 set(BOOST_VERSION "${Boost_VERSION}")
+message(STATUS "BOOST_VERSION '${Boost_VERSION}'")
 
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
@@ -205,9 +206,11 @@ else()
 endif()
 
 # Boost Geometry structure is different
-if ("${Boost_VERSION}" VERSION_LESS "1.56.0")
+if (Boost_VERSION VERSION_LESS "1.56.0")
     set(BOOST_Geometry_VERSION_OK "0")
+    message(STATUS "less than 1.56.0 BOOST_VERSION '${Boost_VERSION}'")
 else()
+    message(STATUS "not less than 1.56.0 BOOST_VERSION '${Boost_VERSION}'")
     set(BOOST_Geometry_VERSION_OK "1")
 endif()
 
