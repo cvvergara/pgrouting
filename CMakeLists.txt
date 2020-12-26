@@ -190,8 +190,8 @@ message(STATUS "PGSQL_VERSION=${PGSQL_VERSION}")
 #---------------------------------------------
 #---------------------------------------------
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
-set(BOOST_VERSION "${Boost_VERSION}")
-message(STATUS "BOOST_VERSION '${Boost_VERSION}'")
+set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+message(STATUS "BOOST_VERSION '${BOOST_VERSION}'")
 
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
@@ -199,18 +199,18 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 # dijkstra_shortest_paths.hpp has an error fix on 1.55
 #  error affects prim
 # BOOST_VERSION_OK if 1, use the boost file copy in the repository
-if ("${Boost_VERSION}" VERSION_LESS "1.55.0")
+if ("${BOOST_VERSION}" VERSION_LESS "1.55.0")
     set(BOOST_VERSION_OK "0")
 else()
     set(BOOST_VERSION_OK "1")
 endif()
 
 # Boost Geometry structure is different
-if (Boost_VERSION VERSION_LESS "1.56.0")
+if (BOOST_VERSION VERSION_LESS "1.56.0")
     set(BOOST_Geometry_VERSION_OK "0")
-    message(STATUS "less than 1.56.0 BOOST_VERSION '${Boost_VERSION}'")
+    message(STATUS "less than 1.56.0 BOOST_VERSION '${BOOST_VERSION}'")
 else()
-    message(STATUS "not less than 1.56.0 BOOST_VERSION '${Boost_VERSION}'")
+    message(STATUS "not less than 1.56.0 BOOST_VERSION '${BOOST_VERSION}'")
     set(BOOST_Geometry_VERSION_OK "1")
 endif()
 
