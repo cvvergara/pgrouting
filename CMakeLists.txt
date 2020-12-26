@@ -73,24 +73,30 @@ endif()
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 
-set(CMAKE_C_STANDARD 11)
+find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
+set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+message(STATUS "BOOST_VERSION '${BOOST_VERSION}'")
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
-CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-if(COMPILER_SUPPORTS_CXX11)
-    set(CMAKE_CXX_STANDARD 11)
-    set(CMAKE_CXX_STANDARD_REQUIRED ON)
-    set(CMAKE_CXX_EXTENSIONS OFF)
-else()
-    CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-    if(COMPILER_SUPPORTS_CXX0X)
-        add_compile_options("-std=c++0x")
-        message(STATUS "Using  -std=c++0x.")
+if (BOOST_VERSION VERSION_LESS "1.75.0")
+    CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+    if(COMPILER_SUPPORTS_CXX11)
+        set(CMAKE_CXX_STANDARD 11)
+        set(CMAKE_CXX_STANDARD_REQUIRED ON)
+        set(CMAKE_CXX_EXTENSIONS OFF)
     else()
+        CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+        if(COMPILER_SUPPORTS_CXX0X)
+            add_compile_options("-std=c++0x")
+            message(STATUS "Using  -std=c++0x.")
+        else()
         message(WARNING "The compiler ${CMAKE_CXX_COMPILER} has no C++0x or C++11 flags support.
-        Using: callback compiler's standard")
+            Using: callback compiler's standard")
+        endif()
     endif()
+else()
+    set(CMAKE_CXX_STANDARD 14)
 endif()
 
 set(COMPILER_VERSION "${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}")
@@ -189,9 +195,6 @@ message(STATUS "PGSQL_VERSION=${PGSQL_VERSION}")
 # Boost
 #---------------------------------------------
 #---------------------------------------------
-find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
-set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
-message(STATUS "BOOST_VERSION '${BOOST_VERSION}'")
 
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
