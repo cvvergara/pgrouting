@@ -54,7 +54,7 @@ jobs:
 
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          wget -O boost.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2/download
+          wget -o boost.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2/download
           #wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xvf  boost.tar.bz2
           sudo mv boost/boost /usr/include/
