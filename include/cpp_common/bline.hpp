@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CPP_COMMON_BLINE_HPP_
 #pragma once
 
-#if defined(BOOST_VERSION_1_55)
+#if defined(Boost_VERSION_1_55)
 #include <boost/bgeometry/geometries/multi_point.hpp>
 #else
 #if BOOST_Geometry_VERSION_OK
