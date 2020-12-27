@@ -211,7 +211,7 @@ else()
 endif()
 
 # Boost Geometry structure is different
-if (BOOST_VERSION VERSION_LESS "1.54.0")
+if (BOOST_VERSION VERSION_LESS "1.56.0")
     set(BOOST_Geometry_VERSION_OK "0")
     message(STATUS "less than 1.56.0 BOOST_VERSION '${BOOST_VERSION}'")
 else()

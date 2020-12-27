@@ -28,9 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CPP_COMMON_BLINE_HPP_
 #pragma once
 
-#if defined(Boost_VERSION_1_55)
-#include <boost/bgeometry/geometries/multi_point.hpp>
-#else
 #if BOOST_Geometry_VERSION_OK
 #include <boost/geometry/geometries/multi_point.hpp>
 #include <boost/geometry/geometries/linestring.hpp>
@@ -43,7 +40,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/bgeometry/geometries/multi_linestring.hpp>
 #include <boost/bgeometry/geometries/polygon.hpp>
 #include <boost/bgeometry/geometries/multi_polygon.hpp>
-#endif
 #endif
 
 namespace bg = boost::geometry;
