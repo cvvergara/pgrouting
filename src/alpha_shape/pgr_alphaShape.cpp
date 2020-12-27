@@ -36,15 +36,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/filtered_graph.hpp>
 
 #if Boost_VERSION_MACRO >= 105600
-
-
-#if Boost_VERSION_MACRO >= 107500
-#include <boost/geometry/strategies/strategies.hpp>
-#else
-#include <boost/geometry/strategies/agnostic/point_in_point.hpp>
-#endif
-
-
+#   if Boost_VERSION_MACRO >= 107500
+#       include <boost/geometry/strategies/strategies.hpp>
+#   else
+#   include <boost/geometry/strategies/agnostic/point_in_point.hpp>
+#   endif
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
