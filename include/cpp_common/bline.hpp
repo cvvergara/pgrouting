@@ -30,16 +30,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #if Boost_VERSION_MACRO > 105500
 #include <boost/geometry/geometries/multi_point.hpp>
-#include <boost/geometry/geometries/multi_linestring.hpp>
-#include <boost/geometry/geometries/multi_polygon.hpp>
 #else
 #include <boost/bgeometry/geometries/multi_point.hpp>
-#include <boost/bgeometry/geometries/multi_linestring.hpp>
-#include <boost/bgeometry/geometries/multi_polygon.hpp>
 #endif
 
 #include <boost/geometry/geometries/linestring.hpp>
+
+#if Boost_VERSION_MACRO > 105500
+#include <boost/geometry/geometries/multi_linestring.hpp>
+#else
+#include <boost/bgeometry/geometries/multi_linestring.hpp>
+#endif
+
 #include <boost/geometry/geometries/polygon.hpp>
+#if Boost_VERSION_MACRO > 105500
+#include <boost/geometry/geometries/multi_polygon.hpp>
+#else
+#include <boost/bgeometry/geometries/multi_polygon.hpp>
+#endif
+
 #if 0
 #include <boost/bgeometry/geometries/linestring.hpp>
 #include <boost/bgeometry/geometries/polygon.hpp>
