@@ -74,6 +74,11 @@ endif()
 #-----------------------------------------------------------------------------
 
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
+if (NOT Boost_VERSION_MACRO)
+    set(Boost_VERSION_MACRO ${Boost_VERSION})
+endif()
+message(STATUS "Boost_VERSION_MACRO '${Boost_VERSION_MACRO}'")
+message(STATUS "Boost_VERSION '${Boost_VERSION}'")
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
 message(STATUS "BOOST_VERSION '${BOOST_VERSION}'")
 add_compile_options(-DBoost_VERSION_${Boost_MAJOR_VERSION}_${Boost_MINOR_VERSION})
