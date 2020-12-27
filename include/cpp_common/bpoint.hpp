@@ -28,8 +28,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CPP_COMMON_BPOINT_HPP_
 #pragma once
 
+#if Boost_VERSION_MACRO > 105500
 #include <boost/geometry/geometries/point_xy.hpp>
-#if 0
+#else
 #include <boost/bgeometry/geometries/point_xy.hpp>
 #endif
 
