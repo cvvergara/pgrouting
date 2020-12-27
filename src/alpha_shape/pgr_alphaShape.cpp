@@ -82,20 +82,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/for_each.hpp>
 #include <boost/geometry/algorithms/intersection.hpp>
 #include <boost/geometry/algorithms/intersects.hpp>
-#include <boost/geometry/algorithms/is_empty.hpp>
 #include <boost/geometry/algorithms/is_simple.hpp>
 #include <boost/geometry/algorithms/is_valid.hpp>
 #include <boost/geometry/algorithms/length.hpp>
-#include <boost/geometry/algorithms/line_interpolate.hpp>
 #include <boost/geometry/algorithms/make.hpp>
 #include <boost/geometry/algorithms/num_geometries.hpp>
 #include <boost/geometry/algorithms/num_interior_rings.hpp>
 //#include <boost/geometry/algorithms/num_points.hpp>
-#include <boost/geometry/algorithms/num_segments.hpp>
 #include <boost/geometry/algorithms/overlaps.hpp>
 #include <boost/geometry/algorithms/perimeter.hpp>
-#include <boost/geometry/algorithms/relate.hpp>
-#include <boost/geometry/algorithms/relation.hpp>
 #include <boost/geometry/algorithms/remove_spikes.hpp>
 #include <boost/geometry/algorithms/reverse.hpp>
 #include <boost/geometry/algorithms/simplify.hpp>
@@ -108,7 +103,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 // check includes all concepts
 #include <boost/geometry/geometries/concepts/check.hpp>
 
-#include <boost/geometry/srs/srs.hpp>
 
 #include <boost/geometry/util/for_each_coordinate.hpp>
 #include <boost/geometry/util/math.hpp>
