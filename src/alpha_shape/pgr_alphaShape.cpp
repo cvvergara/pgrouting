@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "alphaShape/pgr_alphaShape.h"
 
 #include <visitors/dijkstra_one_goal_visitor.hpp>
-#if Boost_VERSION_MACRO > 105500
+#if Boost_VERSION_MACRO >= 105500
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #else
 #include "boost/dijkstra_shortest_paths.hpp"
