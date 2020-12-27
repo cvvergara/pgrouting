@@ -20,9 +20,6 @@
 #include <boost/concept_check.hpp>
 #include <boost/config.hpp>
 #include <boost/utility/addressof.hpp>
-#if 0
-#include <boost/core/addressof.hpp>
-#endif
 #include <boost/range/concepts.hpp>
 #include <boost/range/begin.hpp>
 #include <boost/range/end.hpp>
