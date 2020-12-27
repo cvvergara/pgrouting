@@ -31,18 +31,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/filtered_graph.hpp>
 
+
 #include <boost/geometry.hpp>
 #include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/area.hpp>
+#if Boost_VERSION_MACRO > 105500
 #include <boost/geometry/strategies/agnostic/point_in_point.hpp>
+#else
+#include <boost/bgeometry/strategies/agnostic/point_in_point.hpp>
+#endif
+
 #include <boost/geometry/algorithms/correct.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
 #if 0
 #include <boost/bgeometry/algorithms/num_points.hpp>
 #include <boost/bgeometry/algorithms/append.hpp>
 #include <boost/bgeometry/algorithms/area.hpp>
-#include <boost/bgeometry/strategies/agnostic/point_in_point.hpp>
 #include <boost/bgeometry/algorithms/correct.hpp>
 #include <boost/bgeometry/algorithms/distance.hpp>
 #endif
