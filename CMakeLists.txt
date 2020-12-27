@@ -207,15 +207,11 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
 # Boost for Chinese postman needs 1.55 at least
 # dijkstra_shortest_paths.hpp has an error fix on 1.55
-#  error affects prim
+# error affects prim
 
 
 
 message(STATUS "Boost VERSION ${Boost_VERSION}")
-message(STATUS "BOOST_Geometry_VERSION_OK ${BOOST_Geometry_VERSION_OK}")
-
-add_definitions(" -DBOOST_Geometry_VERSION_OK=${BOOST_Geometry_VERSION_OK}")
-
 
 #---------------------------------------------
 if (PROJECT_DEBUG)
