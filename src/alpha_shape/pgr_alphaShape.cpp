@@ -74,7 +74,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/covered_by.hpp>
 #include <boost/geometry/algorithms/crosses.hpp>
 #include <boost/geometry/algorithms/difference.hpp>
-#include <boost/geometry/algorithms/discrete_frechet_distance.hpp>
 #include <boost/geometry/algorithms/discrete_hausdorff_distance.hpp>
 #include <boost/geometry/algorithms/disjoint.hpp>
 //#include <boost/geometry/algorithms/distance.hpp>
@@ -137,8 +136,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
-#include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
+#include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/strategies/agnostic/point_in_point.hpp>
 #else
 #include <boost/bgeometry/algorithms/num_points.hpp>
