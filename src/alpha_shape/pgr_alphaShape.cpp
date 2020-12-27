@@ -35,14 +35,114 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 #include <boost/graph/filtered_graph.hpp>
 
-//#if Boost_VERSION_MACRO > 105500
+#if Boost_VERSION_MACRO > 105500
+#include <boost/geometry/core/closure.hpp>
+#include <boost/geometry/core/coordinate_dimension.hpp>
+#include <boost/geometry/core/coordinate_system.hpp>
+#include <boost/geometry/core/coordinate_type.hpp>
+#include <boost/geometry/core/cs.hpp>
+#include <boost/geometry/core/interior_type.hpp>
+#include <boost/geometry/core/point_order.hpp>
+#include <boost/geometry/core/point_type.hpp>
+#include <boost/geometry/core/ring_type.hpp>
+#include <boost/geometry/core/tag.hpp>
+#include <boost/geometry/core/tag_cast.hpp>
+#include <boost/geometry/core/tags.hpp>
+
+// Core algorithms
+#include <boost/geometry/core/access.hpp>
+#include <boost/geometry/core/exterior_ring.hpp>
+#include <boost/geometry/core/interior_rings.hpp>
+#include <boost/geometry/core/radian_access.hpp>
+#include <boost/geometry/core/radius.hpp>
+#include <boost/geometry/core/topological_dimension.hpp>
+
+#include <boost/geometry/arithmetic/arithmetic.hpp>
+#include <boost/geometry/arithmetic/dot_product.hpp>
+
+#include <boost/geometry/strategies/strategies.hpp>
+
+#include <boost/geometry/algorithms/append.hpp>
+#include <boost/geometry/algorithms/area.hpp>
+#include <boost/geometry/algorithms/assign.hpp>
+#include <boost/geometry/algorithms/buffer.hpp>
+#include <boost/geometry/algorithms/centroid.hpp>
+#include <boost/geometry/algorithms/clear.hpp>
+#include <boost/geometry/algorithms/comparable_distance.hpp>
+#include <boost/geometry/algorithms/convert.hpp>
+#include <boost/geometry/algorithms/convex_hull.hpp>
+#include <boost/geometry/algorithms/correct.hpp>
+#include <boost/geometry/algorithms/covered_by.hpp>
+#include <boost/geometry/algorithms/crosses.hpp>
+#include <boost/geometry/algorithms/densify.hpp>
+#include <boost/geometry/algorithms/difference.hpp>
+#include <boost/geometry/algorithms/discrete_frechet_distance.hpp>
+#include <boost/geometry/algorithms/discrete_hausdorff_distance.hpp>
+#include <boost/geometry/algorithms/disjoint.hpp>
+#include <boost/geometry/algorithms/distance.hpp>
+#include <boost/geometry/algorithms/envelope.hpp>
+#include <boost/geometry/algorithms/equals.hpp>
+#include <boost/geometry/algorithms/expand.hpp>
+#include <boost/geometry/algorithms/for_each.hpp>
+#include <boost/geometry/algorithms/intersection.hpp>
+#include <boost/geometry/algorithms/intersects.hpp>
+#include <boost/geometry/algorithms/is_empty.hpp>
+#include <boost/geometry/algorithms/is_simple.hpp>
+#include <boost/geometry/algorithms/is_valid.hpp>
+#include <boost/geometry/algorithms/length.hpp>
+#include <boost/geometry/algorithms/line_interpolate.hpp>
+#include <boost/geometry/algorithms/make.hpp>
+#include <boost/geometry/algorithms/num_geometries.hpp>
+#include <boost/geometry/algorithms/num_interior_rings.hpp>
+#include <boost/geometry/algorithms/num_points.hpp>
+#include <boost/geometry/algorithms/num_segments.hpp>
+#include <boost/geometry/algorithms/overlaps.hpp>
+#include <boost/geometry/algorithms/perimeter.hpp>
+#include <boost/geometry/algorithms/relate.hpp>
+#include <boost/geometry/algorithms/relation.hpp>
+#include <boost/geometry/algorithms/remove_spikes.hpp>
+#include <boost/geometry/algorithms/reverse.hpp>
+#include <boost/geometry/algorithms/simplify.hpp>
+#include <boost/geometry/algorithms/sym_difference.hpp>
+#include <boost/geometry/algorithms/touches.hpp>
+#include <boost/geometry/algorithms/transform.hpp>
+#include <boost/geometry/algorithms/union.hpp>
+#include <boost/geometry/algorithms/unique.hpp>
+#include <boost/geometry/algorithms/within.hpp>
+// check includes all concepts
+#include <boost/geometry/geometries/concepts/check.hpp>
+
+#include <boost/geometry/srs/srs.hpp>
+
+#include <boost/geometry/util/for_each_coordinate.hpp>
+#include <boost/geometry/util/math.hpp>
+#include <boost/geometry/util/select_coordinate_type.hpp>
+#include <boost/geometry/util/select_most_precise.hpp>
+
+#include <boost/geometry/views/box_view.hpp>
+#include <boost/geometry/views/closeable_view.hpp>
+#include <boost/geometry/views/identity_view.hpp>
+#include <boost/geometry/views/reversible_view.hpp>
+#include <boost/geometry/views/segment_view.hpp>
+
+#include <boost/geometry/io/io.hpp>
+#include <boost/geometry/io/dsv/write.hpp>
+#include <boost/geometry/io/svg/svg_mapper.hpp>
+#include <boost/geometry/io/svg/write.hpp>
+#include <boost/geometry/io/wkt/read.hpp>
+#include <boost/geometry/io/wkt/write.hpp>
+
+
+
+
+
 #include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/strategies/agnostic/point_in_point.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
-#if 0
+#else
 #include <boost/bgeometry/algorithms/num_points.hpp>
 #include <boost/bgeometry/algorithms/append.hpp>
 #include <boost/bgeometry/algorithms/area.hpp>
