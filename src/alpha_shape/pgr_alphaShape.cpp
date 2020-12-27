@@ -64,6 +64,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <boost/geometry/strategies/strategies.hpp>
 
+#if 0
 //#include <boost/geometry/algorithms/append.hpp>
 //#include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/algorithms/assign.hpp>
@@ -105,6 +106,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/within.hpp>
 // check includes all concepts
 #include <boost/geometry/geometries/concepts/check.hpp>
+#endif
 
 
 #include <boost/geometry/util/for_each_coordinate.hpp>
