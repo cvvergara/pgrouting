@@ -44,7 +44,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/correct.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
 #else
-#include <boost/bgeometry.hpp>
 #include <boost/bgeometry/algorithms/num_points.hpp>
 #include <boost/bgeometry/algorithms/append.hpp>
 #include <boost/bgeometry/algorithms/area.hpp>
