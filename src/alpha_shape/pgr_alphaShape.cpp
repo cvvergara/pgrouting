@@ -118,7 +118,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/io/io.hpp>
 #include <boost/geometry/io/dsv/write.hpp>
 #include <boost/geometry/io/svg/svg_mapper.hpp>
-#include <boost/geometry/io/svg/write.hpp>
 #include <boost/geometry/io/wkt/read.hpp>
 #include <boost/geometry/io/wkt/write.hpp>
 
