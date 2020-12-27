@@ -36,12 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <boost/config.hpp>
 
-#if BOOST_VERSION_OK
 #include <boost/graph/dijkstra_shortest_paths.hpp>
-#else
-#include "boost/dijkstra_shortest_paths.hpp"
-#endif
-
 #include <boost/graph/adjacency_list.hpp>
 
 #include <string>

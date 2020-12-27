@@ -77,11 +77,11 @@ find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 if (NOT Boost_VERSION_MACRO)
     set(Boost_VERSION_MACRO ${Boost_VERSION})
 endif()
+add_definitions(-DBoost_VERSION_MACRO={Boost_VERSION_MACRO})
 message(STATUS "Boost_VERSION_MACRO '${Boost_VERSION_MACRO}'")
 message(STATUS "Boost_VERSION '${Boost_VERSION}'")
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
 message(STATUS "BOOST_VERSION '${BOOST_VERSION}'")
-add_compile_options(-DBoost_VERSION_${Boost_MAJOR_VERSION}_${Boost_MINOR_VERSION})
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
@@ -208,25 +208,13 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 # Boost for Chinese postman needs 1.55 at least
 # dijkstra_shortest_paths.hpp has an error fix on 1.55
 #  error affects prim
-# BOOST_VERSION_OK if 1, use the boost file copy in the repository
-set(BOOST_VERSION_OK "0")
-
-# Boost Geometry structure is different
-if (BOOST_VERSION VERSION_LESS "1.56.0")
-    set(BOOST_Geometry_VERSION_OK "0")
-    message(STATUS "less than 1.56.0 BOOST_VERSION '${BOOST_VERSION}'")
-else()
-    message(STATUS "not less than 1.56.0 BOOST_VERSION '${BOOST_VERSION}'")
-    set(BOOST_Geometry_VERSION_OK "1")
-endif()
 
 
 
 message(STATUS "Boost VERSION ${Boost_VERSION}")
-message(STATUS "BOOST_VERSION_OK ${BOOST_VERSION_OK}")
 message(STATUS "BOOST_Geometry_VERSION_OK ${BOOST_Geometry_VERSION_OK}")
 
-add_definitions(" -DBOOST_VERSION_OK=${BOOST_VERSION_OK} -DBOOST_Geometry_VERSION_OK=${BOOST_Geometry_VERSION_OK}")
+add_definitions(" -DBOOST_Geometry_VERSION_OK=${BOOST_Geometry_VERSION_OK}")
 
 
 #---------------------------------------------

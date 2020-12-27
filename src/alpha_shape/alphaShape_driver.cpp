@@ -38,9 +38,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "cpp_common/bpoint.hpp"
 #include "cpp_common/bline.hpp"
-#if BOOST_Geometry_VERSION_OK
 #include <boost/geometry/io/wkt/write.hpp>
-#else
+#if 0
 #include <boost/bgeometry/io/wkt/write.hpp>
 #endif
 

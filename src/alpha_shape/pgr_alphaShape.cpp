@@ -28,14 +28,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "alphaShape/pgr_alphaShape.h"
 
 #include <visitors/dijkstra_one_goal_visitor.hpp>
-#if BOOST_VERSION_OK
 #include <boost/graph/dijkstra_shortest_paths.hpp>
-#else
-#include "boost/dijkstra_shortest_paths.hpp"
-#endif
 #include <boost/graph/filtered_graph.hpp>
 
-#if BOOST_Geometry_VERSION_OK
 #include <boost/geometry.hpp>
 #include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/append.hpp>
@@ -43,7 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/strategies/agnostic/point_in_point.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
-#else
+#if 0
 #include <boost/bgeometry/algorithms/num_points.hpp>
 #include <boost/bgeometry/algorithms/append.hpp>
 #include <boost/bgeometry/algorithms/area.hpp>
