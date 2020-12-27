@@ -54,7 +54,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/core/exterior_ring.hpp>
 #include <boost/geometry/core/interior_rings.hpp>
 #include <boost/geometry/core/radian_access.hpp>
-#include <boost/geometry/core/radius.hpp>
 #include <boost/geometry/core/topological_dimension.hpp>
 
 #include <boost/geometry/arithmetic/arithmetic.hpp>
@@ -62,8 +61,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <boost/geometry/strategies/strategies.hpp>
 
-#include <boost/geometry/algorithms/append.hpp>
-#include <boost/geometry/algorithms/area.hpp>
+//#include <boost/geometry/algorithms/append.hpp>
+//#include <boost/geometry/algorithms/area.hpp>
 #include <boost/geometry/algorithms/assign.hpp>
 #include <boost/geometry/algorithms/buffer.hpp>
 #include <boost/geometry/algorithms/centroid.hpp>
@@ -71,7 +70,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/comparable_distance.hpp>
 #include <boost/geometry/algorithms/convert.hpp>
 #include <boost/geometry/algorithms/convex_hull.hpp>
-#include <boost/geometry/algorithms/correct.hpp>
+//#include <boost/geometry/algorithms/correct.hpp>
 #include <boost/geometry/algorithms/covered_by.hpp>
 #include <boost/geometry/algorithms/crosses.hpp>
 #include <boost/geometry/algorithms/densify.hpp>
@@ -79,7 +78,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/discrete_frechet_distance.hpp>
 #include <boost/geometry/algorithms/discrete_hausdorff_distance.hpp>
 #include <boost/geometry/algorithms/disjoint.hpp>
-#include <boost/geometry/algorithms/distance.hpp>
+//#include <boost/geometry/algorithms/distance.hpp>
 #include <boost/geometry/algorithms/envelope.hpp>
 #include <boost/geometry/algorithms/equals.hpp>
 #include <boost/geometry/algorithms/expand.hpp>
@@ -94,7 +93,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/geometry/algorithms/make.hpp>
 #include <boost/geometry/algorithms/num_geometries.hpp>
 #include <boost/geometry/algorithms/num_interior_rings.hpp>
-#include <boost/geometry/algorithms/num_points.hpp>
+//#include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/num_segments.hpp>
 #include <boost/geometry/algorithms/overlaps.hpp>
 #include <boost/geometry/algorithms/perimeter.hpp>
@@ -136,12 +135,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 
-#include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/append.hpp>
 #include <boost/geometry/algorithms/area.hpp>
-#include <boost/geometry/strategies/agnostic/point_in_point.hpp>
 #include <boost/geometry/algorithms/correct.hpp>
+#include <boost/geometry/algorithms/num_points.hpp>
 #include <boost/geometry/algorithms/distance.hpp>
+#include <boost/geometry/strategies/agnostic/point_in_point.hpp>
 #else
 #include <boost/bgeometry/algorithms/num_points.hpp>
 #include <boost/bgeometry/algorithms/append.hpp>
