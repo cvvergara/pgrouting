@@ -19,8 +19,7 @@
 
 
 #include <cstddef>
-
-#include <boost/core/addressof.hpp>
+#include <boost/utility/addressof.hpp>
 #include <boost/core/ref.hpp>
 
 #include <boost/bgeometry/core/cs.hpp>
