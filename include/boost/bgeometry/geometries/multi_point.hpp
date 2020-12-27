@@ -20,8 +20,8 @@
 
 #include <boost/concept/requires.hpp>
 
-#include <boost/bgeometry/core/tags.hpp>
-#include <boost/bgeometry/geometries/concepts/point_concept.hpp>
+#include <boost/geometry/core/tags.hpp>
+#include <boost/geometry/geometries/concepts/point_concept.hpp>
 
 #include <boost/config.hpp>
 #ifndef BOOST_NO_CXX11_HDR_INITIALIZER_LIST
