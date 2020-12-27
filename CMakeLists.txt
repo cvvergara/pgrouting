@@ -209,11 +209,7 @@ include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 # dijkstra_shortest_paths.hpp has an error fix on 1.55
 #  error affects prim
 # BOOST_VERSION_OK if 1, use the boost file copy in the repository
-if ("${BOOST_VERSION}" VERSION_LESS "1.55.0")
-    set(BOOST_VERSION_OK "0")
-else()
-    set(BOOST_VERSION_OK "1")
-endif()
+set(BOOST_VERSION_OK "0")
 
 # Boost Geometry structure is different
 if (BOOST_VERSION VERSION_LESS "1.56.0")
