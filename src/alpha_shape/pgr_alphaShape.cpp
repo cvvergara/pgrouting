@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 #include <boost/graph/filtered_graph.hpp>
 
-#if Boost_VERSION_MACRO > 105500
+#if Boost_VERSION_MACRO >= 105600
 
 
 #if Boost_VERSION_MACRO >= 107500
