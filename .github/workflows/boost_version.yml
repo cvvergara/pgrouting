@@ -70,5 +70,5 @@ jobs:
       - name: Build
         run: |
           cd build
-          make -j 4
+          make
           sudo make install
