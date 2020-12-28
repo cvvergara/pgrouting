@@ -70,7 +70,7 @@ jobs:
       - name: Build
         run: |
           cd build
-          makei -j 4
+          make -j 4
           sudo make install
 
       - name: Test
