@@ -78,5 +78,5 @@ jobs:
       - name: Test
         run: |
           sudo service postgresql start
-          sudo -u postgres createdb -p ${PGPORT}  ___pgr___test___
-          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres ${PGPORT}  Release
+          sudo -u postgres createdb -p 5432  ___pgr___test___
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432  Release
