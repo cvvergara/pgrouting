@@ -70,5 +70,11 @@ jobs:
       - name: Build
         run: |
           cd build
-          make
+          makei -j 4
           sudo make install
+
+      - name: Test
+        run: |
+          sudo service postgresql start
+          sudo -u postgres createdb -p ${PGPORT}  ___pgr___test___
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres ${PGPORT}  Release
