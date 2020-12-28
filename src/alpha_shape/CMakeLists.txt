@@ -1,4 +1,4 @@
-if (Boost_VERSION_MACRO >= 105400)
+if (Boost_VERSION_MACRO GREATER_EQUAL 105400)
     ADD_LIBRARY(alpha_shape OBJECT
         pgr_alphaShape.cpp
         alphaShape.c
