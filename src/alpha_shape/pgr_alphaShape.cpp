@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+#if Boost_VERSION_MACRO >= 105400
+
 #include "alphaShape/pgr_alphaShape.h"
 
 #include <visitors/dijkstra_one_goal_visitor.hpp>
@@ -486,3 +488,5 @@ operator<<(std::ostream& os, const Pgr_alphaShape &d) {
 
 }  // namespace alphashape
 }  // namespace pgrouting
+
+#endif
