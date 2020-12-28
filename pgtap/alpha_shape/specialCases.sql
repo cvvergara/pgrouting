@@ -26,8 +26,8 @@ SELECT ST_Area(pgr_alphaShape(
 SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
     THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 2)
     ELSE collect_tap(
-        SELECT set_eq('q1', 'q3'),
-        SELECT set_eq('q1', 'q2')
+        set_eq('q1', 'q3'),
+        set_eq('q1', 'q2')
     ) END;
 
 SELECT finish();
