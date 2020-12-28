@@ -66,7 +66,7 @@ SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.
         set_eq(
             $$SELECT round(st_area(pgr_alphaShape)::numeric, 12) FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM e_test))$$,
             $$SELECT round(st_area(pgr_alphaShape)::numeric, 12) FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM e_test), 0)$$,
-            'SHOULD BE: best alpha obtined with spoon radius 0',
+            'SHOULD BE: best alpha obtined with spoon radius 1')
         ) END;
 
 -- best alpha range
