@@ -34,7 +34,6 @@ copy nodes(id,x,y) FROM stdin WITH DELIMITER '|';
 251|353752.373|740768.525
 \.
 
-
 PREPARE q1 AS
 SELECT * FROM pgr_alphaShape((SELECT ST_Collect(ST_MakePoint(x,y)) FROM nodes where id = 161));
 -- ERROR:  Distance is too short. only 1 vertex for alpha shape calculation. alpha shape calculation needs at least 3 vertices.
@@ -46,6 +45,10 @@ SELECT * FROM pgr_alphaShape((SELECT ST_Collect(ST_MakePoint(x,y)) FROM nodes wh
 PREPARE q3 AS
 SELECT * FROM pgr_alphaShape((SELECT ST_Collect(ST_MakePoint(x,y)) FROM nodes));
 
+SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
+    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 3 )
+    ELSE collect_tap(
+
 SELECT throws_ok('q1',
  'XX000','Less than 3 vertices. pgr_alphaShape needs at least 3 vertices.',
  'SHOULD THROW, because there is only one point');
@@ -55,6 +58,7 @@ SELECT throws_ok('q2',
  'SHOULD THROW, because there are less than 3 distinc points');
 
 SELECT lives_ok('q3', 'SHOULD LIVE because ater eliminating duplicates there are enough points to work with');
+    ) END;
 
 
 -- Finish the tests and clean up.
