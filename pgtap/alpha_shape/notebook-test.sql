@@ -60,7 +60,7 @@ SELECT alphaShape_tester('e_test', 'geom', 0.22969, false, 0.5178261889305, 26);
 
 
 SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
-    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 3 )
+    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 1 )
     ELSE collect_tap(
         -- best alpha
         set_eq(
