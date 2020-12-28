@@ -31,7 +31,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 
 #include "cpp_common/pgr_assert.h"
+#if Boost_VERSION_MACRO >= 105400
 #include "alphaShape/pgr_alphaShape.h"
+#endif
 
 #include "cpp_common/pgr_alloc.hpp"
 
@@ -73,6 +75,8 @@ do_alphaShape(
     std::ostringstream err;
     std::ostringstream notice;
     try {
+#if  Boost_VERSION_MACRO >= 105400
+
         pgassert(edgesArr);
         pgassert(edgesSize > 2);
         pgassert(*return_count == 0);
@@ -188,6 +192,7 @@ do_alphaShape(
         *notice_msg = notice.str().empty()?
             *notice_msg :
             pgr_msg(notice.str().c_str());
+#endif
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
