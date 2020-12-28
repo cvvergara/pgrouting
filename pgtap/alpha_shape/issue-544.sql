@@ -49,15 +49,15 @@ SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.
     THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 3 )
     ELSE collect_tap(
 
-SELECT throws_ok('q1',
+ throws_ok('q1',
  'XX000','Less than 3 vertices. pgr_alphaShape needs at least 3 vertices.',
- 'SHOULD THROW, because there is only one point');
+ 'SHOULD THROW, because there is only one point'),
 
-SELECT throws_ok('q2',
+ throws_ok('q2',
  'XX000','Less than 3 vertices. pgr_alphaShape needs at least 3 vertices.',
- 'SHOULD THROW, because there are less than 3 distinc points');
+ 'SHOULD THROW, because there are less than 3 distinc points'),
 
-SELECT lives_ok('q3', 'SHOULD LIVE because ater eliminating duplicates there are enough points to work with');
+ lives_ok('q3', 'SHOULD LIVE because ater eliminating duplicates there are enough points to work with')
     ) END;
 
 
