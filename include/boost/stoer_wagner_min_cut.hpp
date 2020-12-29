@@ -15,7 +15,11 @@
 #include <boost/graph/buffer_concepts.hpp>
 #include <boost/graph/exception.hpp>
 #include <boost/graph/graph_traits.hpp>
+#if Boost_VERSION_MACRO >= 105400
 #include <boost/graph/maximum_adjacency_search.hpp>
+#else
+#include <boost/maximum_adjacency_search.hpp>
+#endif
 #include <boost/graph/named_function_params.hpp>
 #include <boost/graph/one_bit_color_map.hpp>
 #include <boost/graph/detail/d_ary_heap.hpp>
