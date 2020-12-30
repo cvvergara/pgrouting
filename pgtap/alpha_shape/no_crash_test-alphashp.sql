@@ -29,7 +29,7 @@ END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-
 SELECT * FROM test_function();
+SELECT finish();
 
 ROLLBACK;
