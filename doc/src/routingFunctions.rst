@@ -21,7 +21,7 @@
   `2.3 <https://docs.pgrouting.org/2.3/en/src/routingFunctions.html>`__
   `2.2 <https://docs.pgrouting.org/2.2/en/src/routingFunctions.html>`__
   `2.1 <https://docs.pgrouting.org/2.1/en/src/index.html>`__
-  `2.2 <https://docs.pgrouting.org/2.0/en/src/index.html>`__
+  `2.0 <https://docs.pgrouting.org/2.0/en/src/index.html>`__
 
 *******************************************************************************
 Function Families
