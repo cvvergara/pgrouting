@@ -19,10 +19,10 @@
   `2.6 <https://docs.pgrouting.org/2.6/en/support.html>`__
   `2.5 <https://docs.pgrouting.org/2.5/en/support.html>`__
   `2.4 <https://docs.pgrouting.org/2.4/en/support.html>`__
-  `2.3 <https://docs.pgrouting.org/2.3/en/src/introduction/support.html>`__
-  `2.2 <https://docs.pgrouting.org/2.2/en/src/introduction/support.html>`__
-  `2.1 <https://docs.pgrouting.org/2.1/en/src/introduction/support.html>`__
-  `2.0 <https://docs.pgrouting.org/2.0/en/src/introduction/support.html>`__
+  `2.3 <https://docs.pgrouting.org/2.3/en/doc/src/introduction/support.html>`__
+  `2.2 <https://docs.pgrouting.org/2.2/en/doc/src/introduction/support.html>`__
+  `2.1 <https://docs.pgrouting.org/2.1/en/doc/src/introduction/support.html>`__
+  `2.0 <https://docs.pgrouting.org/2.0/en/doc/src/introduction/support.html>`__
 
 Support
 ===============================================================================
