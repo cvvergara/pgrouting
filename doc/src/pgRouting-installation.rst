@@ -18,10 +18,10 @@
   `2.6 <https://docs.pgrouting.org/2.6/en/pgRouting-installation.html>`__
   `2.5 <https://docs.pgrouting.org/2.5/en/pgRouting-installation.html>`__
   `2.4 <https://docs.pgrouting.org/2.4/en/pgRouting-installation.html>`__
-  `2.3 <https://docs.pgrouting.org/2.3/en/src/installation/installation.html>`__
-  `2.2 <https://docs.pgrouting.org/2.2/en/src/installation/installation.html>`__
-  `2.1 <https://docs.pgrouting.org/2.1/en/src/installation/index.html>`__
-  `2.0 <https://docs.pgrouting.org/2.0/en/src/installation/index.html>`__
+  `2.3 <https://docs.pgrouting.org/2.3/en/doc/src/installation/installation.html>`__
+  `2.2 <https://docs.pgrouting.org/2.2/en/doc/src/installation/installation.html>`__
+  `2.1 <https://docs.pgrouting.org/2.1/en/doc/src/installation/index.html>`__
+  `2.0 <https://docs.pgrouting.org/2.0/en/doc/src/installation/index.html>`__
 
 Installation
 ===============================================================================
