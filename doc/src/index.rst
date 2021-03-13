@@ -23,9 +23,6 @@
   `2.1 <https://docs.pgrouting.org/2.1/en/index.html>`__
   `2.0 <https://docs.pgrouting.org/2.0/en/index.html>`__
 
-Introduction
-.. _index:
-
 *******************************************************************************
 Table of Contents
 *******************************************************************************
