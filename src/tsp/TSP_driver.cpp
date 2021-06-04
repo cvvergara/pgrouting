@@ -35,8 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <algorithm>
 
-#include "cpp_common/Dmatrix.h"
-#include "tsp/pgr_tsp.hpp"
+#include "tsp/tsp.hpp"
 
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
@@ -45,17 +44,17 @@ void
 do_pgr_tsp(
         Matrix_cell_t *distances,
         size_t total_distances,
-        int64_t start_vid,
-        int64_t end_vid,
+        int64_t,
+        int64_t,
 
-        double initial_temperature,
-        double final_temperature,
-        double cooling_factor,
-        int64_t tries_per_temperature,
-        int64_t max_changes_per_temperature,
-        int64_t max_consecutive_non_changes,
-        bool randomize,
-        double time_limit,
+        double ,
+        double ,
+        double ,
+        int64_t ,
+        int64_t ,
+        int64_t ,
+        bool ,
+        double ,
 
         General_path_element_t **return_tuples,
         size_t *return_count,
@@ -71,6 +70,25 @@ do_pgr_tsp(
                 distances,
                 distances + total_distances);
 
+        pgrouting::algorithm::TSP fn_tsp{distances, total_distances};
+        log << fn_tsp;
+        auto tsp_path = fn_tsp.tsp();
+        log << fn_tsp.get_log();
+
+
+        *return_count = tsp_path.size();
+        (*return_tuples) = pgr_alloc(tsp_path.size(), (*return_tuples));
+
+        size_t seq{0};
+        double total{0};
+        for (const auto e : tsp_path) {
+            total += e.second;
+            General_path_element_t data {0,0,0,e.first,0,e.second,total};
+            (*return_tuples)[seq] = data;
+            seq++;
+        }
+
+#if 0
         pgrouting::tsp::Dmatrix costs(data_costs);
 
         if (!costs.has_no_infinity()) {
@@ -200,6 +218,7 @@ do_pgr_tsp(
             (*return_tuples)[seq] = row;
             ++seq;
         }
+#endif
 
         *log_msg = log.str().empty()?
             *log_msg :
