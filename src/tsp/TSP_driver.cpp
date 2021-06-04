@@ -71,7 +71,9 @@ do_pgr_tsp(
                 distances + total_distances);
 
         pgrouting::algorithm::TSP fn_tsp{distances, total_distances};
+#if 0
         log << fn_tsp;
+#endif
         auto tsp_path = fn_tsp.tsp();
         log << fn_tsp.get_log();
 
