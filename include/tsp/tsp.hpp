@@ -36,12 +36,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <map>
 #include <string>
 #include <utility>
-#include <vector>
+#include <deque>
 #include <set>
 #include <limits>
 
 #include "c_types/matrix_cell_t.h"
-#include "cpp_common/interruption.h"
 #include "cpp_common/pgr_messages.h"
 
 
@@ -62,7 +61,7 @@ class TSP : public Pgr_messages {
     using Eout_it = boost::graph_traits<TSP_Graph>::out_edge_iterator;
 
  public:
-    std::vector<std::pair<int64_t, double>> tsp();
+    std::deque<std::pair<int64_t, double>> tsp();
 
     TSP(Matrix_cell_t *distances, size_t total_distances);
     TSP() = delete;

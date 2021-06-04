@@ -39,16 +39,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace algorithm {
 
-std::vector<std::pair<int64_t, double>>
+std::deque<std::pair<int64_t, double>>
 TSP::tsp() {
-#if 0
-    std::vector<std::pair<double,double>> points {
-        { 4., 9. }, // these can be randomized
-        { 2., 6. },
-        { 4., 1. },
-        { 1., 1. }
-    };
-#endif
     std::vector<V> tsp_path(num_vertices(graph));
 
     //CHECK_FOR_INTERRUPTS();
@@ -58,7 +50,7 @@ TSP::tsp() {
 
     auto weight = get(boost::edge_weight, graph);
     auto u = graph.null_vertex();
-    std::vector<std::pair<int64_t, double>> results;
+    std::deque<std::pair<int64_t, double>> results;
     for (auto v : tsp_path) {
         if (v != graph.null_vertex()) {
             auto node = get_vertex_id(v);
@@ -87,42 +79,6 @@ TSP::tsp() {
 
 TSP::TSP(Matrix_cell_t *distances,
         size_t total_distances) {
-#if 0
-    /*
-     * Example from https://stackoverflow.com/questions/63914077/boost-graph-metric-tsp-approx-solution-not-following-graph-edges
-     */
-    std::vector<std::pair<double,double>> points {
-        { 4., 9. }, // these can be randomized
-        { 2., 6. },
-        { 4., 1. },
-        { 1., 1. }
-    };
-
-    for (auto i = 0u; i < points.size(); ++i) {
-        auto v = add_vertex(i, graph);
-        id_to_V.insert(std::make_pair(i, v));
-        V_to_id.insert(std::make_pair(v, i));
-    }
-
-    for (auto i = 0u; i < points.size(); ++i) {
-        auto va = vertex(i, graph);
-
-        // undirected, so only need traverse higher vertices for connections
-        for (auto j = i + 1; j < points.size(); ++j) {
-            auto vb = vertex(j, graph);
-
-            auto const ax = points.at(i).first;
-            auto const ay = points.at(i).second;
-            auto const bx = points.at(j).first;
-            auto const by = points.at(j).second;
-            auto const dx = bx - ax;
-            auto const dy = by - ay;
-
-            add_edge(va, vb, sqrt(dx*dx + dy*dy), graph); // weight is euclidean distance
-        }
-    }
-    return;
-#else
     /*
      * Inserting vertices
      */
@@ -155,7 +111,6 @@ TSP::TSP(Matrix_cell_t *distances,
         E e;
         boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
     }
-#endif
 }
 
 #if Boost_VERSION_MACRO >= 106800

@@ -40,12 +40,119 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
+
+namespace {
+/*
+ * TODO
+ * probably these functions in this namespace are also good for euclideanTSP
+ */
+
+std::deque<std::pair<int64_t, double>>
+reverse_path(std::deque<std::pair<int64_t, double>> tsp_path){
+    std::reverse(tsp_path.begin(), tsp_path.end());
+    double prev {0};
+    for(auto &e : tsp_path) {
+        std::swap(prev, e.second);
+    }
+    return tsp_path;
+}
+
+
+std::deque<std::pair<int64_t, double>>
+start_vid_is_fixed(
+        std::deque<std::pair<int64_t, double>> tsp_path,
+        int64_t start_vid) {
+    /*
+     * locate the position
+     * */
+    auto where = std::find_if(tsp_path.begin(), tsp_path.end(),
+            [&](std::pair<int64_t, double>& row){return row.first == start_vid;});
+
+    /*
+     * Nothing to do, it is already in its place
+     */
+    if (where == tsp_path.begin()) return tsp_path;
+
+    tsp_path = reverse_path(tsp_path);
+
+    tsp_path.pop_front();
+    where = std::find_if(tsp_path.begin(), tsp_path.end(),
+            [&](std::pair<int64_t, double>& row){return row.first == start_vid;});
+
+
+    std::rotate(tsp_path.begin(), where, tsp_path.end());
+    std::rotate(tsp_path.begin(), tsp_path.begin() + 1, tsp_path.end());
+    tsp_path.push_front(std::make_pair(start_vid,0));
+    return tsp_path;
+}
+
+
+
+std::deque<std::pair<int64_t, double>>
+start_vid_end_vid_are_fixed(
+        std::deque<std::pair<int64_t, double>> tsp_path,
+        int64_t start_vid,
+        int64_t end_vid,
+        int64_t special_cost){
+    /*
+     * attach the correct cost value
+     */
+    auto where = std::find_if(tsp_path.begin(), tsp_path.end(),
+            [&](std::pair<int64_t, double>& row){return row.first == start_vid || row.first == end_vid;});
+    (where + 1)->second = special_cost;
+
+    auto found_value = where->first;
+    if (found_value == start_vid) {
+        tsp_path = reverse_path(tsp_path);
+    }
+
+    tsp_path.pop_front();
+    where = std::find_if(tsp_path.begin(), tsp_path.end(),
+            [&](std::pair<int64_t, double>& row){return row.first == start_vid;});
+
+
+    std::rotate(tsp_path.begin(), where, tsp_path.end());
+    std::rotate(tsp_path.begin(), tsp_path.begin() + 1, tsp_path.end());
+    tsp_path.push_front(std::make_pair(start_vid,0));
+    return tsp_path;
+}
+
+
+double
+setup_for_start_vid_and_end_vid(
+        Matrix_cell_t *distances,
+        size_t total_distances,
+        int64_t start_vid,
+        int64_t end_vid,
+        std::string &err) {
+    auto where1= std::find_if(distances, distances + total_distances,
+            [&](const Matrix_cell_t& row) {return row.from_vid == start_vid && row.to_vid == end_vid && row.cost !=0;});
+    auto where2= std::find_if(distances, distances + total_distances,
+            [&](const Matrix_cell_t& row) {return row.to_vid == start_vid && row.from_vid == end_vid && row.cost !=0;});
+    if (where1 == distances + total_distances && where2 == distances + total_distances) {
+        err = "Problem with the data [from_vid, to vid] does not exist";
+        return 0;
+    }
+    /*
+     * The values are supoosedly equal so grab one
+     */
+    auto special_cost = where1->cost;
+
+    /*
+     * To make them be adjacent setting cost to 0
+     */
+    where1->cost = where2->cost = 0;
+    return special_cost;
+}
+
+}  // namespace
+
 void
 do_pgr_tsp(
         Matrix_cell_t *distances,
         size_t total_distances,
-        int64_t,
-        int64_t,
+        int64_t start_vid,
+        int64_t end_vid,
 
         double ,
         double ,
@@ -66,17 +173,48 @@ do_pgr_tsp(
     std::ostringstream err;
 
     try {
-        std::vector <Matrix_cell_t> data_costs(
-                distances,
-                distances + total_distances);
+        /*
+         * TODO
+         * check that the data the required characteristics
+         * otherwise boost's algorithm might create a server crash
+         */
+
+        /*
+         * giving and end_vid (no start_vid) is like giving a start_vid
+         */
+        if (start_vid == 0) std::swap(start_vid, end_vid);
+
+        /*
+         * when both start_vid, end_vid are given
+         * data & results need to be prepared
+         * - preparing for the data
+         */
+        double special_cost{0};
+        if (start_vid != 0 && end_vid != 0) {
+            std::string error;
+            special_cost = setup_for_start_vid_and_end_vid(distances, total_distances, start_vid, end_vid, error);
+            if (!error.empty()) {
+                *err_msg = pgr_msg(err.str().c_str());
+                return;
+            }
+        }
 
         pgrouting::algorithm::TSP fn_tsp{distances, total_distances};
-#if 0
+
+#if Boost_VERSION_MACRO >= 106800
         log << fn_tsp;
 #endif
         auto tsp_path = fn_tsp.tsp();
         log << fn_tsp.get_log();
 
+        /*
+         * results need to be organized when there is a start_vid or end_vid
+         */
+        if (start_vid != 0 && end_vid != 0) {
+            tsp_path = start_vid_end_vid_are_fixed(tsp_path, start_vid, end_vid, special_cost);
+        } else  if (start_vid != 0) {
+            tsp_path = start_vid_is_fixed(tsp_path, start_vid);
+        }
 
         *return_count = tsp_path.size();
         (*return_tuples) = pgr_alloc(tsp_path.size(), (*return_tuples));
@@ -89,138 +227,6 @@ do_pgr_tsp(
             (*return_tuples)[seq] = data;
             seq++;
         }
-
-#if 0
-        pgrouting::tsp::Dmatrix costs(data_costs);
-
-        if (!costs.has_no_infinity()) {
-            err << "An Infinity value was found on the Matrix";
-            *err_msg = pgr_msg(err.str().c_str());
-            return;
-        }
-
-        if (!costs.is_symmetric()) {
-            err << "A Non symmetric Matrix was given as input";
-            *err_msg = pgr_msg(err.str().c_str());
-            return;
-        }
-
-        double real_cost = -1;
-
-        size_t idx_start = costs.has_id(start_vid) ?
-            costs.get_index(start_vid) : 0;
-
-        size_t idx_end = costs.has_id(end_vid) ?
-            costs.get_index(end_vid) : 0;
-
-        if (costs.has_id(start_vid)
-                && costs.has_id(end_vid)
-                && start_vid != end_vid) {
-            /* An ending vertex needs to be by the starting vertex */
-            real_cost = costs.distance(idx_start, idx_end);
-            costs.set(idx_start, idx_end, 0);
-        }
-
-
-        log << "Processing Information \n"
-            << "Initializing tsp class --->";
-        pgrouting::tsp::TSP<pgrouting::tsp::Dmatrix> tsp(costs);
-
-
-        log << " tsp.greedyInitial --->";
-        tsp.greedyInitial(idx_start);
-
-
-
-        log << " tsp.annealing --->";
-        tsp.annealing(
-                initial_temperature,
-                final_temperature,
-                cooling_factor,
-                tries_per_temperature,
-                max_changes_per_temperature,
-                max_consecutive_non_changes,
-                randomize,
-                time_limit);
-        log << " OK\n";
-        log << tsp.get_log();
-        log << tsp.get_stats();
-
-        auto bestTour(tsp.get_tour());
-
-        if (costs.has_id(start_vid)
-                && costs.has_id(end_vid)
-                && start_vid != end_vid) {
-            costs.set(idx_start, idx_end, real_cost);
-        }
-
-
-        log << "\nBest cost reached = " << costs.tourCost(bestTour);
-
-        auto start_ptr = std::find(
-                bestTour.cities.begin(),
-                bestTour.cities.end(),
-                idx_start);
-
-
-        std::rotate(
-                bestTour.cities.begin(),
-                start_ptr,
-                bestTour.cities.end());
-
-        if (costs.has_id(start_vid)
-                && costs.has_id(end_vid)
-                && start_vid != end_vid) {
-            if (*(bestTour.cities.begin() + 1) == idx_end) {
-                std::reverse(
-                        bestTour.cities.begin() + 1,
-                        bestTour.cities.end());
-            }
-        }
-
-
-        std::vector< General_path_element_t > result;
-        result.reserve(bestTour.cities.size() + 1);
-        pgassert(bestTour.cities.size() == costs.size());
-
-        bestTour.cities.push_back(bestTour.cities.front());
-
-        auto prev_id = bestTour.cities.front();
-        double agg_cost = 0;
-        for (const auto &id : bestTour.cities) {
-            if (id == prev_id) continue;
-            General_path_element_t data;
-            data.node = costs.get_id(prev_id);
-            data.edge = static_cast<int64_t>(prev_id);
-            data.cost = costs.distance(prev_id, id);
-            data.agg_cost = agg_cost;
-            result.push_back(data);
-            agg_cost += data.cost;
-            prev_id = id;
-        }
-
-        /* inserting the returning to starting point */
-        {
-            General_path_element_t data;
-            data.node = costs.get_id(bestTour.cities.front());
-            data.edge = static_cast<int64_t>(bestTour.cities.front());
-            data.cost = costs.distance(prev_id, bestTour.cities.front());
-            agg_cost += data.cost;
-            data.agg_cost = agg_cost;
-            result.push_back(data);
-        }
-
-        pgassert(result.size() == bestTour.cities.size());
-        *return_count = bestTour.size();
-        (*return_tuples) = pgr_alloc(result.size(), (*return_tuples));
-
-        /* store the results */
-        int seq = 0;
-        for (const auto &row : result) {
-            (*return_tuples)[seq] = row;
-            ++seq;
-        }
-#endif
 
         *log_msg = log.str().empty()?
             *log_msg :
