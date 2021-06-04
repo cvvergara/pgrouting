@@ -67,7 +67,9 @@ class TSP : public Pgr_messages {
     TSP(Matrix_cell_t *distances, size_t total_distances);
     TSP() = delete;
 
+#if Boost_VERSION_MACRO >= 106800
     friend std::ostream& operator<<(std::ostream &, const TSP&);
+#endif
 
  private:
     V get_boost_vertex(int64_t id) const {

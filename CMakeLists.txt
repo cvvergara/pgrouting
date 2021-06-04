@@ -79,6 +79,7 @@ if (NOT Boost_VERSION_MACRO)
 endif()
 add_definitions(-DBoost_VERSION_MACRO=${Boost_VERSION_MACRO})
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+message(STATUS "Boost_VERSION_MACRO=${Boost_VERSION_MACRO}")
 
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)

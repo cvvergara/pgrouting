@@ -158,6 +158,7 @@ TSP::TSP(Matrix_cell_t *distances,
 #endif
 }
 
+#if Boost_VERSION_MACRO >= 106800
 std::ostream& operator<<(std::ostream &log, const TSP& data) {
     log << "Number of Vertices is:" << num_vertices(data.graph) << "\n";
     log << "Number of Edges is:" << num_edges(data.graph) << "\n";
@@ -165,6 +166,7 @@ std::ostream& operator<<(std::ostream &log, const TSP& data) {
     boost::print_graph(data.graph, boost::get(boost::vertex_index, data.graph), log);
     return log;
 }
+#endif
 
 }  // namespace algorithm
 }  // namespace pgrouting
