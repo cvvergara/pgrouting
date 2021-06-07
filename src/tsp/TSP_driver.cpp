@@ -41,6 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_assert.h"
 
 
+#if 0
 namespace {
 /*
  * TODO
@@ -146,6 +147,7 @@ setup_for_start_vid_and_end_vid(
 }
 
 }  // namespace
+#endif
 
 void
 do_pgr_tsp(
@@ -179,6 +181,7 @@ do_pgr_tsp(
          * otherwise boost's algorithm might create a server crash
          */
 
+#if 0
         /*
          * giving and end_vid (no start_vid) is like giving a start_vid
          */
@@ -198,15 +201,17 @@ do_pgr_tsp(
                 return;
             }
         }
+#endif
 
-        pgrouting::algorithm::TSP fn_tsp{distances, total_distances};
+        pgrouting::algorithm::TSP fn_tsp{distances, total_distances, true};
 
 #if Boost_VERSION_MACRO >= 106800
         log << fn_tsp;
 #endif
-        auto tsp_path = fn_tsp.tsp();
+        auto tsp_path = fn_tsp.tsp(start_vid, end_vid);
         log << fn_tsp.get_log();
 
+#if 0
         /*
          * results need to be organized when there is a start_vid or end_vid
          */
@@ -215,6 +220,7 @@ do_pgr_tsp(
         } else  if (start_vid != 0) {
             tsp_path = start_vid_is_fixed(tsp_path, start_vid);
         }
+#endif
 
         *return_count = tsp_path.size();
         (*return_tuples) = pgr_alloc(tsp_path.size(), (*return_tuples));
@@ -241,6 +247,7 @@ do_pgr_tsp(
         *err_msg = pgr_msg(err.str().c_str());
         *log_msg = pgr_msg(log.str().c_str());
     } catch (std::exception &except) {
+#endif
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
         err << except.what();
