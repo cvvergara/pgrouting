@@ -1,22 +1,13 @@
-\i setup.sql
-
-SELECT plan(39);
-SET client_min_messages TO WARNING;
-
-
--- http://www.math.uwaterloo.ca/tsp/world/qa194.tsp
-
 -- NAME : qa194
 -- COMMENT : 194 locations in Qatar
 -- COMMENT : Derived from National Imagery and Mapping Agency data
 -- TYPE : TSP
 -- DIMENSION : 194
 -- EDGE_WEIGHT_TYPE : EUC_2D
--- NODE_COORD_SECTION
--- OPTIMAL 9352
 
-
-
+CREATE EXTENSION pgtap;
+CREATE EXTENSION pgrouting CASCADE;
+DROP TABLE IF EXISTS qa194;
 CREATE TABLE qa194 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 COPY qa194 (id, x, y) FROM stdin WITH DELIMITER ' ';
 1 24748.3333 50840.0000
@@ -218,22 +209,25 @@ COPY qa194 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 UPDATE qa194 SET the_geom = ST_makePoint(x,y);
 
-CREATE OR REPLACE FUNCTION test_performance(upper_bound FLOAT)
+DROP FUNCTION IF EXISTS test_qa194;
+CREATE OR REPLACE FUNCTION test_qa194(upper_bound FLOAT)
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
-    FOR i IN 1..194 BY 5 LOOP
-        RETURN query SELECT is((SELECT agg_cost < 9352 * upper_bound  FROM pgr_TSPeuclidean('select * FROM qa194', i, tries_per_temperature:= 1, randomize := false) WHERE seq = 195),
+    FOR i IN 1..194
+ LOOP
+        RETURN query
+        SELECT is((SELECT agg_cost < 9352 * upper_bound
+                FROM pgr_TSPeuclidean(
+                    $$SELECT * FROM qa194$$, start_id => i) WHERE seq = (194
+ + 1)),
             't',
-            'i= ' || i || ' upper_bound = ' || upper_bound);
+            'start_id = ' || i || ' upper_bound = ' || upper_bound);
     END LOOP;
 END;
 $BODY$ LANGUAGE plpgsql;
 
-select test_performance(1.4);
-
+SELECT plan(194
+);
+SELECT test_qa194(2);
 SELECT finish();
-ROLLBACK;
-
-
-

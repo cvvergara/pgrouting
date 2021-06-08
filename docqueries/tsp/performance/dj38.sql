@@ -1,11 +1,3 @@
-\i setup.sql
-
-SELECT plan(39);
-SET client_min_messages TO WARNING;
-
--- http://www.math.uwaterloo.ca/tsp/world/dj38.tsp
--- http://www.math.uwaterloo.ca/tsp/world/countries.html
-
 -- NAME: dj38
 -- COMMENT : 38 locations in Djibouti
 -- COMMENT : Derived from National Imagery and Mapping Agency data
@@ -15,12 +7,11 @@ SET client_min_messages TO WARNING;
 -- TYPE: TSP
 -- DIMENSION: 38
 -- EDGE_WEIGHT_TYPE: EUC_2D
--- NODE_COORD_SECTION
 
--- best 6656
-
+CREATE EXTENSION pgtap;
+CREATE EXTENSION pgrouting CASCADE;
+DROP TABLE IF EXISTS dj38;
 CREATE TABLE dj38 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
-CREATE TEMP TABLE dj38 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 COPY dj38 (id, x, y) FROM stdin WITH DELIMITER ' ';
 1 11003.611100 42102.500000
 2 11108.611100 42373.888900
@@ -65,20 +56,25 @@ COPY dj38 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 UPDATE dj38 SET the_geom = ST_makePoint(x,y);
 
-CREATE OR REPLACE FUNCTION test_performance(upper_bound FLOAT)
+DROP FUNCTION IF EXISTS test_dj38;
+CREATE OR REPLACE FUNCTION test_dj38(upper_bound FLOAT)
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
-    FOR i IN 1..39 LOOP
-        RETURN query SELECT is((SELECT agg_cost < 6656 * upper_bound  FROM pgr_euclideanTSP('select * FROM dj38', i, randomize := false) WHERE seq = 39),
+    FOR i IN 1..38
+ LOOP
+        RETURN query
+        SELECT is((SELECT agg_cost < 6656 * upper_bound
+                FROM pgr_TSPeuclidean(
+                    $$SELECT * FROM dj38$$, start_id => i) WHERE seq = (38
+ + 1)),
             't',
-            'i= ' || i || ' upper_bound = ' || upper_bound);
+            'start_id = ' || i || ' upper_bound = ' || upper_bound);
     END LOOP;
 END;
 $BODY$ LANGUAGE plpgsql;
 
-select test_performance(1.1);
-
+SELECT plan(38
+);
+SELECT test_dj38(2);
 SELECT finish();
-ROLLBACK;
-

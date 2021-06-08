@@ -1,22 +1,14 @@
-\i setup.sql
-
-SELECT plan(29);
-SET client_min_messages TO WARNING;
-
--- http://www.math.uwaterloo.ca/tsp/world/wi29.tsp
--- http://www.math.uwaterloo.ca/tsp/world/countries.html
-
 -- NAME : wi29
 -- COMMENT : 29 locations in Western Sahara
--- COMMENT : Derived FROM National Imagery and Mapping Agency data
+-- COMMENT : Derived from National Imagery and Mapping Agency data
 -- TYPE : TSP
 -- DIMENSION : 29
 -- EDGE_WEIGHT_TYPE : EUC_2D
--- NODE_COORD_SECTION
 
--- best 27603
-
-CREATE TEMP TABLE wi29 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
+CREATE EXTENSION pgtap;
+CREATE EXTENSION pgrouting CASCADE;
+DROP TABLE IF EXISTS wi29;
+CREATE TABLE wi29 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 COPY wi29 (id, x, y) FROM stdin WITH DELIMITER ' ';
 1 20833.3333 17100.0000
 2 20900.0000 17066.6667
@@ -52,20 +44,25 @@ COPY wi29 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 UPDATE wi29 SET the_geom = ST_makePoint(x,y);
 
-CREATE OR REPLACE FUNCTION test_performance(upper_bound FLOAT)
+DROP FUNCTION IF EXISTS test_wi29;
+CREATE OR REPLACE FUNCTION test_wi29(upper_bound FLOAT)
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
-    FOR i IN 1..29 LOOP
-        RETURN query SELECT is((SELECT agg_cost < 27603 * upper_bound  FROM pgr_TSPeuclidean('select * FROM wi29', i, randomize := false) WHERE seq = 30),
+    FOR i IN 1..29
+ LOOP
+        RETURN query
+        SELECT is((SELECT agg_cost < 95345 * upper_bound
+                FROM pgr_TSPeuclidean(
+                    $$SELECT * FROM wi29$$, start_id => i) WHERE seq = (29
+ + 1)),
             't',
-            'i= ' || i || ' upper_bound = ' || upper_bound);
+            'start_id = ' || i || ' upper_bound = ' || upper_bound);
     END LOOP;
 END;
 $BODY$ LANGUAGE plpgsql;
 
-select test_performance(1.065);
-
+SELECT plan(29
+);
+SELECT test_wi29(2);
 SELECT finish();
-ROLLBACK;
-
