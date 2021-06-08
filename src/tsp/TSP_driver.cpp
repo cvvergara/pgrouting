@@ -247,7 +247,6 @@ do_pgr_tsp(
         *err_msg = pgr_msg(err.str().c_str());
         *log_msg = pgr_msg(log.str().c_str());
     } catch (std::exception &except) {
-#endif
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
         err << except.what();

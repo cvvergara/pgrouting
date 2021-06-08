@@ -41,6 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 
 #include "c_types/matrix_cell_t.h"
+#include "c_types/coordinate_t.h"
 #include "cpp_common/pgr_messages.h"
 
 
@@ -49,7 +50,7 @@ namespace algorithm {
 
 class TSP : public Pgr_messages {
     using TSP_Graph =
-        boost::adjacency_list<boost::setS, boost::listS, boost::undirectedS,
+        boost::adjacency_list<boost::vecS, boost::listS, boost::undirectedS,
         boost::property<boost::vertex_index_t, int>,
         boost::property<boost::edge_weight_t, double>,
         boost::no_property>;
@@ -61,9 +62,15 @@ class TSP : public Pgr_messages {
     using Eout_it = boost::graph_traits<TSP_Graph>::out_edge_iterator;
 
  public:
+    /** @brief just a TSP value **/
     std::deque<std::pair<int64_t, double>> tsp();
+    /** @brief order the results with a start vertex */
+    std::deque<std::pair<int64_t, double>> tsp(int64_t);
+    /** @brief order the results with a start vertex and an endig vertex*/
+    std::deque<std::pair<int64_t, double>> tsp(int64_t, int64_t);
 
-    TSP(Matrix_cell_t *distances, size_t total_distances);
+    TSP(Matrix_cell_t *, size_t, bool);
+    TSP(Coordinate_t *, size_t, bool);
     TSP() = delete;
 
 #if Boost_VERSION_MACRO >= 106800
