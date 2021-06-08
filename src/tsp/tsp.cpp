@@ -27,10 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "tsp/tsp.hpp"
 #include <boost/graph/graph_utility.hpp>
 
-#include <limits>
 #include <utility>
 #include <vector>
-#include <set>
+#include <deque>
 
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/pgr_messages.h"
@@ -47,63 +46,33 @@ compare_tsp_path(
         ) {
     pgassert(lhs.size() == rhs.size());
     double tot_lhs;
-    for (const auto e: lhs ) {
+    for (const auto &e : lhs) {
         tot_lhs += e.second;
     }
     double tot_rhs;
-    for (const auto e: rhs ) {
+    for (const auto &e : rhs) {
         tot_rhs += e.second;
     }
     return tot_lhs < tot_rhs;
 }
 
 std::deque<std::pair<int64_t, double>>
-reverse_path(std::deque<std::pair<int64_t, double>> tsp_path){
+reverse_path(std::deque<std::pair<int64_t, double>> tsp_path) {
     std::reverse(tsp_path.begin(), tsp_path.end());
     double prev {0};
-    for(auto &e : tsp_path) {
+    for (auto &e : tsp_path) {
         std::swap(prev, e.second);
     }
     return tsp_path;
 }
 
 
-#if 0
-std::deque<std::pair<int64_t, double>>
-start_vid_is_fixed(
-        std::deque<std::pair<int64_t, double>> tsp_path,
-        int64_t start_vid) {
-    /*
-     * locate the position
-     * */
-    auto where = std::find_if(tsp_path.begin(), tsp_path.end(),
-            [&](std::pair<int64_t, double>& row){return row.first == start_vid;});
-
-    /*
-     * Nothing to do, it is already in its place
-     */
-    if (where == tsp_path.begin()) return tsp_path;
-
-    tsp_path = reverse_path(tsp_path);
-
-    tsp_path.pop_front();
-    where = std::find_if(tsp_path.begin(), tsp_path.end(),
-            [&](std::pair<int64_t, double>& row){return row.first == start_vid;});
-
-
-    std::rotate(tsp_path.begin(), where, tsp_path.end());
-    std::rotate(tsp_path.begin(), tsp_path.begin() + 1, tsp_path.end());
-    tsp_path.push_front(std::make_pair(start_vid,0));
-    return tsp_path;
-}
-#endif
-
 std::deque<std::pair<int64_t, double>>
 start_vid_end_vid_are_fixed(
         std::deque<std::pair<int64_t, double>> tsp_path,
         int64_t start_vid,
         int64_t end_vid,
-        int64_t special_cost){
+        int64_t special_cost) {
     /*
      * attach the correct cost value
      */
@@ -123,7 +92,7 @@ start_vid_end_vid_are_fixed(
 
     std::rotate(tsp_path.begin(), where, tsp_path.end());
     std::rotate(tsp_path.begin(), tsp_path.begin() + 1, tsp_path.end());
-    tsp_path.push_front(std::make_pair(start_vid,0));
+    tsp_path.push_front(std::make_pair(start_vid, 0));
     return tsp_path;
 }
 
@@ -138,7 +107,9 @@ TSP::tsp() {
     std::deque<std::pair<int64_t, double>> results;
     std::vector<V> tsp_path(num_vertices(graph));
 
-    //CHECK_FOR_INTERRUPTS();
+#if 0
+    CHECK_FOR_INTERRUPTS();
+#endif
     bool bad_graph = false;
     try {
     boost::metric_tsp_approx_tour(
@@ -172,7 +143,6 @@ TSP::tsp() {
             }
             u = v;
             results.push_back(std::make_pair(node, cost));
-
         }
     }
     return results;
@@ -185,12 +155,16 @@ TSP::tsp(int64_t start_vid) {
     /*
      * check that the start_vid, and end_vid exist on the data
      */
-    log << "looking for" << start_vid << "\n";
-    for (const auto e: id_to_V) log << e.first << ", ";
+    if (id_to_V.find(start_vid) == id_to_V.end()) {
+        log << "something went wrong '" << start_vid << "' node is missing\n";
+        return results;
+    }
 
     auto v = get_boost_vertex(start_vid);
 
-    /*CHECK_FOR_INTERRUPTS();*/
+#if 0
+    CHECK_FOR_INTERRUPTS();
+#endif
     bool bad_graph = false;
     try {
     boost::metric_tsp_approx_tour_from_vertex(
@@ -225,10 +199,9 @@ TSP::tsp(int64_t start_vid) {
             }
             u = v;
             results.push_back(std::make_pair(node, cost));
-
         }
     }
-    return results; // start_vid_is_fixed(tsp(), start_vid);
+    return results;
 }
 
 std::deque<std::pair<int64_t, double>>
@@ -250,8 +223,15 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
     /*
      * check that the start_vid, and end_vid exist on the data
      */
-    log << "looking for" << start_vid << "\n";
-    for (const auto e: id_to_V) log << e.first << ", ";
+    if (id_to_V.find(start_vid) == id_to_V.end()) {
+        log << "something went wrong '" << start_vid << "' node is missing\n";
+        return result;
+    }
+
+    if (id_to_V.find(end_vid) == id_to_V.end()) {
+        log << "something went wrong '" << end_vid << "' node is missing\n";
+        return result;
+    }
 
     /*
      * start_vid and end_vid have values
@@ -260,12 +240,9 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
     auto u = get_boost_vertex(start_vid);
     auto v = get_boost_vertex(end_vid);
     auto e = boost::edge(u, v, graph);
-    log << "found" << e.second;
-    log << "the weight" << get(boost::edge_weight, graph)[e.first];
 
     auto weight = get(boost::edge_weight_t(), graph, e.first);
     boost::put(boost::edge_weight_t(), graph, e.first, 0);
-    log << "the new weight" << get(boost::edge_weight, graph)[e.first];
 
 
     for (auto vd : boost::make_iterator_range(boost::vertices(graph))) {
@@ -279,7 +256,6 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
             }
         }
     }
-    log << "results size" << result.size();
 
     return result.empty()?
         tsp(start_vid):
@@ -320,15 +296,6 @@ TSP::TSP(Matrix_cell_t *distances,
 
         E e;
         boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
-#if 0
-        log << "\n" << edge.from_vid <<", " << edge.to_vid << "expecting " << edge.cost << " got the weight" << get(boost::edge_weight, graph)[e];
-
-        auto u = get_boost_vertex(edge.from_vid);
-        auto v = get_boost_vertex(edge.to_vid);
-        auto e_find = boost::edge(u, v, graph);
-        log << "found" << e_find.second;
-        log << "the weight" << get(boost::edge_weight, graph)[e_find.first];
-#endif
     }
 }
 
@@ -344,10 +311,6 @@ TSP::TSP(Matrix_cell_t *distances,
  */
 TSP::TSP(Coordinate_t *coordinates,
         size_t total_coordinates,
-#if 0
-        int64_t start_vid,
-        int64_t end_vid,
-#endif
         bool remove_duplicates) {
     log << "before total_coordinates" << total_coordinates;
 
@@ -384,9 +347,6 @@ TSP::TSP(Coordinate_t *coordinates,
     size_t i{0};
     for (const auto id : ids) {
         auto v = add_vertex(i, graph);
-#if 0
-        log << "\ndoing i = " << id;
-#endif
         id_to_V.insert(std::make_pair(id, v));
         V_to_id.insert(std::make_pair(v, id));
         ++i;

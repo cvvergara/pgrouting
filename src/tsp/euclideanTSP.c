@@ -41,8 +41,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 PGDLLEXPORT Datum _pgr_tspeuclidean(PG_FUNCTION_ARGS);
 
-/******************************************************************************/
-/*                          MODIFY AS NEEDED                                  */
 static
 void
 process(
@@ -146,8 +144,6 @@ process(
 
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
 
 PG_FUNCTION_INFO_V1(_pgr_tspeuclidean);
 PGDLLEXPORT Datum
@@ -155,41 +151,14 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**************************************************************************/
-    /*                          MODIFY AS NEEDED                              */
-    /*                                                                        */
     General_path_element_t  *result_tuples = NULL;
     size_t result_count = 0;
-    /*                                                                        */
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        /*
-
-           CREATE OR REPLACE FUNCTION pgr_euclideanTSP(
-           coordinates_sql TEXT,
-           start_id BIGINT DEFAULT 0,
-           end_id BIGINT DEFAULT 0,
-
-           max_processing_time FLOAT DEFAULT '+infinity'::FLOAT,
-
-           tries_per_temperature INTEGER DEFAULT 500,
-           max_changes_per_temperature INTEGER DEFAULT 60,
-           max_consecutive_non_changes INTEGER DEFAULT 200,
-
-           initial_temperature FLOAT DEFAULT 100,
-           final_temperature FLOAT DEFAULT 0.1,
-           cooling_factor FLOAT DEFAULT 0.9,
-
-           randomize BOOLEAN DEFAULT true,
-           */
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -209,14 +178,8 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(10),
                 &result_tuples,
                 &result_count);
-        /*                                                                    */
-        /**********************************************************************/
 
-#if PGSQL_VERSION > 95
         funcctx->max_calls = result_count;
-#else
-        funcctx->max_calls = (uint32_t)result_count;
-#endif
 
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
@@ -241,13 +204,6 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        // OUT seq INTEGER,
-        // OUT node BIGINT,
-        // OUT cost FLOAT,
-        // OUT agg_cost FLOAT
-
         values = palloc(4 * sizeof(Datum));
         nulls = palloc(4 * sizeof(bool));
 
@@ -257,12 +213,10 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        // postgres starts counting from 1
         values[0] = Int32GetDatum(funcctx->call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].node);
         values[2] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
         values[3] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
-        /**********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);

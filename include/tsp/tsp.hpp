@@ -82,7 +82,7 @@ class TSP : public Pgr_messages {
     V get_boost_vertex(int64_t id) const {
         try {
         return id_to_V.at(id);
-        } catch (...){
+        } catch (...) {
             pgassert(false);
         }
     }
@@ -90,7 +90,7 @@ class TSP : public Pgr_messages {
     int64_t get_vertex_id(V v) const {
         try {
         return V_to_id.at(v);
-        } catch (...){
+        } catch (...) {
             pgassert(false);
         }
     }
@@ -98,7 +98,7 @@ class TSP : public Pgr_messages {
     int64_t get_edge_id(E e) const {
         try {
         return E_to_id.at(e);
-        } catch (...){
+        } catch (...) {
             pgassert(false);
         }
     }
@@ -111,7 +111,7 @@ class TSP : public Pgr_messages {
     std::map<E, int64_t> E_to_id;
 };
 
-}  // namespace graph
+}  // namespace algorithm
 }  // namespace pgrouting
 
 #endif  // INCLUDE_TSP_TSP_HPP_
