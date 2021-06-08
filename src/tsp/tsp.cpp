@@ -38,6 +38,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 namespace {
+
+
+bool
+compare_tsp_path(
+        std::deque<std::pair<int64_t, double>> lhs,
+        std::deque<std::pair<int64_t, double>> rhs
+        ) {
+    pgassert(lhs.size() == rhs.size());
+    double tot_lhs;
+    for (const auto e: lhs ) {
+        tot_lhs += e.second;
+    }
+    double tot_rhs;
+    for (const auto e: rhs ) {
+        tot_rhs += e.second;
+    }
+    return tot_lhs < tot_rhs;
+}
+
 std::deque<std::pair<int64_t, double>>
 reverse_path(std::deque<std::pair<int64_t, double>> tsp_path){
     std::reverse(tsp_path.begin(), tsp_path.end());
@@ -206,7 +225,7 @@ TSP::tsp(int64_t start_vid) {
 
 std::deque<std::pair<int64_t, double>>
 TSP::tsp(int64_t start_vid, int64_t end_vid) {
-    std::deque<std::pair<int64_t, double>> results;
+    std::deque<std::pair<int64_t, double>> result;
 
     if (start_vid == 0) std::swap(start_vid, end_vid);
 
@@ -236,14 +255,21 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
 
 
     for (auto vd : boost::make_iterator_range(boost::vertices(graph))) {
-        results = tsp(get_vertex_id(vd));
-        auto where = std::find_if(results.begin(), results.end(),
+        auto tsp_path = tsp(get_vertex_id(vd));
+        auto where = std::find_if(tsp_path.begin(), tsp_path.end(),
                 [&](std::pair<int64_t, double>& row){return row.first == start_vid || row.first == end_vid;});
         if ((where + 1)->first == start_vid ||  (where + 1)->first == end_vid) {
-            return start_vid_end_vid_are_fixed(results, start_vid, end_vid, weight);
+            if (result.empty() || compare_tsp_path(tsp_path, result)) {
+            /** there is an answer with a contiguos start_vid -> end_vid */
+                result = tsp_path;
+            }
         }
     }
-    return results;
+    log << "results size" << result.size();
+
+    return result.empty()?
+        tsp(start_vid):
+        start_vid_end_vid_are_fixed(result, start_vid, end_vid, weight);
 #if 0
 #if 0
         //this one works for pgr_tspEuclidean: start_id => 5  , end_id => 10 );

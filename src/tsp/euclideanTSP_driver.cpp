@@ -41,6 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
+#if 0
 namespace {
 
 std::deque<std::pair<int64_t, double>>
@@ -144,6 +145,7 @@ setup_for_start_vid_and_end_vid(
 }
 
 }  // namespace
+#endif
 
 void
 do_pgr_euclideanTSP(
