@@ -10,13 +10,10 @@ SELECT * FROM pgr_TSPeuclidean(
 \echo -- q2
 SELECT* from pgr_TSPeuclidean(
     $$
-    SELECT id, st_X(the_geom) AS x, st_Y(the_geom) AS y FROM edge_table_vertices_pgr
+    SELECT * FROM wi29
     $$,
-    tries_per_temperature := 3,
-    cooling_factor := 0.5,
-    randomize := false);
+    start_id => 3);
 \echo -- q3
-SET client_min_messages TO DEBUG1;
 
 SELECT* from pgr_TSPeuclidean(
     $$
