@@ -22,6 +22,6 @@ SELECT* from pgr_TSPeuclidean(
     $$
     SELECT id, st_X(the_geom) AS x, st_Y(the_geom) AS y FROM edge_table_vertices_pgr
     $$,
-    tries_per_temperature := 0,
-    randomize := false);
+    start_id => 5,
+    end_id => 10);
 \echo -- q4
