@@ -182,6 +182,7 @@ do_pgr_euclideanTSP(
         auto tsp_path = fn_tsp.tsp(start_vid, end_vid);
         log << fn_tsp.get_log();
 
+        if (!tsp_path.empty()) {
         *return_count = tsp_path.size();
         (*return_tuples) = pgr_alloc(tsp_path.size(), (*return_tuples));
 
@@ -192,6 +193,7 @@ do_pgr_euclideanTSP(
             General_path_element_t data {0,0,0,e.first,0,e.second,total};
             (*return_tuples)[seq] = data;
             seq++;
+        }
         }
 
         pgassert(!log.str().empty());

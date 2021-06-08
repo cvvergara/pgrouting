@@ -68,6 +68,7 @@ reverse_path(std::deque<std::pair<int64_t, double>> tsp_path){
 }
 
 
+#if 0
 std::deque<std::pair<int64_t, double>>
 start_vid_is_fixed(
         std::deque<std::pair<int64_t, double>> tsp_path,
@@ -95,6 +96,7 @@ start_vid_is_fixed(
     tsp_path.push_front(std::make_pair(start_vid,0));
     return tsp_path;
 }
+#endif
 
 std::deque<std::pair<int64_t, double>>
 start_vid_end_vid_are_fixed(
@@ -179,7 +181,13 @@ TSP::tsp() {
 std::deque<std::pair<int64_t, double>>
 TSP::tsp(int64_t start_vid) {
     std::deque<std::pair<int64_t, double>> results;
-    std::vector<V> tsp_path(num_vertices(graph));
+    std::vector<V> tsp_path;
+    /*
+     * check that the start_vid, and end_vid exist on the data
+     */
+    log << "looking for" << start_vid << "\n";
+    for (const auto e: id_to_V) log << e.first << ", ";
+
     auto v = get_boost_vertex(start_vid);
 
     /*CHECK_FOR_INTERRUPTS();*/
@@ -240,6 +248,12 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
     if ((end_vid == 0) || (start_vid == end_vid)) return tsp(start_vid);
 
     /*
+     * check that the start_vid, and end_vid exist on the data
+     */
+    log << "looking for" << start_vid << "\n";
+    for (const auto e: id_to_V) log << e.first << ", ";
+
+    /*
      * start_vid and end_vid have values
      * find the edge (start_vid, end_vid)
      */
@@ -270,59 +284,6 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
     return result.empty()?
         tsp(start_vid):
         start_vid_end_vid_are_fixed(result, start_vid, end_vid, weight);
-#if 0
-#if 0
-        //this one works for pgr_tspEuclidean: start_id => 5  , end_id => 10 );
-        return start_vid_end_vid_are_fixed(tsp(end_vid), start_vid, end_vid, weight);
-#endif
-#if 0
-    this one works for pgr_tsp: start_id => 7  , end_id => 10 );
-    return start_vid_end_vid_are_fixed(tsp(), start_vid, end_vid, weight);
-#endif
-    /*
-     * add new dummy node
-     * As we do not accept id = 0 then we can use it as id
-     */
-    auto dummy = add_vertex(num_vertices(graph), graph);
-    id_to_V.insert(std::make_pair(0, dummy));
-    V_to_id.insert(std::make_pair(dummy, 0));
-
-    boost::add_edge(u, dummy, 0, graph);
-    boost::add_edge(v, dummy, 0, graph);
-    boost::add_edge(dummy, u, 0, graph);
-    boost::add_edge(dummy, v, 0, graph);
-#if 1
-    /*
-     * add edges from dummy to all other nodes
-     */
-    auto nodes = vertices(graph);
-    TSP_Graph::vertex_iterator vi, vend;
-    for (auto vd : boost::make_iterator_range(boost::vertices(graph))) {
-        if (get_vertex_id(vd) == 0) continue;
-        if (get_vertex_id(vd) == start_vid || get_vertex_id(vd) == end_vid) {
-#if 0
-            auto e_exists = boost::edge(vd, dummy, graph);
-            if (e_exists.second) continue;
-            auto e = boost::add_edge(vd, dummy, 0, graph);
-#endif
-            continue;
-        }
-        double sufficiently_large_number = (std::numeric_limits<double>::max)();
-        auto e_exists = boost::edge(vd, dummy, graph);
-        if (e_exists.second) continue;
-        auto e = boost::add_edge(vd, dummy, sufficiently_large_number, graph);
-    }
-#endif
-#if 0
-    log << "adding dummy\n";
-    for (auto vp : boost::make_iterator_range(boost::vertices(graph))) {
-        for (auto oe : boost::make_iterator_range(boost::out_edges(vp, graph))) {
-            log << "Edge " << oe << " weight " << get(boost::edge_weight, graph)[oe] << "\n";
-        }
-    }
-#endif
-    return tsp();
-#endif
 }
 
 

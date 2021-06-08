@@ -43,6 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/matrix_cell_t.h"
 #include "c_types/coordinate_t.h"
 #include "cpp_common/pgr_messages.h"
+#include "cpp_common/pgr_assert.h"
 
 
 namespace pgrouting {
@@ -79,15 +80,27 @@ class TSP : public Pgr_messages {
 
  private:
     V get_boost_vertex(int64_t id) const {
+        try {
         return id_to_V.at(id);
+        } catch (...){
+            pgassert(false);
+        }
     }
 
     int64_t get_vertex_id(V v) const {
+        try {
         return V_to_id.at(v);
+        } catch (...){
+            pgassert(false);
+        }
     }
 
     int64_t get_edge_id(E e) const {
+        try {
         return E_to_id.at(e);
+        } catch (...){
+            pgassert(false);
+        }
     }
 
 
