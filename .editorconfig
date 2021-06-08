@@ -17,6 +17,11 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
+# C++ files want tab indentation
+[*.pl]
+indent_style = space
+indent_size = 2
+
 # Makefiles want tab indentation
 [Makefile]
 indent_style = tab
