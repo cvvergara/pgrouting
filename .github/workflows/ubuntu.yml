@@ -54,11 +54,11 @@ jobs:
             postgresql-${{ matrix.psql }}-postgis-${{ matrix.postgis }} \
             postgresql-${{ matrix.psql }}-postgis-${{ matrix.postgis }}-scripts \
             postgresql-server-dev-${{ matrix.psql }}
-          export PATH=/usr/lib/postgresql/${{ matrix.psql }}/bin:$PATH
 
       - name: Configure for gcc
         if: matrix.compiler == 'gcc'
         run: |
+          export PATH=/usr/lib/postgresql/${{ matrix.psql }}/bin:$PATH
           mkdir build
           cd build
           cmake -DPOSTGRESQL_VERSION=${{ matrix.psql }} -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=OFF ..
@@ -66,6 +66,7 @@ jobs:
       - name: Configure for clang
         if: matrix.compiler == 'clang'
         run: |
+          export PATH=/usr/lib/postgresql/${{ matrix.psql }}/bin:$PATH
           mkdir build
           cd build
           CXX=clang++ CC=clang cmake -DPOSTGRESQL_VERSION=${{ matrix.psql }} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
