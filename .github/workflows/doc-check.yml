@@ -14,8 +14,8 @@ on:
     paths:
       - 'doc/**'
       - 'locale/**'
-      - '.github/workflows/doc_check.yml'
       - 'CMakeLists.txt'
+      - '.github/workflows/doc_check.yml'
 
     branches-ignore:
       - 'gh-pages'
@@ -26,8 +26,8 @@ on:
     paths:
       - 'doc/**'
       - 'locale/**'
-      - '.github/workflows/doc_check.yml'
       - 'CMakeLists.txt'
+      - '.github/workflows/doc_check.yml'
 
     branches-ignore:
       - 'gh-pages'
