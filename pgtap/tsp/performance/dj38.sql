@@ -8,6 +8,7 @@
 -- DIMENSION: 38
 -- EDGE_WEIGHT_TYPE: EUC_2D
 
+SET client_min_messages TO WARNING;
 DROP TABLE IF EXISTS dj38;
 CREATE TABLE dj38 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 COPY dj38 (id, x, y) FROM stdin WITH DELIMITER ' ';
@@ -53,26 +54,9 @@ COPY dj38 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 
 UPDATE dj38 SET the_geom = ST_makePoint(x,y);
+SET client_min_messages TO NOTICE;
 
-DROP FUNCTION IF EXISTS test_dj38;
-CREATE OR REPLACE FUNCTION test_dj38(upper_bound FLOAT)
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-    FOR i IN 1..38
- LOOP
-        RETURN query
-        SELECT is((SELECT agg_cost < 6656 * upper_bound
-                FROM pgr_TSPeuclidean(
-                    $$SELECT * FROM dj38$$, start_id => i) WHERE seq = (38
- + 1)),
-            't',
-            'start_id = ' || i || ' upper_bound = ' || upper_bound);
-    END LOOP;
-END;
-$BODY$ LANGUAGE plpgsql;
 
-SELECT plan(38
-);
-SELECT test_dj38(2);
+SELECT plan(38);
+SELECT tsp_performance('dj38', 38, 6656.0, 2.0);
 SELECT finish();

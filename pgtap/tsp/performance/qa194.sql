@@ -5,6 +5,7 @@
 -- DIMENSION : 194
 -- EDGE_WEIGHT_TYPE : EUC_2D
 
+SET client_min_messages TO WARNING;
 DROP TABLE IF EXISTS qa194;
 CREATE TABLE qa194 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 COPY qa194 (id, x, y) FROM stdin WITH DELIMITER ' ';
@@ -206,26 +207,8 @@ COPY qa194 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 
 UPDATE qa194 SET the_geom = ST_makePoint(x,y);
+SET client_min_messages TO NOTICE;
 
-DROP FUNCTION IF EXISTS test_qa194;
-CREATE OR REPLACE FUNCTION test_qa194(upper_bound FLOAT)
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-    FOR i IN 1..194
- LOOP
-        RETURN query
-        SELECT is((SELECT agg_cost < 9352 * upper_bound
-                FROM pgr_TSPeuclidean(
-                    $$SELECT * FROM qa194$$, start_id => i) WHERE seq = (194
- + 1)),
-            't',
-            'start_id = ' || i || ' upper_bound = ' || upper_bound);
-    END LOOP;
-END;
-$BODY$ LANGUAGE plpgsql;
-
-SELECT plan(194
-);
-SELECT test_qa194(2);
+SELECT plan(194);
+SELECT tsp_performance('qa194', 194, 9352, 2);
 SELECT finish();

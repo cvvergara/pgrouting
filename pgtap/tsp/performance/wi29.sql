@@ -5,6 +5,7 @@
 -- DIMENSION : 29
 -- EDGE_WEIGHT_TYPE : EUC_2D
 
+SET client_min_messages TO WARNING;
 DROP TABLE IF EXISTS wi29;
 CREATE TABLE wi29 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 COPY wi29 (id, x, y) FROM stdin WITH DELIMITER ' ';
@@ -41,26 +42,8 @@ COPY wi29 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 
 UPDATE wi29 SET the_geom = ST_makePoint(x,y);
+SET client_min_messages TO NOTICE;
 
-DROP FUNCTION IF EXISTS test_wi29;
-CREATE OR REPLACE FUNCTION test_wi29(upper_bound FLOAT)
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-    FOR i IN 1..29
- LOOP
-        RETURN query
-        SELECT is((SELECT agg_cost < 95345 * upper_bound
-                FROM pgr_TSPeuclidean(
-                    $$SELECT * FROM wi29$$, start_id => i) WHERE seq = (29
- + 1)),
-            't',
-            'start_id = ' || i || ' upper_bound = ' || upper_bound);
-    END LOOP;
-END;
-$BODY$ LANGUAGE plpgsql;
-
-SELECT plan(29
-);
-SELECT test_wi29(2);
+SELECT plan(29);
+SELECT tsp_performance('wi29', 29, 95345, 2);
 SELECT finish();
