@@ -89,7 +89,7 @@ do_pgr_tsp(
 
         size_t seq{0};
         double total{0};
-        for (const auto e : tsp_path) {
+        for (const auto &e : tsp_path) {
             total += e.second;
             General_path_element_t data {0, 0, 0, e.first, 0, e.second, total};
             (*return_tuples)[seq] = data;

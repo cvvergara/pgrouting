@@ -45,11 +45,11 @@ compare_tsp_path(
         std::deque<std::pair<int64_t, double>> rhs
         ) {
     pgassert(lhs.size() == rhs.size());
-    double tot_lhs;
+    double tot_lhs {0.0};
     for (const auto &e : lhs) {
         tot_lhs += e.second;
     }
-    double tot_rhs;
+    double tot_rhs {0.0};
     for (const auto &e : rhs) {
         tot_rhs += e.second;
     }
