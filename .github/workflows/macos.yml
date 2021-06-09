@@ -2,6 +2,13 @@ name: Build for macOS
 
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - '.github//workflows/macos.yml'
+      - 'tools/testers'
+
     branches-ignore:
       - 'translations_*'
     tags: []

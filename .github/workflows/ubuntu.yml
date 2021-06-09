@@ -2,20 +2,27 @@ name: Build for Ubuntu
 
 on:
   push:
-    paths-ignore:
-      - 'doc/**'
-      - 'locale/**'
-      - 'NEWS'
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - '.github/workflows/macos.yml'
+      - 'tools/testers'
+      - 'CMakeLists.txt'
 
     branches-ignore:
       - 'gh-pages'
 
     tags: []
+
   pull_request:
-    paths-ignore:
-      - 'doc/**'
-      - 'locale/**'
-      - 'NEWS'
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - '.github/workflows/macos.yml'
+      - 'tools/testers'
+
 
     branches-ignore:
       - 'gh-pages'
