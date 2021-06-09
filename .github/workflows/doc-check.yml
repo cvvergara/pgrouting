@@ -1,4 +1,5 @@
 name: Check Documentation
+
 # documentation is tested only on:
 # - ubuntu-latest
 # - default postgres installed on ubuntu-latest
@@ -8,7 +9,28 @@ name: Check Documentation
 # - build Links
 # - English is always tested
 
-on: [push,pull_request]
+on:
+  push:
+    paths:
+      - 'doc/**'
+      - 'locale/**'
+      - '.github/workflows/doc_check.yml'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
+
+    tags: []
+
+  pull_request:
+    paths:
+      - 'doc/**'
+      - 'locale/**'
+      - '.github/workflows/doc_check.yml'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
 
 jobs:
   build:
