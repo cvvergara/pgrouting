@@ -1,11 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: newTSP.c
+File: TSP.c
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
+Copyright (c) 2021 Celia Virginia Vergara Castillo
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
@@ -38,11 +39,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/tsp/TSP_driver.h"
 
 
-
 PGDLLEXPORT Datum _pgr_tsp(PG_FUNCTION_ARGS);
 
-/******************************************************************************/
-/*                          MODIFY AS NEEDED                                  */
 static
 void
 process(
@@ -50,51 +48,9 @@ process(
         int64_t start_vid,
         int64_t end_vid,
 
-#if 0
-        double time_limit,
-
-        int64_t tries_per_temperature,
-        int64_t max_changes_per_temperature,
-        int64_t max_consecutive_non_changes,
-
-        double initial_temperature,
-        double final_temperature,
-        double cooling_factor,
-
-        bool randomize,
-#endif
         General_path_element_t **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
-
-#if 0
-    /*
-     * errors in parameters
-     */
-
-    if (initial_temperature < final_temperature) {
-        elog(ERROR, "Condition not met: initial_temperature"
-               " > final_temperature");
-    }
-    if (final_temperature <= 0) {
-        elog(ERROR, "Condition not met: final_temperature > 0");
-    }
-    if (cooling_factor <=0 || cooling_factor >=1) {
-        elog(ERROR, "Condition not met: 0 < cooling_factor < 1");
-    }
-    if (tries_per_temperature < 0) {
-        elog(ERROR, "Condition not met: tries_per_temperature >= 0");
-    }
-    if (max_changes_per_temperature  < 1) {
-        elog(ERROR, "Condition not met: max_changes_per_temperature > 0");
-    }
-    if (max_consecutive_non_changes < 1) {
-        elog(ERROR, "Condition not met: max_consecutive_non_changes > 0");
-    }
-    if (time_limit < 0) {
-        elog(ERROR, "Condition not met: max_processing_time >= 0");
-    }
-#endif
 
     Matrix_cell_t *distances = NULL;
     size_t total_distances = 0;
@@ -119,16 +75,7 @@ process(
             distances, total_distances,
             start_vid,
             end_vid,
-#if 0
-            initial_temperature,
-            final_temperature,
-            cooling_factor,
-            tries_per_temperature,
-            max_changes_per_temperature,
-            max_consecutive_non_changes,
-            randomize,
-            time_limit,
-#endif
+
             result_tuples,
             result_count,
             &log_msg,
@@ -152,8 +99,6 @@ process(
 
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
 
 PG_FUNCTION_INFO_V1(_pgr_tsp);
 PGDLLEXPORT Datum
@@ -161,13 +106,8 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**************************************************************************/
-    /*                          MODIFY AS NEEDED                              */
-    /*                                                                        */
     General_path_element_t  *result_tuples = NULL;
     size_t result_count = 0;
-    /*                                                                        */
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -175,49 +115,13 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
 
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        /*
-
-           CREATE OR REPLACE FUNCTION pgr_newTSP(
-           matrix_row_sql TEXT,
-           start_id BIGINT DEFAULT 0,
-           end_id BIGINT DEFAULT 0,
-
-           max_processing_time FLOAT DEFAULT '+infinity'::FLOAT,
-
-           tries_per_temperature INTEGER DEFAULT 500,
-           max_changes_per_temperature INTEGER DEFAULT 60,
-           max_consecutive_non_changes INTEGER DEFAULT 200,
-
-           initial_temperature FLOAT DEFAULT 100,
-           final_temperature FLOAT DEFAULT 0.1,
-           cooling_factor FLOAT DEFAULT 0.9,
-
-           randomize BOOLEAN DEFAULT true,
-           */
-
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_INT64(1),
                 PG_GETARG_INT64(2),
 
-#if 0
-                PG_GETARG_FLOAT8(3),
-
-                PG_GETARG_INT32(4),
-                PG_GETARG_INT32(5),
-                PG_GETARG_INT32(6),
-
-                PG_GETARG_FLOAT8(7),
-                PG_GETARG_FLOAT8(8),
-                PG_GETARG_FLOAT8(9),
-                PG_GETARG_BOOL(10),
-#endif
                 &result_tuples,
                 &result_count);
-        /*                                                                    */
-        /**********************************************************************/
 
 #if PGSQL_VERSION > 95
         funcctx->max_calls = result_count;
@@ -247,13 +151,6 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
         Datum        result;
         Datum        *values;
         bool*        nulls;
-
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        // OUT seq INTEGER,
-        // OUT node BIGINT,
-        // OUT cost FLOAT,
-        // OUT agg_cost FLOAT
 
         values = palloc(4 * sizeof(Datum));
         nulls = palloc(4 * sizeof(bool));
