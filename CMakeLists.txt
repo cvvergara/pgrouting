@@ -51,7 +51,7 @@ include(pgr/Configure)
 #---------------------------------------------
 set(DOXYGEN_MINIMUM_VERSION "1.7")
 set(SPHINX_MINIMUM_VERSION "1.8")
-set(POSTGRESQL_MINIMUM_VERSION "9.2.0")
+set(POSTGRESQL_MINIMUM_VERSION "9.6.0")
 set(BOOST_MINIMUM_VERSION "1.56.0")
 set(POSTGIS_MINIMUM_VERSION "2.0.0")
 
