@@ -7,7 +7,7 @@ on:
       - 'include/**'
       - 'pgtap/**'
       - '.github/workflows/ubuntu.yml'
-      - 'tools/testers'
+      - 'tools/testers/**'
       - 'CMakeLists.txt'
 
     branches-ignore:
@@ -21,7 +21,7 @@ on:
       - 'include/**'
       - 'pgtap/**'
       - '.github/workflows/ubuntu.yml'
-      - 'tools/testers'
+      - 'tools/testers/**'
       - 'CMakeLists.txt'
 
 
