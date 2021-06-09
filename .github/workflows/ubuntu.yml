@@ -2,8 +2,14 @@ name: Build for Ubuntu
 
 on:
   push:
+    paths-ignore:
+      - 'doc/**'
+      - 'locale/**'
+
     branches-ignore:
       - 'translations_*'
+      - 'gh-pages'
+
     tags: []
   pull_request:
     paths-ignore:
