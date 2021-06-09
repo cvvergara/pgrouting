@@ -1,4 +1,4 @@
-name: Build for Ubuntu
+name: Ubuntu
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'src/**'
       - 'include/**'
       - 'pgtap/**'
-      - '.github/workflows/macos.yml'
+      - '.github/workflows/ubuntu.yml'
       - 'tools/testers'
       - 'CMakeLists.txt'
 
@@ -20,8 +20,9 @@ on:
       - 'src/**'
       - 'include/**'
       - 'pgtap/**'
-      - '.github/workflows/macos.yml'
+      - '.github/workflows/ubuntu.yml'
       - 'tools/testers'
+      - 'CMakeLists.txt'
 
 
     branches-ignore:
@@ -94,6 +95,8 @@ jobs:
           make -j 4
           sudo make install
 
+  test:
+    needs: build
       - name: Test
         run: |
           sudo service postgresql start
