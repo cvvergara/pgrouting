@@ -5,7 +5,17 @@ name: Build documentation
 # - postgres 12
 # - postgis 3
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - 'doc/**'
+      - 'locale/**'
+      - '.github/workflows/documentation.yml'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
+
 
 jobs:
   build:

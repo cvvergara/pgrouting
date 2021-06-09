@@ -97,6 +97,7 @@ jobs:
 
   test:
     needs: build
+    steps:
       - name: Test
         run: |
           sudo service postgresql start
