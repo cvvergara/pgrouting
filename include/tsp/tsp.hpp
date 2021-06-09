@@ -84,7 +84,7 @@ class TSP : public Pgr_messages {
         return id_to_V.at(id);
         } catch (...) {
             pgassert(false);
-            throw ;
+            throw;
         }
     }
 
@@ -93,7 +93,7 @@ class TSP : public Pgr_messages {
         return V_to_id.at(v);
         } catch (...) {
             pgassert(false);
-            throw ;
+            throw;
         }
     }
 
@@ -102,7 +102,7 @@ class TSP : public Pgr_messages {
         return E_to_id.at(e);
         } catch (...) {
             pgassert(false);
-            throw ;
+            throw;
         }
     }
 

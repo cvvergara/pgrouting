@@ -25,12 +25,13 @@ BEGIN;
     \i vrppdtw_data.sql
     \i solomon_100_rc101.data.sql
     \i innerQuery.sql
+    \i general_pgtap_tests.sql
     \i innerQuery_old.sql
     \i inner_styles.sql
     \i old_inner_styles.sql
     \i no_crash_test.sql
     \i alphaShapeTester.sql
-    \i tsp_performance.sql
+    \i tsp_pgtap_tests.sql
     \i binaryBreadthFirstSearch_pgtap_data.sql
 
 END;

@@ -66,6 +66,7 @@ process(
         size_t *result_count) {
     pgr_SPI_connect();
 
+#if 0
     /*
      * errors in parameters
      */
@@ -92,7 +93,7 @@ process(
     if (time_limit < 0) {
         elog(ERROR, "Condition not met: max_processing_time >= 0");
     }
-
+#endif
 
     Matrix_cell_t *distances = NULL;
     size_t total_distances = 0;
