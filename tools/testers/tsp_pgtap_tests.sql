@@ -32,7 +32,7 @@ end_sql TEXT;
 query TEXT;
 p TEXT;
 BEGIN
-    start_sql = 'select * from ' || fn || '($$ SELECT ';
+    start_sql = 'SELECT * from ' || fn || '($$ SELECT ';
         FOREACH  p IN ARRAY params LOOP
         IF p = parameter THEN CONTINUE;
     END IF;
