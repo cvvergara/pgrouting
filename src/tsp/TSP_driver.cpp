@@ -49,6 +49,7 @@ do_pgr_tsp(
         int64_t start_vid,
         int64_t end_vid,
 
+#if 0
         double ,
         double ,
         double ,
@@ -57,6 +58,7 @@ do_pgr_tsp(
         int64_t ,
         bool ,
         double ,
+#endif
 
         General_path_element_t **return_tuples,
         size_t *return_count,

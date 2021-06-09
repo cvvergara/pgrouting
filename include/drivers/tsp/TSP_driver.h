@@ -52,6 +52,7 @@ do_pgr_tsp(
         int64_t start_vid,
         int64_t end_vid,
 
+#if 0
         double initial_temperature,
         double final_temperature,
         double cooling_factor,
@@ -60,6 +61,7 @@ do_pgr_tsp(
         int64_t max_consecutive_non_changes,
         bool randomize,
         double time_limit,
+#endif
 
         General_path_element_t **results,
         size_t *total_results,

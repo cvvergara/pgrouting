@@ -50,6 +50,7 @@ process(
         int64_t start_vid,
         int64_t end_vid,
 
+#if 0
         double time_limit,
 
         int64_t tries_per_temperature,
@@ -61,7 +62,7 @@ process(
         double cooling_factor,
 
         bool randomize,
-
+#endif
         General_path_element_t **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
@@ -118,6 +119,7 @@ process(
             distances, total_distances,
             start_vid,
             end_vid,
+#if 0
             initial_temperature,
             final_temperature,
             cooling_factor,
@@ -126,6 +128,7 @@ process(
             max_consecutive_non_changes,
             randomize,
             time_limit,
+#endif
             result_tuples,
             result_count,
             &log_msg,
@@ -199,6 +202,7 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT64(1),
                 PG_GETARG_INT64(2),
 
+#if 0
                 PG_GETARG_FLOAT8(3),
 
                 PG_GETARG_INT32(4),
@@ -208,8 +212,8 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
                 PG_GETARG_FLOAT8(7),
                 PG_GETARG_FLOAT8(8),
                 PG_GETARG_FLOAT8(9),
-
                 PG_GETARG_BOOL(10),
+#endif
                 &result_tuples,
                 &result_count);
         /*                                                                    */
