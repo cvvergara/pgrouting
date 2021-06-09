@@ -24,7 +24,6 @@ on:
       - 'tools/testers/**'
       - 'CMakeLists.txt'
 
-
     branches-ignore:
       - 'gh-pages'
 

@@ -5,18 +5,35 @@ name: Check queries
 
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'docqueries/**'
+      - '.github/workflows/check-queries.yml'
+      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+
     branches-ignore:
-      - 'translations_*'
+      - 'gh-pages'
+
     tags: []
+
   pull_request:
-    paths-ignore:
-      - '**.po'
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - '.github/workflows/check-queries.yml'
+      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-
 
     strategy:
         fail-fast: false
