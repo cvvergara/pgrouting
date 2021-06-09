@@ -2,13 +2,23 @@ name: Build for Ubuntu with clang
 
 on:
   push:
+    paths-ignore:
+      - 'doc/**'
+      - 'locale/**'
+      - 'NEWS'
+
     branches-ignore:
-      - 'translations_*'
+      - 'gh-pages'
+
     tags: []
   pull_request:
     paths-ignore:
-      - '**.po'
+      - 'doc/**'
+      - 'locale/**'
+      - 'NEWS'
 
+    branches-ignore:
+      - 'gh-pages'
 
 jobs:
   build:
