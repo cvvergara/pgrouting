@@ -95,9 +95,6 @@ jobs:
           make -j 4
           sudo make install
 
-  test:
-    needs: build
-    steps:
       - name: Test
         run: |
           sudo service postgresql start
