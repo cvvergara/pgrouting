@@ -115,10 +115,8 @@ TSP::tsp() {
     boost::metric_tsp_approx_tour(
             graph,
             back_inserter(tsp_path));
-    }  catch (...)  { bad_graph = true; }
-    if (bad_graph) {
-        log << "graph is incomplete";
-        return results;
+    } catch (...) {
+        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
     }
     pgassert(!bad_graph);
 
@@ -136,10 +134,9 @@ TSP::tsp() {
                  */
                 auto the_edge = boost::edge(u, v, graph);
                 if (!the_edge.second) {
-                    log << "something went wrong";
-                } else {
-                    cost = weight[the_edge.first];
+                    throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
                 }
+                cost = weight[the_edge.first];
             }
             u = v;
             results.push_back(std::make_pair(node, cost));
@@ -156,8 +153,7 @@ TSP::tsp(int64_t start_vid) {
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
-        log << "something went wrong '" << start_vid << "' node is missing\n";
-        return results;
+        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
     }
 
     auto v = get_boost_vertex(start_vid);
@@ -171,10 +167,8 @@ TSP::tsp(int64_t start_vid) {
             graph,
             v,
             back_inserter(tsp_path));
-    }  catch (...)  { bad_graph = true; }
-    if (bad_graph) {
-        log << "graph is incomplete";
-        return results;
+    }  catch (...)  {
+        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
     }
     pgassert(!bad_graph);
 
@@ -192,10 +186,9 @@ TSP::tsp(int64_t start_vid) {
                  */
                 auto the_edge = boost::edge(u, v, graph);
                 if (!the_edge.second) {
-                    log << "something went wrong";
-                } else {
-                    cost = weight[the_edge.first];
+                    throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
                 }
+                cost = weight[the_edge.first];
             }
             u = v;
             results.push_back(std::make_pair(node, cost));
@@ -216,7 +209,7 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
     if (start_vid == 0) return tsp();
 
     /*
-     * the start has a value, so it has to be fixed
+     * the has a start value same as end_vid ignore end_vid
      */
     if ((end_vid == 0) || (start_vid == end_vid)) return tsp(start_vid);
 
@@ -224,13 +217,11 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
-        log << "something went wrong '" << start_vid << "' node is missing\n";
-        return result;
+        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
     }
 
     if (id_to_V.find(end_vid) == id_to_V.end()) {
-        log << "something went wrong '" << end_vid << "' node is missing\n";
-        return result;
+        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
     }
 
     /*

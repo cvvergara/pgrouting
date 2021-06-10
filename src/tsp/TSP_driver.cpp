@@ -105,6 +105,10 @@ do_pgr_tsp(
         err << except.what();
         *err_msg = pgr_msg(err.str().c_str());
         *log_msg = pgr_msg(log.str().c_str());
+    } catch (const std::pair<std::string, std::string>& ex) {
+        (*return_count) = 0;
+        *err_msg = pgr_msg(ex.first.c_str());
+        *log_msg = pgr_msg(ex.second.c_str());
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
