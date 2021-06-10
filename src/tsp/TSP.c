@@ -47,6 +47,7 @@ process(
         char* distances_sql,
         int64_t start_vid,
         int64_t end_vid,
+        bool remove_duplicates,
 
         General_path_element_t **result_tuples,
         size_t *result_count) {
@@ -114,14 +115,33 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+        if (PG_NARGS() == 4) {
+            process(
+                    text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    PG_GETARG_INT64(1),
+                    PG_GETARG_INT64(2),
+                    PG_GETARG_BOOL(3),
 
-        process(
-                text_to_cstring(PG_GETARG_TEXT_P(0)),
-                PG_GETARG_INT64(1),
-                PG_GETARG_INT64(2),
+                    &result_tuples,
+                    &result_count);
+        } else {
+            /*
+             * This is for the deprecated signature
+             * Its ignoring the rest of the parameters
+             */
+            ereport(WARNING,
+                (errmsg("Call to a deprecated signature of pgr_TSP"),
+                 errhint("Ignoring parameters not on new signature")));
 
-                &result_tuples,
-                &result_count);
+            process(
+                    text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    PG_GETARG_INT64(1),
+                    PG_GETARG_INT64(2),
+                    true,
+
+                    &result_tuples,
+                    &result_count);
+        }
 
 #if PGSQL_VERSION > 95
         funcctx->max_calls = result_count;
