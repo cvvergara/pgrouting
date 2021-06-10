@@ -59,6 +59,7 @@ my $version_2_6 = qr/(2.6.[\d+])/;
 my $version_3_0 = qr/(3.0.[\d+])/;
 my $version_3_1 = qr/(3.1.[\d+])/;
 my $version_3_2 = qr/(3.2.[\d+])/;
+my $version_3_3 = qr/(3.3.[\d+])/;
 # add minor here
 
 my $version_2 = qr/(2.[\d+].[\d+])/;
@@ -68,7 +69,7 @@ my $minor_format   = qr/([\d+].[\d+]).[\d+]/;
 my $mayor_format   = qr/([\d+]).[\d+].[\d+]/;
 
 
-my $current = $version_3_2;
+my $current = $version_3_3;
 
 
 sub Usage {
@@ -205,9 +206,12 @@ sub generate_upgrade_script {
             # Skip signatures from the old version that exist in the new version
             next if $function_map{$old_function};
 
-            # Enforcing: When its the same mayor, the signatures should exist in the new version
-            die "$old_function should exist in $new_minor" if $new_mayor == $old_mayor;
+            print "$old_function does not exist on $new_minor \n";
 
+            if ($old_function =~ /"pgr_tsp"/) {
+              # Enforcing: When its the same mayor, the signatures should exist in the new version
+              die "$old_function should exist in $new_minor" if $new_mayor == $old_mayor;
+            }
 
             # Remove from the extension
             push @commands, "-- $old_function does not exists on $new_version\n" if $DEBUG;
@@ -603,12 +607,15 @@ sub components {
 
 
 sub tsp {
+  # On version 3.3.0 the tsp function is droped
     my @commands = ();
 
+=pod
     push @commands, update_pg_proc(
         'pgr_tsp',
         'matrix_row_sql,start_id,end_id,max_processing_time,tries_per_temperature,max_changes_per_temperature,max_consecutive_non_changes,initial_temperature,final_temperature,cooling_factor,randomize,seq,node,cost,agg_cost',
         '"",start_id,end_id,max_processing_time,tries_per_temperature,max_changes_per_temperature,max_consecutive_non_changes,initial_temperature,final_temperature,cooling_factor,randomize,seq,node,cost,agg_cost');
+=cut
 
     return @commands;
 }
