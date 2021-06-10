@@ -12,12 +12,17 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-# C++ files want tab indentation
+# C++ files want 4 spaces
 [*.{c,h,cpp,hpp,inl}]
 indent_style = space
 indent_size = 4
 
-# C++ files want tab indentation
+# sql files want 2 spaces
+[*.sql]
+indent_style = space
+indent_size = 2
+
+# perl files want 2 spaces
 [*.pl]
 indent_style = space
 indent_size = 2
