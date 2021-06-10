@@ -10,31 +10,29 @@ SELECT * FROM pgr_withPointsCostMatrix(
 
 SELECT plan(20);
 
-SELECT todo_start('Need to loof for the error');
 SELECT throws_ok($$
   SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
   'XX000',
-  '"start_id" or "end_id" do not exist on the data',
+  'start_id or end_id do not exist on the data',
   '1 SHOULD throw because end_id does not exist');
 
 SELECT throws_ok($$
   SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$,
   'XX000',
-  '"start_id" or "end_id" do not exist on the data',
+  'start_id or end_id do not exist on the data',
   '2 SHOULD throw because end_id does not exist');
 
 SELECT throws_ok($$
   SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$,
   'XX000',
-  '"start_id" or "end_id" do not exist on the data',
+  'start_id or end_id do not exist on the data',
   '2 SHOULD throw because start_id does not exist');
 
 SELECT throws_ok($$
   SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$,
   'XX000',
-  '"start_id" or "end_id" do not exist on the data',
+  'start_id or end_id do not exist on the data',
   '2 SHOULD throw because start_id does not exist');
-SELECT todo_end();
 
 
 SELECT is(

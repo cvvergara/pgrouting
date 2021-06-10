@@ -59,18 +59,24 @@ do_pgr_tsp(
     std::ostringstream err;
 
     try {
-        /*
-         * TODO
-         * check that the data the required characteristics
-         * otherwise boost's algorithm might create a server crash
-         */
-
-
         pgrouting::algorithm::TSP fn_tsp{distances, total_distances, true};
 
 #if Boost_VERSION_MACRO >= 106800
         log << fn_tsp;
 #endif
+
+        if (start_vid != 0 && !fn_tsp.has_vertex(start_vid)) {
+            err << "start_id or end_id do not exist on the data";
+            *err_msg = pgr_msg(err.str().c_str());
+            return;
+        }
+
+        if (end_vid != 0 && !fn_tsp.has_vertex(end_vid)) {
+            err << "start_id or end_id do not exist on the data";
+            *err_msg = pgr_msg(err.str().c_str());
+            return;
+        }
+
         auto tsp_path = fn_tsp.tsp(start_vid, end_vid);
         log << fn_tsp.get_log();
 

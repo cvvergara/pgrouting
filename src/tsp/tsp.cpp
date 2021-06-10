@@ -382,6 +382,43 @@ TSP::TSP(Coordinate_t *coordinates,
     }
 }
 
+bool
+TSP::has_vertex(int64_t id) const {
+    return id_to_V.find(id) != id_to_V.end();
+}
+
+TSP::V
+TSP::get_boost_vertex(int64_t id) const {
+    try {
+        return id_to_V.at(id);
+    } catch (...) {
+        pgassert(false);
+        throw;
+    }
+}
+
+int64_t
+TSP::get_vertex_id(V v) const {
+    try {
+        return V_to_id.at(v);
+    } catch (...) {
+        pgassert(false);
+        throw;
+    }
+}
+
+int64_t
+TSP::get_edge_id(E e) const {
+    try {
+        return E_to_id.at(e);
+    } catch (...) {
+        pgassert(false);
+        throw;
+    }
+}
+
+
+
 #if Boost_VERSION_MACRO >= 106800
 std::ostream& operator<<(std::ostream &log, const TSP& data) {
     log << "Number of Vertices is:" << num_vertices(data.graph) << "\n";
@@ -389,7 +426,7 @@ std::ostream& operator<<(std::ostream &log, const TSP& data) {
     log << "\n the print_graph\n";
     boost::print_graph(data.graph, boost::get(boost::vertex_index, data.graph), log);
 #if 0
-     // to print with edge weights:
+    // to print with edge weights:
     for (auto v : boost::make_iterator_range(boost::vertices(data.graph))) {
         for (auto oe : boost::make_iterator_range(boost::out_edges(v, data.graph))) {
             log << "Edge " << oe << " weight " << get(boost::edge_weight, data.graph)[oe] << "\n";

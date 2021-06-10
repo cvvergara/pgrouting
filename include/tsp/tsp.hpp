@@ -77,34 +77,12 @@ class TSP : public Pgr_messages {
 #if Boost_VERSION_MACRO >= 106800
     friend std::ostream& operator<<(std::ostream &, const TSP&);
 #endif
+    bool has_vertex(int64_t id) const;
 
  private:
-    V get_boost_vertex(int64_t id) const {
-        try {
-        return id_to_V.at(id);
-        } catch (...) {
-            pgassert(false);
-            throw;
-        }
-    }
-
-    int64_t get_vertex_id(V v) const {
-        try {
-        return V_to_id.at(v);
-        } catch (...) {
-            pgassert(false);
-            throw;
-        }
-    }
-
-    int64_t get_edge_id(E e) const {
-        try {
-        return E_to_id.at(e);
-        } catch (...) {
-            pgassert(false);
-            throw;
-        }
-    }
+    V get_boost_vertex(int64_t id) const;
+    int64_t get_vertex_id(V v) const;
+    int64_t get_edge_id(E e) const;
 
 
  private:
