@@ -68,7 +68,7 @@ my $version_format = qr/([\d+].[\d+].[\d+])/;
 my $minor_format   = qr/([\d+].[\d+]).[\d+]/;
 my $mayor_format   = qr/([\d+]).[\d+].[\d+]/;
 
-
+# change current here
 my $current = $version_3_3;
 
 
@@ -375,7 +375,6 @@ sub update_from_version_3_0_0 {
 ---------------------------------------------
 " if $DEBUG;
 
-    push @commands, tsp();
     push @commands, withpoints();
     push @commands, components();
     push @commands, flow();
@@ -420,7 +419,6 @@ sub update_from_version_2 {
     push @commands, bddijkstra();
     push @commands, bdastar();
     push @commands, flow();
-    push @commands, tsp();
     push @commands, components();
     push @commands, vrp();
     push @commands, topology();
