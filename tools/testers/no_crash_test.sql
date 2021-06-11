@@ -8,11 +8,18 @@ q1 TEXT;
 q TEXT;
 separator TEXT;
 BEGIN
+    IF is_version_2() THEN
+      RETURN QUERY
+      SELECT skip(4, 'Not testing tsp on version 2.x.y (2.6) (dont know boost)');
+      RETURN;
+    END IF;
+
+    IF _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0') AND func='pgr_alphashape' THEN
+      RETURN QUERY SELECT * FROM  skip(4, 'pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0');
+      RETURN;
+    END IF;
+
     FOR i IN 0..array_length(params, 1) LOOP
-        IF _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0') AND func='pgr_alphashape' THEN
-            RETURN QUERY SELECT * FROM  skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 2);
-            CONTINUE;
-        END IF;
         separator = ' ';
         mp := params;
         IF i != 0 THEN

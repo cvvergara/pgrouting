@@ -68,6 +68,12 @@ BEGIN
     query := start_sql || parameter || '::FLOAT8 ' || end_sql;
     RETURN query SELECT lives_ok(query);
 
+    IF is_version_2() THEN
+      RETURN QUERY
+      SELECT skip(1, 'NUMERIC not used on 2.x.y (2.6)');
+      RETURN;
+    END IF;
+
     query := start_sql || parameter || '::NUMERIC ' || end_sql;
     RETURN query SELECT lives_ok(query);
 END;
