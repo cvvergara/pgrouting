@@ -11,19 +11,33 @@ if [[ -z  $1 ]]; then
     exit 1;
 fi
 
+PGRVERSION="3.2.0 3.1.3 3.1.2 3.1.1 3.1.0 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 3.0.0"
+
 DIR="$1"
+if [ "${DIR}" = "./" ]; then
+    PGRVERSION="3.1.1 3.1.0 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 3.0.0"
+else
+    PGRVERSION="3.3.0"
+fi
 shift
 PGFLAGS=$*
 
 PGDATABASE="___pgr___test___"
 
-dropdb --if-exists "${PGFLAGS}" "${PGDATABASE}"
-createdb "${PGFLAGS}" "${PGDATABASE}"
-#psql -c "CREATE EXTENSION pgRouting WITH VERSION '3.2.0' CASCADE" -d "${PGDATABASE}"
+for v in ${PGRVERSION}
+do
+    echo "--------------------------"
+    echo " Running with version ${v}"
+    echo "--------------------------"
 
-echo "../../pgtap/${DIR}"
+    dropdb --if-exists "${PGFLAGS}" "${PGDATABASE}"
+    createdb "${PGFLAGS}" "${PGDATABASE}"
+    psql -c "CREATE EXTENSION pgRouting WITH VERSION '${v}' CASCADE" -d "${PGDATABASE}"
 
-cd tools/testers/
-psql "$PGFLAGS"  -f setup_db.sql -d "${PGDATABASE}"
-pg_prove --recurse --ext .sql "${PGFLAGS}"  -d "${PGDATABASE}" "../../pgtap/${DIR}"
-dropdb --if-exists "${PGFLAGS}" "${PGDATABASE}"
+    echo "../../pgtap/${DIR}"
+
+    cd tools/testers/
+    psql "$PGFLAGS"  -f setup_db.sql -d "${PGDATABASE}"
+    pg_prove --recurse --ext .sql "${PGFLAGS}"  -d "${PGDATABASE}" "../../pgtap/${DIR}"
+    dropdb --if-exists "${PGFLAGS}" "${PGDATABASE}"
+done

@@ -11,8 +11,11 @@ FROM edge_table_vertices_pgr;
 
 
 SELECT CASE
-  -- starting from 3.3.0 anaeling parameters are ignored
-  WHEN test_min_version('3.3.0') THEN
+  WHEN is_version_2() THEN
+    skip(9, 'Not testing tsp on version 2.x.y (2.6)')
+  WHEN test_min_version('3.3.0') AND test_min_lib_version('3.3.0') THEN
+    skip(9, 'starting from 3.3.0 anaeling parameters are ignored')
+  WHEN test_min_lib_version('3.3.0') AND NOT test_min_version('3.3.0') THEN
     collect_tap(
  lives_ok($$
     SELECT * FROM pgr_TSPeuclidean('SELECT id, x, y FROM coords',

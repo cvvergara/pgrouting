@@ -4,15 +4,23 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(11);
 
-DROP TABLE IF EXISTS tsp_issue_numb;
-CREATE TABLE tsp_issue_numb AS
+CREATE FUNCTION tsp_issue_1760()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() THEN
+  RETURN QUERY
+  SELECT skip(11, 'Not testing tsp on version 2.x.y (2.6)');
+  RETURN;
+END IF;
+
+CREATE TEMP TABLE tsp_issue_numb AS
 SELECT start_vid, end_vid, agg_cost
 FROM (VALUES
     (-2,      -1, 0.005665599374822598),
     (-1,      -2, 0.005665599374822598))
 AS t (start_vid, end_vid, agg_cost);
-
-SELECT * FROM tsp_issue_numb;
 
 PREPARE test1 AS
 SELECT seq, node
@@ -33,19 +41,23 @@ FROM (VALUES
    (3,   -1))
 AS t (seq, node);
 
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
-SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+RETURN QUERY SELECT set_eq('test1', 'result1');
+END;
+$BODY$
+language plpgsql;
 
-DROP TABLE tsp_issue_numb;
+SELECT tsp_issue_1760();
+
 SELECT finish();
 
 

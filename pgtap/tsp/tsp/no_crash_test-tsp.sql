@@ -1,41 +1,17 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(5);
+SELECT plan(9);
 
-PREPARE data AS
+CREATE TEMP TABLE  matrix_rows AS
 SELECT * FROM pgr_dijkstraCostMatrix(
     $$SELECT id, source, target, cost, reverse_cost FROM edge_table$$,
     (SELECT array_agg(id) FROM edge_table_vertices_pgr WHERE id < 14),
     directed := false
 );
 
-SELECT isnt_empty('data', 'Should not be empty true to tests be meaningful');
+SELECT isnt_empty('SELECT * FROM matrix_rows', 'Should not be empty true to tests be meaningful');
+SELECT * FROM tsp_no_crash();
 
-CREATE OR REPLACE FUNCTION test_function()
-RETURNS SETOF TEXT AS
-$BODY$
-DECLARE
-params TEXT[];
-subs TEXT[];
-BEGIN
-    params = ARRAY[
-    '$fn$SELECT * FROM pgr_dijkstraCostMatrix(
-        $$SELECT id, source, target, cost, reverse_cost FROM edge_table$$,
-        (SELECT array_agg(id) FROM edge_table_vertices_pgr WHERE id < 14),
-        directed := false
-    )$fn$'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL'
-    ]::TEXT[];
-
-    RETURN query SELECT * FROM no_crash_test('pgr_TSP', params, subs);
-END
-$BODY$
-LANGUAGE plpgsql VOLATILE;
-
-
-SELECT * FROM test_function();
-
+SELECT finish();
 ROLLBACK;

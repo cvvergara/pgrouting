@@ -1,6 +1,5 @@
 \i setup.sql
-
-SET client_min_messages TO WARNING;
+UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 
 CREATE OR REPLACE FUNCTION tsp_3_3()
 RETURNS SETOF TEXT AS
@@ -32,7 +31,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION tsp_2_6_to_3_2()
+CREATE OR REPLACE FUNCTION tsp_3_0_to_3_2()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
@@ -95,23 +94,27 @@ CREATE OR REPLACE FUNCTION tsp_types_check()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(4, 'Not testing tsp on version 2.x.y (2.6)');
+    RETURN;
+  END IF;
+
   IF test_min_version('3.3.0') THEN
     RETURN QUERY
     SELECT tsp_3_3();
   ELSE
     RETURN QUERY
-    SELECT tsp_2_6_to_3_2();
+    SELECT tsp_3_0_to_3_2();
   END IF;
 END;
 $BODY$
 LANGUAGE plpgsql;
 
 
-SET client_min_messages TO NOTICE;
 SELECT plan(5);
 SELECT has_function('pgr_tsp');
 SELECT tsp_types_check();
-
 
 
 SELECT finish();

@@ -2,7 +2,6 @@
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(15);
-SET client_min_messages TO WARNING;
 
 CREATE TEMP TABLE matrixrows AS
 SELECT * FROM pgr_dijkstraCostMatrix(
@@ -14,6 +13,7 @@ SELECT * FROM pgr_dijkstraCostMatrix(
 SELECT tsp_anyInteger('pgr_tsp',
     ARRAY['start_vid', 'end_vid', 'agg_cost'],
     'start_vid');
+
 SELECT tsp_anyInteger('pgr_tsp',
     ARRAY['start_vid', 'end_vid', 'agg_cost'],
     'end_vid');
