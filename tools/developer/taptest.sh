@@ -19,6 +19,7 @@ PGDATABASE="___pgr___test___"
 
 dropdb --if-exists "${PGFLAGS}" "${PGDATABASE}"
 createdb "${PGFLAGS}" "${PGDATABASE}"
+#psql -c "CREATE EXTENSION pgRouting WITH VERSION '3.2.0' CASCADE" -d "${PGDATABASE}"
 
 echo "../../pgtap/${DIR}"
 

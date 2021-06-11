@@ -1,11 +1,44 @@
-
 \i setup.sql
 
-SELECT plan(5);
 SET client_min_messages TO WARNING;
 
-SELECT has_function('pgr_tsp');
-SELECT has_function('pgr_tsp', ARRAY[
+CREATE OR REPLACE FUNCTION tsp_3_3()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+  RETURN QUERY
+  SELECT has_function('pgr_tsp', ARRAY['text', 'bigint', 'bigint']);
+
+  RETURN QUERY
+  SELECT function_returns('pgr_tsp', ARRAY['text', 'bigint', 'bigint'], 'setof record');
+
+  PREPARE parameters AS
+  SELECT array['','start_id','end_id','seq','node','cost','agg_cost'];
+
+  RETURN QUERY
+  SELECT bag_has(
+    $$SELECT proargnames FROM pg_proc WHERE proname = 'pgr_tsp'$$,
+    'parameters');
+
+  RETURN QUERY
+  SELECT set_eq(
+    $$SELECT  proallargtypes from pg_proc where proname = 'pgr_tsp'$$,
+    $$VALUES
+    ('{25,20,20,23,20,701,701}'::OID[])
+    $$
+  );
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tsp_2_6_to_3_2()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+  RETURN QUERY
+  SELECT has_function('pgr_tsp', ARRAY[
     'text', 'bigint', 'bigint',
     'double precision',
     'integer', 'integer', 'integer',
@@ -14,7 +47,9 @@ SELECT has_function('pgr_tsp', ARRAY[
     'double precision',
     'boolean'
     ]);
-SELECT function_returns('pgr_tsp', ARRAY[
+
+  RETURN QUERY
+  SELECT function_returns('pgr_tsp', ARRAY[
     'text', 'bigint', 'bigint',
     'double precision',
     'integer', 'integer', 'integer',
@@ -24,31 +59,59 @@ SELECT function_returns('pgr_tsp', ARRAY[
     'boolean'
     ], 'setof record');
 
-PREPARE parameters AS
-SELECT array[
-'',
-'start_id','end_id','max_processing_time',
-'tries_per_temperature',
-'max_changes_per_temperature',
-'max_consecutive_non_changes',
-'initial_temperature',
-'final_temperature',
-'cooling_factor',
-'randomize',
-'seq',
-'node',
-'cost',
-'agg_cost'];
+  PREPARE parameters AS
+  SELECT array[
+  '',
+  'start_id','end_id','max_processing_time',
+  'tries_per_temperature',
+  'max_changes_per_temperature',
+  'max_consecutive_non_changes',
+  'initial_temperature',
+  'final_temperature',
+  'cooling_factor',
+  'randomize',
+  'seq',
+  'node',
+  'cost',
+  'agg_cost'];
 
-SELECT bag_has(
+  RETURN QUERY
+  SELECT bag_has(
     $$SELECT proargnames FROM pg_proc WHERE proname = 'pgr_tsp'$$,
     'parameters');
 
-SELECT set_eq(
+  RETURN QUERY
+  SELECT set_eq(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_tsp'$$,
     $$VALUES
-        ('{25,20,20,701,23,23,23,701,701,701,16,23,20,701,701}'::OID[])
+    ('{25,20,20,701,23,23,23,701,701,701,16,23,20,701,701}'::OID[])
     $$
-);
+  );
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION tsp_types_check()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF test_min_version('3.3.0') THEN
+    RETURN QUERY
+    SELECT tsp_3_3();
+  ELSE
+    RETURN QUERY
+    SELECT tsp_2_6_to_3_2();
+  END IF;
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
+SET client_min_messages TO NOTICE;
+SELECT plan(5);
+SELECT has_function('pgr_tsp');
+SELECT tsp_types_check();
+
+
 
 SELECT finish();
