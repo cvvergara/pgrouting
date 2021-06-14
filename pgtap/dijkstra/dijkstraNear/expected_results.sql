@@ -1,4 +1,4 @@
---\i setup.sql
+\i setup.sql
 
 SELECT plan(142);
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
