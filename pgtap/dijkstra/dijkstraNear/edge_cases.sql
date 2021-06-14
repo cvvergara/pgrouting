@@ -4,19 +4,44 @@ SELECT plan(122);
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 
+CREATE OR REPLACE FUNCTION preparation()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  RETURN QUERY
+  SELECT skip(8, 'Function is new on 3.2.0');
+  RETURN;
+END IF;
+
+RETURN QUERY
 SELECT is_empty($$SELECT distinct cost FROM edge_table WHERE cost != 1 AND cost != -1$$);
+RETURN QUERY
 SELECT is_empty($$SELECT distinct reverse_cost FROM edge_table WHERE cost != 1 AND cost != -1$$);
 
 -- Initial tables are good to work
 
+RETURN QUERY
 SELECT isnt_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table$$);
+RETURN QUERY
 SELECT isnt_empty($$SELECT id FROM edge_table_vertices_pgr$$);
 
 -- vertex id values that dont exist
+RETURN QUERY
 SELECT is_empty($$SELECT id FROM edge_table_vertices_pgr WHERE id > 18$$);
+RETURN QUERY
 SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE source > 18$$);
+RETURN QUERY
 SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE target > 18$$);
+RETURN QUERY
 SELECT is_empty($$SELECT id FROM edge_table WHERE id > 18$$);
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+
 
 CREATE TABLE expected AS
 WITH
@@ -61,6 +86,12 @@ BEGIN
         CONTINUE WHEN data.scnd IS NULL;
 
         FOREACH dest IN ARRAY data.scnd LOOP
+          IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+            RETURN QUERY
+            SELECT skip(1, 'Function is new on 3.2.0');
+            CONTINUE;
+          END IF;
+
             inner_query := format($$
                 WITH
                 edges AS (%1$s),
@@ -81,12 +112,14 @@ BEGIN
 
             RETURN QUERY
             SELECT set_eq(dijstraNear_query, expected_query, id::TEXT || '->' || dest || ' ' || optionals);
-            END LOOP;
+        END LOOP;
     END LOOP;
 
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+SELECT preparation();
 
 SELECT * from check_expected(
     $$SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id DESC$$,
