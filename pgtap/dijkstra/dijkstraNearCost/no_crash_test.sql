@@ -4,6 +4,17 @@ SELECT plan(126);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION preparation()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  RETURN QUERY
+  SELECT skip(6, 'Function is new on 3.2.0');
+  RETURN;
+END IF;
+
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
@@ -27,6 +38,10 @@ SELECT is_empty('null_edges', 'Should be empty to tests be meaningful');
 PREPARE null_comb AS
 SELECT source, target FROM combinations_table  WHERE source IN (-1);
 SELECT is_empty('null_comb', 'Should be empty to tests be meaningful');
+END;
+$BODY$
+LANGUAGE plpgsql;
+
 
 
 CREATE OR REPLACE FUNCTION test_function()
@@ -38,6 +53,12 @@ params2 TEXT[];
 subs1 TEXT[];
 subs2 TEXT[];
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(120, 'Function is new on 3.2.0');
+    RETURN;
+  END IF;
+
     -- one to many
     params1 = ARRAY['$$edges$$','1', 'ARRAY[2,5]::BIGINT[]']::TEXT[];
     params2 = ARRAY['$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
@@ -124,6 +145,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
+SELECT * FROM preparation();
 SELECT * FROM test_function();
 SELECT finish();
 ROLLBACK;

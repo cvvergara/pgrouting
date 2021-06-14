@@ -4,16 +4,36 @@ SELECT plan(142);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION preparation()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  RETURN QUERY
+  SELECT skip(6, 'Function is new on 3.2.0');
+  RETURN;
+END IF;
+
 -- Initial tables are good to work
 
+RETURN QUERY
 SELECT isnt_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table$$);
+RETURN QUERY
 SELECT isnt_empty($$SELECT id FROM edge_table_vertices_pgr$$);
 
 -- vertex id values that dont exist
+RETURN QUERY
 SELECT is_empty($$SELECT id FROM edge_table_vertices_pgr WHERE id > 18$$);
+RETURN QUERY
 SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE source > 18$$);
+RETURN QUERY
 SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE target > 18$$);
+RETURN QUERY
 SELECT is_empty($$SELECT id FROM edge_table WHERE id > 18$$);
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE TABLE expected AS
 WITH
@@ -49,6 +69,12 @@ DECLARE
 dijkstraNear_query TEXT;
 dijkstra_query TEXT;
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(17, 'Function is new on 3.2.0');
+    RETURN;
+  END IF;
+
 
     FOR id IN 1..17 LOOP
         dijkstraNear_query := format($$
@@ -78,6 +104,8 @@ BEGIN
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
+
+SELECT preparation();
 
 SELECT * from check_compare(
     $$SELECT id, source, target, cost, reverse_cost FROM edge_table$$,
