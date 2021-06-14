@@ -7,7 +7,6 @@ SELECT has_function('pgr_bddijkstra', ARRAY['text', 'bigint', 'bigint', 'boolean
 SELECT has_function('pgr_bddijkstra', ARRAY['text', 'bigint', 'anyarray', 'boolean']);
 SELECT has_function('pgr_bddijkstra', ARRAY['text', 'anyarray', 'bigint', 'boolean']);
 SELECT has_function('pgr_bddijkstra', ARRAY['text', 'anyarray', 'anyarray', 'boolean']);
-SELECT has_function('pgr_bddijkstra', ARRAY['text', 'text', 'boolean']);
 
 SELECT function_returns('pgr_bddijkstra', ARRAY['text', 'bigint', 'bigint', 'boolean'],
     'setof record');
@@ -17,9 +16,17 @@ SELECT function_returns('pgr_bddijkstra', ARRAY['text', 'anyarray', 'bigint', 'b
     'setof record');
 SELECT function_returns('pgr_bddijkstra', ARRAY['text', 'anyarray', 'anyarray', 'boolean'],
     'setof record');
-SELECT function_returns('pgr_bddijkstra', ARRAY['text', 'text', 'boolean'],
-    'setof record');
 
+-- new signature on 3.2
+SELECT CASE
+WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
+  skip(2, 'Combinations functiontionality new on 2.3')
+WHEN test_min_version('3.2.0') THEN
+  collect_tap(
+    has_function('pgr_bddijkstra', ARRAY['text', 'text', 'boolean']),
+    function_returns('pgr_bddijkstra', ARRAY['text', 'text', 'boolean'], 'setof record')
+  )
+END;
 
 
 SELECT style_dijkstra('pgr_bddijkstra', ', 2, 3, true)');

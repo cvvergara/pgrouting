@@ -12,6 +12,12 @@ DECLARE
 sql_Combinations TEXT;
 sql_Many TEXT;
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function is new on 3.2.0');
+    RETURN;
+  END IF;
+
 
     sql_Combinations := '';
     sql_Many := '';
