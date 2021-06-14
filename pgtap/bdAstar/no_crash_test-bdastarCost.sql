@@ -100,6 +100,12 @@ BEGIN
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_bdAstarCost', params, subs);
 
+    IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+      RETURN QUERY
+      SELECT skip(12, 'Combinations functionality is new on 3.2.0');
+      RETURN;
+    END IF;
+
     -- combinations
     params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
     subs = ARRAY[
