@@ -7,6 +7,12 @@ create or REPLACE FUNCTION foo()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'Signature is new on 3.2.0');
+    RETURN;
+  END IF;
+
 
     RETURN query SELECT is_empty(
       'SELECT start_pid,  end_pid, agg_cost FROM pgr_withPointsCost(

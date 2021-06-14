@@ -13,8 +13,6 @@ SELECT has_function('pgr_withpoints',
     ARRAY['text', 'text', 'anyarray', 'bigint', 'boolean','character', 'boolean']);
 SELECT has_function('pgr_withpoints',
     ARRAY['text', 'text', 'anyarray', 'anyarray', 'boolean','character', 'boolean']);
-SELECT has_function('pgr_withpoints',
-    ARRAY['text', 'text', 'text', 'boolean','character', 'boolean']);
 
 SELECT function_returns('pgr_withpoints',
     ARRAY['text', 'text', 'bigint', 'bigint', 'boolean','character', 'boolean'],
@@ -28,10 +26,17 @@ SELECT function_returns('pgr_withpoints',
 SELECT function_returns('pgr_withpoints',
     ARRAY['text', 'text', 'anyarray', 'anyarray', 'boolean','character', 'boolean'],
     'setof record');
-SELECT function_returns('pgr_withpoints',
-    ARRAY['text', 'text', 'text', 'boolean','character', 'boolean'],
-    'setof record');
 
+-- new signature on 3.2
+SELECT CASE
+WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
+  skip(2, 'Combinations functiontionality new on 2.3')
+WHEN test_min_version('3.2.0') THEN
+  collect_tap(
+    has_function('pgr_withpoints', ARRAY['text', 'text', 'text', 'boolean','character', 'boolean']),
+    function_returns('pgr_withpoints', ARRAY['text', 'text', 'text', 'boolean','character', 'boolean'], 'setof record')
+  )
+END;
 
 -- DIRECTED
 SELECT style_withpoints('pgr_withpoints', ', 2, 3)');
