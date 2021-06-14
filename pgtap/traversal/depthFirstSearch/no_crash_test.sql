@@ -12,18 +12,28 @@ SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
 PREPARE null_ret_arr AS
 SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
-SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
 
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(59, 'Function is new on 3.2.0');
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
+  RETURN QUERY
+  SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
+
     -- depthFirstSearch Single vertex
     params = ARRAY[
     '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
@@ -107,6 +117,6 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
+SELECT * FROM no_crash();
 
 ROLLBACK;

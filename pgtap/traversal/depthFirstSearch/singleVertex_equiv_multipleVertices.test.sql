@@ -12,6 +12,12 @@ DECLARE
 sql_SingleVertex TEXT;
 sql_MultipleVertices TEXT;
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(11, 'Function is new on 3.2.0');
+    RETURN;
+  END IF;
+
 
     FOR depth IN 1..11 LOOP
         sql_SingleVertex := '';
@@ -34,6 +40,7 @@ BEGIN
             END IF;
             sql_MultipleVertices := sql_MultipleVertices || i ;
         END LOOP;
+
         sql_MultipleVertices :=
             '( SELECT depth, start_vid, node, edge, cost, agg_cost  FROM pgr_depthFirstSearch(
                     ''SELECT id, source, target, cost, reverse_cost FROM edge_table'', '

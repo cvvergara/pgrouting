@@ -3,6 +3,17 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(432);
 
+CREATE OR REPLACE FUNCTION inner_query()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  RETURN QUERY
+  SELECT skip(432, 'Function is new on 3.2.0');
+  RETURN;
+END IF;
+
 -- SINGLE VERTEX
 SELECT style_dijkstra('pgr_depthFirstSearch', ', 5)');
 -- Single vertex with directed parameter
@@ -20,6 +31,12 @@ SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5], true)');
 SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5], max_depth => 2)');
 -- Single vertex with directed and max_depth parameter
 SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5], true, max_depth => 2)');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT inner_query();
 
 SELECT finish();
 ROLLBACK;
