@@ -3,6 +3,17 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(20);
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  RETURN QUERY
+  SELECT skip(20, 'Function is new on 3.2.0');
+  RETURN;
+END IF;
+
 -- 0 edge, 0 vertex tests
 
 PREPARE q1 AS
@@ -164,6 +175,12 @@ SELECT *
 FROM pgr_makeConnected('q19');
 
 SELECT set_eq('fourVerticesTest20', $$VALUES (1, 15, 16) $$,'20:Two Connected Components. One row is returned');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
 
 
 
