@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(18);
+SELECT plan(21);
 
 SELECT has_function('pgr_maxflowmincost');
 
@@ -19,10 +19,24 @@ SELECT function_returns('pgr_maxflowmincost', ARRAY['text', 'anyarray', 'anyarra
 SELECT set_eq(
     $$SELECT proargnames from pg_proc where proname = 'pgr_maxflowmincost'$$,
     $$VALUES
-        ('{"","","", "seq", "edge", "source", "target", "flow", "residual_capacity", "cost", "agg_cost"}'::TEXT[]),
-        ('{"","", "seq", "edge", "source", "target", "flow", "residual_capacity", "cost", "agg_cost"}'::TEXT[])
+        ('{"","","", "seq", "edge", "source", "target", "flow", "residual_capacity", "cost", "agg_cost"}'::TEXT[])
     $$
 );
+
+-- new signature on 3.2
+SELECT CASE
+WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
+  skip(3, 'Combinations functiontionality new on 2.3')
+WHEN test_min_version('3.2.0') THEN
+  collect_tap(
+    has_function('pgr_maxflowmincost', ARRAY['text', 'text', 'text', 'boolean','character', 'boolean']),
+    function_returns('pgr_maxflowmincost', ARRAY['text', 'text', 'text', 'boolean','character', 'boolean'], 'setof record'),
+    set_eq(
+      $$SELECT proargnames from pg_proc where proname = 'pgr_maxflowmincost'$$,
+      $$VALUES ('{"","", "seq", "edge", "source", "target", "flow", "residual_capacity", "cost", "agg_cost"}'::TEXT[]) $$
+    )
+  )
+END;
 
 -- pgr_maxflowmincost works
 PREPARE t1 AS

@@ -41,17 +41,22 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(48, 'Bug in function is fixed on 3.2.0');
+  ELSE
     -- one to one
-    params = ARRAY['$$edges$$',
+    params = ARRAY[
+    '$$edges$$',
     '1::BIGINT',
     '2::BIGINT'
     ]::TEXT[];
+
     subs = ARRAY[
     'NULL',
     '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
     '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
     ]::TEXT[];
-
     RETURN query SELECT * FROM no_crash_test('pgr_maxFlowMinCost',params, subs);
 
     subs = ARRAY[
@@ -100,6 +105,7 @@ BEGIN
     'NULL::BIGINT'
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_maxFlowMinCost',params, subs);
+  END IF;
 
     -- many to many
     params = ARRAY['$$edges$$',
@@ -121,6 +127,12 @@ BEGIN
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_maxFlowMinCost',params, subs);
 
+    IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+      RETURN QUERY
+      SELECT skip(12, 'Combinations functionality is new on 3.2.0');
+      RETURN;
+    END IF;
+
     -- Combinations SQL
     params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
     subs = ARRAY[
@@ -135,7 +147,6 @@ BEGIN
     'NULL::TEXT'
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_maxFlowMinCost', params, subs);
-
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;

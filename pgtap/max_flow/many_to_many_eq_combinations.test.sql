@@ -12,6 +12,13 @@ sql_ManySource TEXT;
 sql_ManyTarget TEXT;
 sql_Many TEXT;
 BEGIN
+    IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+      RETURN QUERY
+      SELECT skip(cant - 1, 'Combinations functionality is new on 3.2.0');
+      RETURN;
+    END IF;
+
+
 
     FOR id IN 1.. (cant - 1) LOOP
         sql_Combinations := '';
