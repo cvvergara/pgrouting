@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(17);
+SELECT plan(18);
 SET client_min_messages TO ERROR;
 
 
@@ -12,12 +12,10 @@ SELECT has_function('pgr_binarybreadthfirstsearch', ARRAY['text','bigint','bigin
 SELECT has_function('pgr_binarybreadthfirstsearch', ARRAY['text','bigint','anyarray','boolean']);
 SELECT has_function('pgr_binarybreadthfirstsearch', ARRAY['text','anyarray','bigint','boolean']);
 SELECT has_function('pgr_binarybreadthfirstsearch', ARRAY['text','anyarray','anyarray','boolean']);
-SELECT has_function('pgr_binarybreadthfirstsearch', ARRAY['text','text','boolean']);
 SELECT function_returns('pgr_binarybreadthfirstsearch', ARRAY['text','bigint','bigint','boolean'],  'setof record');
 SELECT function_returns('pgr_binarybreadthfirstsearch', ARRAY['text','bigint','anyarray','boolean'],  'setof record');
 SELECT function_returns('pgr_binarybreadthfirstsearch', ARRAY['text','anyarray','bigint','boolean'],  'setof record');
 SELECT function_returns('pgr_binarybreadthfirstsearch', ARRAY['text','anyarray','anyarray','boolean'],  'setof record');
-SELECT function_returns('pgr_binarybreadthfirstsearch', ARRAY['text','text','boolean'],  'setof record');
 
 -- pgr_binarybreadthfirstsearch
 -- parameter names
@@ -41,11 +39,6 @@ SELECT bag_has(
     $$SELECT  '{"","","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
-    $$SELECT  proargnames from pg_proc where proname = 'pgr_binarybreadthfirstsearch'$$,
-    $$SELECT  '{"","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[] $$
-);
-
 -- parameter types
 SELECT set_eq(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_binarybreadthfirstsearch'$$,
@@ -53,11 +46,28 @@ SELECT set_eq(
         ('{25,20,20,16,23,23,20,20,701,701}'::OID[]),
         ('{25,20,2277,16,23,23,20,20,20,701,701}'::OID[]),
         ('{25,2277,20,16,23,23,20,20,20,701,701}'::OID[]),
-        ('{25,2277,2277,16,23,23,20,20,20,20,701,701}'::OID[]),
-        ('{25,25,16,23,23,20,20,20,20,701,701}'::OID[])
+        ('{25,2277,2277,16,23,23,20,20,20,20,701,701}'::OID[])
     $$
 );
 
+-- new signature on 3.2
+SELECT CASE
+WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
+  skip(4, 'Combinations functiontionality new on 2.3')
+WHEN test_min_version('3.2.0') THEN
+  collect_tap(
+    has_function('pgr_binarybreadthfirstsearch', ARRAY['text','text','boolean']),
+    function_returns('pgr_binarybreadthfirstsearch', ARRAY['text','text','boolean'], 'setof record'),
+    bag_has(
+      $$SELECT  proargnames from pg_proc where proname = 'pgr_binarybreadthfirstsearch'$$,
+      $$SELECT  '{"","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[] $$
+    ),
+    set_eq(
+      $$SELECT  proallargtypes from pg_proc where proname = 'pgr_binarybreadthfirstsearch'$$,
+      $$VALUES ('{}25,25,16,23,23,20,20,20,20,701,701'::OID[]) $$
+    )
+  )
+END;
 
 SELECT * FROM finish();
 ROLLBACK;

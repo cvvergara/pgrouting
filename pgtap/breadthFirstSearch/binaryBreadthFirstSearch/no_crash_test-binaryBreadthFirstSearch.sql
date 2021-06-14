@@ -106,20 +106,6 @@ BEGIN
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_binaryBreadthFirstSearch', params, subs);
 
-    -- Combinations SQL
-    params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$'
-    ]::TEXT[];
-
-    RETURN query SELECT * FROM no_crash_test('pgr_binaryBreadthFirstSearch', params, subs);
-
-    subs = ARRAY[
-    'NULL',
-    'NULL::TEXT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_binaryBreadthFirstSearch', params, subs);
 
     -- using roadworks
     -- one to one
@@ -193,6 +179,27 @@ BEGIN
     'NULL::BIGINT[]'
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_binaryBreadthFirstSearch', params_roadworks, subs_roadworks);
+
+    IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+      RETURN QUERY
+      SELECT skip(24, 'Combinations signature is new on 3.2.0');
+      RETURN;
+    END IF;
+
+    -- Combinations SQL
+    params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
+    subs = ARRAY[
+    'NULL',
+    '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$'
+    ]::TEXT[];
+
+    RETURN query SELECT * FROM no_crash_test('pgr_binaryBreadthFirstSearch', params, subs);
+
+    subs = ARRAY[
+    'NULL',
+    'NULL::TEXT'
+    ]::TEXT[];
+    RETURN query SELECT * FROM no_crash_test('pgr_binaryBreadthFirstSearch', params, subs);
 
     -- Combinations SQL
     params_roadworks = ARRAY[
