@@ -32,6 +32,12 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+    IF is_version_2() AND NOT is_version_2('2.6.1') THEN
+      RETURN QUERY
+      SELECT skip(76, 'STRICT in pgr_bdDijkstraCost was added on 2.6.1');
+      RETURN;
+    END IF;
+
     -- one to one
     params = ARRAY[
     '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$'

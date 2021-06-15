@@ -15,6 +15,12 @@ inner_sql TEXT;
 dijkstra_sql TEXT;
 edwardMoore TEXT;
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(MAX_LIMIT * MAX_LIMIT * 4, 'Function is new on 3.0.0');
+    RETURN;
+  END IF;
+
 
     FOR i IN 1.. MAX_LIMIT LOOP
         FOR j IN 1.. MAX_LIMIT LOOP

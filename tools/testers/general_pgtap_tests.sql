@@ -34,6 +34,9 @@ RETURNS BOOLEAN AS
 $BODY$
 DECLARE val BOOLEAN;
 BEGIN
+  -- Returns false when
+  -- * is a version 2.x.y but is less than the min_version
+  -- * is a version 3.x
   WITH
   current_version AS (SELECT string_to_array((SELECT version FROM pgr_version()),'.')::int[] AS version),
   asked_version AS (SELECT string_to_array(min_version, '.')::int[] AS version)

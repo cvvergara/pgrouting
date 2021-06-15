@@ -2,7 +2,7 @@
 
 SELECT plan(1);
 
-CREATE OR REPLACE FUNCTION foo()
+CREATE OR REPLACE FUNCTION empty_combinations()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
@@ -23,7 +23,7 @@ END
 $BODY$
 language plpgsql;
 
-SELECT * FROM foo();
+SELECT * FROM empty_combinations();
 
 -- Finish the tests and clean up.
 SELECT * FROM finish();

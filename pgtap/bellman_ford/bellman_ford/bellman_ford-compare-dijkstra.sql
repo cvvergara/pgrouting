@@ -2,8 +2,6 @@
 
 SELECT plan(1156);
 
-SET client_min_messages TO ERROR;
-
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
 CREATE or REPLACE FUNCTION bellman_ford_compare_dijkstra(cant INTEGER default 17)
@@ -14,6 +12,12 @@ inner_sql TEXT;
 dijkstra_sql TEXT;
 bellman_ford_sql TEXT;
 BEGIN
+
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(cant * cant * 4, 'Function is new on 3.0.0');
+    RETURN;
+  END IF;
 
     FOR i IN 1.. cant LOOP
         FOR j IN 1.. cant LOOP
