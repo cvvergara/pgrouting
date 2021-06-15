@@ -14,19 +14,22 @@ IF is_version_2() OR NOT test_min_version('3.2.0') THEN
   RETURN;
 END IF;
 
+RETURN QUERY
 SELECT has_function('pgr_bipartite');
 
+RETURN QUERY
 SELECT has_function('pgr_bipartite', ARRAY['text']);
+
+RETURN QUERY
 SELECT function_returns('pgr_bipartite', ARRAY['text'],  'setof record');
 
--- pgr_bipartite
--- parameter names
+RETURN QUERY
 SELECT bag_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_bipartite'$$,
     $$SELECT  '{"","vertex_id","color_id"}'::TEXT[] $$
 );
 
--- parameter types
+RETURN QUERY
 SELECT set_eq(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_bipartite'$$,
     $$VALUES

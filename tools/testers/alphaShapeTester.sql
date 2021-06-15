@@ -9,10 +9,12 @@ CREATE OR REPLACE FUNCTION alphaShape_tester(
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
-    IF _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0') THEN
-        RETURN QUERY SELECT * FROM  skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 4);
-        RETURN;
+    IF is_version_2() THEN
+      RETURN QUERY
+      SELECT skip(4, 'Function changed signature on 3.0.0');
+      RETURN;
     END IF;
+
     EXECUTE format($$
     CREATE TABLE newquery AS
     SELECT pgr_alphaShape((SELECT ST_collect(%2$I) FROM %1$I), %3$s)

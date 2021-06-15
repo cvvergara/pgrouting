@@ -14,9 +14,13 @@ IF is_version_2() OR NOT test_min_version('3.2.0') THEN
   RETURN;
 END IF;
 
+RETURN QUERY
 SELECT has_function('pgr_makeconnected');
 
+RETURN QUERY
 SELECT function_returns('pgr_makeconnected',ARRAY['text'],'setof record');
+
+RETURN QUERY
 SELECT style_dijkstra('pgr_makeconnected', ')');
 END;
 $BODY$

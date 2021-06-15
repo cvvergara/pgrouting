@@ -32,6 +32,12 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+    IF is_version_2('2.6.0') THEN
+      RETURN QUERY
+      SELECT skip(76, 'Not testing pgr_astar on 2.6.0');
+      RETURN;
+    END IF;
+
     -- one to one
     params = ARRAY['$$edges$$','1::BIGINT', '2::BIGINT']::TEXT[];
     subs = ARRAY[

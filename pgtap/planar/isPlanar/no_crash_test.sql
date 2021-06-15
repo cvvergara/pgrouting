@@ -21,17 +21,18 @@ BEGIN
 
   RETURN QUERY
   SELECT isnt_empty('edges', 'Should not be empty true to tests be meaningful');
-  RETURN QUERY
-  SELECT todo_start('Fix these checks, for 3.2 onwards');
+
+  PERFORM todo_start('Fix these checks, for 3.2 onwards');
 
   params = ARRAY['$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$']::TEXT[];
   subs = ARRAY[
   'NULL'
   ]::TEXT[];
 
-  RETURN query SELECT * FROM no_crash_test('pgr_isplanar', params, subs);
   RETURN QUERY
-  SELECT todo_end();
+  SELECT * FROM no_crash_test('pgr_isplanar', params, subs);
+
+  PERFORM todo_end();
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;

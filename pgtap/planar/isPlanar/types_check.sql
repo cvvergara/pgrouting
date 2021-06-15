@@ -15,17 +15,19 @@ IF is_version_2() OR NOT test_min_version('3.2.0') THEN
 END IF;
 
 -- 0 edge, 0 vertex tests
+RETURN QUERY
 SELECT has_function('pgr_isplanar');
 
+RETURN QUERY
 SELECT function_returns('pgr_isplanar', ARRAY['text'], 'boolean');
 
--- pgr_isplanar
--- parameter names
+RETURN QUERY
 SELECT bag_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_isplanar'$$,
     $$SELECT  NULL::TEXT[] $$
 );
--- parameter types
+
+RETURN QUERY
 SELECT bag_has(
     $$SELECT  prorettype from pg_proc where proname = 'pgr_isplanar'$$,
     $$VALUES ( '16'::oid )$$

@@ -29,19 +29,18 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION is_version_2()
+CREATE OR REPLACE FUNCTION is_version_2(min_version TEXT DEFAULT '2.0.0')
 RETURNS BOOLEAN AS
 $BODY$
 DECLARE val BOOLEAN;
 BEGIN
   WITH
   current_version AS (SELECT string_to_array((SELECT version FROM pgr_version()),'.')::int[] AS version),
-  asked_version AS (SELECT string_to_array('2.0.0', '.')::int[] AS version)
+  asked_version AS (SELECT string_to_array(min_version, '.')::int[] AS version)
   SELECT (current_version.version >= asked_version.version) FROM current_version, asked_version INTO val;
   RETURN val;
   EXCEPTION WHEN OTHERS THEN
     RETURN false;
-
 END;
 $BODY$
 LANGUAGE plpgsql;

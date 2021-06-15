@@ -21,8 +21,8 @@ SELECT id, source, target, cost, reverse_cost
 FROM edge_table
 WHERE id > 18;
 
-RETURN QUERY
 -- Graph is empty - it has 0 edge and 0 vertex
+RETURN QUERY
 SELECT is_empty('q1', 'q1: Graph with 0 edge and 0 vertex');
 
 -- 0 edge, 0 vertex tests
@@ -95,6 +95,7 @@ SELECT id, source, target, cost, reverse_cost
 FROM edge_table
 WHERE id = 1;
 
+RETURN QUERY
 SELECT set_eq('q9', $$VALUES (1, 1, 2, 1, 1)$$, 'q9: Graph with two vertices 1 and 2');
 
 PREPARE twoVerticesTest10 AS
@@ -131,6 +132,7 @@ SELECT id, source, target, cost, reverse_cost
 FROM edge_table
 WHERE id IN (1,2,3);
 
+RETURN QUERY
 SELECT set_eq('q13',
   $$VALUES (1, 1, 2, 1, 1),
            (2, 2, 3, -1, 1),

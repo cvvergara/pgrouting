@@ -19,18 +19,17 @@ SELECT has_function('pgr_lengauertarjandominatortree');
 
 RETURN QUERY
 SELECT has_function('pgr_lengauertarjandominatortree', ARRAY['text','bigint']);
+
 RETURN QUERY
 SELECT function_returns('pgr_lengauertarjandominatortree', ARRAY['text','bigint'],  'setof record');
 
--- pgr_bipartite
--- parameter names
 RETURN QUERY
 SELECT bag_has(
   $$SELECT  proargnames from pg_proc where proname = 'pgr_lengauertarjandominatortree'$$,
   $$SELECT  '{"","","seq","vertex_id","idom"}'::TEXT[] $$
 );
 
--- parameter types
+RETURN QUERY
 SELECT set_eq(
   $$SELECT  proallargtypes from pg_proc where proname = 'pgr_lengauertarjandominatortree'$$,
   $$VALUES

@@ -16,9 +16,13 @@ END IF;
 
 SET client_min_messages TO ERROR;
 
+RETURN QUERY
 SELECT has_function('pgr_isplanar');
 
+RETURN QUERY
 SELECT function_returns('pgr_isplanar',ARRAY['text'],'boolean');
+
+RETURN QUERY
 SELECT style_dijkstra('pgr_isplanar', ')');
 
 END;

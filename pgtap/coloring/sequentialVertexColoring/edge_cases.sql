@@ -121,6 +121,7 @@ FROM pgr_sequentialVertexColoring(
     'q9'
 );
 
+RETURN QUERY
 SELECT set_eq('sequentialVertexColoring10', $$VALUES (1, 1), (2, 2), (3, 1)$$, '10: Two colors are required');
 
 

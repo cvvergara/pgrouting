@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(17);
+SELECT plan(18);
 
 SELECT has_function('pgr_bellmanford');
 
@@ -15,48 +15,28 @@ SELECT function_returns('pgr_bellmanford', ARRAY['text','anyarray','bigint','boo
 SELECT function_returns('pgr_bellmanford', ARRAY['text','anyarray','anyarray','boolean'], 'setof record');
 
 -- testing column names
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_bellmanford'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_bellmanford'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","start_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_bellmanford'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","end_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_bellmanford'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-
--- new signature on 3.2
-SELECT CASE
-WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
-  skip(3, 'Combinations functiontionality new on 2.3')
-WHEN test_min_version('3.2.0') THEN
-  collect_tap(
-    has_function('pgr_bellmanford', ARRAY['text','text','boolean']),
-    function_returns('pgr_bellmanford', ARRAY['text','text','boolean'], 'setof record'),
-    bag_has(
-      $$SELECT  proargnames from pg_proc where proname = 'pgr_bellmanford'$$,
-      $$SELECT  '{"","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[] $$
-    ),
- set_eq(
-    $$SELECT  proallargtypes from pg_proc where proname = 'pgr_bellmanford'$$,
-    $$VALUES ('{25,25,16,23,23,20,20,20,20,701,701}'::OID[]) $$
-  )
-)
-END;
-
 -- parameter types
-SELECT set_eq(
+SELECT set_has(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_bellmanford'$$,
     $$VALUES
         ('{25,20,20,16,23,23,20,20,701,701}'::OID[]),
@@ -65,6 +45,26 @@ SELECT set_eq(
         ('{25,2277,2277,16,23,23,20,20,20,20,701,701}'::OID[])
     $$
 );
+
+-- new signature on 3.2
+SELECT CASE
+WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
+  skip(4, 'Combinations functiontionality new on 2.3')
+WHEN test_min_version('3.2.0') THEN
+  collect_tap(
+    has_function('pgr_bellmanford', ARRAY['text','text','boolean']),
+    function_returns('pgr_bellmanford', ARRAY['text','text','boolean'], 'setof record'),
+    set_has(
+      $$SELECT  proargnames from pg_proc where proname = 'pgr_bellmanford'$$,
+      $$SELECT  '{"","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[] $$
+    ),
+    set_has(
+      $$SELECT  proallargtypes from pg_proc where proname = 'pgr_bellmanford'$$,
+      $$VALUES ('{25,25,16,23,23,20,20,20,20,701,701}'::OID[]) $$
+    )
+  )
+END;
+
 
 SELECT finish();
 ROLLBACK;

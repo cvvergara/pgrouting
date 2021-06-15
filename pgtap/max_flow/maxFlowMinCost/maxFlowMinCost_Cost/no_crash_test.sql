@@ -77,11 +77,10 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  IF is_version_2() OR NOT test_min_version('3.1.3') THEN
     RETURN QUERY
     SELECT skip(48, 'Bug in function is fixed on 3.2.0');
   ELSE
-    -- one to one
     -- one to one
     params = ARRAY['$$edges$$',
     '1::BIGINT',

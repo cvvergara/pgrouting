@@ -11,14 +11,15 @@ if [[ -z  $1 ]]; then
     exit 1;
 fi
 
-PGRVERSION="3.2.0 3.1.3 3.1.2 3.1.1 3.1.0 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 3.0.0"
 
 DIR="$1"
 shift
 PGFLAGS=$*
 
 PGDATABASE="___pgr___test___"
-PGRVERSION="3.1.2"
+PGRVERSION="3.3.0"
+PGRVERSION="2.6.3 2.6.2 2.6.1 2.6.0"
+PGRVERSION="3.3.0 3.2.0 3.1.0 3.0.0 2.6.3 3.1.3 3.1.2 3.1.1 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 2.6.2 2.6.1 2.6.0"
 
 cd tools/testers/
 

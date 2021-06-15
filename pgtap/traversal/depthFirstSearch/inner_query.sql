@@ -15,21 +15,29 @@ IF is_version_2() OR NOT test_min_version('3.2.0') THEN
 END IF;
 
 -- SINGLE VERTEX
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', 5)');
 -- Single vertex with directed parameter
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', 5, true)');
 -- Single vertex with max_depth parameter
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', 5, max_depth => 2)');
 -- Single vertex with directed and max_depth parameter
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', 5, true, max_depth => 2)');
 
 -- MULTIPLE VERTICES
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5])');
 -- Multiple vertices with directed parameter
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5], true)');
 -- Multiple vertices with max_depth parameter
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5], max_depth => 2)');
 -- Single vertex with directed and max_depth parameter
+RETURN QUERY
 SELECT style_dijkstra('pgr_depthFirstSearch', ', ARRAY[3,5], true, max_depth => 2)');
 
 END;

@@ -19,6 +19,12 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(2, 'Function changed signature on 3.0.0');
+    RETURN;
+  END IF;
+
     params = ARRAY[$$(SELECT ST_Collect(the_geom) FROM edge_table_vertices_pgr)$$]::TEXT[];
     subs = ARRAY[
     'NULL::geometry'

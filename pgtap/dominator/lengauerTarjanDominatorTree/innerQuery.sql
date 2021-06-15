@@ -15,6 +15,7 @@ IF is_version_2() OR NOT test_min_version('3.2.0') THEN
   RETURN;
 END IF;
 
+RETURN QUERY
 SELECT style_dijkstra('pgr_lengauerTarjanDominatorTree', ',1)');
 
 END;

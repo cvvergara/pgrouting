@@ -130,7 +130,11 @@ BEGIN
     RETURN query SELECT lives_ok(query);
 
     query := start_sql || parameter || '::NUMERIC ' || end_sql;
-    RETURN query SELECT lives_ok(query);
+    IF is_version_2() THEN
+      RETURN query SELECT throws_ok(query, 'XX000', $$Unexpected Column '$$ || parameter || $$' type. Expected ANY-NUMERICAL$$);
+    ELSE
+      RETURN query SELECT lives_ok(query);
+    END IF;
 END;
 $BODY$ LANGUAGE plpgsql;
 

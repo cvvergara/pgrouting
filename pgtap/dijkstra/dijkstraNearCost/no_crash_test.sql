@@ -20,23 +20,35 @@ SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
 PREPARE combs AS
 SELECT source, target  FROM combinations_table;
+
+RETURN QUERY
 SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+
+RETURN QUERY
 SELECT isnt_empty('combs', 'Should be not empty to tests be meaningful');
 
 PREPARE null_id AS
 SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
+
+RETURN QUERY
 SELECT is_empty('null_id', 'Should be empty to tests be meaningful');
 
 PREPARE null_id_arr AS
 SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
+
+RETURN QUERY
 SELECT set_eq('null_id_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
 PREPARE null_edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edge_table WHERE id IN (-1);
+
+RETURN QUERY
 SELECT is_empty('null_edges', 'Should be empty to tests be meaningful');
 
 PREPARE null_comb AS
 SELECT source, target FROM combinations_table  WHERE source IN (-1);
+
+RETURN QUERY
 SELECT is_empty('null_comb', 'Should be empty to tests be meaningful');
 END;
 $BODY$

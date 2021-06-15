@@ -69,15 +69,15 @@ SELECT alphaShape_tester('s_test', 'geom', 43, false, 55799.5, 50);
 SELECT alphaShape_tester('s_test', 'geom', 42, false, 55321.5, 51);
 SELECT alphaShape_tester('s_test', 'geom', 41, false, 55321.5, 51);
 
-SELECT todo_start('With postgres 9.4 sometimes gives another result');
+SELECT todo_start('Sometimes something is wrong with 0');
 -- best alpha
-SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
-    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 1 )
-    ELSE
-        set_eq(
-            $$SELECT st_area(pgr_alphaShape)::TEXT FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM s_test))$$,
-            $$SELECT st_area(pgr_alphaShape)::TEXT FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM s_test), 0)$$)
-    END;
+SELECT CASE
+WHEN is_version_2() THEN skip(1, 'Function changed signature on 3.0.0')
+ELSE
+  set_eq(
+    $$SELECT st_area(pgr_alphaShape)::TEXT FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM s_test))$$,
+    $$SELECT st_area(pgr_alphaShape)::TEXT FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM s_test), 0)$$)
+  END;
 SELECT todo_end();
 
 SELECT alphaShape_tester('s_test', 'geom', 40, false, 55321.5, 51);

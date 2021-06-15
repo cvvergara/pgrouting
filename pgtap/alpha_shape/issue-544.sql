@@ -46,8 +46,8 @@ SELECT * FROM pgr_alphaShape((SELECT ST_Collect(ST_MakePoint(x,y)) FROM nodes wh
 PREPARE q3 AS
 SELECT * FROM pgr_alphaShape((SELECT ST_Collect(ST_MakePoint(x,y)) FROM nodes));
 
-SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
-    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 3 )
+SELECT CASE WHEN is_version_2()
+    THEN skip(3, 'Function changed signature on 3.0.0')
     ELSE collect_tap(
 
         throws_ok('q1',

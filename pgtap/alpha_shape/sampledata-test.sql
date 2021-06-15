@@ -5,19 +5,34 @@ Data from sample data of the documentation
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(54);
 
+CREATE OR REPLACE FUNCTION special_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() THEN
+  RETURN QUERY
+  SELECT skip(2, 'Function changed signature on 3.0.0');
+  RETURN;
+END IF;
+
 PREPARE q1 AS
 SELECT ST_area(pgr_alphaShape) FROM pgr_alphaShape((SELECT ST_Collect(the_geom) FROM edge_table));
 
 PREPARE q2 AS
 SELECT ST_area(pgr_alphaShape((SELECT ST_Collect(the_geom) FROM edge_table), 1.582));
 
-SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
-    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 2)
-    ELSE collect_tap(
-        set_eq('q1', $$SELECT 11.75$$, 'Shall have the expected area'),
-        set_eq('q1', 'q2', '1.582 shall be the best spoon raidus')
-        )
-    END;
+RETURN QUERY
+SELECT set_eq('q1', $$SELECT 11.75$$, 'Shall have the expected area');
+RETURN QUERY
+SELECT set_eq('q1', 'q2', '1.582 shall be the best spoon raidus');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT special_cases();
+
 
 SELECT alphaShape_tester('edge_table', 'the_geom', 0, false, 11.75, 9);
 SELECT alphaShape_tester('edge_table', 'the_geom', 1.582, false, 11.75, 9);

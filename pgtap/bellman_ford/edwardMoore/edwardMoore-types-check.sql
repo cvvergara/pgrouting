@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(17);
+SELECT plan(18);
 SET client_min_messages TO ERROR;
 
 
@@ -19,29 +19,29 @@ SELECT function_returns('pgr_edwardmoore', ARRAY['text','anyarray','anyarray','b
 
 -- pgr_edwardmoore
 -- parameter names
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_edwardmoore'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_edwardmoore'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","start_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_edwardmoore'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","end_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
-SELECT bag_has(
+SELECT set_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_edwardmoore'$$,
     $$SELECT  '{"","","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
 );
 
 
 -- parameter types
-SELECT set_eq(
+SELECT set_has(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_edwardmoore'$$,
     $$VALUES
         ('{25,20,20,16,23,23,20,20,701,701}'::OID[]),
@@ -59,11 +59,11 @@ WHEN test_min_version('3.2.0') THEN
   collect_tap(
     has_function('pgr_edwardmoore', ARRAY['text','text','boolean']),
     function_returns('pgr_edwardmoore', ARRAY['text','text','boolean'], 'setof record'),
-    bag_has(
+    set_has(
       $$SELECT  proargnames from pg_proc where proname = 'pgr_edwardmoore'$$,
       $$SELECT  '{"","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[] $$
     ),
- set_eq(
+ set_has(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_edwardmoore'$$,
     $$VALUES ('{25,25,16,23,23,20,20,20,20,701,701}'::OID[]) $$
   )

@@ -59,16 +59,15 @@ SELECT alphaShape_tester('e_test', 'geom', 0.23, false, 0.5178261889305, 26);
 SELECT alphaShape_tester('e_test', 'geom', 0.22969, false, 0.5178261889305, 26);
 
 
-SELECT CASE WHEN _pgr_versionless((SELECT boost from pgr_full_version()), '1.54.0')
-    THEN skip('pgr_alphaSahpe not supported when compiled with Boost version < 1.54.0', 1 )
-    ELSE
-        -- best alpha
-        set_eq(
-            $$SELECT round(st_area(pgr_alphaShape)::numeric, 12) FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM e_test))$$,
-            $$SELECT round(st_area(pgr_alphaShape)::numeric, 12) FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM e_test), 0)$$,
-            'SHOULD BE: best alpha obtined with spoon radius 1')
-
-    END;
+SELECT CASE WHEN is_version_2()
+THEN skip(1, 'Function changed signature on 3.0.0')
+ELSE
+  -- best alpha
+  set_eq(
+    $$SELECT round(st_area(pgr_alphaShape)::numeric, 12) FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM e_test))$$,
+    $$SELECT round(st_area(pgr_alphaShape)::numeric, 12) FROM pgr_alphaShape((SELECT ST_Collect(geom) FROM e_test), 0)$$,
+    'SHOULD BE: best alpha obtined with spoon radius 1')
+END;
 
 -- best alpha range
 SELECT alphaShape_tester('e_test', 'geom', 0.22968, false, 0.495862454676, 27);

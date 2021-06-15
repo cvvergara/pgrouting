@@ -103,6 +103,7 @@ SELECT id, source, target, cost, reverse_cost
 FROM edge_table
 WHERE id <= 3;
 
+RETURN QUERY
 SELECT set_eq('q5',
     $$VALUES
         (1, 1, 2, 1, 1),
