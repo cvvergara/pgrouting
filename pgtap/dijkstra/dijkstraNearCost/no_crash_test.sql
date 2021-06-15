@@ -56,7 +56,7 @@ LANGUAGE plpgsql;
 
 
 
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -158,6 +158,6 @@ LANGUAGE plpgsql VOLATILE;
 
 
 SELECT * FROM preparation();
-SELECT * FROM test_function();
+SELECT * FROM no_crash();
 SELECT finish();
 ROLLBACK;

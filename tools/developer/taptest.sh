@@ -19,7 +19,7 @@ PGFLAGS=$*
 PGDATABASE="___pgr___test___"
 PGRVERSION="3.3.0"
 PGRVERSION="2.6.3 2.6.2 2.6.1 2.6.0"
-PGRVERSION="3.3.0 3.2.0 3.1.3 3.1.2 3.1.1 3.1.0 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 3.0.0 2.6.3 2.6.2 2.6.1 2.6.0"
+PGRVERSION="2.6.0 3.3.0 3.2.0 3.1.3 3.1.2 3.1.1 3.1.0 3.0.5 3.0.4 3.0.3 3.0.2 3.0.1 3.0.0 2.6.3 2.6.2 2.6.1 2.6.0"
 
 cd tools/testers/
 
@@ -36,6 +36,6 @@ do
     echo "../../pgtap/${DIR}"
 
     psql "$PGFLAGS"  -f setup_db.sql -d "${PGDATABASE}"
-    pg_prove -q --recurse --ext .sql "${PGFLAGS}"  -d "${PGDATABASE}" "../../pgtap/${DIR}"
+    pg_prove -v --recurse --ext .sql "${PGFLAGS}"  -d "${PGDATABASE}" "../../pgtap/${DIR}"
     dropdb --if-exists "${PGFLAGS}" "${PGDATABASE}"
 done

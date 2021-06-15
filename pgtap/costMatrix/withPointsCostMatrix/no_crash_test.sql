@@ -3,6 +3,20 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(19);
 
+CREATE OR REPLACE FUNCTION no_crash()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+params TEXT[];
+subs TEXT[];
+BEGIN
+
+IF is_version_2() AND NOT is_version_2('2.6.1') THEN
+  RETURN QUERY
+  SELECT skip(19, 'STRICT was added on 2.6.1');
+  RETURN;
+END IF;
+
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
@@ -12,18 +26,15 @@ SELECT pid, edge_id, fraction from pointsOfInterest;
 PREPARE null_ret AS
 SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
+RETURN QUERY
 SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+
+RETURN QUERY
 SELECT isnt_empty('pois', 'Should be not empty to tests be meaningful');
+
+RETURN QUERY
 SELECT set_eq('null_ret', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
-
-CREATE OR REPLACE FUNCTION test_function()
-RETURNS SETOF TEXT AS
-$BODY$
-DECLARE
-params TEXT[];
-subs TEXT[];
-BEGIN
     params = ARRAY[
     '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
     '$$SELECT pid, edge_id, fraction from pointsOfInterest$$',
@@ -48,6 +59,6 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
-
+SELECT * FROM no_crash();
+SELECT finish();
 ROLLBACK;
