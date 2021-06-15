@@ -3,6 +3,17 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(86);
 
+CREATE OR REPLACE FUNCTION preparation()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() THEN
+  RETURN QUERY
+  SELECT skip(2, 'Function is new on 3.0.0');
+  RETURN;
+END IF;
+
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
@@ -10,17 +21,31 @@ PREPARE null_vertex AS
 SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
 
+RETURN QUERY
 SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+
+RETURN QUERY
 SELECT is_empty('null_vertex', 'Should be empty to tests be meaningful');
+END;
+$BODY$
+LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE FUNCTION test_function()
+
+
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(84, 'Function is new on 3.0.0');
+    RETURN;
+  END IF;
+
     -- breadthFirstSearch
     params = ARRAY[
     '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
@@ -102,6 +127,8 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
+SELECT preparation();
+SELECT no_crash();
+SELECT finish();
 
 ROLLBACK;

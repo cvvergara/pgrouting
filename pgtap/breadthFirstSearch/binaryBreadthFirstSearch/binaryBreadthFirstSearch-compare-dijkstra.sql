@@ -7,7 +7,7 @@ SET client_min_messages TO ERROR;
 
 -- Compare final row of result (Only final row due to existence of multiple valid paths)
 
-CREATE or REPLACE FUNCTION binaryBreadthFirstSearch_compare_dijkstra(MAX_LIMIT INTEGER default 17)
+CREATE or REPLACE FUNCTION binaryBreadthFirstSearch_compare_dijkstra(max_limit INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -15,9 +15,15 @@ inner_sql TEXT;
 dijkstra_sql TEXT;
 binaryBreadthFirstSearch TEXT;
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(max_limit * MAX_LIMIT * 4, 'Function is new on 3.0.0');
+    RETURN;
+  END IF;
 
-    FOR i IN 1.. MAX_LIMIT LOOP
-        FOR j IN 1.. MAX_LIMIT LOOP
+
+    FOR i IN 1.. max_limit LOOP
+        FOR j IN 1.. max_limit LOOP
 
             -- DIRECTED
             inner_sql := 'SELECT id, source, target, road_work as cost, reverse_road_work as reverse_cost FROM roadworks';

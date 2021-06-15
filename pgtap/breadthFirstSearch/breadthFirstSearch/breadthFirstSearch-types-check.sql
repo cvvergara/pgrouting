@@ -3,16 +3,38 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(7);
 
+CREATE OR REPLACE FUNCTION types_check()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
+IF is_version_2() THEN
+  RETURN QUERY
+  SELECT skip(7, 'Function is new on 3.0.0');
+  RETURN;
+END IF;
+
+
+RETURN QUERY
 SELECT has_function('pgr_breadthfirstsearch');
 
+
+RETURN QUERY
 SELECT has_function('pgr_breadthfirstsearch', ARRAY['text','bigint','bigint','boolean']);
+
+RETURN QUERY
 SELECT has_function('pgr_breadthfirstsearch', ARRAY['text','anyarray','bigint','boolean']);
+
+RETURN QUERY
 SELECT function_returns('pgr_breadthfirstsearch', ARRAY['text','bigint','bigint','boolean'],  'setof record');
+
+RETURN QUERY
 SELECT function_returns('pgr_breadthfirstsearch', ARRAY['text','anyarray','bigint','boolean'],  'setof record');
 
 -- pgr_breadthfirstsearch
 -- parameter names
+
+RETURN QUERY
 SELECT set_eq(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_breadthfirstsearch'$$,
     $$VALUES
@@ -21,6 +43,8 @@ SELECT set_eq(
 );
 
 -- parameter types
+
+RETURN QUERY
 SELECT set_eq(
     $$SELECT  proallargtypes from pg_proc where proname = 'pgr_breadthfirstsearch'$$,
     $$VALUES
@@ -29,5 +53,10 @@ SELECT set_eq(
     $$
 );
 
-SELECT * FROM finish();
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT types_check();
+SELECT finish();
 ROLLBACK;
