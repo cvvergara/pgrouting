@@ -3,6 +3,17 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(8);
 
+CREATE OR REPLACE FUNCTION infinity_cost()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+IF is_version_2() THEN
+  RETURN QUERY
+  SELECT skip(8, 'Infinity cost fixed on 3.0.0');
+  RETURN;
+END IF;
+
 PREPARE q0 AS
 SELECT agg_cost FROM pgr_dijkstra( 'select id, source, target, cost from edge_table',
     7, 6) ORDER BY seq DESC LIMIT 1;
@@ -35,15 +46,27 @@ SELECT agg_cost FROM pgr_dijkstra( 'select id, source, target, cost from edge_ta
     7, 6) ORDER BY seq DESC LIMIT 1;
 
 -- test for infinity if there is no alternative
+RETURN QUERY
 SELECT results_eq('q0', 'SELECT cast(3 as double precision) as agg_cost;');
+RETURN QUERY
 SELECT lives_ok('update2infinity', 'updating an edge to ''Infinity'' should be possible');
+RETURN QUERY
 SELECT results_eq('q1', 'SELECT cast(1 as double precision) as agg_cost;');
+RETURN QUERY
 SELECT results_eq('q2', 'SELECT cast(''Infinity'' as double precision) as agg_cost;', 'Routing through edge 7 should be ''Infinity''');
+RETURN QUERY
 SELECT results_eq('q3', 'SELECT cast(1 as double precision) as agg_cost;');
+RETURN QUERY
 SELECT results_eq('q4', 'SELECT cast(''Infinity'' as double precision) as agg_cost;', 'Routing through edge 7 should be ''Infinity''');
+RETURN QUERY
 SELECT results_eq('q5', 'SELECT cast(''Infinity'' as double precision) as agg_cost;', 'Routing through edge 7 should be ''Infinity''');
+RETURN QUERY
 SELECT results_eq('q6', 'SELECT cast(''Infinity'' as double precision) as agg_cost;', 'Routing through edge 7 should be ''Infinity''');
 
--- Finish the tests and clean up.
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT infinity_cost();
 SELECT * FROM finish();
 ROLLBACK;
