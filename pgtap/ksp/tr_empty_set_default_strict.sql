@@ -1,7 +1,17 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(16);
+SELECT plan(20);
+
+CREATE or REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (20, 'pgr_turnrestrictedpath was added on 3.0.0');
+    RETURN;
+  END IF;
 
 ----------------------------------------------------------------------------------------------------------------
 -- testing from an existing starting vertex to a non-existing destination
@@ -49,9 +59,13 @@ SELECT * FROM pgr_turnRestrictedPath(
     FALSE
 );
 
+RETURN QUERY
 SELECT is_empty('q1');
+RETURN QUERY
 SELECT is_empty('q2');
+RETURN QUERY
 SELECT is_empty('q3');
+RETURN QUERY
 SELECT is_empty('q4');
 ----------------------------------------------------------------------------------------------------------------
 -- testing from an non-existing starting vertex to an existing destination
@@ -99,9 +113,13 @@ SELECT * FROM pgr_turnRestrictedPath(
     FALSE
 );
 
+RETURN QUERY
 SELECT is_empty('q5');
+RETURN QUERY
 SELECT is_empty('q6');
+RETURN QUERY
 SELECT is_empty('q7');
+RETURN QUERY
 SELECT is_empty('q8');
 ----------------------------------------------------------------------------------------------------------------
 -- testing from a non-existing starting vertex to a non-existing destination
@@ -149,9 +167,13 @@ SELECT * FROM pgr_turnRestrictedPath(
     FALSE
 );
 
+RETURN QUERY
 SELECT is_empty('q9');
+RETURN QUERY
 SELECT is_empty('q10');
+RETURN QUERY
 SELECT is_empty('q11');
+RETURN QUERY
 SELECT is_empty('q12');
 ----------------------------------------------------------------------------------------------------------------
 -- testing from an existing starting vertex to the same destination
@@ -199,9 +221,13 @@ SELECT * FROM pgr_turnRestrictedPath(
     FALSE
 );
 
+RETURN QUERY
 SELECT is_empty('q13');
+RETURN QUERY
 SELECT is_empty('q14');
+RETURN QUERY
 SELECT is_empty('q15');
+RETURN QUERY
 SELECT is_empty('q16');
 ----------------------------------------------------------------------------------------------------------------
 -- testing from an existing starting vertex in one component to an existing destination in another component
@@ -247,13 +273,20 @@ SELECT * FROM pgr_turnRestrictedPath(
     3,
     FALSE
 );
-/*
+
+RETURN QUERY
 SELECT is_empty('q17');
+RETURN QUERY
 SELECT is_empty('q18');
+RETURN QUERY
 SELECT is_empty('q19');
+RETURN QUERY
 SELECT is_empty('q20');
 ----------------------------------------------------------------------------------------------------------------
-*/
+END
+$BODY$
+language plpgsql;
 
-SELECT * FROM finish();
+SELECT edge_cases();
+SELECT finish();
 ROLLBACK;

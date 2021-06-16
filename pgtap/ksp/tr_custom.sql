@@ -3,8 +3,15 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(9);
 
-SET client_min_messages TO WARNING;
-
+CREATE or REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (9, 'pgr_turnrestrictedpath was added on 3.0.0');
+    RETURN;
+  END IF;
 
 -------------------------------------------------------------
 -- queries that return r1
@@ -38,7 +45,9 @@ FROM pgr_turnRestrictedPath(
     stop_on_first:=false
 );
 
+RETURN QUERY
 SELECT set_eq('q1', 'r1', 'Should return r1 result (one cycle)');
+RETURN QUERY
 SELECT set_eq('q2', 'r1', 'Should return r1 result (one cycle, Dont stop_on_first)');
 
 -------------------------------------------------------------
@@ -68,6 +77,7 @@ FROM pgr_turnRestrictedPath(
     stop_on_first:=false
 );
 
+RETURN QUERY
 SELECT set_eq('q3', 'r2', 'Should return r2 result (3 cycle, Dont stop_on_first)');
 
 -------------------------------------------------------------
@@ -99,7 +109,9 @@ FROM pgr_turnRestrictedPath(
     heap_paths:=true
 )  WHERE agg_cost = FLOAT8 '+infinity';
 
+RETURN QUERY
 SELECT set_eq('q4', 'r3', 'Should return r3 result (1 cycle)');
+RETURN QUERY
 SELECT set_eq('q7', 'r3', 'Should return r3 result (1 cycle, Heap paths)');
 
 -------------------------------------------------------------
@@ -132,7 +144,9 @@ FROM pgr_turnRestrictedPath(
     stop_on_first:=false
 ) WHERE agg_cost = FLOAT8 '+infinity';
 
+RETURN QUERY
 SELECT set_eq('q5', 'r4', 'q5 Should return r4 result (2 cycle, Dont stop_on_first)');
+RETURN QUERY
 SELECT set_eq('q6', 'r4', 'q6 Should return r4 result (2 cycle, Dont stop_on_first)');
 
 
@@ -170,9 +184,15 @@ FROM pgr_turnRestrictedPath(
     stop_on_first:=false
 ) WHERE agg_cost = FLOAT8 '+infinity';
 
+RETURN QUERY
 SELECT set_eq('q8', 'r5', 'Should return r4 result (2 cycle, Dont stop_on_first, heap paths)');
+RETURN QUERY
 SELECT set_eq('q9', 'r5', 'Should return r4 result (3 cycle, Dont stop_on_first, heap paths)');
 
+END
+$BODY$
+language plpgsql;
 
+SELECT edge_cases();
 SELECT finish();
 ROLLBACK;

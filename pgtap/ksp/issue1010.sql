@@ -4,6 +4,16 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(6);
 
+CREATE OR REPLACE FUNCTION issue()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+IF is_version_2() OR NOT test_min_version('3.0.0') THEN
+  RETURN QUERY
+  SELECT skip (6, 'Issue fixed on 3.0.0');
+  RETURN;
+END IF;
 
 PREPARE r1 AS
 SELECT seq, node::BIGINT, edge::BIGINT, agg_cost FROM ( VALUES
@@ -43,6 +53,7 @@ FROM pgr_ksp(
      select 8 , 14, 0 , 1',
      1, 0, 1, directed := TRUE);
 
+RETURN QUERY
 SELECT set_eq('q1','r1','q1 should have r1 result');
 
 PREPARE q2 AS
@@ -58,7 +69,9 @@ FROM pgr_ksp(
      select 8 , 14, 0 , 1',
      1, 0, 2, directed := TRUE);
 
+RETURN QUERY
 SELECT bag_has('q2','r1','q2 should have r1 result');
+RETURN QUERY
 SELECT bag_has('q2','r2','q2 should have r2 result');
 
 PREPARE q3 AS
@@ -74,10 +87,18 @@ FROM pgr_ksp(
      select 8 , 14, 0 , 1',
      1, 0, 3, directed := TRUE);
 
+RETURN QUERY
 SELECT bag_has('q3','r1','q3 should have r1 result');
+RETURN QUERY
 SELECT bag_has('q3','r2','q3 should have r2 result');
+RETURN QUERY
 SELECT bag_has('q3','r3','q3 should have r3 result');
 
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT issue();
 SELECT finish();
 ROLLBACK;
