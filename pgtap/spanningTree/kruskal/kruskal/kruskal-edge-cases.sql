@@ -81,5 +81,5 @@ LANGUAGE plpgsql VOLATILE;
 
 SELECT edge_cases();
 
-SELECT * FROM finish();
+SELECT finish();
 ROLLBACK;

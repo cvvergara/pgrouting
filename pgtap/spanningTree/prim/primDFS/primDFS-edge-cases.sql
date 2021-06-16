@@ -4,6 +4,17 @@ SELECT plan(10);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (10, 'pgr_primDFS is new on 3.0.0');
+    RETURN;
+  END IF;
+
 --
 PREPARE prim1 AS
 SELECT * FROM pgr_primDFS(
@@ -197,5 +208,11 @@ SELECT set_eq('prim10',
     $$,
     '10: root = 0 -> forest (with random root vertices)');
 
-SELECT * FROM finish();
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT edge_cases();
+
+SELECT finish();
 ROLLBACK;

@@ -4,6 +4,17 @@ SELECT plan(9);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (9, 'pgr_primDD is new on 3.0.0');
+    RETURN;
+  END IF;
+
 --
 PREPARE prim1 AS
 SELECT *
@@ -167,6 +178,12 @@ SELECT set_eq('prim9',
     $$,
     '9: 0 distance -> Only root vertex is returned');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
 
-SELECT * FROM finish();
+SELECT edge_cases();
+
+SELECT finish();
 ROLLBACK;
+
