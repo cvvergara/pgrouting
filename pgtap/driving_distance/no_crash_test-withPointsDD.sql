@@ -10,9 +10,9 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-  IF is_version_2() AND is_version_2('2.1.0') THEN
+  IF is_version_2() AND is_version_2('2.6.1') THEN
     RETURN QUERY
-    SELECT skip (42, 'STATIC was added on 2.1.0');
+    SELECT skip (42, 'STATIC was added on 2.6.1');
     RETURN;
   END IF;
 

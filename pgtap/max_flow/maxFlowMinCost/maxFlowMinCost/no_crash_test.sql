@@ -34,7 +34,7 @@ SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
 SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
 
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -43,8 +43,9 @@ subs TEXT[];
 BEGIN
   IF is_version_2() OR NOT test_min_version('3.2.0') THEN
     RETURN QUERY
-    SELECT skip(48, 'Bug in function is fixed on 3.2.0');
-  ELSE
+    SELECT skip(76, 'STRICT is fixed on 3.2.0');
+    RETURN;
+  END IF;
     -- one to one
     params = ARRAY[
     '$$edges$$',
@@ -105,7 +106,6 @@ BEGIN
     'NULL::BIGINT'
     ]::TEXT[];
     RETURN query SELECT * FROM no_crash_test('pgr_maxFlowMinCost',params, subs);
-  END IF;
 
     -- many to many
     params = ARRAY['$$edges$$',
@@ -152,6 +152,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
+SELECT no_crash();
+SELECT finish();
 
 ROLLBACK;

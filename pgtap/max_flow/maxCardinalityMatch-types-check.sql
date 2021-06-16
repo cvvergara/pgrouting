@@ -43,10 +43,14 @@ SELECT  'integer'::text AS t1,'bigint'::text AS t2,
 SELECT set_eq('mcm_q', 'mcm_v','Expected returning, columns names & types');
 
 -- testing column names
-SELECT bag_has(
+SELECT CASE
+WHEN is_version_2() THEN
+  skip(1, 'pgr_maxCardinalityMatch changed parameters names on 3.0.0')
+ELSE
+  bag_has(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_maxcardinalitymatch'$$,
-    $$SELECT  '{"","directed","seq","edge","source","target"}'::TEXT[] $$
-);
+    $$SELECT  '{"","directed","seq","edge","source","target"}'::TEXT[] $$)
+END;
 
 
 SELECT * FROM finish();

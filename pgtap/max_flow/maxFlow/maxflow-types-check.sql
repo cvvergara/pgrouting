@@ -16,10 +16,14 @@ SELECT function_returns('pgr_maxflow', ARRAY[ 'text', 'anyarray', 'bigint' ], 'b
 SELECT function_returns('pgr_maxflow', ARRAY[ 'text', 'anyarray', 'anyarray' ], 'bigint');
 
 -- testing column names
-SELECT set_eq(
+SELECT CASE
+WHEN is_version_2() THEN
+  skip(1, 'pgr_maxflow changed parameters names on 3.0.0')
+ELSE
+  set_eq(
     $$SELECT  proargnames from pg_proc where proname = 'pgr_maxflow'$$,
-    $$SELECT  NULL::TEXT[] $$
-);
+    $$SELECT  NULL::TEXT[] $$)
+END;
 
 
 -- pgr_maxflow works

@@ -16,6 +16,12 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() AND NOT is_version_2('2.6.1') THEN
+    RETURN QUERY
+    SELECT skip (4, 'STATIC was added on 2.6.1');
+    RETURN;
+  END IF;
+
     params = ARRAY[
         '$$SELECT id, source, target, cost AS going, reverse_cost AS coming FROM edge_table$$'
         ]::TEXT[];
@@ -31,5 +37,6 @@ LANGUAGE plpgsql VOLATILE;
 
 
 SELECT * FROM test_function();
+SELECT finish();
 
 ROLLBACK;

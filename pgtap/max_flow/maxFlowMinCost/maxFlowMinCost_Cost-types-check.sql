@@ -3,20 +3,31 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(18);
 
-SELECT has_function('pgr_maxflowmincost_cost');
+CREATE OR REPLACE FUNCTION types_check()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (18, 'pgr_maxflowmincost is new on 3.0.0');
+    RETURN;
+  END IF;
 
-SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'bigint']);
-SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'bigint']);
-SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'anyarray']);
-SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'anyarray']);
+RETURN QUERY SELECT has_function('pgr_maxflowmincost_cost');
 
-SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'bigint'], 'double precision');
-SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'bigint'], 'double precision');
-SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'anyarray'], 'double precision');
-SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'anyarray'], 'double precision');
+RETURN QUERY SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'bigint']);
+RETURN QUERY SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'bigint']);
+RETURN QUERY SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'anyarray']);
+RETURN QUERY SELECT has_function('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'anyarray']);
+
+RETURN QUERY SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'bigint'], 'double precision');
+RETURN QUERY SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'bigint'], 'double precision');
+RETURN QUERY SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'bigint', 'anyarray'], 'double precision');
+RETURN QUERY SELECT function_returns('pgr_maxflowmincost_cost', ARRAY['text', 'anyarray', 'anyarray'], 'double precision');
 
 -- column names
-SELECT set_eq(
+RETURN QUERY SELECT set_eq(
     $$SELECT proargnames from pg_proc where proname = 'pgr_maxflowmincost_cost'$$,
     $$SELECT NULL::TEXT[] $$
 );
@@ -43,10 +54,10 @@ SELECT * FROM pgr_maxflowmincost_cost(
     ARRAY[2], ARRAY[3]
 );
 
-SELECT lives_ok('t1', 'pgr_maxflowmincost_cost(one to one)');
-SELECT lives_ok('t2', 'pgr_maxflowmincost_cost(many to one)');
-SELECT lives_ok('t3', 'pgr_maxflowmincost_cost(one to many)');
-SELECT lives_ok('t4', 'pgr_maxflowmincost_cost(many to many)');
+RETURN QUERY SELECT lives_ok('t1', 'pgr_maxflowmincost_cost(one to one)');
+RETURN QUERY SELECT lives_ok('t2', 'pgr_maxflowmincost_cost(many to one)');
+RETURN QUERY SELECT lives_ok('t3', 'pgr_maxflowmincost_cost(one to many)');
+RETURN QUERY SELECT lives_ok('t4', 'pgr_maxflowmincost_cost(many to many)');
 
 -- prepare for testing return types
 PREPARE all_return AS
@@ -90,10 +101,16 @@ SELECT pg_typeof(pgr_maxFlowMinCost_cost)::text AS t1
     limit 1;
 
 -- test return types
-SELECT set_eq('q1', 'all_return', '1 to 1: Expected returning, columns names & types');
-SELECT set_eq('q2', 'all_return', 'many to 1: Expected returning, columns names & types');
-SELECT set_eq('q3', 'all_return', '1 to many: Expected returning, columns names & types');
-SELECT set_eq('q4', 'all_return', 'many to many: Expected returning, columns names & types');
+RETURN QUERY SELECT set_eq('q1', 'all_return', '1 to 1: Expected returning, columns names & types');
+RETURN QUERY SELECT set_eq('q2', 'all_return', 'many to 1: Expected returning, columns names & types');
+RETURN QUERY SELECT set_eq('q3', 'all_return', '1 to many: Expected returning, columns names & types');
+RETURN QUERY SELECT set_eq('q4', 'all_return', 'many to many: Expected returning, columns names & types');
 
-SELECT * FROM finish();
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+
+SELECT types_check();
+SELECT finish();
 ROLLBACK;

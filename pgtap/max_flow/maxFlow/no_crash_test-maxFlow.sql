@@ -75,6 +75,12 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() AND NOT is_version_2('2.6.1') THEN
+    RETURN QUERY
+    SELECT skip (76, 'STATIC was added on 2.6.1');
+    RETURN;
+  END IF;
+
     -- one to one
     params = ARRAY['$$edges$$',
     '1::BIGINT',
