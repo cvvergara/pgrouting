@@ -4,6 +4,17 @@ SELECT plan(9);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (9, 'pgr_kruskalDD is new on 3.0.0');
+    RETURN;
+  END IF;
+
 --
 PREPARE kruskal1 AS
 SELECT *
@@ -27,6 +38,7 @@ FROM pgr_kruskalDD(
     3.5
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal2',
     $$VALUES
         (1,0,21,21,-1,0,0),
@@ -44,6 +56,7 @@ FROM pgr_kruskalDD(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal3',
     $$VALUES (1,0,21,21,-1,0,0) $$,
     '1: Root not in Graph -> Only root vertex is returned');
@@ -58,6 +71,7 @@ FROM pgr_kruskalDD(
     3.5
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal4',
     $$VALUES
         (1,4,0,4,-1,true),
@@ -80,6 +94,7 @@ FROM pgr_kruskalDD(
     0, 3.5
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal5',
     $$VALUES
         (1,1,0,1,-1,true),
@@ -106,6 +121,7 @@ FROM pgr_kruskalDD(
     4, -3
 );
 
+RETURN QUERY
 SELECT throws_ok('kruskal6',
     'P0001',
     'Negative value found on ''distance''',
@@ -121,6 +137,7 @@ FROM pgr_kruskalDD(
     ARRAY[4, 10], -3
 );
 
+RETURN QUERY
 SELECT throws_ok('kruskal7',
     'P0001',
     'Negative value found on ''distance''',
@@ -135,6 +152,7 @@ FROM pgr_kruskalDD(
     4, 0
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal8',
     $$VALUES (1,0,4,4,-1,0,0) $$,
     '8: 0 distance -> Only root vertex is returned');
@@ -167,6 +185,11 @@ SELECT set_eq('kruskal9',
     $$,
     '9: 0 distance -> Only root vertex is returned');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT edge_cases();
 
 SELECT * FROM finish();
 ROLLBACK;

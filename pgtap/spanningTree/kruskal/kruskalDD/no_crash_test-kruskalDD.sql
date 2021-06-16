@@ -3,24 +3,32 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(114);
 
-PREPARE edges AS
-SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
-PREPARE null_vertex AS
-SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
-
-
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-SELECT is_empty('null_vertex', 'Should be empty to tests be meaningful');
-
-
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (114, 'pgr_kruskalDD is new on 3.0.0');
+    RETURN;
+  END IF;
+
+  PREPARE edges AS
+  SELECT id, source, target, cost, reverse_cost  FROM edge_table;
+
+  PREPARE null_vertex AS
+  SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
+
+
+  RETURN QUERY
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_vertex', 'Should be empty to tests be meaningful');
+
     -- kruskalDD
     params = ARRAY[
     '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$',
@@ -114,6 +122,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
+SELECT no_crash();
+SELECT finish();
 
 ROLLBACK;

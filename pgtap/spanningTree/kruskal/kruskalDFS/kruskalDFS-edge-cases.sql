@@ -4,6 +4,17 @@ SELECT plan(10);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (10, 'pgr_kruskalDFS is new on 3.0.0');
+    RETURN;
+  END IF;
+
 --
 PREPARE kruskal1 AS
 SELECT * FROM pgr_kruskalDFS(
@@ -12,6 +23,7 @@ SELECT * FROM pgr_kruskalDFS(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal1',
     $$VALUES (1, 0, 21, 21, -1, 0, 0) $$,
     '1: Empty Graph -> Only root vertex is returned');
@@ -26,6 +38,7 @@ FROM pgr_kruskalDFS(
     3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal2',
     $$VALUES
         (1, 0, 21, 21, -1, 0, 0),
@@ -43,6 +56,7 @@ FROM pgr_kruskalDFS(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal3',
     $$VALUES (1, 0, 21, 21, -1, 0, 0) $$,
     '3: Root not in Graph -> Only root vertex is returned');
@@ -57,6 +71,7 @@ FROM pgr_kruskalDFS(
     3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal4',
     $$VALUES
         (1, 4, 0, 4, -1, true),
@@ -79,6 +94,7 @@ FROM pgr_kruskalDFS(
     0, 3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal5',
     $$VALUES
         (1, 1, 0, 1, -1, true),
@@ -106,6 +122,7 @@ FROM pgr_kruskalDFS(
 );
 
 
+RETURN QUERY
 SELECT throws_ok('kruskal6',
     'P0001',
     'Negative value found on ''max_depth''',
@@ -121,6 +138,7 @@ FROM pgr_kruskalDFS(
     ARRAY[4, 10], -3
 );
 
+RETURN QUERY
 SELECT throws_ok('kruskal7',
     'P0001',
     'Negative value found on ''max_depth''',
@@ -135,6 +153,7 @@ FROM pgr_kruskalDFS(
     4, 0
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal8',
     $$VALUES (1, 0, 4, 4, -1, 0, 0) $$,
     '8: 0 max_depth -> Only root vertex is returned');
@@ -148,6 +167,7 @@ FROM pgr_kruskalDFS(
     4
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal9',
     $$VALUES
         (1,  0, 4,  4, -1, true),
@@ -175,6 +195,7 @@ FROM pgr_kruskalDFS(
     0
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal10',
     $$VALUES
        (1,  1, 0, 1,-1, true),
@@ -197,5 +218,10 @@ SELECT set_eq('kruskal10',
     $$,
     '10: root = 0 -> forest (with random root vertices)');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT edge_cases();
 SELECT * FROM finish();
 ROLLBACK;

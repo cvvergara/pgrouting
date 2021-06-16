@@ -3,38 +3,44 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(9);
 
-PREPARE edges AS
-SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-
-
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-    -- kruskal with no root vertex
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$'
-    ]::TEXT[];
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (9, 'pgr_kruskal is new on 3.0.0');
+    RETURN;
+  END IF;
 
-    subs = ARRAY[
-    'NULL'
-    ]::TEXT[];
+  PREPARE edges AS
+  SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
-    RETURN query SELECT * FROM no_crash_test('pgr_kruskal', params, subs);
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
 
-    params[1] := '$$edges$$';
-    RETURN query SELECT * FROM no_crash_test('pgr_kruskal', params, subs);
+  -- kruskal with no root vertex
+  params = ARRAY[
+  '$$SELECT id, source, target, cost, reverse_cost  FROM edge_table$$'
+  ]::TEXT[];
+
+  subs = ARRAY[
+  'NULL'
+  ]::TEXT[];
+
+  RETURN query SELECT * FROM no_crash_test('pgr_kruskal', params, subs);
+
+  params[1] := '$$edges$$';
+  RETURN query SELECT * FROM no_crash_test('pgr_kruskal', params, subs);
 
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-
-SELECT * FROM test_function();
+SELECT no_crash();
+SELECT finish();
 
 ROLLBACK;

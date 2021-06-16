@@ -4,6 +4,17 @@ SELECT plan(4);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (4, 'pgr_kruskal is new on 3.0.0');
+    RETURN;
+  END IF;
+
 --
 PREPARE kruskal1 AS
 SELECT * FROM pgr_kruskal(
@@ -18,7 +29,9 @@ FROM pgr_kruskal(
      FROM edge_table WHERE cost < 0 ORDER BY id'
 );
 
+RETURN QUERY
 SELECT is_empty('kruskal1', 'No_edge -> No answer');
+RETURN QUERY
 SELECT is_empty('kruskal2', 'ALL Negative Cost -> no answer');
 
 
@@ -30,6 +43,7 @@ FROM pgr_kruskal(
      FROM edge_table ORDER BY id'
 ) WHERE edge < 0;
 
+RETURN QUERY
 SELECT set_eq('kruskal4',
     $$VALUES (0)$$,
     '3: No edge with negative values');
@@ -42,6 +56,7 @@ FROM pgr_kruskal(
      FROM edge_table ORDER BY id'
 );
 
+RETURN QUERY
 SELECT bag_has('kruskal5',
 $$VALUES
 (1 , 1.001),
@@ -60,6 +75,11 @@ $$VALUES
 (18 , 1.324)$$,
 '4: kruskal result');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT edge_cases();
 
 SELECT * FROM finish();
 ROLLBACK;
