@@ -3,133 +3,145 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(81);
 
-PREPARE edges AS
-SELECT id, source, target, cost  FROM edge_table;
-
-PREPARE combinations AS
-SELECT source, target  FROM combinations_table;
-
-PREPARE null_ret AS
-SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
-
-PREPARE null_ret_arr AS
-SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
-
-PREPARE null_combinations AS
-SELECT source, target FROM combinations_table WHERE source IN (-1);
-
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
-SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
-SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
-SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
-
-
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-    -- one to one
-    params = ARRAY[
-    '$$SELECT id, source, target, cost  FROM edge_table$$'
-    ,'1::BIGINT',
-    '2::BIGINT'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(81, 'Function is new on 3.0.0');
+    RETURN;
+  END IF;
 
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  PREPARE edges AS
+  SELECT id, source, target, cost  FROM edge_table;
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT',
-    'NULL::BIGINT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  PREPARE combinations AS
+  SELECT source, target  FROM combinations_table;
 
-    -- one to many
-    params = ARRAY['$$edges$$','1', 'ARRAY[2,5]::BIGINT[]']::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  PREPARE null_ret AS
+  SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  PREPARE null_ret_arr AS
+  SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT',
-    'NULL::BIGINT[]'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  PREPARE null_combinations AS
+  SELECT source, target FROM combinations_table WHERE source IN (-1);
 
-    -- many to one
-    params = ARRAY['$$edges$$', 'ARRAY[1]::BIGINT[]', '2']::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  RETURN QUERY
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
+  RETURN QUERY
+  SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT[]',
-    'NULL::BIGINT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  -- one to one
+  params = ARRAY[
+  '$$SELECT id, source, target, cost  FROM edge_table$$'
+  ,'1::BIGINT',
+  '2::BIGINT'
+  ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    -- many to many
-    params = ARRAY['$$edges$$','ARRAY[1]::BIGINT[]', 'ARRAY[2,5]::BIGINT[]']::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
 
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT',
+  'NULL::BIGINT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT[]',
-    'NULL::BIGINT[]'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  -- one to many
+  params = ARRAY['$$edges$$','1', 'ARRAY[2,5]::BIGINT[]']::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    IF is_version_2() OR NOT test_min_version('3.2.0') THEN
-      RETURN QUERY
-      SELECT skip(12, 'Combinations signature is new on 3.2.0');
-      RETURN;
-    END IF;
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
 
-    -- Combinations SQL
-    params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$'
-    ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT',
+  'NULL::BIGINT[]'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
 
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  -- many to one
+  params = ARRAY['$$edges$$', 'ARRAY[1]::BIGINT[]', '2']::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::TEXT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT[]',
+  'NULL::BIGINT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+
+  -- many to many
+  params = ARRAY['$$edges$$','ARRAY[1]::BIGINT[]', 'ARRAY[2,5]::BIGINT[]']::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
+
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT[]',
+  'NULL::BIGINT[]'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(12, 'Combinations signature is new on 3.2.0');
+    RETURN;
+  END IF;
+
+  -- Combinations SQL
+  params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$'
+  ]::TEXT[];
+
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
+
+  subs = ARRAY[
+  'NULL',
+  'NULL::TEXT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_dagShortestPath', params, subs);
 
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
+SELECT no_crash();
+SELECT finish();
 
 ROLLBACK;
