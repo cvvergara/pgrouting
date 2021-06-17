@@ -1,7 +1,12 @@
 
 \i setup.sql
 
-SELECT plan(334);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(334) END;
+
+CREATE OR REPLACE FUNCTION preparation()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 ALTER SEQUENCE edge_table_id_seq RESTART WITH 19;
@@ -9,7 +14,9 @@ ALTER SEQUENCE edge_table_id_seq RESTART WITH 19;
 
 --step 1: Initial tables
 
+RETURN QUERY
 SELECT isnt_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table$$);
+RETURN QUERY
 SELECT isnt_empty($$SELECT id FROM edge_table_vertices_pgr$$);
 
 
@@ -22,12 +29,17 @@ ALTER TABLE edge_table_vertices_pgr
 ADD is_contracted BOOLEAN DEFAULT false,
 ADD contracted_vertices integer[];
 
+RETURN QUERY
 SELECT has_column('edge_table', 'is_contracted');
+RETURN QUERY
 SELECT has_column('edge_table_vertices_pgr', 'is_contracted');
+RETURN QUERY
 SELECT has_column('edge_table', 'contracted_vertices');
+RETURN QUERY
 SELECT has_column('edge_table_vertices_pgr', 'contracted_vertices');
 
-SELECT * INTO contraction_info FROM pgr_contraction(
+CREATE TABLE contraction_info AS
+SELECT *  FROM pgr_contraction(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
     ARRAY[2]::integer[], 1, ARRAY[]::BIGINT[], false);
 
@@ -39,6 +51,7 @@ FROM (VALUES
     ('e', -1, ARRAY[4], 3, 9, '2.265')
 ) AS t(type, id, contracted_vertices, source, target, cost );
 
+RETURN QUERY
 SELECT set_eq($$SELECT type, id, contracted_vertices, source, target, round(cost::numeric,3)::TEXT FROM contraction_info$$, 'c_info');
 
 -- add the new edges
@@ -58,16 +71,14 @@ SET contracted_vertices = contraction_info.contracted_vertices
 FROM contraction_info
 WHERE type = 'v' AND edge_table_vertices_pgr.id = contraction_info.id;
 
-SELECT id
-    FROM edge_table
-    WHERE is_contracted;
-
+RETURN QUERY
 SELECT set_eq($$SELECT id
     FROM edge_table
     WHERE NOT is_contracted$$,
     $$SELECT unnest(ARRAY[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18])$$
 );
 
+RETURN QUERY
 SELECT set_eq($$SELECT id
     FROM edge_table
     WHERE is_contracted$$,
@@ -102,7 +113,12 @@ FROM (VALUES
     (  5,    7,   '2.085',   '-1.000'))
 AS t(source, target, cost, reverse_cost);
 
+RETURN QUERY
 SELECT set_eq('c_graph', 'c_expected_graph');
+
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION compare_dijkstra(
     BIGINT, BIGINT)
@@ -176,6 +192,15 @@ DECLARE
     j INTEGER;
 
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT preparation();
+
     FOR i IN 1..18 LOOP
         FOR j IN 1..18 LOOP
             RETURN QUERY

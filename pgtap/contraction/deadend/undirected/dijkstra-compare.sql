@@ -1,12 +1,18 @@
 \i setup.sql
 
-SELECT plan(333);
-
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(333) END;
+
+CREATE OR REPLACE FUNCTION preparation()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 --step 1: Initial tables
 
+RETURN QUERY
 SELECT isnt_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table$$);
+RETURN QUERY
 SELECT isnt_empty($$SELECT id FROM edge_table_vertices_pgr$$);
 
 
@@ -19,12 +25,17 @@ ALTER TABLE edge_table_vertices_pgr
 ADD is_contracted BOOLEAN DEFAULT false,
 ADD contracted_vertices integer[];
 
+RETURN QUERY
 SELECT has_column('edge_table', 'is_contracted');
+RETURN QUERY
 SELECT has_column('edge_table_vertices_pgr', 'is_contracted');
+RETURN QUERY
 SELECT has_column('edge_table', 'contracted_vertices');
+RETURN QUERY
 SELECT has_column('edge_table_vertices_pgr', 'contracted_vertices');
 
-SELECT * INTO contraction_info FROM pgr_contraction(
+CREATE TABLE contraction_info AS
+SELECT * FROM pgr_contraction(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
     ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true);
 
@@ -38,6 +49,7 @@ FROM (VALUES
     ('v', 17, ARRAY[16], -1, -1, -1)
 ) AS t(type, id, contracted_vertices, source, target, cost );
 
+RETURN QUERY
 SELECT set_eq($$SELECT * FROM contraction_info$$, 'c_info');
 
 
@@ -51,18 +63,23 @@ UPDATE edge_table_vertices_pgr
 FROM (SELECT unnest(contracted_vertices) AS id FROM contraction_info WHERE type = 'v') AS result
 WHERE result.id = edge_table_vertices_pgr.id;
 
+RETURN QUERY
 SELECT set_eq($$SELECT id
     FROM edge_table_vertices_pgr
     WHERE NOT is_contracted$$,
     $$SELECT unnest(ARRAY[2,3,4,5,6,9,10,11,12,15,17])$$
 );
 
+RETURN QUERY
 SELECT set_eq($$SELECT id
     FROM edge_table_vertices_pgr
     WHERE is_contracted$$,
     $$SELECT unnest(ARRAY[1,7,8,13,14,16])$$
 );
 
+END
+$BODY$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION compare_dijkstra(
     BIGINT, BIGINT)
@@ -113,6 +130,14 @@ DECLARE
     j INTEGER;
 
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
+  RETURN QUERY
+  SELECT preparation();
+
     FOR i IN 1..18 LOOP
         FOR j IN 1..18 LOOP
             RETURN QUERY
@@ -124,3 +149,5 @@ $BODY$
 LANGUAGE plpgsql;
 
 SELECT compare_dijkstra_all();
+SELECT finish();
+ROLLBACK;

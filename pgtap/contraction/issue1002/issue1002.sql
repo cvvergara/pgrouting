@@ -1,12 +1,19 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(3);
-
-SET client_min_messages TO WARNING;
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(3) END;
 
 -- TESTING queries on issues related to https://github.com/pgRouting/pgrouting/issues/1002
 
+CREATE OR REPLACE FUNCTION test_function()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
 
 ------ https://github.com/pgRouting/pgrouting/issues/1004
 PREPARE issue1004_r AS
@@ -21,6 +28,7 @@ SELECT * FROM pgr_contraction(
     $$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE id = 2 or id = 3$$,
     ARRAY[1]::integer[], 1, ARRAY[7]::BIGINT[], true);
 
+RETURN QUERY
 SELECT set_eq('issue1004_r', 'issue1004_q', 'Contraction any one of the forbidden vertices do not belong to graph');
 
 ------ https://github.com/pgRouting/pgrouting/issues/1005
@@ -36,6 +44,7 @@ SELECT * FROM pgr_contraction(
     WHERE id = 5 OR id = 11 OR id = 13$$,
     ARRAY[2]::integer[], 1, ARRAY[]::BIGINT[], true);
 
+RETURN QUERY
 SELECT set_eq('issue1005_r', 'issue1005_q', 'Contraction any one of the forbidden vertices do not belong to graph');
 
 ------ https://github.com/pgRouting/pgrouting/issues/1006
@@ -54,8 +63,13 @@ SELECT * FROM pgr_contraction(
     $$,
     ARRAY[2]::integer[], 1, ARRAY[]::BIGINT[], true);
 
+RETURN QUERY
 SELECT set_eq('issue1006_r', 'issue1006_q', 'Contraction any one of the forbidden vertices do not belong to graph');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
 
+SELECT test_function();
 SELECT finish();
 ROLLBACK;

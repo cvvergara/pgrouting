@@ -1,8 +1,19 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(6);
 
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(6) END;
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
+
+-- TESTING ONE CYCLE OF DEAD END CONTRACTION FOR A DIRECTED GRAPH
 CREATE TABLE test_deadend (
     id SERIAL,
     source BIGINT,
@@ -53,6 +64,7 @@ SELECT
     -1::BIGINT AS target,
     -1::FLOAT AS cost;
 
+RETURN QUERY
 SELECT set_eq('q1', 'sol_2_1');
 
 --
@@ -61,6 +73,7 @@ SELECT * FROM pgr_contraction(
     $$SELECT * FROM test_deadend WHERE dead_case IN (0, 2)$$,
     ARRAY[1]::integer[], directed := false);
 
+RETURN QUERY
 SELECT set_eq('q2', 'sol_2_1');
 
 --
@@ -68,6 +81,7 @@ prepare q3 AS
 SELECT * FROM pgr_contraction(
     $$SELECT * FROM test_deadend WHERE dead_case IN (0, 3)$$,
     ARRAY[1]::integer[]);
+RETURN QUERY
 SELECT set_eq('q3', 'sol_2_1');
 
 --
@@ -75,6 +89,7 @@ prepare q4 AS
 SELECT * FROM pgr_contraction(
     $$SELECT * FROM test_deadend WHERE dead_case IN (0, 4)$$,
     ARRAY[1]::integer[], directed := false);
+RETURN QUERY
 SELECT is_empty('q4');
 
 --
@@ -82,6 +97,7 @@ PREPARE q41 AS
 SELECT * FROM pgr_contraction(
     $$SELECT * FROM test_deadend WHERE dead_case IN (0, 41)$$,
     ARRAY[1]::integer[], directed := false);
+RETURN QUERY
 SELECT is_empty('q41');
 
 --
@@ -90,8 +106,15 @@ SELECT * FROM pgr_contraction(
     $$SELECT * FROM test_deadend WHERE dead_case IN (0, 5)$$,
     ARRAY[1]::integer[], directed := false);
 
+RETURN QUERY
 SELECT set_eq('q5', 'sol_2_1');
 
 
+END
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
 SELECT finish();
+ROLLBACK;
 

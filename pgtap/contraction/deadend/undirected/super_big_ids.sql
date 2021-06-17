@@ -1,7 +1,17 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(6);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(6) END;
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
 
 UPDATE edge_table
 SET id = id + POWER(10, 12),
@@ -18,6 +28,7 @@ SELECT * FROM pgr_contraction(
     WHERE id = 1000000000001$$,
     ARRAY[1]::integer[], 1, ARRAY[20]::BIGINT[], false);
 
+RETURN QUERY
 SELECT set_eq('q1',
     $$SELECT
     'v'::CHAR AS type,
@@ -36,6 +47,7 @@ SELECT * FROM pgr_contraction(
     WHERE id IN (1000000000002, 1000000000004, 1000000000005, 1000000000008)$$,
     ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], false);
 
+RETURN QUERY
 SELECT is_empty('q2');
 
 --   input: 1 - 2
@@ -47,6 +59,7 @@ SELECT * FROM pgr_contraction(
     WHERE id = 1000000000001$$,
     ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], false);
 
+RETURN QUERY
 SELECT set_eq('q3',
     $$SELECT
     'v'::CHAR AS type,
@@ -65,6 +78,7 @@ SELECT * FROM pgr_contraction(
     WHERE id IN (1000000000002, 1000000000003)$$,
     ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], false);
 
+RETURN QUERY
 SELECT set_eq('q4',
     $$SELECT
     'v'::CHAR AS type,
@@ -90,6 +104,7 @@ FROM (VALUES
     ('v'::CHAR, 1000000000004::BIGINT, ARRAY[1000000000001, 1000000000002, 1000000000003]::BIGINT[], -1::BIGINT, -1::BIGINT, -1::FLOAT)
 ) AS t(type, id, contracted_vertices, source, target, cost );
 
+RETURN QUERY
 SELECT set_eq('q5', 'sol5');
 
 -- all table
@@ -114,6 +129,13 @@ FROM (VALUES
     ('v', 1000000000017, ARRAY[1000000000016], -1, -1, -1)
 ) AS t(type, id, contracted_vertices, source, target, cost );
 
+RETURN QUERY
 SELECT set_eq('q6', 'sol6');
 
+END
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
 SELECT finish();
+ROLLBACK;

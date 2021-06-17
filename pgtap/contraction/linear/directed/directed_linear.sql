@@ -1,7 +1,17 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(25);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(25) END;
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
 
 -- TESTING ONE CYCLE OF LINEAR CONTRACTION FOR A DIRECTED GRAPH
 
@@ -41,6 +51,7 @@ FROM pgr_contraction(
     'graph_e_1_2',
     ARRAY[2]::INTEGER[], 1, ARRAY[]::INTEGER[], true);
 
+RETURN QUERY
 SELECT is_empty('v3e2q10', 'graph_e_1_2 QUERY 1: Directed graph with two edges and no forbidden vertices');
 
 -- GRAPH 1 - 2 <- 3
@@ -51,6 +62,7 @@ FROM pgr_contraction(
     'graph_e_1_2',
     ARRAY[2]::INTEGER[], 1, ARRAY[2]::INTEGER[], true);
 
+RETURN QUERY
 SELECT is_empty('v3e2q20', 'graph_e_1_2 QUERY 2: Directed graph with two edges and 2 is forbidden vertex');
 
 -- GRAPH 1 - 2 - 5
@@ -67,6 +79,7 @@ FROM (VALUES
     ('e', -2, ARRAY[2]::BIGINT[], 5, 1, 2))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('graph_e_1_4_q1', 'graph_e_1_4_sol1', 'graph_e_1_4 QUERY 1: Directed graph with two edges and no forbidden vertices');
 
 -- GRAPH 1 - 2 - 5
@@ -77,6 +90,7 @@ FROM pgr_contraction(
     'graph_e_1_4',
     ARRAY[2]::INTEGER[], 1, ARRAY[2]::INTEGER[], true);
 
+RETURN QUERY
 SELECT is_empty('graph_e_1_4_q2', 'graph_e_1_4 QUERY 2: Directed graph with two edges and 2 is forbidden vertex');
 
 
@@ -88,6 +102,7 @@ FROM pgr_contraction(
     'graph_e_11_12',
     ARRAY[2]::INTEGER[], 1, ARRAY[]::INTEGER[], true);
 
+RETURN QUERY
 SELECT is_empty('v3e2q30', 'graph_e_11_12 QUERY 1: Directed graph with two edges and no forbidden vertex');
 
 -- THREE EDGES
@@ -106,6 +121,7 @@ FROM (VALUES
     ('e', -1, ARRAY[3, 6]::BIGINT[], 4, 11, 3))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('v4e3q10', 'v4e3q11', 'graph_e_3_5_11 QUERY 1: Directed graph with three edges and no forbidden vertices');
 
 -- GRAPH 4 -> 3 -> 6 ->11
@@ -122,6 +138,7 @@ FROM (VALUES
     ('e', -1, ARRAY[6]::BIGINT[], 3, 11, 2))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('v4e3q20', 'v4e3q21', 'graph_e_3_5_11 QUERY 2: Directed graph with three edges and 3 is forbidden vertices');
 
 -- GRAPH 4 -> 3 -> 6 -> 11
@@ -138,6 +155,7 @@ FROM (VALUES
     ('e', -1, ARRAY[3]::BIGINT[], 4, 6, 2))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('v4e3q30', 'v4e3q31', 'graph_e_3_5_11 QUERY 3: Directed graph with three edges and 6 is forbidden vertices');
 
 -- 3, 6 are forbidden
@@ -147,6 +165,7 @@ FROM pgr_contraction(
     'graph_e_3_5_11',
     ARRAY[2]::INTEGER[], 1, ARRAY[3, 6]::INTEGER[], true);
 
+RETURN QUERY
 SELECT is_empty('v4e3q40', 'graph_3_5_11 QUERY 4: Directed graph with three edges and 3, 6 are forbidden vertices');
 
 
@@ -167,6 +186,7 @@ FROM (VALUES
     ('e', -3, ARRAY[11]::BIGINT[], 6, 12, 2))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('v4e4q10', 'graph_9_11_13_15_sol1', 'graph_9_11_13_15 QUERY 1: no forbidden vertices');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -177,6 +197,7 @@ FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6]::INTEGER[], true);
 
+RETURN QUERY
 SELECT set_eq('v4e4q20', 'graph_9_11_13_15_sol1', 'graph_9_11_13_15 QUERY 2: forbidden vertices: 6 (non contractible)');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -187,6 +208,7 @@ FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[12]::INTEGER[], true);
 
+RETURN QUERY
 SELECT set_eq('v4e4q20', 'graph_9_11_13_15_sol1', 'graph_9_11_13_15 QUERY 3: forbidden vertices: 12 (is non contractible)');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -197,6 +219,7 @@ FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6, 12]::INTEGER[], true);
 
+RETURN QUERY
 SELECT set_eq('v4e4q20', 'graph_9_11_13_15_sol1', 'graph_9_11_13_15 QUERY 4: forbidden vertices: 6, 12 (non contractible)');
 
 
@@ -213,6 +236,7 @@ FROM (VALUES
     ('e', -1, ARRAY[11]::BIGINT[], 6, 12, 2))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('v4e4q30', 'graph_9_11_13_15_sol2', 'graph_9_11_13_15 QUERY 5: forbidden vertices: 9');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -222,6 +246,7 @@ FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6, 9]::INTEGER[], true);
 
+RETURN QUERY
 SELECT set_eq('v4e4q31', 'graph_9_11_13_15_sol2', 'graph_9_11_13_15 QUERY 6: forbidden vertices: 6 (non contractible) & 9');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -231,6 +256,7 @@ FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[9, 12]::INTEGER[], true);
 
+RETURN QUERY
 SELECT set_eq('v4e4q32', 'graph_9_11_13_15_sol2', 'graph_9_11_13_15 QUERY 6: forbidden vertices: 12 (non contractible) & 9');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -240,6 +266,7 @@ FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6, 9, 12]::INTEGER[], true);
 
+RETURN QUERY
 SELECT set_eq('v4e4q33', 'graph_9_11_13_15_sol2', 'graph_9_11_13_15 QUERY 7: forbidden vertices: 6, 12 (non contractible) & 9');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -256,6 +283,7 @@ FROM (VALUES
     ('e', -2, ARRAY[9]::BIGINT[], 12, 6, 2))
 AS t(type, id, contracted_vertices, source, target, cost);
 
+RETURN QUERY
 SELECT set_eq('v4e4q40', 'graph_9_11_13_15_sol3', 'graph_9_11_13_15 QUERY 4: forbidden vertices: 11');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -264,6 +292,7 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6, 11]::INTEGER[], true);
+RETURN QUERY
 SELECT set_eq('graph_9_11_13_15_q9', 'graph_9_11_13_15_sol3', 'graph_9_11_13_15 QUERY 4: forbidden vertices:  6 (non contractible) & 11');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -272,6 +301,7 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[11, 12]::INTEGER[], true);
+RETURN QUERY
 SELECT set_eq('graph_9_11_13_15_q10', 'graph_9_11_13_15_sol3', 'graph_9_11_13_15 QUERY 4: forbidden vertices:  12 (non contractible) & 11');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -280,6 +310,7 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6, 11, 12]::INTEGER[], true);
+RETURN QUERY
 SELECT set_eq('graph_9_11_13_15_q11', 'graph_9_11_13_15_sol3', 'graph_9_11_13_15 QUERY 4: forbidden vertices:  6, 12 (non contractible) & 11');
 
 
@@ -290,6 +321,7 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[9, 11]::INTEGER[], true);
+RETURN QUERY
 SELECT is_empty('v4e4q60', 'graph_9_11_13_15 QUERY 6: forbidden vertices:  9 & 11');
 
 
@@ -299,6 +331,7 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[6, 9, 11]::INTEGER[], true);
+RETURN QUERY
 SELECT is_empty('v4e4q80', 'graph_9_11_13_15 QUERY 6: forbidden vertices:  6 (non contractible) & 9 & 11');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -307,6 +340,7 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[9, 11, 12]::INTEGER[], true);
+RETURN QUERY
 SELECT is_empty('v4e4q90', 'graph_9_11_13_15 QUERY 6: forbidden vertices:  12 (non contractible) & 9 & 11');
 
 -- GRAPH 6 -> 11 -> 12 - 9 - 6
@@ -315,7 +349,13 @@ SELECT type, id, contracted_vertices, source, target, cost
 FROM pgr_contraction(
     'graph_e_9_11_13_15',
     ARRAY[2]::INTEGER[], 1, ARRAY[9, 11, 12]::INTEGER[], true);
+RETURN QUERY
 SELECT is_empty('v4e4q100', 'graph_9_11_13_15 QUERY 6: forbidden vertices: 6 & 12 (non contractible) & 9 & 11');
 
+END
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
 SELECT finish();
 ROLLBACK;

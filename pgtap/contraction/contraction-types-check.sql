@@ -1,38 +1,6 @@
 \i setup.sql
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(49);
-SET client_min_messages TO WARNING;
-SELECT has_function('pgr_contraction');
-
-SELECT has_function('pgr_contraction', ARRAY[
-    'text', 'bigint[]',
-    'integer', 'bigint[]', 'boolean'
-    ]);
-
-SELECT function_returns('pgr_contraction', ARRAY[
-    'text', 'bigint[]',
-    'integer', 'bigint[]', 'boolean'
-    ], 'setof record');
-
-
-
-PREPARE parameters AS
-SELECT array[
-'',
-'',
-'max_cycles',
-'forbidden_vertices',
-'directed',
-'type',
-'id',
-'contracted_vertices',
-'source',
-'target',
-'cost'];
-
-SELECT set_eq(
-    $$SELECT proargnames FROM pg_proc WHERE proname = 'pgr_contraction'$$,
-    'parameters');
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(49) END;
 
 
 CREATE OR REPLACE FUNCTION test_anyInteger(fn TEXT, params TEXT[], parameter TEXT)
@@ -45,12 +13,13 @@ query TEXT;
 p TEXT;
 BEGIN
     start_sql = 'select * from ' || fn || '($$ SELECT ';
-        FOREACH  p IN ARRAY params LOOP
-        IF p = parameter THEN CONTINUE;
-    END IF;
-    start_sql = start_sql || p || ', ';
-END LOOP;
-end_sql = ' FROM edge_table $$, ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true)';
+    FOREACH  p IN ARRAY params LOOP
+      IF p = parameter THEN CONTINUE;
+      END IF;
+      start_sql = start_sql || p || ', ';
+    END LOOP;
+
+    end_sql = ' FROM edge_table $$, ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true)';
 
     query := start_sql || parameter || '::SMALLINT ' || end_sql;
     RETURN query SELECT lives_ok(query);
@@ -112,29 +81,76 @@ end_sql = ' FROM edge_table $$, ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true)
 END;
 $BODY$ LANGUAGE plpgsql;
 
--- CHECKING INNER QUERY
+CREATE OR REPLACE FUNCTION test_function()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
+
+RETURN QUERY
+SELECT has_function('pgr_contraction');
+
+RETURN QUERY
+SELECT has_function('pgr_contraction', ARRAY[
+    'text', 'bigint[]',
+    'integer', 'bigint[]', 'boolean'
+    ]);
+
+RETURN QUERY
+SELECT function_returns('pgr_contraction', ARRAY[
+    'text', 'bigint[]',
+    'integer', 'bigint[]', 'boolean'
+    ], 'setof record');
+
+PREPARE parameters AS
+SELECT array[
+'',
+'',
+'max_cycles',
+'forbidden_vertices',
+'directed',
+'type',
+'id',
+'contracted_vertices',
+'source',
+'target',
+'cost'];
+
+RETURN QUERY
+SELECT set_eq(
+    $$SELECT proargnames FROM pg_proc WHERE proname = 'pgr_contraction'$$,
+    'parameters');
 
 --id ANY-INTEGER
+RETURN QUERY
 SELECT test_anyInteger('pgr_contraction',
     ARRAY['id', 'source', 'target', 'cost', 'reverse_cost'],
     'id');
 
 --source is only integer
+RETURN QUERY
 SELECT test_anyInteger('pgr_contraction',
     ARRAY['id', 'source', 'target', 'cost', 'reverse_cost'],
     'source');
 
 --target is only integer
+RETURN QUERY
 SELECT test_anyInteger('pgr_contraction',
     ARRAY['id', 'source', 'target', 'cost', 'reverse_cost'],
     'target');
 
 --cost is any numerical
+RETURN QUERY
 SELECT test_anyNumerical('pgr_contraction',
     ARRAY['id', 'source', 'target', 'cost', 'reverse_cost'],
     'cost');
 
 --reverse cost is any numerical
+RETURN QUERY
 SELECT test_anyNumerical('pgr_contraction',
     ARRAY['id', 'source', 'target', 'cost', 'reverse_cost'],
     'reverse_cost');
@@ -221,23 +237,40 @@ SELECT * FROM pgr_contraction(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table',
 ARRAY[1]::smallint[], 1, ARRAY[ ]::bigint[]);
 
+RETURN QUERY
 SELECT throws_ok('q1', 'XX000', 'One dimension expected',
 'Throws because forbidden_vertices is BIGINT[][]');
 
+RETURN QUERY
 SELECT throws_ok('q2', 'XX000', 'One dimension expected',
 'Throws because contraction_order is ARRAY[]');
 
 
+RETURN QUERY
 SELECT lives_ok('q3');
+RETURN QUERY
 SELECT lives_ok('q4');
+RETURN QUERY
 SELECT lives_ok('q5');
+RETURN QUERY
 SELECT lives_ok('q7');
+RETURN QUERY
 SELECT lives_ok('q8');
+RETURN QUERY
 SELECT lives_ok('q9');
+RETURN QUERY
 SELECT lives_ok('q10');
+RETURN QUERY
 SELECT lives_ok('q11');
+RETURN QUERY
 SELECT lives_ok('q12');
+RETURN QUERY
 SELECT lives_ok('q13');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT test_function();
 SELECT finish();
 ROLLBACK;

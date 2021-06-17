@@ -1,8 +1,19 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(5);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(5) END;
 
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
+
+RETURN QUERY
 SELECT throws_ok(
     $$SELECT * FROM pgr_contraction(
         'SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE id = 1',
@@ -15,6 +26,7 @@ SELECT * FROM pgr_contraction(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE id = 1',
     ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true);
 
+RETURN QUERY
 SELECT set_eq('q1',
     $$SELECT
     'v'::CHAR AS type,
@@ -33,6 +45,7 @@ SELECT * FROM pgr_contraction(
     'SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE id < 3',
     ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true);
 
+RETURN QUERY
 SELECT set_eq('q2',
     $$SELECT
     'v'::CHAR AS type,
@@ -66,6 +79,7 @@ FROM (VALUES
     ('v', 17, ARRAY[16], -1, -1, -1)
 ) AS t(type, id, contracted_vertices, source, target, cost );
 
+RETURN QUERY
 SELECT set_eq('q3', 'sol3');
 
 
@@ -82,6 +96,13 @@ SELECT * FROM pgr_contraction(
 	WHERE id IN (2, 4, 5, 8)$$,
 	ARRAY[1]::integer[], 1, ARRAY[]::BIGINT[], true);
 
+RETURN QUERY
 SELECT is_empty('q4');
 
+END
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT edge_cases();
 SELECT finish();
+ROLLBACK;
