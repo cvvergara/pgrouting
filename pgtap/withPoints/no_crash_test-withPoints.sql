@@ -21,13 +21,6 @@ SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
 PREPARE null_combinations AS
 SELECT source, target FROM combinations_table WHERE source IN (-1);
 
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('pois', 'Should be not empty to tests be meaningful');
-SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
-SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
-SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
-
 
 CREATE OR REPLACE FUNCTION test_function()
 RETURNS SETOF TEXT AS
@@ -36,6 +29,25 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() AND NOT is_version_2('2.6.1') THEN
+    RETURN QUERY
+    SELECT skip(102, 'STRICT was added on 2.6.1');
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('pois', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
+  RETURN QUERY
+  SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
+
     -- one to one
     params = ARRAY[
     '$$edges$$',
@@ -152,7 +164,6 @@ END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-
-SELECT * FROM test_function();
-
+SELECT test_function();
+SELECT finish();
 ROLLBACK;
