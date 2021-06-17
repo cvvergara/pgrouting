@@ -47,5 +47,5 @@ LANGUAGE plpgsql VOLATILE;
 
 SELECT types_check();
 
-SELECT * FROM finish();
+SELECT finish();
 ROLLBACK;

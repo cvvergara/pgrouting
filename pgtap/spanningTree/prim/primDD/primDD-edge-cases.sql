@@ -24,6 +24,7 @@ FROM pgr_primDD(
     21, 3.5
 );
 
+RETURN QUERY
 SELECT set_eq('prim1',
     $$VALUES (1,0,21,21,-1,0,0) $$,
     '1: Empty Graph -> Only root vertex is returned');
@@ -38,6 +39,7 @@ FROM pgr_primDD(
     3.5
 );
 
+RETURN QUERY
 SELECT set_eq('prim2',
     $$VALUES
         (1,0,21,21,-1,0,0),
@@ -55,6 +57,7 @@ FROM pgr_primDD(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('prim3',
     $$VALUES (1,0,21,21,-1,0,0) $$,
     '1: Root not in Graph -> Only root vertex is returned');
@@ -69,6 +72,7 @@ FROM pgr_primDD(
     3.5
 );
 
+RETURN QUERY
 SELECT set_eq('prim4',
     $$VALUES
         (1,4,0,4,-1,true),
@@ -91,6 +95,7 @@ FROM pgr_primDD(
     0, 3.5
 );
 
+RETURN QUERY
 SELECT set_eq('prim5',
     $$VALUES
         (1,1,0,1,-1,true),
@@ -117,6 +122,7 @@ FROM pgr_primDD(
     4, -3
 );
 
+RETURN QUERY
 SELECT throws_ok('prim6',
     'P0001',
     'Negative value found on ''distance''',
@@ -132,6 +138,7 @@ FROM pgr_primDD(
     ARRAY[4, 10], -3
 );
 
+RETURN QUERY
 SELECT throws_ok('prim7',
     'P0001',
     'Negative value found on ''distance''',
@@ -146,6 +153,7 @@ FROM pgr_primDD(
     4, 0
 );
 
+RETURN QUERY
 SELECT set_eq('prim8',
     $$VALUES (1,0,4,4,-1,0,0) $$,
     '8: 0 distance -> Only root vertex is returned');
@@ -160,6 +168,7 @@ FROM pgr_primDD(
     4, 'Infinity'
 );
 
+RETURN QUERY
 SELECT set_eq('prim9',
     $$VALUES
        (1,  0,      4, 4,-1),

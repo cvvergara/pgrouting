@@ -24,6 +24,7 @@ FROM pgr_kruskalDD(
     21, 3.5
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal1',
     $$VALUES (1,0,21,21,-1,0,0) $$,
     '1: Empty Graph -> Only root vertex is returned');
@@ -167,6 +168,7 @@ FROM pgr_kruskalDD(
     4, 'Infinity'
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal9',
     $$VALUES
        (1,  0,      4, 4,-1),

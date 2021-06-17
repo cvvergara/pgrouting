@@ -23,6 +23,7 @@ SELECT * FROM pgr_kruskalBFS(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('kruskal1',
     $$VALUES (1, 0, 21, 21, -1, 0, 0) $$,
     '1: Empty Graph -> Only root vertex is returned');

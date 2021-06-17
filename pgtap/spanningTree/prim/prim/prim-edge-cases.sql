@@ -29,7 +29,9 @@ FROM pgr_prim(
      FROM edge_table WHERE cost < 0 ORDER BY id'
 );
 
+RETURN QUERY
 SELECT is_empty('prim1', 'No_edge -> No answer');
+RETURN QUERY
 SELECT is_empty('prim2', 'ALL Negative Cost -> no answer');
 
 
@@ -41,9 +43,11 @@ FROM pgr_prim(
      FROM edge_table ORDER BY id'
 ) WHERE edge < 0;
 
+RETURN QUERY
 SELECT lives_ok('prim4',
     '3: Should live');
 
+RETURN QUERY
 SELECT set_eq('prim4',
     $$VALUES (0)$$,
     '4: No edge with negative values');
@@ -56,6 +60,7 @@ FROM pgr_prim(
      FROM edge_table ORDER BY id'
 );
 
+RETURN QUERY
 SELECT bag_has('prim5',
 $$VALUES
 (1 , 1.001),

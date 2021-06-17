@@ -23,6 +23,7 @@ SELECT * FROM pgr_primBFS(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('prim1',
     $$VALUES (1, 0, 21, 21, -1, 0, 0) $$,
     '1: Empty Graph -> Only root vertex is returned');
@@ -37,6 +38,7 @@ FROM pgr_primBFS(
     3
 );
 
+RETURN QUERY
 SELECT set_eq('prim2',
     $$VALUES
         (1, 0, 21, 21, -1, 0, 0),
@@ -54,6 +56,7 @@ FROM pgr_primBFS(
     21, 3
 );
 
+RETURN QUERY
 SELECT set_eq('prim3',
     $$VALUES (1, 0, 21, 21, -1, 0, 0) $$,
     '3: Root not in Graph -> Only root vertex is returned');
@@ -68,6 +71,7 @@ FROM pgr_primBFS(
     3
 );
 
+RETURN QUERY
 SELECT set_eq('prim4',
     $$VALUES
         (1, 4, 0, 4, -1, true),
@@ -90,6 +94,7 @@ FROM pgr_primBFS(
     0, 3
 );
 
+RETURN QUERY
 SELECT set_eq('prim5',
     $$VALUES
         (1, 1, 0, 1, -1, true),
@@ -117,6 +122,7 @@ FROM pgr_primBFS(
 );
 
 
+RETURN QUERY
 SELECT throws_ok('prim6',
     'P0001',
     'Negative value found on ''max_depth''',
@@ -132,6 +138,7 @@ FROM pgr_primBFS(
     ARRAY[4, 10], -3
 );
 
+RETURN QUERY
 SELECT throws_ok('prim7',
     'P0001',
     'Negative value found on ''max_depth''',
@@ -146,6 +153,7 @@ FROM pgr_primBFS(
     4, 0
 );
 
+RETURN QUERY
 SELECT set_eq('prim8',
     $$VALUES (1, 0, 4, 4, -1, 0, 0) $$,
     '8: 0 max_depth -> Only root vertex is returned');
@@ -159,6 +167,7 @@ FROM pgr_primBFS(
     4
 );
 
+RETURN QUERY
 SELECT set_eq('prim9',
     $$VALUES
         (1,  0, 4,  4, -1, true),
@@ -186,6 +195,7 @@ FROM pgr_primBFS(
     0
 );
 
+RETURN QUERY
 SELECT set_eq('prim10',
     $$VALUES
        (1,  1, 0, 1,-1, true),

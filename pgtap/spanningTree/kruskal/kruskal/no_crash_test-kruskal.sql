@@ -20,6 +20,7 @@ BEGIN
   PREPARE edges AS
   SELECT id, source, target, cost, reverse_cost  FROM edge_table;
 
+  RETURN QUERY
   SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
 
   -- kruskal with no root vertex
