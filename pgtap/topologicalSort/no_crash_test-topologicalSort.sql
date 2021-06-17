@@ -3,6 +3,17 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(5);
 
+CREATE OR REPLACE FUNCTION no_crash()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (5, 'pgr_topologicalsort is new on 3.0.0');
+    RETURN;
+  END IF;
+
 CREATE TABLE edge_table1 (
     id serial,
     source integer,
@@ -12,13 +23,15 @@ CREATE TABLE edge_table1 (
 );
 INSERT INTO edge_table1 (source,target,cost,reverse_cost) VALUES ( 1, 2,0,0);
 INSERT INTO edge_table1 (source,target,cost,reverse_cost) VALUES (2,3,0,0);
-
+RETURN QUERY
 SELECT has_function('pgr_topologicalsort');
 
+RETURN QUERY
 SELECT function_returns('pgr_topologicalsort', ARRAY['text'], 'setof record');
 
 -- flags
 -- error
+RETURN QUERY
 SELECT throws_ok(
     'SELECT * FROM pgr_topologicalsort(
         ''SELECT id, source, target, cost, reverse_cost FROM edge_table id < 2'',
@@ -27,6 +40,7 @@ SELECT throws_ok(
     '6: Documentation says it does not work with 1 flags');
 
 
+RETURN QUERY
 SELECT lives_ok(
     'SELECT * FROM pgr_topologicalsort(
         ''SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE id = 2 ''
@@ -51,7 +65,13 @@ SELECT pg_typeof(seq)::text AS t1,
     limit 1;
 
 
+RETURN QUERY
 SELECT set_eq('q1', 'all_return', 'Expected returning, columns names & types');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT no_crash();
 SELECT * FROM finish();
 ROLLBACK;

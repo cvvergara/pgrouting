@@ -6,11 +6,20 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(20);
 
-SET client_min_messages = WARNING;
+CREATE OR REPLACE FUNCTION issue()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (20, 'issue 1336 fixed on 3.0.0');
+    RETURN;
+  END IF;
+
 CREATE TABLE original_hard (
       id serial NOT NULL PRIMARY KEY
 );
-SELECT addgeometrycolumn('original_hard', 'the_geom', 2154, 'LINESTRING', 2);
+PERFORM addgeometrycolumn('original_hard', 'the_geom', 2154, 'LINESTRING', 2);
 
 
 INSERT INTO original_hard (the_geom)
@@ -23,8 +32,12 @@ INSERT INTO original_hard (the_geom)
 VALUES ('SRID=2154;LineString (840225.44422620115801692 6519369.90784595627337694, 840164.1949518381152302 6519407.88627272564917803, 840153.53890225966461003 6519408.40932532399892807, 840127.25395868462510407 6519400.12230102065950632, 840102.82493207952938974 6519361.2863945122808218, 840094.13878045929595828 6519332.39617275167256594)');
 
 
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard), 4, 'we have 4 original_hard edges');
-SELECT pgr_nodeNetwork('original_hard', 0.1, 'id', 'the_geom');
+
+PERFORM pgr_nodeNetwork('original_hard', 0.1, 'id', 'the_geom');
+
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded), 7, 'Now we have 7 edges');
 
 
@@ -32,37 +45,63 @@ PREPARE q1_hard AS
 SELECT old_id, count(*) FROM original_hard_noded GROUP BY old_id ORDER BY old_id;
 prepare vals1_hard AS
 VALUES (1,2),(2,1),(3,2),(4,2);
+
+RETURN QUERY
 SELECT set_eq('q1_hard', 'vals1_hard',
     'For each original_hard edge we have now 2 subedges except for the second one');
-
-
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded WHERE source is NULL), (SELECT count(*)::INTEGER FROM original_hard_noded), 'all edges are missing source');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded WHERE target is NULL), (SELECT count(*)::INTEGER FROM original_hard_noded), 'all edges are missing target');
+RETURN QUERY
 SELECT hasnt_table('original_hard_noded_vertices_pgr', 'original_hard_noded_vertices_pgr table does not exist');
+RETURN QUERY
 SELECT pgr_createtopology('original_hard_noded', 0.000001);
+RETURN QUERY
 SELECT has_table('original_hard_noded_vertices_pgr', 'original_hard_noded_vertices_pgr table now exist');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded WHERE source is NULL), 0, '0 edges are missing source');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded WHERE target is NULL), 0, '0 edges are missing target');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr), 9, 'Now we have 9 vertices');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE cnt is NULL), 9, '9 vertices are missing cnt');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE chk is NULL), 9, '9 vertices are missing chk');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE ein is NULL), 9, '9 vertices are missing ein');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE eout is NULL), 9, '9 vertices are missing eout');
 
 
-SELECT pgr_analyzegraph('original_hard_noded',  0.000001);
+PERFORM pgr_analyzegraph('original_hard_noded',  0.000001);
+
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE cnt is NULL), 0, '0 vertices are missing cnt');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE chk is NULL), 0, '0 vertices are missing chk');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE ein is NULL), 9, '9 vertices are missing ein');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE eout is NULL), 9, '9 vertices are missing eout');
+RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded_vertices_pgr WHERE chk = 0), 9, 'In 9 vertices chk=0 aka have no problem');
+
 PREPARE q2_hard AS
 SELECT cnt, count(*) AS M  FROM original_hard_noded_vertices_pgr GROUP BY cnt ORDER BY cnt;
 PREPARE vals2_hard AS
 VALUES (1,7), (3, 1), (4,1);
+
+RETURN QUERY
 SELECT set_eq('q2_hard', 'vals2_hard',
         'vertices referenced correctly by edges');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT issue();
 
 SELECT finish();
 ROLLBACK;

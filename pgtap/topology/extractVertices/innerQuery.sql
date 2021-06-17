@@ -7,6 +7,11 @@ CREATE OR REPLACE FUNCTION style_extract_normal(fn TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (42, 'pgr_extractvertices is new on 3.0.0');
+    RETURN;
+  END IF;
 
 --with id
 RETURN QUERY SELECT test_anyInteger(fn, rest_sql,
@@ -43,6 +48,12 @@ CREATE OR REPLACE FUNCTION style_extract_dryrun(fn TEXT, rest_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (42, 'pgr_extractvertices is new on 3.0.0');
+    RETURN;
+  END IF;
+
 
 --with id
 RETURN QUERY SELECT test_anyNumerical(fn, rest_sql,

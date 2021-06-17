@@ -21,21 +21,33 @@ SELECT source, target FROM edge_table;
 PREPARE edges5 AS
 SELECT id, source, target FROM edge_table;
 
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('edges1', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('edges2', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('edges3', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('edges4', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('edges5', 'Should be not empty to tests be meaningful');
 
-
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (54, 'pgr_extractvertices is new on 3.0.0');
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('edges1', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('edges2', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('edges3', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('edges4', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT isnt_empty('edges5', 'Should be not empty to tests be meaningful');
+
     -- with geometry
     params = ARRAY[
     '$$SELECT the_geom AS geom FROM edge_table$$'
@@ -105,8 +117,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-
-
-SELECT * FROM test_function();
+SELECT no_crash();
+SELECT finish();
 
 ROLLBACK;

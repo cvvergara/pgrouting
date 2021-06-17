@@ -4,7 +4,16 @@ SELECT plan(23);
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
---
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip (23, 'pgr_extractvertices is new on 3.0.0');
+    RETURN;
+  END IF;
+
 PREPARE query_1 AS
 SELECT * FROM pgr_extractVertices(
     'SELECT source
@@ -18,7 +27,9 @@ FROM pgr_extractVertices(
      FROM edge_table'
 );
 
+RETURN QUERY
 SELECT throws_ok('query_1', 'P0001', 'Missing column', 'Incomlete data -> throws');
+RETURN QUERY
 SELECT throws_ok('query_2', 'P0001', 'Missing column', 'Incomlete data -> throws');
 
 --
@@ -36,7 +47,9 @@ FROM pgr_extractVertices(
      FROM edge_table'
 );
 
+RETURN QUERY
 SELECT throws_ok('query_3', 'P0001', 'Missing column', 'Incomlete data -> throws');
+RETURN QUERY
 SELECT throws_ok('query_4', 'P0001', 'Missing column', 'Incomlete data -> throws');
 
 --
@@ -54,7 +67,9 @@ FROM pgr_extractVertices(
      FROM edge_table'
 );
 
+RETURN QUERY
 SELECT lives_ok('query_5', 'geom column makes data complete');
+RETURN QUERY
 SELECT lives_ok('query_6', 'geom column makes data complete');
 
 --
@@ -72,32 +87,40 @@ FROM pgr_extractVertices(
      FROM edge_table'
 );
 
+RETURN QUERY
 SELECT lives_ok('query_7', 'geom column makes data complete');
+RETURN QUERY
 SELECT lives_ok('query_8', 'geom column makes data complete');
 
 --
 
+RETURN QUERY
 SELECT set_eq(
     $$SELECT count(*) FROM pgr_extractVertices( 'SELECT the_geom AS geom FROM edge_table')$$,
     $$VALUES (17)$$,
     '17: Number of vertices extracted');
+RETURN QUERY
 SELECT set_eq(
     $$SELECT count(*) FROM pgr_extractVertices( 'SELECT ST_StartPoint(the_geom) AS startpoint, ST_EndPoint(the_geom) AS endpoint FROM edge_table')$$,
     $$VALUES (17)$$,
     '17: Number of vertices extracted');
+RETURN QUERY
 SELECT set_eq(
     $$SELECT count(*) FROM pgr_extractVertices( 'SELECT source, target FROM edge_table')$$,
     $$VALUES (17)$$,
     '17: Number of vertices extracted');
 
+RETURN QUERY
 SELECT set_eq(
     $$SELECT count(*) FROM pgr_extractVertices( 'SELECT id, the_geom AS geom FROM edge_table')$$,
     $$VALUES (17)$$,
     '17: Number of vertices extracted');
+RETURN QUERY
 SELECT set_eq(
     $$SELECT count(*) FROM pgr_extractVertices( 'SELECT id, ST_StartPoint(the_geom) AS startpoint, ST_EndPoint(the_geom) AS endpoint FROM edge_table')$$,
     $$VALUES (17)$$,
     '17: Number of vertices extracted');
+RETURN QUERY
 SELECT set_eq(
     $$SELECT count(*) FROM pgr_extractVertices( 'SELECT id, source, target FROM edge_table')$$,
     $$VALUES (17)$$,
@@ -105,7 +128,8 @@ SELECT set_eq(
 
 -- The results with id
 
-SELECT * INTO result_table
+CREATE TABLE result_table AS
+SELECT *
 FROM (VALUES
   (1 , NULL::BIGINT[] , '{1}'::BIGINT[] , 2::FLOAT, 0::FLOAT, ST_GeomFromText('POINT(2 0)')),
 
@@ -128,6 +152,7 @@ FROM (VALUES
 ) AS t(id, in_edges, out_edges, x, y, geom);
 
 --
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT x, y, geom
@@ -135,6 +160,7 @@ SELECT set_eq(
     $$,
     $$SELECT x, y, geom FROM result_table$$);
 
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT unnest(out_edges), x, y, geom
@@ -142,6 +168,7 @@ SELECT set_eq(
     $$,
     $$SELECT unnest(out_edges), x, y, geom FROM result_table$$);
 
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT unnest(in_edges), x, y, geom
@@ -150,6 +177,7 @@ SELECT set_eq(
     $$SELECT unnest(in_edges), x, y, geom FROM result_table$$);
 
 --
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT x, y, geom
@@ -157,6 +185,7 @@ SELECT set_eq(
     $$,
     $$SELECT x, y, geom FROM result_table$$);
 
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT unnest(out_edges), x, y, geom
@@ -164,6 +193,7 @@ SELECT set_eq(
     $$,
     $$SELECT unnest(out_edges), x, y, geom FROM result_table$$);
 
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT unnest(in_edges), x, y, geom
@@ -173,6 +203,7 @@ SELECT set_eq(
 
 
 --
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT id
@@ -180,6 +211,7 @@ SELECT set_eq(
     $$,
     $$SELECT id FROM result_table$$);
 
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT id, unnest(out_edges)
@@ -187,6 +219,7 @@ SELECT set_eq(
     $$,
     $$SELECT id, unnest(out_edges) FROM result_table$$);
 
+RETURN QUERY
 SELECT set_eq(
     $$
     SELECT id, unnest(in_edges)
@@ -194,6 +227,10 @@ SELECT set_eq(
     $$,
     $$SELECT id, unnest(in_edges) FROM result_table$$);
 
+END;
+$BODY$
+LANGUAGE plpgsql;
 
-SELECT * FROM finish();
+SELECT edge_cases();
+SELECT finish();
 ROLLBACK;
