@@ -55,8 +55,9 @@ RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM original_hard_noded WHERE target is NULL), (SELECT count(*)::INTEGER FROM original_hard_noded), 'all edges are missing target');
 RETURN QUERY
 SELECT hasnt_table('original_hard_noded_vertices_pgr', 'original_hard_noded_vertices_pgr table does not exist');
-RETURN QUERY
-SELECT pgr_createtopology('original_hard_noded', 0.000001);
+
+PERFORM pgr_createtopology('original_hard_noded', 0.000001);
+
 RETURN QUERY
 SELECT has_table('original_hard_noded_vertices_pgr', 'original_hard_noded_vertices_pgr table now exist');
 RETURN QUERY
