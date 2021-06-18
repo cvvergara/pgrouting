@@ -35,7 +35,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          old_pgr: [3.0.0,3.1.0,3.2.0]
+          old_pgr: [3.2.0]
 
     steps:
       - uses: actions/checkout@v2
@@ -94,8 +94,8 @@ jobs:
           sudo -u postgres createdb -p 5432  with_old_version
           sudo -u postgres psql -p 5432  -d with_old_version -c "CREATE EXTENSION pgrouting CASCADE;"
           sudo -u postgres psql -p 5432  -d with_old_version -c "SELECT * FROM pgr_full_version();"
-          # using 3.3 prove to test
-          #sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
+          # using 3.3 pg_prove to test old version
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
 
 
       - name: Build current version
