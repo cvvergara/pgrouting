@@ -1,0 +1,116 @@
+name: Boost supported versions
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - '.github/workflows/update.yml'
+      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
+
+    tags: []
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - '.github/workflows/boost_version.yml'
+      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    strategy:
+        fail-fast: false
+        matrix:
+          old_pgr: [v2.6.0 v3.0.0 v3.1.0 v3.2.0]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Get postgres version
+        run: |
+          sudo service postgresql start
+          pgver=$(psql --version | grep -Po '(?<=psql \(PostgreSQL\) )[^;]+(?=\.\d \()')
+          echo "PGVER=${pgver}" >> $GITHUB_ENV
+          echo "PGIS=3" >> $GITHUB_ENV
+
+      - name: Add PostgreSQL APT repository
+        run: |
+          sudo apt-get install curl ca-certificates gnupg
+          curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ \
+            $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+      - name: Install python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libboost-graph-dev \
+            libtap-parser-sourcehandler-pgtap-perl \
+            postgresql-${PGVER} \
+            postgresql-${PGVER}-pgtap \
+            postgresql-${PGVER}-postgis-${PGIS} \
+            postgresql-${PGVER}-postgis-${PGIS}-scripts \
+            postgresql-server-dev-${PGVER}
+
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: get old version
+        uses: actions/checkout@v2
+        with:
+          ref: '${{ matrix.old_pgr }}'
+          path: '${{ matrix.old_pgr }}'
+
+      - name: build old version
+        run: |
+          cd "${{ matrix.old_pgr }}" || exit 0
+          export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
+          mkdir build
+          cd build
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
+          make -j 4
+          sudo make install
+          cd ..
+          sudo service postgresql start
+          sudo -u postgres createdb -p 5432  ___pgr___test___
+          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
+          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+
+
+      - name: Configure
+        run: |
+          export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
+          mkdir build
+          cd build
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
+
+      - name: Build
+        run: |
+          cd build
+          make -j 4
+          sudo make install
+
+      - name: Test
+        run: |
+          sudo service postgresql start
+          sudo -u postgres createdb -p 5432  ___pgr___test___
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432  Release
