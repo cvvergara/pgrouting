@@ -98,21 +98,16 @@ jobs:
           sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
 
 
-      - name: Configure
+      - name: Build current version
         run: |
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
           cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
-
-      - name: Build
-        run: |
-          cd build
-          make -j 4
-          sudo make install
+          sudo make -j 4 install
 
       - name: Test
         run: |
           sudo service postgresql start
-          sudo -u postgres createdb -p 5432  ___pgr___test___
-          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432  Release
+          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
