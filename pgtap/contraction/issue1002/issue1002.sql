@@ -5,7 +5,7 @@ SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(3) END;
 
 -- TESTING queries on issues related to https://github.com/pgRouting/pgrouting/issues/1002
 
-CREATE OR REPLACE FUNCTION test_function()
+CREATE OR REPLACE FUNCTION issue()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
@@ -70,6 +70,6 @@ END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-SELECT test_function();
+SELECT issue();
 SELECT finish();
 ROLLBACK;

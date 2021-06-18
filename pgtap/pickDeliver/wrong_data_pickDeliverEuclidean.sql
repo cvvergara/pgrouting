@@ -2,7 +2,17 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(23);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(23) END;
+
+CREATE OR REPLACE FUNCTION edge_cases()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
 
 PREPARE q1 AS
 SELECT * FROM _pgr_pickDeliverEuclidean(
@@ -11,6 +21,7 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     max_cycles := 30);
 
 
+RETURN QUERY
 SELECT lives_ok('q1', 'Original query should not fail');
 
 --------------------------------------
@@ -28,11 +39,13 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM vehicles$$,
     max_cycles := 0);
 
+RETURN QUERY
 SELECT throws_ok('q6',
     'XX000',
     'Illegal value in parameter: max_cycles',
     'Should throw: max_cycles < 0');
 
+RETURN QUERY
 SELECT lives_ok('q61',
     'Should live: max_cycles == 0');
 
@@ -60,16 +73,19 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
 
 
 
+RETURN QUERY
 SELECT throws_ok('initsol1',
     'XX000',
     'Illegal value in parameter: initial_sol',
     'Should throw: initial_sol < 0');
 
+RETURN QUERY
 SELECT throws_ok('initsol2',
     'XX000',
     'Illegal value in parameter: initial_sol',
     'Should throw: initial_sol > 6');
 
+RETURN QUERY
 SELECT throws_ok('initsol3',
     'XX000',
     'Illegal value in parameter: initial_sol',
@@ -96,16 +112,19 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM vehicles$$,
     factor := 1);
 
+RETURN QUERY
 SELECT throws_ok('factor1',
     'XX000',
     'Illegal value in parameter: factor',
     'Should throw: factor < 0');
 
+RETURN QUERY
 SELECT throws_ok('factor2',
     'XX000',
     'Illegal value in parameter: factor',
     'Should throw: factor = 0');
 
+RETURN QUERY
 SELECT lives_ok('factor3',
     'Should live: factor >= 1');
 
@@ -138,26 +157,31 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM orders$$,
     $$SELECT id, capacity, start_x, start_y FROM vehicles$$);
 
+RETURN QUERY
 SELECT throws_ok('vehiles0',
     'XX000',
     $$Column 'id' not Found$$,
     'Should throw: id is not included in data');
 
+RETURN QUERY
 SELECT throws_ok('vehiles1',
     'XX000',
     $$Column 'capacity' not Found$$,
     'Should throw: capacity is not included in data');
 
+RETURN QUERY
 SELECT throws_ok('vehiles2',
     'XX000',
     $$Column 'start_x' not Found$$,
     'Should throw: start_x is not included in data');
 
+RETURN QUERY
 SELECT throws_ok('vehiles3',
     'XX000',
     $$Column 'start_y' not Found$$,
     'Should throw: start_y is not included in data');
 
+RETURN QUERY
 SELECT lives_ok('vehiles4',
     'Should live: rest of parameters are optional');
 
@@ -185,21 +209,25 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM orders$$,
     $$SELECT *, 10 AS end_open FROM vehicles$$);
 
+RETURN QUERY
 SELECT throws_ok('vehiles5',
     'XX000',
     $$Column 'end_open' not Found$$,
     'vehiles5, Should throw: end_close found, but not end_open');
 
+RETURN QUERY
 SELECT throws_ok('vehiles6',
     'XX000',
     $$Column 'end_close' not Found$$,
     'vehiles6, Should throw: end_open found, but not end_close');
 
+RETURN QUERY
 SELECT throws_ok('vehiles7',
     'XX000',
     $$Column 'end_y' not Found$$,
     'vehiles7, Should throw: end_x found, but not end_y');
 
+RETURN QUERY
 SELECT throws_ok('vehiles8',
     'XX000',
     $$Column 'end_close' not Found$$,
@@ -215,6 +243,7 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM orders$$,
     $$SELECT * FROM vehicles$$);
 
+RETURN QUERY
 SELECT throws_ok('vehicles9',
     'XX000',
     'Illegal values found on vehicle',
@@ -230,6 +259,7 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM orders$$,
     $$SELECT *, 5 AS end_open, 4 AS end_close FROM vehicles$$);
 
+RETURN QUERY
 SELECT throws_ok('vehicles10',
     'XX000',
     'Illegal values found on vehicle',
@@ -249,6 +279,7 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     $$SELECT * FROM orders$$,
     $$SELECT * FROM vehicles$$);
 
+RETURN QUERY
 SELECT throws_ok('orders1',
     'XX000',
     'Order not feasible on any truck was found',
@@ -261,6 +292,7 @@ UPDATE orders SET d_close = 15 WHERE id = 1;
 ---------------------
 UPDATE orders SET p_close = 1 WHERE id = 1;
 
+RETURN QUERY
 SELECT throws_ok('orders1',
     'XX000',
     'Order not feasible on any truck was found',
@@ -274,6 +306,7 @@ UPDATE orders SET p_close = 10 WHERE id = 1;
 
 UPDATE orders SET demand= -20 WHERE id =1;
 
+RETURN QUERY
 SELECT throws_ok('orders1',
     'XX000',
     'Order not feasible on any truck was found',
@@ -281,5 +314,10 @@ SELECT throws_ok('orders1',
 
 UPDATE orders SET demand= 10 WHERE id =11;
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT edge_cases();
 SELECT finish();
 ROLLBACK;

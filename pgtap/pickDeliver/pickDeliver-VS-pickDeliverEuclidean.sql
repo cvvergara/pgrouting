@@ -2,8 +2,17 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(1);
-SET client_min_messages TO ERROR;
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(1) END;
+
+CREATE OR REPLACE FUNCTION compare()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+  IF is_version_2() THEN
+    RETURN QUERY
+    SELECT skip(1, 'Function changed name on 3.0.0');
+    RETURN;
+  END IF;
 
 PREPARE pd AS
 SELECT seq, vehicle_seq, vehicle_id, stop_seq, stop_type,
@@ -30,9 +39,13 @@ SELECT * FROM _pgr_pickDeliverEuclidean(
     'SELECT * FROM orders ORDER BY id',
     'SELECT * from vehicles');
 
+RETURN QUERY
 SELECT set_eq('pd', 'pd_e');
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
 
-
+SELECT compare();
 SELECT finish();
 ROLLBACK;
