@@ -77,12 +77,12 @@ jobs:
       - name: get old version
         uses: actions/checkout@v2
         with:
-          ref: '${{ matrix.old_pgr }}'
-          path: '${{ matrix.old_pgr }}'
+          ref: "${{ matrix.old_pgr }}"
+          path: old_version
 
       - name: build old version
         run: |
-          cd "${{ matrix.old_pgr }}" || exit 0
+          cd  old_version || exit 0
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
