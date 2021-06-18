@@ -6,10 +6,10 @@
 DIR=$(git rev-parse --show-toplevel)/sql/sigs
 
 pushd "${DIR}" > /dev/null || exit
-SIGNATURES=$(git ls-files *.sig | perl -pe 's/pgrouting--(.*)\.sig/$1/')
-for s1 in ${SIGNATURES[@]}
+SIGNATURES=$(git ls-files "*.sig" | perl -pe 's/pgrouting--(.*)\.sig/$1/')
+for s1 in $SIGNATURES
 do
-    for s2 in ${SIGNATURES[@]}
+    for s2 in $SIGNATURES
     do
         # only comparing lower version with higher version
         if (( $(echo "$s1 >= $s2" | bc -l) )); then continue; fi
@@ -19,6 +19,9 @@ do
 
         # comparing within same mayors only
         if [ "$mayor1" != "$mayor2" ]; then continue; fi
+
+        # tsp removed changed signatures
+        if (( $(echo "$s2 >= 3.3" | bc -l) && $(echo "$s1 < 3.3" | bc -l))); then continue; fi
 
         missing+=$(diff "pgrouting--$s1.sig" "pgrouting--$s2.sig" | grep '<')
     done
