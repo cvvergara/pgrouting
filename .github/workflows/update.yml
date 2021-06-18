@@ -1,4 +1,4 @@
-name: Boost supported versions
+name: Update
 
 on:
   push:
