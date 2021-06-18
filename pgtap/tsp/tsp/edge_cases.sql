@@ -8,7 +8,7 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := false);
 
-SELECT plan(20);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(20 END;
 
 CREATE FUNCTION tsp_edge_cases()
 RETURNS SETOF TEXT AS
@@ -16,37 +16,50 @@ $code$
 BEGIN
   IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip(20, 'Not testing tsp on version 2.x.y (2.6)');
+    SELECT skip(1, 'Not testing tsp on version 2.x.y (2.6)');
     RETURN;
   END IF;
 
-RETURN QUERY
-SELECT throws_ok($$
-  SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
-  'XX000',
-  'start_id or end_id do not exist on the data',
-  '1 SHOULD throw because end_id does not exist');
+  IF test_min_version(3.3.0) THEN
+    RETURN QUERY
+    SELECT throws_ok($$
+      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
+      'XX000',
+      'start_id or end_id do not exist on the data',
+      '1 SHOULD throw because end_id does not exist');
 
-RETURN QUERY
-SELECT throws_ok($$
-  SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$,
-  'XX000',
-  'start_id or end_id do not exist on the data',
-  '2 SHOULD throw because end_id does not exist');
+    RETURN QUERY
+    SELECT throws_ok($$
+      SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$,
+      'XX000',
+      'start_id or end_id do not exist on the data',
+      '2 SHOULD throw because end_id does not exist');
 
-RETURN QUERY
-SELECT throws_ok($$
-  SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$,
-  'XX000',
-  'start_id or end_id do not exist on the data',
-  '2 SHOULD throw because start_id does not exist');
+    RETURN QUERY
+    SELECT throws_ok($$
+      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$,
+      'XX000',
+      'start_id or end_id do not exist on the data',
+      '2 SHOULD throw because start_id does not exist');
 
-RETURN QUERY
-SELECT throws_ok($$
-  SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$,
-  'XX000',
-  'start_id or end_id do not exist on the data',
-  '2 SHOULD throw because start_id does not exist');
+    RETURN QUERY
+    SELECT throws_ok($$
+      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$,
+      'XX000',
+      'start_id or end_id do not exist on the data',
+      '2 SHOULD throw because start_id does not exist');
+  ELSE
+    RETURN QUERY
+    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$);
+    RETURN QUERY
+    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$);
+    RETURN QUERY
+    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$);
+    RETURN QUERY
+    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$);
+  END IF;
+
+
 
 
 RETURN QUERY
