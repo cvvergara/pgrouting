@@ -8,7 +8,7 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := false);
 
-SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(20 END;
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(20) END;
 
 CREATE FUNCTION tsp_edge_cases()
 RETURNS SETOF TEXT AS
