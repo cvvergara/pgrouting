@@ -35,7 +35,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          old_pgr: [v2.6.0 v3.0.0 v3.1.0 v3.2.0]
+          old_pgr: ["v2.6.0" "v3.0.0" "v3.1.0" "v3.2.0"]
 
     steps:
       - uses: actions/checkout@v2
