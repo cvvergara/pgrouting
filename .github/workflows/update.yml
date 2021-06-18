@@ -35,7 +35,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          old_pgr: [v3.0.0,v3.1.0,v3.2.0]
+          old_pgr: [3.0.0,3.1.0,3.2.0]
 
     steps:
       - uses: actions/checkout@v2
@@ -78,22 +78,22 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'pgRouting/pgrouting'
-          ref: "${{ matrix.old_pgr }}"
-          path: old_version
+          ref: "v${{ matrix.old_pgr }}"
+          path: "v${{ matrix.old_pgr }}"
 
       - name: build old version
         run: |
-          cd  old_version || exit 0
+          cd  "v${{ matrix.old_pgr }}" || exit 0
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=OFF ..
           sudo make -j 4 install
           cd ..
           sudo service postgresql start
-          sudo -u postgres createdb -p 5432  ___pgr___test___
-          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
-          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres createdb -p 5432  with_old_version
+          sudo -u postgres psql -p 5432  -d with_old_version -c "CREATE EXTENSION pgrouting CASCADE;"
+          sudo -u postgres psql -p 5432  -d with_old_version -c "SELECT * FROM pgr_full_version();"
           # using 3.3 prove to test
           #sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
 
@@ -103,13 +103,17 @@ jobs:
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DWITH_DOC=OFF ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=OFF ..
           sudo make -j 4 install
 
       - name: Test
         run: |
           sudo service postgresql start
-          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
-          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "ALTER EXTENSION pgrouting UPDATE  TO '3.3.0';"
-          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres psql -p 5432  -d with_old_version -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres psql -p 5432  -d with_old_version -c "ALTER EXTENSION pgrouting UPDATE  TO '3.3.0';"
+          sudo -u postgres psql -p 5432  -d with_old_version -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres createdb -p 5432  with_new_version
+          sudo -u postgres psql -p 5432  -d with_new_version -c "CREATE EXTENSION pgrouting WITH VERSION '${{ matrix.old_pgr }}' CASCADE;"
+          sudo -u postgres psql -p 5432  -d with_old_version -c "SELECT * FROM pgr_full_version();"
+
           #sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
