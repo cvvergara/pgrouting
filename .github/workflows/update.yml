@@ -20,7 +20,7 @@ on:
       - 'src/**'
       - 'include/**'
       - 'pgtap/**'
-      - '.github/workflows/boost_version.yml'
+      - '.github/workflows/update.yml'
       - 'tools/testers/**'
       - 'CMakeLists.txt'
 
