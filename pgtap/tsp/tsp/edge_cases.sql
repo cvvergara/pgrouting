@@ -20,133 +20,134 @@ BEGIN
   END IF;
 
   IF NOT min_lib_version('3.3.0') THEN PERFORM todo_start('Changes in 3.3.0'); END IF;
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
-      'XX000',
-      'start_id or end_id do not exist on the data',
-      '1 SHOULD throw because end_id does not exist');
 
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$,
-      'XX000',
-      'start_id or end_id do not exist on the data',
-      '2 SHOULD throw because end_id does not exist');
+  RETURN QUERY
+  SELECT throws_ok($$
+    SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
+    'XX000',
+    'start_id or end_id do not exist on the data',
+    '1 SHOULD throw because end_id does not exist');
 
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$,
-      'XX000',
-      'start_id or end_id do not exist on the data',
-      '2 SHOULD throw because start_id does not exist');
+  RETURN QUERY
+  SELECT throws_ok($$
+    SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$,
+    'XX000',
+    'start_id or end_id do not exist on the data',
+    '2 SHOULD throw because end_id does not exist');
 
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$,
-      'XX000',
-      'start_id or end_id do not exist on the data',
-      '2 SHOULD throw because start_id does not exist');
+  RETURN QUERY
+  SELECT throws_ok($$
+    SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$,
+    'XX000',
+    'start_id or end_id do not exist on the data',
+    '3 SHOULD throw because start_id does not exist');
 
-    RETURN QUERY
-    SELECT is(
-      (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
-      0::FLOAT,
-      '5 SHOULD PASS: cost at row 0 is 0.0');
+  RETURN QUERY
+  SELECT throws_ok($$
+    SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$,
+    'XX000',
+    'start_id or end_id do not exist on the data',
+    '4 SHOULD throw because start_id does not exist');
 
-    RETURN QUERY
-    SELECT is(
-      (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
-      3::BIGINT,
-      'end_id => 3 SHOULD PASS: first node should be 3');
+  RETURN QUERY
+  SELECT is(
+    (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
+    0::FLOAT,
+    '5 SHOULD PASS: cost at row 0 is 0.0');
 
-    RETURN QUERY
-    SELECT is(
-      (SELECT count(*) FROM pgr_TSP('SELECT * FROM data', end_id => 3)),
-      6::BIGINT,
-      'end_id => 3 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
+    3::BIGINT,
+    '6: end_id => 3 SHOULD PASS: first node should be 3');
 
-    RETURN QUERY
-    SELECT is(
-      (SELECT cost FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
-      0::FLOAT,
-      'end_id => 3 SHOULD PASS: cost at row 0 is 0.0');
+  RETURN QUERY
+  SELECT is(
+    (SELECT cost FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
+    0::FLOAT,
+    '7: end_id => 3 SHOULD PASS: cost at row 0 is 0.0');
 
-    RETURN QUERY
-    SELECT is(
-      (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
-      0::FLOAT,
-      'start_id => 5 SHOULD PASS: cost at row 0 is 0.0');
+  RETURN QUERY
+  SELECT is(
+    (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
+    0::FLOAT,
+    '8: start_id => 5 SHOULD PASS: cost at row 0 is 0.0');
 
-    IF NOT min_lib_version('3.3.0') THEN PERFORM todo_end(); END IF;
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 6),
+    3::BIGINT,
+    '9: end_id => 3 SHOULD PASS: last node should be 3');
 
+  IF NOT min_lib_version('3.3.0') THEN PERFORM todo_end(); END IF;
 
-RETURN QUERY
-SELECT is(
-  (SELECT count(*) FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3)),
-  6::BIGINT,
-  '3 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
-
-RETURN QUERY
-SELECT is(
-  (SELECT agg_cost FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
-  0::FLOAT,
-  '4 SHOULD PASS: agg_cost at row 0 is 0.0');
+  RETURN QUERY
+  SELECT is(
+    (SELECT count(*) FROM pgr_TSP('SELECT * FROM data', end_id => 3)),
+    6::BIGINT,
+    '10: end_id => 3 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
 
 
-RETURN QUERY
-SELECT is(
-  (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
-  5::BIGINT,
-  '6 SHOULD PASS: first node should be 5');
+  RETURN QUERY
+  SELECT is(
+    (SELECT count(*) FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3)),
+    6::BIGINT,
+    '11: SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
 
-RETURN QUERY
-SELECT is(
-  (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 6),
-  5::BIGINT,
-  '7 SHOULD PASS: last node should be 5');
+  RETURN QUERY
+  SELECT is(
+    (SELECT agg_cost FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
+    0::FLOAT,
+    '12: SHOULD PASS: agg_cost at row 0 is 0.0');
 
-RETURN QUERY
-SELECT is(
-  (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 5),
-  3::BIGINT,
-  '8 SHOULD PASS: second to last node should be 3');
 
-RETURN QUERY
-SELECT is(
-  (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 6),
-  3::BIGINT,
-  'end_id => 3 SHOULD PASS: last node should be 3');
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
+    5::BIGINT,
+    '13: SHOULD PASS: first node should be 5');
 
-RETURN QUERY
-SELECT is(
-  (SELECT agg_cost FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
-  0::FLOAT,
-  'end_id => 3 SHOULD PASS: agg_cost at row 0 is 0.0');
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 6),
+    5::BIGINT,
+    '14: SHOULD PASS: last node should be 5');
 
-RETURN QUERY
-SELECT is(
-  (SELECT count(*) FROM pgr_TSP('SELECT * FROM data', start_id => 5)),
-  6::BIGINT,
-  'start_id => 5 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 5),
+    3::BIGINT,
+    '15: SHOULD PASS: second to last node should be 3');
 
-RETURN QUERY
-SELECT is(
-  (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
-  5::BIGINT,
-  'start_id => 5 SHOULD PASS: first node should be 5');
+  RETURN QUERY
+  SELECT is(
+    (SELECT agg_cost FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
+    0::FLOAT,
+    '16: end_id => 3 SHOULD PASS: agg_cost at row 0 is 0.0');
 
-RETURN QUERY
-SELECT is(
-  (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 6),
-  5::BIGINT,
-  'start_id => 5 SHOULD PASS: last node should be 5');
+  RETURN QUERY
+  SELECT is(
+    (SELECT count(*) FROM pgr_TSP('SELECT * FROM data', start_id => 5)),
+    6::BIGINT,
+    '17: start_id => 5 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
 
-RETURN QUERY
-SELECT is(
-  (SELECT agg_cost FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
-  0::FLOAT,
-  'start_id => 5 SHOULD PASS: agg_cost at row 0 is 0.0');
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
+    5::BIGINT,
+    '18: start_id => 5 SHOULD PASS: first node should be 5');
+
+  RETURN QUERY
+  SELECT is(
+    (SELECT node FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 6),
+    5::BIGINT,
+    '19: start_id => 5 SHOULD PASS: last node should be 5');
+
+  RETURN QUERY
+  SELECT is(
+    (SELECT agg_cost FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
+    0::FLOAT,
+    '20: start_id => 5 SHOULD PASS: agg_cost at row 0 is 0.0');
 
 END;
 $code$
