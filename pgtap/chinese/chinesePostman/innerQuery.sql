@@ -1,7 +1,10 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(54) END;
+SELECT CASE
+WHEN is_version_2() THEN plan(1)
+WHEN NOT min_lib_version('3.1.1') THEN plan(3)
+ELSE plan(56) END;
 
 CREATE OR REPLACE FUNCTION inner_query()
 RETURNS SETOF TEXT AS
@@ -28,7 +31,7 @@ DELETE FROM edge_table WHERE id > 16;
 
 IF NOT min_lib_version('3.1.1') THEN
   RETURN QUERY
-  SELECT skip(52, 'Server crash fixed on 3.1.1');
+  SELECT skip(1, 'Server crash fixed on 3.1.1');
   RETURN;
 END IF;
 
