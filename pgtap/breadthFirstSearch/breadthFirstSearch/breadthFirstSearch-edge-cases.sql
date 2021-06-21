@@ -2,7 +2,6 @@
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(29) END;
-SELECT plan(29);
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS

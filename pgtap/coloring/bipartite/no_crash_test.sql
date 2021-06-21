@@ -1,6 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN plan(1) ELSE plan(7) END;
 SELECT plan(7);
 
 PREPARE edges AS
@@ -22,7 +23,7 @@ subs TEXT[];
 BEGIN
   IF is_version_2() OR NOT test_min_version('3.2.0') THEN
     RETURN QUERY
-    SELECT skip(7, 'Function is new on 3.2.0');
+    SELECT skip(1, 'Function is new on 3.2.0');
     RETURN;
   END IF;
 
