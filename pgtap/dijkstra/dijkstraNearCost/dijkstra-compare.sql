@@ -39,13 +39,6 @@ DECLARE
 dijkstraNear_query TEXT;
 dijkstra_query TEXT;
 BEGIN
-  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
-    RETURN QUERY
-    SELECT skip(17, 'Function is new on 3.2.0');
-    RETURN;
-  END IF;
-
-
     FOR id IN 1..17 LOOP
         dijkstraNear_query := format($$
             SELECT *
@@ -82,7 +75,7 @@ BEGIN
 
 IF is_version_2() OR NOT test_min_version('3.2.0') THEN
   RETURN QUERY
-  SELECT skip(6, 'Function is new on 3.2.0');
+  SELECT skip(1, 'Function is new on 3.2.0');
   RETURN;
 END IF;
 
