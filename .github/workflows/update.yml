@@ -94,9 +94,6 @@ jobs:
           sudo service postgresql start
           sudo -u postgres createdb -p 5432  ___pgr___test___
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
-          sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
-          # using 3.3 pg_prove to test old version
-          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
 
 
       - name: Build current version
@@ -108,19 +105,30 @@ jobs:
           make -j 4
           sudo make install
 
-      - name: Test
+      - name: Test old version before update
         run: |
           sudo service postgresql start
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
+
+      - name: Test old version after update
+        run: |
+          sudo service postgresql start
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "ALTER EXTENSION pgrouting UPDATE  TO '3.3.0';"
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
           sudo -u postgres dropdb -p 5432  ___pgr___test___
+
+      - name: Test old version with new lib before update
+        run: |
           sudo -u postgres createdb -p 5432  ___pgr___test___
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting WITH VERSION '${{ matrix.old_pgr }}' CASCADE;"
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+          sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
+
+      - name: Test old version with new lib after update
+        run: |
+          sudo -u postgres createdb -p 5432  ___pgr___test___
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "ALTER EXTENSION pgrouting UPDATE  TO '3.3.0';"
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
-
-          #sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
