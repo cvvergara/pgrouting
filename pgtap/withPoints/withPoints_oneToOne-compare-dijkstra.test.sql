@@ -2,7 +2,7 @@
 
 SELECT CASE
 WHEN is_version_2() OR NOT min_lib_version('3.1.1') THEN plan(1)
-ELSE plan(56) END;
+ELSE plan(1156) END;
 
 SET extra_float_digits = -3;
 
