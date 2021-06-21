@@ -1,6 +1,7 @@
 \i setup.sql
 
-SELECT plan(11);
+SELECT CASE WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN plan(1) ELSE plan(11) END;
+
 CREATE OR REPLACE FUNCTION types_check()
 RETURNS SETOF TEXT AS
 $BODY$
@@ -8,7 +9,7 @@ BEGIN
 
 IF is_version_2() OR NOT test_min_version('3.2.0') THEN
   RETURN QUERY
-  SELECT skip(11, 'Function is new on 3.2.0');
+  SELECT skip(1, 'Function is new on 3.2.0');
   RETURN;
 END IF;
 

@@ -1,45 +1,8 @@
---\i setup.sql
+\i setup.sql
 
-SELECT plan(122);
+SELECT CASE WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN plan(1) ELSE plan(122) END;
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-
-CREATE OR REPLACE FUNCTION preparation()
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-
-IF is_version_2() OR NOT test_min_version('3.2.0') THEN
-  RETURN QUERY
-  SELECT skip(8, 'Function is new on 3.2.0');
-  RETURN;
-END IF;
-
-RETURN QUERY
-SELECT is_empty($$SELECT distinct cost FROM edge_table WHERE cost != 1 AND cost != -1$$);
-RETURN QUERY
-SELECT is_empty($$SELECT distinct reverse_cost FROM edge_table WHERE cost != 1 AND cost != -1$$);
-
--- Initial tables are good to work
-
-RETURN QUERY
-SELECT isnt_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table$$);
-RETURN QUERY
-SELECT isnt_empty($$SELECT id FROM edge_table_vertices_pgr$$);
-
--- vertex id values that dont exist
-RETURN QUERY
-SELECT is_empty($$SELECT id FROM edge_table_vertices_pgr WHERE id > 18$$);
-RETURN QUERY
-SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE source > 18$$);
-RETURN QUERY
-SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE target > 18$$);
-RETURN QUERY
-SELECT is_empty($$SELECT id FROM edge_table WHERE id > 18$$);
-
-END;
-$BODY$
-LANGUAGE plpgsql;
 
 
 
@@ -119,31 +82,70 @@ END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
-SELECT preparation();
+CREATE OR REPLACE FUNCTION compare()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
+IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'Function is new on 3.2.0');
+  RETURN;
+END IF;
+
+RETURN QUERY
+SELECT is_empty($$SELECT distinct cost FROM edge_table WHERE cost != 1 AND cost != -1$$);
+RETURN QUERY
+SELECT is_empty($$SELECT distinct reverse_cost FROM edge_table WHERE cost != 1 AND cost != -1$$);
+
+-- Initial tables are good to work
+
+RETURN QUERY
+SELECT isnt_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table$$);
+RETURN QUERY
+SELECT isnt_empty($$SELECT id FROM edge_table_vertices_pgr$$);
+
+-- vertex id values that dont exist
+RETURN QUERY
+SELECT is_empty($$SELECT id FROM edge_table_vertices_pgr WHERE id > 18$$);
+RETURN QUERY
+SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE source > 18$$);
+RETURN QUERY
+SELECT is_empty($$SELECT id, source, target, cost, reverse_cost FROM edge_table WHERE target > 18$$);
+RETURN QUERY
+SELECT is_empty($$SELECT id FROM edge_table WHERE id > 18$$);
+
+RETURN QUERY
 SELECT * from check_expected(
     $$SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id DESC$$,
     $$SELECT start_vid AS frst, d_w_1 AS scnd FROM expected$$,
     'directed => true, cap => 1'
 );
 
+RETURN QUERY
 SELECT * from check_expected(
     $$SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id DESC$$,
     $$SELECT start_vid AS frst, u_w_1 AS scnd FROM expected$$,
     'directed => false, cap => 1'
 );
 
+RETURN QUERY
 SELECT * from check_expected(
     $$SELECT id, source, target, cost  FROM edge_table ORDER BY id DESC$$,
     $$SELECT start_vid AS frst, d_n_1 AS scnd FROM expected$$,
     'directed => true, cap => 1'
 );
 
+RETURN QUERY
 SELECT * from check_expected(
     $$SELECT id, source, target, cost  FROM edge_table ORDER BY id DESC$$,
     $$SELECT start_vid AS frst, u_n_1 AS scnd FROM expected$$,
     'directed => false, cap => 1'
 );
+END;
+$BODY$
+LANGUAGE plpgsql;
 
-DROP TABLE IF EXISTS expected;
+SELECT compare();
 SELECT finish();
+ROLLBACK;

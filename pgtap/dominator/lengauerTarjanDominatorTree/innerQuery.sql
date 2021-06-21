@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(54);
+SELECT CASE WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN plan(1) ELSE plan(54) END;
 
 
 CREATE OR REPLACE FUNCTION inner_query()
@@ -11,7 +11,7 @@ BEGIN
 
 IF is_version_2() OR NOT test_min_version('3.2.0') THEN
   RETURN QUERY
-  SELECT skip(54, 'Function is new on 3.2.0');
+  SELECT skip(1, 'Function is new on 3.2.0');
   RETURN;
 END IF;
 

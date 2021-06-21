@@ -2,7 +2,6 @@
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN plan(1) ELSE plan(7) END;
-SELECT plan(7);
 
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edge_table;

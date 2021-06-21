@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(81);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(81) END;
 
 CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
@@ -12,7 +12,7 @@ subs TEXT[];
 BEGIN
   IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip(81, 'Function is new on 3.0.0');
+    SELECT skip(1, 'Function is new on 3.0.0');
     RETURN;
   END IF;
 

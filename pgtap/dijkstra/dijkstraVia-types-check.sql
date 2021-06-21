@@ -246,5 +246,5 @@ SELECT throws_ok('v200r5',
     'XX000','Unexpected Column ''reverse_cost'' type. Expected ANY-NUMERICAL',
     'throws because reverse_cost is TEXT');
 
-    SELECT finish();
-    ROLLBACK;
+SELECT finish();
+ROLLBACK;
