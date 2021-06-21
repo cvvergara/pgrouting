@@ -1,5 +1,4 @@
 \i setup.sql
-
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
 CREATE TEMP TABLE data AS
@@ -20,7 +19,7 @@ BEGIN
     RETURN;
   END IF;
 
-  IF test_min_version(3.3.0) THEN
+  IF test_min_version('3.3.0') THEN
     RETURN QUERY
     SELECT throws_ok($$
       SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
