@@ -1,5 +1,5 @@
 
-CREATE OR REPLACE FUNCTION test_min_lib_version(min_version TEXT)
+CREATE OR REPLACE FUNCTION min_lib_version(min_version TEXT)
 RETURNS BOOLEAN AS
 $BODY$
 DECLARE val BOOLEAN;
