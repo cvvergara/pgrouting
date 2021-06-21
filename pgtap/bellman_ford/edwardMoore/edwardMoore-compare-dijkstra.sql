@@ -3,10 +3,6 @@
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(1156) END;
 
-SELECT plan(1156);
-
-SET client_min_messages TO ERROR;
-
 -- Compare final row of result (Only final row due to existence of multiple valid paths)
 
 CREATE or REPLACE FUNCTION edwardMoore_compare_dijkstra(max_limit INTEGER default 17)

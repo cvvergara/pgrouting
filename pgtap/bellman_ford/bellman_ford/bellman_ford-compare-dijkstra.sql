@@ -2,7 +2,6 @@
 
 SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(1156) END;
 
-
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
 CREATE or REPLACE FUNCTION bellman_ford_compare_dijkstra(cant INTEGER default 17)
