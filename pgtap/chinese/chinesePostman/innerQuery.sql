@@ -26,9 +26,9 @@ SELECT function_returns('pgr_chinesepostman',
 
 DELETE FROM edge_table WHERE id > 16;
 
-IF min_lib_version('3.1.1') THEN
+IF NOT min_lib_version('3.1.1') THEN
   RETURN QUERY
-  SELECT skip(52, 'Function is new on 3.0.0');
+  SELECT skip(52, 'Server crash fixed on 3.1.1');
   RETURN;
 END IF;
 
