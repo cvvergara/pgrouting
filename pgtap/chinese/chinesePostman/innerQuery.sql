@@ -1,6 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+
 SELECT CASE
 WHEN is_version_2() THEN plan(1)
 WHEN NOT min_lib_version('3.1.1') THEN plan(3)

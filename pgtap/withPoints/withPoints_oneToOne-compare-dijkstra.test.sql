@@ -1,6 +1,8 @@
 \i setup.sql
 
-SELECT plan(1156);
+SELECT CASE
+WHEN is_version_2() OR NOT min_lib_version('3.1.1') THEN plan(1)
+ELSE plan(56) END;
 
 SET extra_float_digits = -3;
 
@@ -16,9 +18,9 @@ dijkstra_sql TEXT;
 withPoints_sql TEXT;
 result_columns TEXT;
 BEGIN
-  IF is_version_2() THEN
+  IF is_version_2() OR NOT min_lib_version('3.1.1') THEN
     RETURN QUERY
-    SELECT skip(cant * cant * 4, 'Issue fixed on 3.0.0');
+    SELECT skip(1, 'Issue fixed on 3.1.1');
     RETURN;
   END IF;
 
