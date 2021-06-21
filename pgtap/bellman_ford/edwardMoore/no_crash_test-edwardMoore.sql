@@ -144,7 +144,6 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT preparation();
 SELECT test_function();
 
 ROLLBACK;

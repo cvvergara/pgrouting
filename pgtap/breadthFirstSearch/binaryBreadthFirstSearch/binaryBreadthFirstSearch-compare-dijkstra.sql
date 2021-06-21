@@ -1,9 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(1156);
-
-SET client_min_messages TO ERROR;
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(1156) END;
 
 -- Compare final row of result (Only final row due to existence of multiple valid paths)
 
@@ -17,7 +15,7 @@ binaryBreadthFirstSearch TEXT;
 BEGIN
   IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip(max_limit * MAX_LIMIT * 4, 'Function is new on 3.0.0');
+    SELECT skip(1, 'Function is new on 3.0.0');
     RETURN;
   END IF;
 
