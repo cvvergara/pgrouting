@@ -13,6 +13,12 @@ BEGIN
     RETURN;
   END IF;
 
+  IF NOT min_lib_version('3.1.2') THEN
+    RETURN QUERY
+    SELECT skip(1, 'Issue fixed on 3.1.2');
+    RETURN;
+  END IF;
+
 PREPARE missing_id_on_matrix AS
 SELECT * FROM pgr_pickDeliver(
     $$ SELECT * FROM orders ORDER BY id $$,

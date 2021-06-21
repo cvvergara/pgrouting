@@ -18,8 +18,8 @@ SELECT * FROM pgr_bdAstar(
 );
 
 SELECT CASE
-WHEN is_version_2() THEN
-  skip(2, 'Issue fixed on 3.0.0')
+WHEN is_version_2() OR NOT min_lib_version('3.1.1') THEN
+  skip(2, 'Issue fixed on 3.1.1')
 ELSE
   collect_tap(
     lives_ok('q1'),
