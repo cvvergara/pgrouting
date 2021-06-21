@@ -19,7 +19,7 @@ BEGIN
     RETURN;
   END IF;
 
-  IF test_min_version('3.3.0') THEN
+  IF NOT test_min_version('3.3.0') THEN PERFORM todo_start('Changes in 3.3.0'); END IF;
     RETURN QUERY
     SELECT throws_ok($$
       SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$,
@@ -47,18 +47,9 @@ BEGIN
       'XX000',
       'start_id or end_id do not exist on the data',
       '2 SHOULD throw because start_id does not exist');
-  ELSE
-    RETURN QUERY
-    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$);
-    RETURN QUERY
-    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$);
-    RETURN QUERY
-    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$);
-    RETURN QUERY
-    SELECT throws_ok($$SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$);
-  END IF;
 
 
+  IF NOT test_min_version('3.3.0') THEN PERFORM todo_enbd(); END IF;
 
 
 RETURN QUERY
