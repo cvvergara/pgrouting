@@ -1,6 +1,7 @@
 \i setup.sql
 
-SELECT plan(1156);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(1156) END;
+
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
@@ -15,7 +16,7 @@ BEGIN
 
   IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip(cant * cant * 4, 'Function is new on 3.0.0');
+    SELECT skip(1, 'Function is new on 3.0.0');
     RETURN;
   END IF;
 

@@ -19,6 +19,7 @@ DROP TABLE IF EXISTS vertex_table;
 DROP TABLE IF EXISTS categories;
 DROP TABLE IF EXISTS vehicles;
 DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTs combinations_table;
 
 --EDGE TABLE CREATE start
 CREATE TABLE edge_table (

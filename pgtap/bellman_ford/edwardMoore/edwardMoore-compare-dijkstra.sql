@@ -1,6 +1,8 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(1156) END;
+
 SELECT plan(1156);
 
 SET client_min_messages TO ERROR;
@@ -17,7 +19,7 @@ edwardMoore TEXT;
 BEGIN
   IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip(max_limit * MAX_LIMIT * 4, 'Function is new on 3.0.0');
+    SELECT skip(1, 'Function is new on 3.0.0');
     RETURN;
   END IF;
 
