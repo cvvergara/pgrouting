@@ -49,7 +49,7 @@ BEGIN
       '2 SHOULD throw because start_id does not exist');
 
 
-  IF NOT min_lib_version('3.3.0') THEN PERFORM todo_enb(); END IF;
+  IF NOT min_lib_version('3.3.0') THEN PERFORM todo_end(); END IF;
 
 
 RETURN QUERY

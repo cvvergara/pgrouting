@@ -88,7 +88,8 @@ jobs:
           mkdir build
           cd build
           cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=OFF ..
-          sudo make -j 4 install
+          make -j 4
+          sudo make install
           cd ../..
           sudo service postgresql start
           sudo -u postgres createdb -p 5432  ___pgr___test___
@@ -104,7 +105,8 @@ jobs:
           mkdir build
           cd build
           cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=OFF ..
-          sudo make -j 4 install
+          make -j 4
+          sudo make install
 
       - name: Test
         run: |
