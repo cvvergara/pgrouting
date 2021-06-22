@@ -128,6 +128,5 @@ jobs:
 
       - name: Test old version with new lib after update
         run: |
-          sudo -u postgres createdb -p 5432  ___pgr___test___
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           sudo -u postgres bash ./tools/testers/pg_prove_tests.sh postgres 5432
