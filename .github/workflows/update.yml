@@ -4,8 +4,7 @@ name: Update
 # Do not want to run it all the time, as it is very time consuming
 #
 
-on:
-  workflow_dispatch:
+on: [workflow_dispatch]
 
 
 jobs:
