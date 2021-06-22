@@ -28,8 +28,6 @@ on:
       - 'pgtap/**'
       - '.github/workflows/update.yml'
 
-    branches-ignore:
-      - 'gh-pages'
 
 jobs:
   build:
