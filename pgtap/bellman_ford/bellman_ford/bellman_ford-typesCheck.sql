@@ -83,7 +83,7 @@ SELECT set_has(
 RETURN QUERY
 SELECT CASE
 WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
-  skip(4, 'Combinations functiontionality new on 2.3')
+  skip(4, 'Combinations functiontionality new on 3.2.0')
 WHEN test_min_version('3.2.0') THEN
   collect_tap(
     has_function('pgr_bellmanford', ARRAY['text','text','boolean']),

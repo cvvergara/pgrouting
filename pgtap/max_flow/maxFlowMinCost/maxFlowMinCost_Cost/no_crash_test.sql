@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(81);
+SELECT CASE WHEN is_version_2() OR NOT test_min_version('3.2.0')  THEN plan(1) ELSE plan(81) END;
 
 PREPARE edges AS
 SELECT id,
@@ -13,25 +13,6 @@ SELECT id,
     reverse_cost
 FROM edge_table
 ORDER BY id;
-
--- A source should not be a sink
-PREPARE combinations AS
-SELECT source, target  FROM combinations_table WHERE target > 2;
-
-PREPARE null_ret AS
-SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
-
-PREPARE null_ret_arr AS
-SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
-
-PREPARE null_combinations AS
-SELECT source, target FROM combinations_table WHERE source IN (-1);
-
-SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
-SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
-SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
-SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
-SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
 CREATE OR REPLACE FUNCTION test(params TEXT[], subs TEXT[])
 RETURNS SETOF TEXT AS
@@ -77,118 +58,149 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+  IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip(76, 'Bug in function is fixed on 3.2.0');
+    SELECT skip(1, 'New Function on 3.0.0');
+    RETURN;
+  ELSIF  NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'STATIC fixed on 3.2.0');
     RETURN;
   END IF;
 
-    -- one to one
-    params = ARRAY['$$edges$$',
-    '1::BIGINT',
-    '2::BIGINT'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  PREPARE null_ret AS
+  SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
-    RETURN query SELECT * FROM test(params, subs);
+  PREPARE null_ret_arr AS
+  SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT',
-    'NULL::BIGINT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM test(params, subs);
-    -- one to many
 
-    params = ARRAY['$$edges$$',
-    '1::BIGINT',
-    'ARRAY[2,5]::BIGINT[]'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  RETURN QUERY
+  SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
+  RETURN QUERY
+  SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
+  RETURN QUERY
+  SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
 
-    RETURN query SELECT * FROM test(params, subs);
+  -- one to one
+  params = ARRAY['$$edges$$',
+  '1::BIGINT',
+  '2::BIGINT'
+  ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT',
-    'NULL::BIGINT[]'
-    ]::TEXT[];
-    RETURN query SELECT * FROM test(params, subs);
+  RETURN query SELECT * FROM test(params, subs);
 
-    -- many to one
-    params = ARRAY['$$edges$$',
-        'ARRAY[2,5]::BIGINT[]',
-        '1'
-        ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT',
+  'NULL::BIGINT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM test(params, subs);
+  -- one to many
 
-    RETURN query SELECT * FROM test(params, subs);
+  params = ARRAY['$$edges$$',
+  '1::BIGINT',
+  'ARRAY[2,5]::BIGINT[]'
+  ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT[]',
-    'NULL::BIGINT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM test(params, subs);
+  RETURN query SELECT * FROM test(params, subs);
 
-    -- many to many
-    params = ARRAY['$$edges$$',
-        'ARRAY[1]::BIGINT[]',
-        'ARRAY[2,5]::BIGINT[]'
-        ]::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
-    '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
-    ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT',
+  'NULL::BIGINT[]'
+  ]::TEXT[];
+  RETURN query SELECT * FROM test(params, subs);
 
-    RETURN query SELECT * FROM test(params, subs);
+  -- many to one
+  params = ARRAY['$$edges$$',
+  'ARRAY[2,5]::BIGINT[]',
+  '1'
+  ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT id FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::BIGINT[]',
-    'NULL::BIGINT[]'
-    ]::TEXT[];
-    RETURN query SELECT * FROM test(params, subs);
+  RETURN query SELECT * FROM test(params, subs);
 
-    IF is_version_2() OR NOT test_min_version('3.2.0') THEN
-      RETURN QUERY
-      SELECT skip(12, 'Combinations functionality is new on 3.2.0');
-      RETURN;
-    END IF;
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT[]',
+  'NULL::BIGINT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM test(params, subs);
 
-    -- Combinations SQL
-    params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
-    subs = ARRAY[
-    'NULL',
-    '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$'
-    ]::TEXT[];
+  -- many to many
+  params = ARRAY['$$edges$$',
+  'ARRAY[1]::BIGINT[]',
+  'ARRAY[2,5]::BIGINT[]'
+  ]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))',
+  '(SELECT array_agg(id) FROM edge_table_vertices_pgr  WHERE id IN (-1))'
+  ]::TEXT[];
 
-    RETURN query SELECT * FROM test(params, subs);
+  RETURN query SELECT * FROM test(params, subs);
 
-    subs = ARRAY[
-    'NULL',
-    'NULL::TEXT'
-    ]::TEXT[];
-    RETURN query SELECT * FROM test(params, subs);
+  subs = ARRAY[
+  'NULL',
+  'NULL::BIGINT[]',
+  'NULL::BIGINT[]'
+  ]::TEXT[];
+  RETURN query SELECT * FROM test(params, subs);
+
+  -- Combinations SQL
+  IF is_version_2() OR NOT test_min_version('3.2.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'Combinations functionality is new on 3.2.0');
+    RETURN;
+  END IF;
+
+  PREPARE combinations AS
+  SELECT source, target  FROM combinations_table WHERE target > 2;
+
+  PREPARE null_combinations AS
+  SELECT source, target FROM combinations_table WHERE source IN (-1);
+
+  RETURN QUERY
+  SELECT isnt_empty('combinations', 'Should be not empty to tests be meaningful');
+
+  RETURN QUERY
+  SELECT is_empty('null_combinations', 'Should be empty to tests be meaningful');
+
+  params = ARRAY['$$edges$$', '$$combinations$$']::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  '$$(SELECT source, target FROM combinations_table  WHERE source IN (-1))$$'
+  ]::TEXT[];
+
+  RETURN query SELECT * FROM test(params, subs);
+
+  subs = ARRAY[
+  'NULL',
+  'NULL::TEXT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM test(params, subs);
 
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-SELECT * FROM test_function();
+SELECT test_function();
+SELECT finish();
 
 ROLLBACK;

@@ -29,7 +29,7 @@ SELECT function_returns('pgr_edmondskarp',
 -- new signature on 3.2
 SELECT CASE
 WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
-  skip(2, 'Combinations functiontionality new on 2.3')
+  skip(2, 'Combinations functiontionality new on 3.2.0')
 WHEN test_min_version('3.2.0') THEN
   collect_tap(
     has_function('pgr_edmondskarp', ARRAY['text', 'text']),

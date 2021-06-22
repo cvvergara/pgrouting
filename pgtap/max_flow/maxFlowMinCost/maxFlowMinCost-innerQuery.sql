@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(586);
+SELECT CASE WHEN is_version_2() THEN plan(1) ELSE plan(586) END;
 
 CREATE OR REPLACE FUNCTION inner_query()
 RETURNS SETOF TEXT AS
@@ -10,7 +10,7 @@ DECLARE
 BEGIN
   IF is_version_2() THEN
     RETURN QUERY
-    SELECT skip (586, 'pgr_maxflowmincost is new on 3.0.0');
+    SELECT skip (1, 'pgr_maxflowmincost is new on 3.0.0');
     RETURN;
   END IF;
 
@@ -40,7 +40,7 @@ RETURN QUERY SELECT function_returns('pgr_maxflowmincost',
 -- new signature on 3.2
 RETURN QUERY SELECT CASE
 WHEN is_version_2() OR NOT test_min_version('3.2.0') THEN
-  skip(2, 'Combinations functiontionality new on 2.3')
+  skip(2, 'Combinations functiontionality new on 3.2.0')
 WHEN test_min_version('3.2.0') THEN
   collect_tap(
     has_function('pgr_maxflowmincost', ARRAY['text', 'text']),
