@@ -1,7 +1,7 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
-SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(1) END;
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(12) END;
 
 
 CREATE TEMP TABLE data AS
