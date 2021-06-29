@@ -1,15 +1,9 @@
--- http://www.math.uwaterloo.ca/tsp/world/wi29.tsp
--- http://www.math.uwaterloo.ca/tsp/world/countries.html
-
 -- NAME : wi29
 -- COMMENT : 29 locations in Western Sahara
--- COMMENT : Derived FROM National Imagery and Mapping Agency data
+-- COMMENT : Derived from National Imagery and Mapping Agency data
 -- TYPE : TSP
 -- DIMENSION : 29
 -- EDGE_WEIGHT_TYPE : EUC_2D
--- NODE_COORD_SECTION
-
--- best 27603
 
 DROP TABLE IF EXISTS wi29;
 CREATE TABLE wi29 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
@@ -47,29 +41,4 @@ COPY wi29 (id, x, y) FROM stdin WITH DELIMITER ' ';
 
 
 UPDATE wi29 SET the_geom = ST_makePoint(x,y);
-SET client_min_messages TO NOTICE;
 
-SELECT * from pgr_tsp($$SELECT id::INTEGER, x, y FROM wi29$$, 17);
-
-SELECT * FROM pgr_TSPeuclidean($$select * FROM wi29$$, 17, randomize := false);
-SELECT * FROM pgr_TSPeuclidean($$select * FROM wi29$$, 17, 25, randomize := false);
-
-UPDATE wi29 SET id = id + 100;
-SELECT * FROM pgr_TSPeuclidean($$select * FROM wi29$$, 117, 125, randomize := false);
-SELECT * FROM pgr_TSPeuclidean($$select * FROM wi29$$, randomize := false);
-
-
-/*
-CREATE VIEW wi29_path AS
-WITH
-results AS (
-    SELECT * FROM pgr_TSPeuclidean($$select * FROM wi29$$);
-),
-geoms AS (
-    SELECT seq, node, cost, agg_cost, the_geom AS second  FROM results JOIN wi29 ON (node = id)
-),
-edges AS (
-    SELECT seq, node, ST_MakeLine(lag(second) over(), second) AS line, cost, agg_cost FROM geoms
-)
-SELECT * FROM edges;
-*/

@@ -11,24 +11,25 @@ SELECT * FROM pgr_TSP(
         'SELECT id, source, target, cost, reverse_cost FROM edge_table',
         (SELECT array_agg(id) FROM edge_table_vertices_pgr WHERE id < 14),
         directed := false)
-    $$,
-    randomize := false);
+    $$);
+NOTICE:  pgr_TSP will change signature on 4.0.0
+HINT:  Ignoring annaeling parameters
  seq | node | cost | agg_cost
 -----+------+------+----------
-   1 |    1 |    1 |        0
+   1 |    1 |    0 |        0
    2 |    2 |    1 |        1
    3 |    3 |    1 |        2
    4 |    4 |    1 |        3
    5 |    9 |    1 |        4
-   6 |    6 |    1 |        5
-   7 |   11 |    1 |        6
-   8 |   12 |    2 |        7
-   9 |   10 |    1 |        9
-  10 |   13 |    4 |       10
-  11 |    7 |    1 |       14
-  12 |    8 |    1 |       15
-  13 |    5 |    2 |       16
-  14 |    1 |    0 |       18
+   6 |   12 |    1 |        5
+   7 |    6 |    2 |        7
+   8 |    5 |    1 |        8
+   9 |    8 |    1 |        9
+  10 |    7 |    1 |       10
+  11 |   10 |    3 |       13
+  12 |   11 |    1 |       14
+  13 |   13 |    2 |       16
+  14 |    1 |    4 |       20
 (14 rows)
 
 -- q2
@@ -40,25 +41,26 @@ SELECT * FROM pgr_TSP(
         directed := false
     )
     $$,
-    start_id := 7,
-    randomize := false
+    start_id => 7
 );
+NOTICE:  pgr_TSP will change signature on 4.0.0
+HINT:  Ignoring annaeling parameters
  seq | node | cost | agg_cost
 -----+------+------+----------
-   1 |    7 |    1 |        0
+   1 |    7 |    0 |        0
    2 |    8 |    1 |        1
    3 |    5 |    1 |        2
    4 |    2 |    1 |        3
-   5 |    1 |    2 |        4
-   6 |    3 |    1 |        6
-   7 |    4 |    1 |        7
-   8 |    9 |    1 |        8
-   9 |   12 |    1 |        9
-  10 |   11 |    1 |       10
-  11 |   10 |    1 |       11
-  12 |   13 |    3 |       12
-  13 |    6 |    3 |       15
-  14 |    7 |    0 |       18
+   5 |    1 |    1 |        4
+   6 |    3 |    2 |        6
+   7 |    6 |    1 |        7
+   8 |   10 |    2 |        9
+   9 |   11 |    1 |       10
+  10 |   12 |    1 |       11
+  11 |    9 |    1 |       12
+  12 |    4 |    1 |       13
+  13 |   13 |    5 |       18
+  14 |    7 |    4 |       22
 (14 rows)
 
 -- q3
@@ -67,19 +69,21 @@ SELECT * FROM pgr_TSP(
     SELECT * FROM pgr_withPointsCostMatrix(
         'SELECT id, source, target, cost, reverse_cost FROM edge_table ORDER BY id',
         'SELECT pid, edge_id, fraction from pointsOfInterest',
-        array[-1, 3, 5, 6, -6], directed := false)
+        array[-1, 3, 5, 6, -6], directed := true)
     $$,
-    start_id := 5,
-    randomize := false
+    start_id => 5,
+    end_id => 6
 );
+NOTICE:  pgr_TSP will change signature on 4.0.0
+HINT:  Ignoring annaeling parameters
  seq | node | cost | agg_cost
 -----+------+------+----------
-   1 |    5 |  0.3 |        0
-   2 |   -6 |  1.3 |      0.3
-   3 |   -1 |  1.6 |      1.6
-   4 |    3 |    1 |      3.2
-   5 |    6 |    1 |      4.2
-   6 |    5 |    0 |      5.2
+   1 |    5 |    0 |        0
+   2 |   -1 |  1.6 |      1.6
+   3 |   -6 |  1.3 |      2.9
+   4 |    3 |  4.3 |      7.2
+   5 |    6 |    1 |      8.2
+   6 |    5 |    1 |      9.2
 (6 rows)
 
 -- q4
