@@ -2,12 +2,18 @@
 \i setup.sql
 
 UPDATE edge_table SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(11);
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(11) ELSE plan(1) END;
 
 CREATE FUNCTION tsp_issue_1760()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
+
+  IF NOT min_lib_version('3.2.1') THEN
+    RETURN QUERY
+    SELECT skip(1, 'pgr_TSP server crash fixed on 3.2.1');
+    RETURN;
+  END IF;
 
 CREATE TEMP TABLE tsp_issue_numb AS
 SELECT start_vid, end_vid, agg_cost
