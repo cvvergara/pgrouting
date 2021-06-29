@@ -118,9 +118,9 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
          * This is for the deprecated signature
          * Its ignoring the rest of the parameters
          */
-        ereport(WARNING,
-                (errmsg("pgr_TSP will change signature on 4.0"),
-                 errhint("Ignoring parameters not on new signature")));
+        ereport(NOTICE,
+                (errmsg("pgr_TSP will change signature on 4.0.0"),
+                 errhint("Ignoring annaeling parameters")));
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),

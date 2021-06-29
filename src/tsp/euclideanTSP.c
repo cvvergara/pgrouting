@@ -113,6 +113,9 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+        ereport(NOTICE,
+                (errmsg("pgr_TSPeuclidean will change signature on 4.0.0"),
+                 errhint("Ignoring annaeling parameters")));
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
