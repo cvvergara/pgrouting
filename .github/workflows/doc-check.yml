@@ -119,7 +119,7 @@ jobs:
           echo "${LANG}"
 
           cmake -DLINKCHECK=ON -DHTML=ON -DWITH_DOC=ON \
-                ${LANG} \
+                "${LANG}" \
                 -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release ..
 
       - name: Check Links
