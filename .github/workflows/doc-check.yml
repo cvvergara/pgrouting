@@ -10,6 +10,9 @@ name: Check Documentation
 # - ubuntu-latest
 # - default postgres installed on ubuntu-latest
 # - postgis 3
+#
+# Currently more than 50% translated
+# - es
 
 on:
   push:
