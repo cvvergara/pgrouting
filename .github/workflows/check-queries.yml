@@ -1,5 +1,6 @@
 name: Check queries
 
+
 # This action runs:
 # - When this file changes
 # - When changes on code (src, include, sql)

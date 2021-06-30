@@ -1,5 +1,6 @@
 name: Check Documentation
 
+
 # documentation is tested only on:
 # - ubuntu-latest
 # - default postgres installed on ubuntu-latest
