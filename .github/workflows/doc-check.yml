@@ -51,7 +51,7 @@ jobs:
         run: |
           echo "=============== list modified files ==============="
           git diff --name-only HEAD^ HEAD
-          echo "PROCESS=${PROCESS}" >> $GITHUB_ENV
+          echo "PROCESS=true" >> $GITHUB_ENV
 
 
       - name: Get commit message
