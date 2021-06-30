@@ -21,7 +21,6 @@
 Components - Family of functions
 ===============================================================================
 
-
 .. index from here
 
 * :doc:`pgr_connectedComponents` - Connected components of an undirected graph.
