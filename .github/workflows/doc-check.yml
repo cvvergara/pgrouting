@@ -1,35 +1,35 @@
 name: Check Documentation
+
 # documentation is tested only on:
 # - ubuntu-latest
 # - default postgres installed on ubuntu-latest
 # - postgis 3
-# The corresponding language based on the PR commit message:
+# The corresponding language
 # - links
 # - build Links
-# - English is always tested
 
 on:
   push:
     paths:
       - 'doc/**'
       - 'locale/**'
-      - '.github/workflows/doc-check.yml'
-      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/doc_check.yml'
 
     branches-ignore:
       - 'gh-pages'
 
+    tags: []
 
   pull_request:
-    branches:
-      - master
-      - develop
     paths:
       - 'doc/**'
       - 'locale/**'
-      - '.github/workflows/doc-check.yml'
-      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+      - '.github/workflows/doc_check.yml'
 
+    branches-ignore:
+      - 'gh-pages'
 
 jobs:
   build:
@@ -39,32 +39,28 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          language: [de,en,es,ja]
+          language: [en,es]
 
     env:
         LANG_MSG: "in${{ matrix.language }}"
 
     steps:
       - uses: actions/checkout@v2
+
+      - uses: marceloprado/has-changed-path@v1
+        id: changed-front
         with:
-          fetch-depth: 2
+          paths: "locale/{{ matrix.language }}"
 
       - name: Get commit message
         run: |
-           PROCESS=${{ false }}
-           if [[ $(git log --format=%B -n 2 | tr -d "'" | tr -d " " | grep -Po '(?<=\.po)[^;]+') == *"${LANG_MSG}"* ]]; then
-             PROCESS=${{ true }}
-           fi
-           if [[ $(git log --format=%B -n 2 | tr -d "'" | tr -d " " | grep "\[${{ matrix.language }}\]") ]]; then
-             PROCESS=${{ true }}
-           fi
            if [[ "${{ matrix.language }}" == "en" ]]; then
              PROCESS=${{ true }}
            fi
            echo "PROCESS=${PROCESS}" >> $GITHUB_ENV
 
       - name: Get postgres version
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         run: |
           sudo service postgresql start
           pgver=$(psql --version | grep -Po '(?<=psql \(PostgreSQL\) )[^;]+(?=\.\d \()')
@@ -72,7 +68,7 @@ jobs:
           echo "PGIS=3" >> $GITHUB_ENV
 
       - name: Add PostgreSQL APT repository
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         run: |
           sudo apt-get install curl ca-certificates gnupg
           curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
@@ -80,13 +76,13 @@ jobs:
             $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
       - name: Install python
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
 
       - name: Install dependencies
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -101,7 +97,7 @@ jobs:
           pip list
 
       - name: Configure
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         run: |
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
@@ -111,13 +107,13 @@ jobs:
                 -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release ..
 
       - name: Check Links
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         run: |
           cd build
           make linkcheck-${{ matrix.language }}
 
       - name: Check Documentation
-        if: env.PROCESS == 'true'
+        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
         run: |
           cd build
           make html-${{ matrix.language }}
