@@ -51,6 +51,7 @@ jobs:
         run: |
           echo "=============== list modified files ==============="
           git diff --name-only HEAD^ HEAD
+          echo "PROCESS=${PROCESS}" >> $GITHUB_ENV
 
 
       - name: Get commit message
@@ -61,7 +62,7 @@ jobs:
            echo "PROCESS=${PROCESS}" >> $GITHUB_ENV
 
       - name: Get postgres version
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         run: |
           sudo service postgresql start
           pgver=$(psql --version | grep -Po '(?<=psql \(PostgreSQL\) )[^;]+(?=\.\d \()')
@@ -69,7 +70,7 @@ jobs:
           echo "PGIS=3" >> $GITHUB_ENV
 
       - name: Add PostgreSQL APT repository
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         run: |
           sudo apt-get install curl ca-certificates gnupg
           curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
@@ -83,7 +84,7 @@ jobs:
           python-version: '3.x'
 
       - name: Install dependencies
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -98,7 +99,7 @@ jobs:
           pip list
 
       - name: Configure
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         run: |
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
@@ -108,13 +109,13 @@ jobs:
                 -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release ..
 
       - name: Check Links
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         run: |
           cd build
           make linkcheck-${{ matrix.language }}
 
       - name: Check Documentation
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         run: |
           cd build
           make html-${{ matrix.language }}
