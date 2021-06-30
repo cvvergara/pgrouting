@@ -57,7 +57,7 @@ jobs:
           git diff --name-only HEAD^ HEAD
 
           echo "========== check paths of modified files =========="
-          if git diff --name-only HEAD^ HEAD | grep '.github/workflows/doc-check.yml' ; then  echo "PROCESS=${PROCESS}" >> $GITHUB_ENV; exit 0; fi
+          if git diff --name-only HEAD^ HEAD | grep -q '.github/workflows/doc-check.yml' ; then  echo "PROCESS=${PROCESS}" >> $GITHUB_ENV; exit 0; fi
           git diff --name-only HEAD^ HEAD > files.txt
           while IFS= read -r file
           do
