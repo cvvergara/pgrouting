@@ -4,17 +4,18 @@ name: Check Documentation
 # - ubuntu-latest
 # - default postgres installed on ubuntu-latest
 # - postgis 3
-# The corresponding language
+# The corresponding language based on the PR commit message:
 # - links
 # - build Links
+# - English is always tested
 
 on:
   push:
     paths:
+      - '.github/workflows/doc_check.yml'
       - 'doc/**'
       - 'locale/**'
       - 'CMakeLists.txt'
-      - '.github/workflows/doc_check.yml'
 
     branches-ignore:
       - 'gh-pages'
@@ -23,10 +24,10 @@ on:
 
   pull_request:
     paths:
+      - '.github/workflows/doc_check.yml'
       - 'doc/**'
       - 'locale/**'
       - 'CMakeLists.txt'
-      - '.github/workflows/doc_check.yml'
 
     branches-ignore:
       - 'gh-pages'
@@ -41,21 +42,23 @@ jobs:
         matrix:
           language: [en,es]
 
+    env:
+        LANG_MSG: "in${{ matrix.language }}"
+
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 2
 
-      - name: check modified files
-        id: check_files
-        run: |
-          echo "=============== list modified files ==============="
-          git diff --name-only HEAD^ HEAD
-          echo "PROCESS=true" >> $GITHUB_ENV
-
-
       - name: Get commit message
         run: |
+           PROCESS=${{ false }}
+           if [[ $(git log --format=%B -n 2 | tr -d "'" | tr -d " " | grep -Po '(?<=\.po)[^;]+') == *"${LANG_MSG}"* ]]; then
+             PROCESS=${{ true }}
+           fi
+           if [[ $(git log --format=%B -n 2 | tr -d "'" | tr -d " " | grep "\[${{ matrix.language }}\]") ]]; then
+             PROCESS=${{ true }}
+           fi
            if [[ "${{ matrix.language }}" == "en" ]]; then
              PROCESS=${{ true }}
            fi
@@ -78,7 +81,7 @@ jobs:
             $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 
       - name: Install python
-        if: env.PROCESS == 'true' || steps.changed-front.outputs.changed == 'true'
+        if: env.PROCESS == 'true'
         uses: actions/setup-python@v2
         with:
           python-version: '3.x'
