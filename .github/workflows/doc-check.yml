@@ -24,7 +24,7 @@ on:
 
   pull_request:
     paths:
-      - '.github/workflows/doc_check.yml'
+      - '.github/workflows/doc-check.yml'
       - 'doc/**'
       - 'locale/**'
       - 'CMakeLists.txt'
