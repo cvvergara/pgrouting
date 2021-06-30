@@ -42,16 +42,30 @@ jobs:
         matrix:
           language: [en,es]
 
-    env:
-        LANG_MSG: "in${{ matrix.language }}"
-
     steps:
       - uses: actions/checkout@v2
-
-      - uses: marceloprado/has-changed-path@v1
-        id: changed-front
         with:
-          paths: "locale/{{ matrix.language }}"
+          fetch-depth: 2
+
+      - name: check modified files
+        id: check_files
+        run: |
+          echo "=============== list modified files ==============="
+          git diff --name-only HEAD^ HEAD | git grep "locale/{{matrix.language}}"
+
+          echo "========== check paths of modified files =========="
+          git diff --name-only HEAD^ HEAD | git grep "locale/{{matrix.language}}" > files.txt
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file != "locale/{{matrix.language}}" ]]; then
+              echo "This modified file is not under the 'db' folder."
+              echo "::set-output name=run_job::false"
+              break
+            else
+              echo "::set-output name=run_job::true"
+            fi
+          done < files.txt
 
       - name: Get commit message
         run: |
