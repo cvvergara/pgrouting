@@ -111,11 +111,11 @@ jobs:
           mkdir build
           cd build
           LANG=${{ matrix.language }}
-          LANG=$(echo ${LANG^^}
-          echo "$LANG"
+          LANG=$(echo ${LANG^^})
+          echo "${LANG}"
 
           cmake -DLINKCHECK=ON -DHTML=ON -DWITH_DOC=ON \
-                -D${${{ matrix.language }}^^}=ON \
+                -D${LANG}=ON \
                 -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release ..
 
       - name: Check Links
