@@ -38,7 +38,7 @@ on:
       - 'gh-pages'
 
 jobs:
-  build:
+  Test with clang:
     name: Build
     runs-on: ubuntu-latest
 
