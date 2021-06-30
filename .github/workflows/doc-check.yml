@@ -71,20 +71,6 @@ jobs:
             fi
           done < files.txt
 
-      - name: Get commit message
-        run: |
-           PROCESS=${{ false }}
-           if [[ $(git log --format=%B -n 2 | tr -d "'" | tr -d " " | grep -Po '(?<=\.po)[^;]+') == *"${LANG_MSG}"* ]]; then
-             PROCESS=${{ true }}
-           fi
-           if [[ $(git log --format=%B -n 2 | tr -d "'" | tr -d " " | grep "\[${{ matrix.language }}\]") ]]; then
-             PROCESS=${{ true }}
-           fi
-           if [[ "${{ matrix.language }}" == "en" ]]; then
-             PROCESS=${{ true }}
-           fi
-           echo "PROCESS=${PROCESS}" >> $GITHUB_ENV
-
       - name: Get postgres version
         if: env.PROCESS == 'true'
         run: |
