@@ -12,7 +12,7 @@ name: Check Documentation
 on:
   push:
     paths:
-      - '.github/workflows/doc_check.yml'
+      - .github/workflows/doc_check.yml
       - 'doc/**'
       - 'locale/**'
       - 'CMakeLists.txt'
@@ -24,7 +24,7 @@ on:
 
   pull_request:
     paths:
-      - .github/workflows/doc_check.yml
+      - '.github/workflows/doc_check.yml'
       - 'doc/**'
       - 'locale/**'
       - 'CMakeLists.txt'
