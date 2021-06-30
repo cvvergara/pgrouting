@@ -111,7 +111,7 @@ jobs:
           mkdir build
           cd build
           cmake -DLINKCHECK=ON -DHTML=ON -DWITH_DOC=ON \
-                -DDE=ON -DES=ON -DFR=ON -DJA=ON -DIT=ON \
+                -D${${{ matrix.language }}^^}=ON \
                 -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release ..
 
       - name: Check Links
