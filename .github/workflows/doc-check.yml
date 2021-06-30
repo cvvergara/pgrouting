@@ -110,16 +110,8 @@ jobs:
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          LANG=""
-          if [[ "${{ matrix.language }}" != "en" ]];
-          then
-              LANG=${{ matrix.language }}
-              LANG=$(echo "-D${LANG^^}=ON")
-          fi
-          echo "${LANG}"
-
-          cmake -DLINKCHECK=ON -DWITH_DOC=ON \
-                -DES=ON \
+          cmake -DLINKCHECK=ON -DHTML=ON -DWITH_DOC=ON \
+                -DDE=ON -DES=ON -DFR=ON -DJA=ON -DIT=ON \
                 -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release ..
 
       - name: Check Links
