@@ -2,12 +2,12 @@
 # Copyright (C) pgRouting Contributors - Version v3.2.0-dev
 # This file is distributed under the same license as the pgRouting package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
-#
+# 
 # Translators:
 # Vicky Vergara <vicky@georepublic.de>, 2020
 # 0a3886ca72a6d508a04563bd8c050dff, 2020
 # MarPetra <mvergaratrejo@gmail.com>, 2021
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -36,7 +36,7 @@ msgstr ""
 
 #: ../../build/doc/coloring-family.rst:18
 msgid "Coloring - Family of functions (Experimental)"
-msgstr "Coloración - Familia de funciones (Experimental)"
+msgstr "Colorante - Familia de funciones (Experimental)"
 
 #: ../../build/doc/experimental.rst:3
 msgid "Possible server crash"
