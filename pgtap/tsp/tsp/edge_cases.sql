@@ -7,7 +7,7 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := false);
 
-SELECT plan(20);
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(17);
 
 CREATE FUNCTION tsp_edge_cases()
 RETURNS SETOF TEXT AS
@@ -46,20 +46,7 @@ BEGIN
   ELSE
 
     RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 10) $$);
-
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', end_id => 10) $$);
-
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10, end_id => 5) $$);
-
-    RETURN QUERY
-    SELECT throws_ok($$
-      SELECT * FROM pgr_TSP('SELECT * FROM data', start_id => 10) $$);
+    SELECT skip(1, 'Throws added on 3.2.1');
 
   END IF;
 

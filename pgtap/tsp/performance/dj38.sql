@@ -60,6 +60,6 @@ UPDATE dj38 SET the_geom = ST_makePoint(x,y);
 SET client_min_messages TO NOTICE;
 
 
-SELECT plan(38);
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(38) ELSE plan(1);
 SELECT tsp_performance('dj38', 38, 6656.0, 2.0);
 SELECT finish();
