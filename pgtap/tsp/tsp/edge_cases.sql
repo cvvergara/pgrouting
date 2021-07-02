@@ -7,7 +7,7 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := false);
 
-SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(14) END;
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(12) END;
 
 CREATE FUNCTION tsp_edge_cases()
 RETURNS SETOF TEXT AS
@@ -67,18 +67,18 @@ BEGIN
       0::FLOAT,
       '8: start_id => 5 SHOULD PASS: cost at row 0 is 0.0');
 
+    RETURN QUERY
+    SELECT is(
+      (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 6),
+      3::BIGINT,
+      '9: end_id => 3 SHOULD PASS: last node should be 3');
+
   ELSE
 
     RETURN QUERY
     SELECT skip(1, 'Throws added on 3.2.1');
 
   END IF;
-
-  RETURN QUERY
-  SELECT is(
-    (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 6),
-    3::BIGINT,
-    '9: end_id => 3 SHOULD PASS: last node should be 3');
 
 
   RETURN QUERY
