@@ -5,8 +5,4 @@ ADD_LIBRARY(tsp OBJECT
 
     TSP_driver.cpp
     euclideanTSP_driver.cpp
-
-    euclideanDmatrix.cpp
-    tour.cpp
-
     )
