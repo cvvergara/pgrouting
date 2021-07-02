@@ -7,7 +7,7 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := false);
 
-SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(17) END;
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(20) ELSE plan(14) END;
 
 CREATE FUNCTION tsp_edge_cases()
 RETURNS SETOF TEXT AS
@@ -43,36 +43,36 @@ BEGIN
       'start_id or end_id do not exist on the data',
       '4 SHOULD throw because start_id does not exist');
 
+    RETURN QUERY
+    SELECT is(
+      (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
+      0::FLOAT,
+      '5 SHOULD PASS: cost at row 0 is 0.0');
+
+    RETURN QUERY
+    SELECT is(
+      (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
+      3::BIGINT,
+      '6: end_id => 3 SHOULD PASS: first node should be 3');
+
+    RETURN QUERY
+    SELECT is(
+      (SELECT cost FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
+      0::FLOAT,
+      '7: end_id => 3 SHOULD PASS: cost at row 0 is 0.0');
+
+    RETURN QUERY
+    SELECT is(
+      (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
+      0::FLOAT,
+      '8: start_id => 5 SHOULD PASS: cost at row 0 is 0.0');
+
   ELSE
 
     RETURN QUERY
     SELECT skip(1, 'Throws added on 3.2.1');
 
   END IF;
-
-  RETURN QUERY
-  SELECT is(
-    (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5, end_id => 3) WHERE seq = 1),
-    0::FLOAT,
-    '5 SHOULD PASS: cost at row 0 is 0.0');
-
-  RETURN QUERY
-  SELECT is(
-    (SELECT node FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
-    3::BIGINT,
-    '6: end_id => 3 SHOULD PASS: first node should be 3');
-
-  RETURN QUERY
-  SELECT is(
-    (SELECT cost FROM pgr_TSP('SELECT * FROM data', end_id => 3) WHERE seq = 1),
-    0::FLOAT,
-    '7: end_id => 3 SHOULD PASS: cost at row 0 is 0.0');
-
-  RETURN QUERY
-  SELECT is(
-    (SELECT cost FROM pgr_TSP('SELECT * FROM data', start_id => 5) WHERE seq = 1),
-    0::FLOAT,
-    '8: start_id => 5 SHOULD PASS: cost at row 0 is 0.0');
 
   RETURN QUERY
   SELECT is(
