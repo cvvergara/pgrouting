@@ -47,6 +47,7 @@ process(
         char* coordinates_sql,
         int64_t start_vid,
         int64_t end_vid,
+        bool strict,
 
         General_path_element_t **result_tuples,
         size_t *result_count) {
@@ -74,6 +75,7 @@ process(
             coordinates, total_coordinates,
             start_vid,
             end_vid,
+            strict,
 
             result_tuples,
             result_count,
@@ -118,6 +120,12 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_INT64(1),
                 PG_GETARG_INT64(2),
+                /*
+                 * TODO(vicky) version 4.0.0
+                 * Get as parameter
+                 * When start_vid and end_vid are set, true = find the min metric TSP possible
+                 */
+                false,
 
                 &result_tuples,
                 &result_count);

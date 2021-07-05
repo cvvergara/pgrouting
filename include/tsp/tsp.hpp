@@ -31,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/metric_tsp_approx.hpp>
 
 #include <map>
 #include <string>
@@ -50,8 +49,9 @@ namespace pgrouting {
 namespace algorithm {
 
 class TSP : public Pgr_messages {
+ public:
     using TSP_Graph =
-        boost::adjacency_list<boost::vecS, boost::listS, boost::undirectedS,
+        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
         boost::property<boost::vertex_index_t, int>,
         boost::property<boost::edge_weight_t, double>,
         boost::no_property>;
@@ -68,7 +68,7 @@ class TSP : public Pgr_messages {
     /** @brief order the results with a start vertex */
     std::deque<std::pair<int64_t, double>> tsp(int64_t);
     /** @brief order the results with a start vertex and an endig vertex*/
-    std::deque<std::pair<int64_t, double>> tsp(int64_t, int64_t);
+    std::deque<std::pair<int64_t, double>> tsp(int64_t, int64_t, bool);
 
     TSP(Matrix_cell_t *, size_t, bool);
     TSP(Coordinate_t *, size_t, bool);

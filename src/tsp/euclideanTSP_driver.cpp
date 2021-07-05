@@ -46,6 +46,7 @@ do_pgr_euclideanTSP(
         size_t total_coordinates,
         int64_t start_vid,
         int64_t end_vid,
+        bool strict,
 
         General_path_element_t **return_tuples,
         size_t *return_count,
@@ -62,7 +63,7 @@ do_pgr_euclideanTSP(
 #if Boost_VERSION_MACRO >= 106800
         log << fn_tsp;
 #endif
-        auto tsp_path = fn_tsp.tsp(start_vid, end_vid);
+        auto tsp_path = fn_tsp.tsp(start_vid, end_vid, strict);
         log << fn_tsp.get_log();
 
         if (!tsp_path.empty()) {

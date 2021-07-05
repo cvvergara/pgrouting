@@ -50,6 +50,7 @@ do_pgr_tsp(
         size_t total_distances,
         int64_t start_vid,
         int64_t end_vid,
+        bool strict,
 
         TSP_tour_rt **return_tuples,
         size_t *return_count,
@@ -68,18 +69,18 @@ do_pgr_tsp(
 #endif
 
         if (start_vid != 0 && !fn_tsp.has_vertex(start_vid)) {
-            err << "start_id or end_id do not exist on the data";
+            err << "'start_id' do not exist on the data";
             *err_msg = pgr_msg(err.str().c_str());
             return;
         }
 
         if (end_vid != 0 && !fn_tsp.has_vertex(end_vid)) {
-            err << "start_id or end_id do not exist on the data";
+            err << "'end_id' do not exist on the data";
             *err_msg = pgr_msg(err.str().c_str());
             return;
         }
 
-        auto tsp_path = fn_tsp.tsp(start_vid, end_vid);
+        auto tsp_path = fn_tsp.tsp(start_vid, end_vid, strict);
         log << fn_tsp.get_log();
 
 

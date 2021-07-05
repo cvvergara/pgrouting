@@ -48,6 +48,7 @@ process(
         char* distances_sql,
         int64_t start_vid,
         int64_t end_vid,
+        bool strict,
 
         TSP_tour_rt **result_tuples,
         size_t *result_count) {
@@ -58,7 +59,9 @@ process(
     pgr_get_matrixRows(distances_sql, &distances, &total_distances);
 
     if (total_distances == 0) {
-        PGR_DBG("No distances found");
+        ereport(WARNING,
+                (errmsg("Insufficient data found on inner query."),
+                 errhint("%s",distances_sql)));
         (*result_count) = 0;
         (*result_tuples) = NULL;
         pgr_SPI_finish();
@@ -76,6 +79,7 @@ process(
             distances, total_distances,
             start_vid,
             end_vid,
+            strict,
 
             result_tuples,
             result_count,
@@ -123,6 +127,12 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_INT64(1),
                 PG_GETARG_INT64(2),
+                /*
+                 * TODO(vicky) version 4.0.0
+                 * Get as parameter
+                 * When start_vid and end_vid are set, true = find the min metric TSP possible
+                 */
+                false,
 
                 &result_tuples,
                 &result_count);

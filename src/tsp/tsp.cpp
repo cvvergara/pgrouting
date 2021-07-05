@@ -25,7 +25,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include "tsp/tsp.hpp"
+#include <boost/graph/metric_tsp_approx.hpp>
+#include <boost/graph/connected_components.hpp>
+#include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/graph_utility.hpp>
+
 
 #include <utility>
 #include <vector>
@@ -34,6 +38,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/pgr_messages.h"
 #include "cpp_common/pgr_assert.h"
+#include "cpp_common/interruption.h"
+
+#include "visitors/dijkstra_one_goal_visitor.hpp"
 
 
 namespace {
@@ -96,6 +103,40 @@ start_vid_end_vid_are_fixed(
     return tsp_path;
 }
 
+double
+get_min_cost(
+        pgrouting::algorithm::TSP::TSP_Graph graph,
+        pgrouting::algorithm::TSP::V u,
+        pgrouting::algorithm::TSP::V v) {
+
+    using V = pgrouting::algorithm::TSP::V;
+    std::vector<V> predecessors(num_vertices(graph));
+    std::vector<double> distances(num_vertices(graph));
+    bool found = false;
+    CHECK_FOR_INTERRUPTS();
+    try {
+        boost::dijkstra_shortest_paths(
+                graph, u,
+                boost::predecessor_map(&predecessors[0])
+                .distance_map(&distances[0])
+                .visitor(pgrouting::visitors::dijkstra_one_goal_visitor<V>(v)));
+    } catch(pgrouting::found_goals &) {
+        found = true;
+    }
+    if (!found) {
+        pgassert(false);
+        throw std::make_pair(std::string("INTERNAL: graph is incomplete 1"), std::string("Check graph before calling"));
+    }
+
+    double agg_cost(0);
+    while (v != u) {
+        agg_cost += distances[v];
+        v = predecessors[v];
+    };
+    return agg_cost;
+}
+
+
 }  // namespace
 
 
@@ -105,43 +146,40 @@ namespace algorithm {
 std::deque<std::pair<int64_t, double>>
 TSP::tsp() {
     std::deque<std::pair<int64_t, double>> results;
-    std::vector<V> tsp_path(num_vertices(graph));
+    std::vector<V> tsp_path;
 
-#if 0
     CHECK_FOR_INTERRUPTS();
-#endif
-    bool bad_graph = false;
     try {
     boost::metric_tsp_approx_tour(
             graph,
-            back_inserter(tsp_path));
+            back_inserter(tsp_path)
+            );
     } catch (...) {
-        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
+        throw std::make_pair(std::string("INTERNAL: graph is incomplete 2"), std::string("Check graph before calling"));
     }
-    pgassert(!bad_graph);
+    pgassert(tsp_path.size() == num_vertices(graph) + 1);
 
     auto weight = get(boost::edge_weight, graph);
     auto u = graph.null_vertex();
     for (auto v : tsp_path) {
-        if (v != graph.null_vertex()) {
-            auto node = get_vertex_id(v);
-            double cost{0};
-            if (u == graph.null_vertex()) {
-                cost = 0;
+        pgassert(v != graph.null_vertex());
+        auto node = get_vertex_id(v);
+        double cost{0};
+        if (u != graph.null_vertex()) {
+            /*
+             * the cost is the weight
+             */
+            auto the_edge = boost::edge(u, v, graph);
+            if (!the_edge.second) {
+                cost = get_min_cost(graph, u, v);
             } else {
-                /*
-                 * the cost is the weight
-                 */
-                auto the_edge = boost::edge(u, v, graph);
-                if (!the_edge.second) {
-                    throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
-                }
                 cost = weight[the_edge.first];
             }
-            u = v;
-            results.push_back(std::make_pair(node, cost));
         }
+        u = v;
+        results.push_back(std::make_pair(node, cost));
     }
+    pgassert(results.size() == num_vertices(graph) + 1);
     return results;
 }
 
@@ -153,24 +191,23 @@ TSP::tsp(int64_t start_vid) {
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
-        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
+        pgassert(false);
+        throw std::make_pair(std::string("INTERNAL: graph is incomplete 3"), std::string("Check graph before calling"));
     }
 
     auto v = get_boost_vertex(start_vid);
 
-#if 0
     CHECK_FOR_INTERRUPTS();
-#endif
-    bool bad_graph = false;
     try {
     boost::metric_tsp_approx_tour_from_vertex(
             graph,
             v,
             back_inserter(tsp_path));
     }  catch (...)  {
-        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
+        pgassert(false);
+        throw std::make_pair(std::string("INTERNAL: graph is incomplete 4"), std::string("Check graph before calling"));
     }
-    pgassert(!bad_graph);
+    pgassert(tsp_path.size() == num_vertices(graph) + 1);
 
     auto weight = get(boost::edge_weight, graph);
     auto u = graph.null_vertex();
@@ -186,19 +223,29 @@ TSP::tsp(int64_t start_vid) {
                  */
                 auto the_edge = boost::edge(u, v, graph);
                 if (!the_edge.second) {
-                    throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
+                    cost = get_min_cost(graph, u, v);
+                } else {
+                    cost = weight[the_edge.first];
                 }
-                cost = weight[the_edge.first];
             }
             u = v;
             results.push_back(std::make_pair(node, cost));
         }
     }
+    pgassert(results.size() == num_vertices(graph) + 1);
     return results;
 }
 
+/**
+ * @params[in] start_vid user's start vertex identifier, 0 when not set
+ * @params[in] end_vid user's end vertex identifier, 0 when not set
+ * @params[in] strict Only applies when both values are set
+ */
 std::deque<std::pair<int64_t, double>>
-TSP::tsp(int64_t start_vid, int64_t end_vid) {
+TSP::tsp(
+        int64_t start_vid,
+        int64_t end_vid,
+        bool strict) {
     std::deque<std::pair<int64_t, double>> result;
 
     if (start_vid == 0) std::swap(start_vid, end_vid);
@@ -217,11 +264,12 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
-        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
+        throw std::make_pair(std::string("INTERNAL: start_vid not found on data"), std::string("Check graph before calling"));
     }
 
     if (id_to_V.find(end_vid) == id_to_V.end()) {
-        throw std::make_pair("INTERNAL: graph is incomplete", "Check graph before calling");
+        pgassert(false);
+        throw std::make_pair(std::string("INTERNAL: end_vid not found on data"), std::string("Check graph before calling"));
     }
 
     /*
@@ -242,8 +290,13 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
                 [&](std::pair<int64_t, double>& row){return row.first == start_vid || row.first == end_vid;});
         if ((where + 1)->first == start_vid ||  (where + 1)->first == end_vid) {
             if (result.empty() || compare_tsp_path(tsp_path, result)) {
-            /** there is an answer with a contiguos start_vid -> end_vid */
+                /** there is an answer with a contiguous start_vid -> end_vid */
                 result = tsp_path;
+                /*
+                 * !strict => find one solution and exist
+                 * strict => find all solutions and return the minimum
+                 */
+                if (!strict) break;
             }
         }
     }
@@ -254,8 +307,9 @@ TSP::tsp(int64_t start_vid, int64_t end_vid) {
 }
 
 
-TSP::TSP(Matrix_cell_t *distances,
-        size_t total_distances, bool) {
+TSP::TSP(
+    Matrix_cell_t *distances,
+    size_t total_distances, bool) {
     /*
      * Inserting vertices
      */
@@ -280,22 +334,54 @@ TSP::TSP(Matrix_cell_t *distances,
     bool added;
     for (size_t i = 0; i < total_distances; ++i) {
         auto edge = distances[i];
+        /*
+         * skip loops
+         */
+        if (edge.from_vid == edge.to_vid) continue;
         auto v1 = get_boost_vertex(edge.from_vid);
         auto v2 = get_boost_vertex(edge.to_vid);
         auto e_exists = boost::edge(v1, v2, graph);
-        if (e_exists.second) continue;
+        if (e_exists.second) {
+            auto weight = get(boost::edge_weight_t(), graph, e_exists.first);
+            /*
+             * skip duplicated edges with less cost
+             */
+            if (weight < edge.cost) continue;
+            if (edge.cost < weight) {
+                /*
+                 * substitute with duplicate edge with less cost
+                 */
+                boost::put(boost::edge_weight_t(), graph, e_exists.first, edge.cost);
+            }
+            continue;
+        }
 
         E e;
         boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
     }
+
+    /*
+     * Check data validity
+     * - One component
+     * - Triangle inequality
+     */
+    std::vector<V> components(boost::num_vertices(graph));
+    CHECK_FOR_INTERRUPTS();
+    try {
+        if (boost::connected_components(graph, &components[0]) > 1) {
+            throw std::make_pair(std::string("graph is not fully connected"), std::string("Check graph before calling"));
+        }
+    } catch (...) {
+        throw;
+    }
 }
 
 
-/** The postgres user might unadvertevly give duplicate points
- * the aproximation is quite right, for example
+/** The postgres user might inadvertently give duplicate points
+ * the approximation is quite right, for example
  * 1, 3.5, 1
  * 1, 3.499999999999 0.9999999
- * the aproximation is quite wrong, for example
+ * the approximation is quite wrong, for example
  * 2 , 3.5 1
  * 2 , 3.6 1
  * but when the remove_duplicates flag is on, keep only the first row that has the same id
@@ -309,7 +395,7 @@ TSP::TSP(Coordinate_t *coordinates,
      * Removing duplicates if so desired
      - keeping the relative order of the data
      * - so different order in input will give different sort result
-     * - the first ocurrence will remain and kept
+     * - the first occurrence will remain and kept
      */
     if (remove_duplicates) {
         std::stable_sort(coordinates, coordinates + total_coordinates,
@@ -371,6 +457,7 @@ TSP::TSP(Coordinate_t *coordinates,
             }
         }
     }
+
 }
 
 bool

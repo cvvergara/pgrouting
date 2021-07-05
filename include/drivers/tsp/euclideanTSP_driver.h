@@ -51,6 +51,7 @@ do_pgr_euclideanTSP(
         Coordinate_t *coordinates, size_t total_coordinates,
         int64_t start_vid,
         int64_t end_vid,
+        bool strict,
 
         General_path_element_t **results,
         size_t *total_results,
