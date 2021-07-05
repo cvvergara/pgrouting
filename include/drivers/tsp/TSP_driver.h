@@ -6,6 +6,7 @@
  * Mail: project@pgrouting.org
  *
  * Function's developer:
+ * Copyright (c) 2021 Celia Virginia Vergara Castillo
  * Copyright (c) 2015 Celia Virginia Vergara Castillo
  * Mail: vicky_vergara@hotmail.com
  *
@@ -39,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 #include "c_types/matrix_cell_t.h"
-#include "c_types/tsp_tour_rt.h"
+typedef struct TSP_tour_rt TSP_tour_rt;
 
 
 #ifdef __cplusplus
