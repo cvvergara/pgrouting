@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <vector>
 #include <deque>
+#include <string>
 
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/pgr_messages.h"
@@ -108,8 +109,8 @@ get_min_cost(
         pgrouting::algorithm::TSP::TSP_Graph graph,
         pgrouting::algorithm::TSP::V u,
         pgrouting::algorithm::TSP::V v) {
-
     using V = pgrouting::algorithm::TSP::V;
+
     std::vector<V> predecessors(num_vertices(graph));
     std::vector<double> distances(num_vertices(graph));
     bool found = false;
@@ -132,7 +133,7 @@ get_min_cost(
     while (v != u) {
         agg_cost += distances[v];
         v = predecessors[v];
-    };
+    }
     return agg_cost;
 }
 
@@ -150,12 +151,13 @@ TSP::tsp() {
 
     CHECK_FOR_INTERRUPTS();
     try {
-    boost::metric_tsp_approx_tour(
-            graph,
-            back_inserter(tsp_path)
-            );
+        boost::metric_tsp_approx_tour(
+                graph,
+                back_inserter(tsp_path));
     } catch (...) {
-        throw std::make_pair(std::string("INTERNAL: graph is incomplete 2"), std::string("Check graph before calling"));
+        throw std::make_pair(
+                std::string("INTERNAL: graph is incomplete 2"),
+                std::string("Check graph before calling"));
     }
     pgassert(tsp_path.size() == num_vertices(graph) + 1);
 
@@ -264,12 +266,15 @@ TSP::tsp(
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
-        throw std::make_pair(std::string("INTERNAL: start_vid not found on data"), std::string("Check graph before calling"));
+        throw std::make_pair(
+                std::string("INTERNAL: start_vid not found on data"),
+                std::string("Check graph before calling"));
     }
 
     if (id_to_V.find(end_vid) == id_to_V.end()) {
-        pgassert(false);
-        throw std::make_pair(std::string("INTERNAL: end_vid not found on data"), std::string("Check graph before calling"));
+        throw std::make_pair(
+                std::string("INTERNAL: end_vid not found on data"),
+                std::string("Check graph before calling"));
     }
 
     /*
@@ -369,7 +374,9 @@ TSP::TSP(
     CHECK_FOR_INTERRUPTS();
     try {
         if (boost::connected_components(graph, &components[0]) > 1) {
-            throw std::make_pair(std::string("graph is not fully connected"), std::string("Check graph before calling"));
+            throw std::make_pair(
+                    std::string("graph is not fully connected"),
+                    std::string("Check graph before calling"));
         }
     } catch (...) {
         throw;
@@ -457,7 +464,6 @@ TSP::TSP(Coordinate_t *coordinates,
             }
         }
     }
-
 }
 
 bool

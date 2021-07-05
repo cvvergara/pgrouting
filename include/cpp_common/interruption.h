@@ -75,7 +75,7 @@ extern "C" {
     do { \
         if (INTERRUPTS_PENDING_CONDITION()) \
         ProcessInterrupts(); \
-    } while(0)
+    } while (0)
 
 }
 

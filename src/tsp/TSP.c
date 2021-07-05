@@ -61,7 +61,7 @@ process(
     if (total_distances == 0) {
         ereport(WARNING,
                 (errmsg("Insufficient data found on inner query."),
-                 errhint("%s",distances_sql)));
+                 errhint("%s", distances_sql)));
         (*result_count) = 0;
         (*result_tuples) = NULL;
         pgr_SPI_finish();
