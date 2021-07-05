@@ -48,7 +48,7 @@ process(
         int64_t start_vid,
         int64_t end_vid,
 
-        General_path_element_t **result_tuples,
+        TSP_tour_rt **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
 
@@ -106,7 +106,7 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    General_path_element_t  *result_tuples = NULL;
+    TSP_tour_rt  *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -147,7 +147,7 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (General_path_element_t*) funcctx->user_fctx;
+    result_tuples = (TSP_tour_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;

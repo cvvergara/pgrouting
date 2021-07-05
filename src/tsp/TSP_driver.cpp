@@ -50,7 +50,7 @@ do_pgr_tsp(
         int64_t start_vid,
         int64_t end_vid,
 
-        General_path_element_t **return_tuples,
+        TSP_tour_rt **return_tuples,
         size_t *return_count,
         char **log_msg,
         char **notice_msg,
@@ -89,7 +89,7 @@ do_pgr_tsp(
         double total{0};
         for (const auto &e : tsp_path) {
             total += e.second;
-            General_path_element_t data {0, 0, 0, e.first, 0, e.second, total};
+            TSP_tour_rt data {e.first, e.second, total};
             (*return_tuples)[seq] = data;
             seq++;
         }
