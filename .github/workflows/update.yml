@@ -83,6 +83,7 @@ jobs:
           cd ./tools/testers/
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -X -q -v ON_ERROR_STOP=1 --pset pager=off -f setup_db.sql
+          sudo -u postgres pg_prove -v --recurse --ext .sql "${PGFLAGS}"  -d "${PGDATABASE}" "../../pgtap/tsp/tsp/edge_cases.sql"
           sudo -u postgres pg_prove --directive --recurse --ext .sql -p 5432  -d ___pgr___test___ ../../pgtap/
 
 
