@@ -20,7 +20,7 @@ CREATE FUNCTION tsp_edge_cases(tbl regclass)
 RETURNS SETOF TEXT AS
 $code$
 BEGIN
-  IF NOT min_lib_version('3.2.1') AND tbl = 'data_directed' THEN
+  IF NOT min_lib_version('3.2.1') AND tbl::TEXT = 'data_directed' THEN
     RETURN QUERY
     SELECT skip(1, 'Annaeling complains about non symetric matrix');
   END IF;
