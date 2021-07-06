@@ -23,6 +23,7 @@ BEGIN
   IF NOT min_lib_version('3.2.1') AND tbl::TEXT = 'data_directed' THEN
     RETURN QUERY
     SELECT skip(1, 'Annaeling complains about non symetric matrix');
+    RETURN;
   END IF;
 
   IF min_lib_version('3.2.1') THEN
@@ -97,6 +98,11 @@ BEGIN
       (SELECT node FROM pgr_TSP(format('SELECT * FROM %1$I', tbl), end_id => 3) WHERE seq = 6),
       3::BIGINT,
       'end_id => 3 SHOULD PASS: last node should be 3');
+
+    RETURN QUERY
+    SELECT lives_ok(
+      $$SELECT node FROM pgr_TSP('SELECT 1 AS start_vid, 1 AS end_vid, 1 AS agg_cost')$$,
+      'SHOULD PASS: one_node_loop');
 
   ELSE
 
@@ -198,17 +204,12 @@ BEGIN
   RETURN QUERY
   SELECT lives_ok(
     format($$SELECT agg_cost FROM pgr_TSP('SELECT * FROM %1$I WHERE start_vid = 10')$$, tbl),
-    'SELECT * FROM %1$I WHERE start_vid = 10: Lives when inner query is empty');
+    'SELECT * FROM data WHERE start_vid = 10: Lives when inner query is empty');
 
   RETURN QUERY
   SELECT is_empty(
     format($$SELECT agg_cost FROM pgr_TSP('SELECT * FROM %1$I WHERE start_vid = 10')$$, tbl),
-    'SELECT * FROM %1$I WHERE start_vid = 10: Inner query is empty');
-
-  RETURN QUERY
-  SELECT lives_ok(
-    $$SELECT node FROM pgr_TSP('SELECT 1 AS start_vid, 1 AS end_vid, 1 AS agg_cost')$$,
-    'SHOULD PASS: one_node_loop');
+    'SELECT * FROM data WHERE start_vid = 10: Inner query is empty');
 
 END;
 $code$
