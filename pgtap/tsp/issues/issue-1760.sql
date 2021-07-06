@@ -50,5 +50,3 @@ language plpgsql;
 SELECT issue();
 SELECT finish();
 ROLLBACK;
-
-

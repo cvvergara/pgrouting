@@ -1,5 +1,6 @@
 \i setup.sql
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+SET client_min_messages TO ERROR;
 
 CREATE TEMP TABLE data AS
 SELECT * FROM pgr_withPointsCostMatrix(
@@ -26,7 +27,7 @@ BEGIN
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 5, end_id => 10) $$, tbl),
       'XX000',
       $$Parameter 'end_vid' do not exist on the data$$,
-      'SHOULD throw because end_id does not exist');
+      tbl::TEXT ||' SHOULD throw because end_id does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
@@ -104,7 +105,7 @@ BEGIN
   SELECT is(
     (SELECT count(*) FROM pgr_TSP(format('SELECT * FROM %1$I',tbl), end_id => 3)),
     6::BIGINT,
-    'end_id => 3 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
+    tbl::TEXT || ' end_id => 3 SHOULD PASS: total number of rows is 6 because there are 5 nodes involved');
 
   -- 5,3
   RETURN QUERY
@@ -155,7 +156,6 @@ BEGIN
     (SELECT node FROM pgr_TSP(format('SELECT * FROM %1$I',tbl), start_id => 5, end_id => 5) WHERE seq = 6),
     5::BIGINT,
     'start_id => 5, end_id => 5: SHOULD PASS: last node should be 5');
-
 
 
   -- x,3
