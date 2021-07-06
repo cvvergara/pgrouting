@@ -79,6 +79,7 @@ jobs:
       - name: Test old version before update
         run: |
           sudo service postgresql start
+          tools/developer/taptest.sh tsp/tsp/edge_cases.sql -p 5432
           cd ./tools/testers/
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           sudo -u postgres psql -p 5432  -d ___pgr___test___ -X -q -v ON_ERROR_STOP=1 --pset pager=off -f setup_db.sql
