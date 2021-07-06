@@ -22,7 +22,7 @@ $code$
 BEGIN
   IF NOT min_lib_version('3.2.1') AND tbl = 'data_directed' THEN
     RETURN QUERY
-    skip(1, 'Old version complain about non symetric matrix');
+    SELECT skip(1, 'Annaeling complains about non symetric matrix');
   END IF;
 
   IF min_lib_version('3.2.1') THEN
