@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "tsp/tsp.hpp"
 
+#include "c_types/tsp_tour_rt.h"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
@@ -48,7 +49,7 @@ do_pgr_euclideanTSP(
         int64_t end_vid,
         bool strict,
 
-        General_path_element_t **return_tuples,
+        TSP_tour_rt **return_tuples,
         size_t *return_count,
         char **log_msg,
         char **notice_msg,
@@ -74,7 +75,7 @@ do_pgr_euclideanTSP(
         double total{0};
         for (const auto &e : tsp_path) {
             total += e.second;
-            General_path_element_t data {0, 0, 0, e.first, 0, e.second, total};
+            TSP_tour_rt data {e.first, e.second, total};
             (*return_tuples)[seq] = data;
             seq++;
         }

@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #endif
 
 #include "c_types/coordinate_t.h"
-#include "c_types/general_path_element_t.h"
+typedef struct TSP_tour_rt TSP_tour_rt;
 
 
 #ifdef __cplusplus
@@ -53,7 +53,7 @@ do_pgr_euclideanTSP(
         int64_t end_vid,
         bool strict,
 
-        General_path_element_t **results,
+        TSP_tour_rt **results,
         size_t *total_results,
         char **log_msg,
         char **notice_msg,

@@ -13,7 +13,7 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := true);
 
-SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(52) ELSE plan(24) END;
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(54) ELSE plan(24) END;
 
 CREATE FUNCTION tsp_edge_cases(tbl regclass)
 RETURNS SETOF TEXT AS
@@ -25,29 +25,29 @@ BEGIN
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 5, end_id => 10) $$, tbl),
       'XX000',
-      $$'end_id' do not exist on the data$$,
+      $$Parameter 'end_vid' do not exist on the data$$,
       'SHOULD throw because end_id does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', end_id => 10) $$, tbl),
       'XX000',
-      $$'end_id' do not exist on the data$$,
+      $$Parameter 'end_vid' do not exist on the data$$,
       'SHOULD throw because end_id does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 10, end_id => 5) $$, tbl),
       'XX000',
-      $$'start_id' do not exist on the data$$,
-      'SHOULD throw because start_id does not exist');
+      $$Parameter 'start_vid' do not exist on the data$$,
+      'SHOULD throw because start_vid does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 10) $$, tbl),
       'XX000',
-      $$'start_id' do not exist on the data$$,
-      '4 SHOULD throw because start_id does not exist');
+      $$Parameter 'start_vid' do not exist on the data$$,
+      'SHOULD throw because start_vid does not exist');
 
     RETURN QUERY
     SELECT throws_ok(
@@ -62,16 +62,17 @@ BEGIN
       'Should throw, the matrix is not fully connected');
 
     RETURN QUERY
+    SELECT throws_ok(format($$
+      SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 10) $$, tbl),
+      'XX000',
+      $$Parameter 'start_vid' do not exist on the data$$,
+      '4 SHOULD throw because start_id does not exist');
+
+    RETURN QUERY
     SELECT is(
       (SELECT cost FROM pgr_TSP(format('SELECT * FROM %1$I', tbl), start_id => 5, end_id => 3) WHERE seq = 1),
       0::FLOAT,
       'SHOULD PASS: cost at row 0 is 0.0');
-
-    RETURN QUERY
-    SELECT is(
-      (SELECT node FROM pgr_TSP(format('SELECT * FROM %1$I', tbl), end_id => 3) WHERE seq = 1),
-      3::BIGINT,
-      'end_id => 3 SHOULD PASS: first node should be 3');
 
     RETURN QUERY
     SELECT is(
@@ -198,6 +199,11 @@ BEGIN
   SELECT is_empty(
     format($$SELECT agg_cost FROM pgr_TSP('SELECT * FROM %1$I WHERE start_vid = 10')$$, tbl),
     'SELECT * FROM %1$I WHERE start_vid = 10: Inner query is empty');
+
+  RETURN QUERY
+  SELECT lives_ok(
+    $$SELECT node FROM pgr_TSP('SELECT 1 AS start_vid, 1 AS end_vid, 1 AS agg_cost')$$,
+    'SHOULD PASS: one_node_loop');
 
 END;
 $code$
