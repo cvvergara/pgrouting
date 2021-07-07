@@ -63,6 +63,8 @@ do_pgr_tsp(
 
     try {
         pgrouting::algorithm::TSP fn_tsp{distances, total_distances, true};
+        log << "starting";
+        log << fn_tsp.get_log();
 
 #if Boost_VERSION_MACRO >= 106800
         log << fn_tsp;

@@ -1,6 +1,7 @@
 \i setup.sql
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 SET client_min_messages TO ERROR;
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(56) ELSE plan(18) END;
 
 CREATE TEMP TABLE data AS
 SELECT * FROM pgr_withPointsCostMatrix(
@@ -14,7 +15,6 @@ SELECT * FROM pgr_withPointsCostMatrix(
   'SELECT pid, edge_id, fraction from pointsOfInterest',
   array[-1, 3, 5, 6, -6], directed := true);
 
-SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(54) ELSE plan(18) END;
 
 CREATE FUNCTION tsp_edge_cases(tbl regclass)
 RETURNS SETOF TEXT AS
@@ -65,7 +65,7 @@ BEGIN
         SELECT * FROM %1$I WHERE start_vid = 5 and end_vid = 6')
       $$, tbl),
       'XX000',
-      'graph is not fully connected',
+      'Graph is not fully connected',
       'Should throw, the matrix is not fully connected');
 
     RETURN QUERY
@@ -103,6 +103,28 @@ BEGIN
     SELECT lives_ok(
       $$SELECT node FROM pgr_TSP('SELECT 1 AS start_vid, 1 AS end_vid, 1 AS agg_cost')$$,
       'SHOULD PASS: one_node_loop');
+
+    RETURN QUERY
+    SELECT set_eq(
+      $q$SELECT * FROM pgr_TSP(
+        $$
+        SELECT source AS start_vid, target AS end_vid, 1 AS agg_cost
+        FROM edge_table
+        WHERE id IN (2,4,5,8,9,15)
+        $$)
+      $q$,
+      $q$ SELECT seq::INTEGER, node::BIGINT, cost::FLOAT, agg_cost::FLOAT
+      FROM (VALUES
+        (1,  2, 0, 0),
+        (2,  3, 1, 1),
+        (3,  6, 1, 2),
+        (4,  9, 1, 3),
+        (5, 12, 1, 4),
+        (6,  5, 3, 7),
+        (7,  2, 1, 8))
+      AS t (seq, node, cost, agg_cost)
+      $q$,
+      'The cost from 12 to 5 is 3');
 
   ELSE
 

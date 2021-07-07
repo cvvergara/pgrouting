@@ -112,7 +112,7 @@ get_min_cost(
     using V = pgrouting::algorithm::TSP::V;
 
     std::vector<V> predecessors(num_vertices(graph));
-    std::vector<double> distances(num_vertices(graph));
+    std::vector<double> distances(num_vertices(graph), std::numeric_limits<double>::infinity());
     bool found = false;
     CHECK_FOR_INTERRUPTS();
     try {
@@ -131,7 +131,7 @@ get_min_cost(
 
     double agg_cost(0);
     while (v != u) {
-        agg_cost += distances[v];
+        agg_cost += distances[predecessors[v]];
         v = predecessors[v];
     }
     return agg_cost;
@@ -226,6 +226,7 @@ TSP::tsp(int64_t start_vid) {
                 auto the_edge = boost::edge(u, v, graph);
                 if (!the_edge.second) {
                     cost = get_min_cost(graph, u, v);
+                    log << "\n(" << get_vertex_id(u) << "," << get_vertex_id(v) << ")=>" << cost;
                 } else {
                     cost = weight[the_edge.first];
                 }
@@ -285,7 +286,9 @@ TSP::tsp(
     auto v = get_boost_vertex(end_vid);
     auto e = boost::edge(u, v, graph);
 
-    auto weight = get(boost::edge_weight_t(), graph, e.first);
+    auto weight = e.second ?
+        get(boost::edge_weight_t(), graph, e.first)
+        : get_min_cost(graph, u, v);
     boost::put(boost::edge_weight_t(), graph, e.first, 0);
 
 
@@ -368,14 +371,14 @@ TSP::TSP(
     /*
      * Check data validity
      * - One component
-     * - Triangle inequality
+     * Not checking triangle inequality
      */
     std::vector<V> components(boost::num_vertices(graph));
     CHECK_FOR_INTERRUPTS();
     try {
         if (boost::connected_components(graph, &components[0]) > 1) {
             throw std::make_pair(
-                    std::string("graph is not fully connected"),
+                    std::string("Graph is not fully connected"),
                     std::string("Check graph before calling"));
         }
     } catch (...) {

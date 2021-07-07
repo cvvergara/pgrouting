@@ -120,8 +120,8 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         ereport(NOTICE,
-                (errmsg("pgr_TSP no loger solving with annaeling"),
-                 errhint("Ignoring parameters annaeling parameters")));
+                (errmsg("pgr_TSP no longer solving with simulated annaeling"),
+                 errhint("Ignoring annaeling parameters")));
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),

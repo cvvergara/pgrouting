@@ -34,6 +34,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #   include <stdint.h>
 #endif
 
+/*
+.. TSP tour return type begin
+
+Returns SET OF ``(seq, node, cost, agg_cost)``
+
+============= =========== =================================================
+Column           Type              Description
+============= =========== =================================================
+**seq**       ``INTEGER`` Row sequence.
+**node**      ``BIGINT``  Identifier of the node/coordinate/point.
+**cost**      ``FLOAT``   Cost to traverse from the current ``node`` to the next ``node`` in the path sequence.
+
+                          - ``0`` for the last row in the tour sequence.
+
+**agg_cost**  ``FLOAT``   Aggregate cost from the ``node`` at ``seq = 1`` to the current node.
+
+                          - ``0`` for the first row in the tour sequence.
+
+============= =========== =================================================
+
+.. TSP tour return type end
+
+*/
+
+
 struct TSP_tour_rt {
     int64_t node;
     double cost;
