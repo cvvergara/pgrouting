@@ -60,7 +60,6 @@ do_pgr_tsp(
     std::ostringstream log;
     std::ostringstream notice;
     std::ostringstream err;
-
     try {
         pgrouting::algorithm::TSP fn_tsp{distances, total_distances, true};
         log << "starting";
@@ -71,13 +70,13 @@ do_pgr_tsp(
 #endif
 
         if (start_vid != 0 && !fn_tsp.has_vertex(start_vid)) {
-            err << "Parameter 'start_vid' do not exist on the data";
+            err << "Parameter 'start_id' do not exist on the data";
             *err_msg = pgr_msg(err.str().c_str());
             return;
         }
 
         if (end_vid != 0 && !fn_tsp.has_vertex(end_vid)) {
-            err << "Parameter 'end_vid' do not exist on the data";
+            err << "Parameter 'end_id' do not exist on the data";
             *err_msg = pgr_msg(err.str().c_str());
             return;
         }

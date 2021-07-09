@@ -64,6 +64,18 @@ do_pgr_euclideanTSP(
 #if Boost_VERSION_MACRO >= 106800
         log << fn_tsp;
 #endif
+        if (start_vid != 0 && !fn_tsp.has_vertex(start_vid)) {
+            err << "Parameter 'start_id' do not exist on the data";
+            *err_msg = pgr_msg(err.str().c_str());
+            return;
+        }
+
+        if (end_vid != 0 && !fn_tsp.has_vertex(end_vid)) {
+            err << "Parameter 'end_id' do not exist on the data";
+            *err_msg = pgr_msg(err.str().c_str());
+            return;
+        }
+
         auto tsp_path = fn_tsp.tsp(start_vid, end_vid, strict);
         log << fn_tsp.get_log();
 

@@ -68,7 +68,9 @@ class TSP : public Pgr_messages {
     /** @brief order the results with a start vertex */
     std::deque<std::pair<int64_t, double>> tsp(int64_t);
     /** @brief order the results with a start vertex and an endig vertex*/
-    std::deque<std::pair<int64_t, double>> tsp(int64_t, int64_t, bool);
+    std::deque<std::pair<int64_t, double>> tsp(int64_t, int64_t, int);
+    /** @brief crossover optimization **/
+    std::deque<std::pair<int64_t, double>> crossover_optimize(std::deque<std::pair<int64_t, double>> result, size_t limit, int cycles);
 
     TSP(Matrix_cell_t *, size_t, bool);
     TSP(Coordinate_t *, size_t, bool);
@@ -80,6 +82,8 @@ class TSP : public Pgr_messages {
     bool has_vertex(int64_t id) const;
 
  private:
+    std::deque<std::pair<int64_t, double>> eval_tour(const std::vector<V>&);
+    double eval_tour(std::deque<std::pair<int64_t, double>>&tsp_tour);
     V get_boost_vertex(int64_t id) const;
     int64_t get_vertex_id(V v) const;
     int64_t get_edge_id(E e) const;

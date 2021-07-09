@@ -24,8 +24,24 @@ pgr_TSPeuclidean
 
 ``pgr_TSPeuclidean`` - Using *Simulated Annealing* approximation algorithm
 
+.. figure:: images/boost-inside.jpeg
+   :target: https://www.boost.org/libs/graph/doc/metric_tsp_approx.html
 
-.. rubric:: Availability
+   Boost Graph Inside
+
+
+.. rubric:: Availability:
+
+* Version 3.2.1
+
+  * Metric Algorithm from `Boost library <:target: https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>`__
+  * Simulated Annealing Algorithm no longer supported
+
+    * The Simulated Annealing Algorithm related parameters are ignored:
+      max_processing_time, tries_per_temperature,
+      max_changes_per_temperature, max_consecutive_non_changes,
+      initial_temperature, final_temperature, cooling_factor,
+      randomize
 
 * Version 3.0.0
 
@@ -43,7 +59,28 @@ Description
    :start-after: tsp problem definition start
    :end-before: tsp problem definition end
 
-See :ref:`simulated-annealing` for a complete description of this implementation
+.. include:: TSP-family.rst
+   :start-after: tsp characteristics start
+   :end-before: tsp characteristics end
+
+
+Characteristics
+...............................................................................
+
+- Duplicated identifiers with different coordinates are not allowed
+
+  - The coordinates are quite the same for the same identifier, for example
+   ```
+     1, 3.5, 1
+     1, 3.499999999999 0.9999999
+   ```
+  - The coordinates are quite different for the same identifier, for example
+   ```
+    * 2 , 3.5 1
+    * 2 , 3.6 1
+   ```
+  - Any duplicated identifier will be ignored. The coordinate that will be kept
+    is arbitrarly.
 
 Signatures
 -------------------------------------------------------------------------------

@@ -81,35 +81,50 @@ start_vid_end_vid_are_fixed(
         int64_t start_vid,
         int64_t end_vid,
         int64_t special_cost) {
+    pgassert(tsp_path[0].first == start_vid);
     /*
-     * attach the correct cost value
+     * Where is 0?
      */
     auto where = std::find_if(tsp_path.begin(), tsp_path.end(),
-            [&](std::pair<int64_t, double>& row){return row.first == start_vid || row.first == end_vid;});
-    (where + 1)->second = special_cost;
+            [&](std::pair<int64_t, double>& row){return row.first == 0;});
 
-    auto found_value = where->first;
-    if (found_value == start_vid) {
-        tsp_path = reverse_path(tsp_path);
-    }
+    /*
+     * Move the 0 to be the second value
+     * 5,2,1,8,7,10,11,16,6,9,12,17,15,13,14,0,3,4,5
+     * to
+     * 5 0 3 4 2 1 8 7 10 11 16 6 9 12 17 15 13 14 5
+     */
+    std::rotate(tsp_path.begin() + 1, where, tsp_path.end() - 1);
 
-    tsp_path.pop_front();
-    where = std::find_if(tsp_path.begin(), tsp_path.end(),
-            [&](std::pair<int64_t, double>& row){return row.first == start_vid;});
+    /*
+     * delete the 0
+     * to
+     * 5 3 4 2 1 8 7 10 11 16 6 9 12 17 15 13 14 5
+     */
+    tsp_path.erase(tsp_path.begin() + 1);
 
-
-    std::rotate(tsp_path.begin(), where, tsp_path.end());
-    std::rotate(tsp_path.begin(), tsp_path.begin() + 1, tsp_path.end());
-    tsp_path.push_front(std::make_pair(start_vid, 0));
+    /*
+     * when the second value is not the end_vid, reverse the path
+     * - it is the second to last, like the 14 above
+     */
+    if (tsp_path[0].first != end_vid) std::reverse(tsp_path.begin(), tsp_path.end());
     return tsp_path;
 }
 
 double
 get_min_cost(
-        pgrouting::algorithm::TSP::TSP_Graph graph,
+        pgrouting::algorithm::TSP::TSP_Graph &graph,
         pgrouting::algorithm::TSP::V u,
         pgrouting::algorithm::TSP::V v) {
     using V = pgrouting::algorithm::TSP::V;
+
+    auto the_edge = boost::edge(u, v, graph);
+    /*
+     * The edge exists, then return the weight it has
+     */
+    if (the_edge.second) {
+        return get(boost::edge_weight, graph)[the_edge.first];
+    }
 
     std::vector<V> predecessors(num_vertices(graph));
     std::vector<double> distances(num_vertices(graph), std::numeric_limits<double>::infinity());
@@ -134,6 +149,10 @@ get_min_cost(
         agg_cost += distances[predecessors[v]];
         v = predecessors[v];
     }
+    /*
+     * Saving the calculated value is faster than running the dijkstra again
+     */
+    boost::add_edge(u, v, agg_cost, graph);
     return agg_cost;
 }
 
@@ -146,7 +165,6 @@ namespace algorithm {
 
 std::deque<std::pair<int64_t, double>>
 TSP::tsp() {
-    std::deque<std::pair<int64_t, double>> results;
     std::vector<V> tsp_path;
 
     CHECK_FOR_INTERRUPTS();
@@ -161,40 +179,17 @@ TSP::tsp() {
     }
     pgassert(tsp_path.size() == num_vertices(graph) + 1);
 
-    auto weight = get(boost::edge_weight, graph);
-    auto u = graph.null_vertex();
-    for (auto v : tsp_path) {
-        pgassert(v != graph.null_vertex());
-        auto node = get_vertex_id(v);
-        double cost{0};
-        if (u != graph.null_vertex()) {
-            /*
-             * the cost is the weight
-             */
-            auto the_edge = boost::edge(u, v, graph);
-            if (!the_edge.second) {
-                cost = get_min_cost(graph, u, v);
-            } else {
-                cost = weight[the_edge.first];
-            }
-        }
-        u = v;
-        results.push_back(std::make_pair(node, cost));
-    }
-    pgassert(results.size() == num_vertices(graph) + 1);
-    return results;
+    return eval_tour(tsp_path);
 }
 
 std::deque<std::pair<int64_t, double>>
 TSP::tsp(int64_t start_vid) {
-    std::deque<std::pair<int64_t, double>> results;
     std::vector<V> tsp_path;
     /*
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
-        pgassert(false);
-        throw std::make_pair(std::string("INTERNAL: graph is incomplete 3"), std::string("Check graph before calling"));
+        throw std::make_pair(std::string("INTERNAL: Verify start_vid before calling"), std::string("start_vid or end_Check graph before calling"));
     }
 
     auto v = get_boost_vertex(start_vid);
@@ -206,38 +201,16 @@ TSP::tsp(int64_t start_vid) {
             v,
             back_inserter(tsp_path));
     }  catch (...)  {
-        pgassert(false);
-        throw std::make_pair(std::string("INTERNAL: graph is incomplete 4"), std::string("Check graph before calling"));
+        throw std::make_pair(std::string("INTERNAL: something went wrong while calling boost::metric_tsp_approx_tour_from_vertex"), std::string(__PRETTY_FUNCTION__));
     }
     pgassert(tsp_path.size() == num_vertices(graph) + 1);
 
     auto weight = get(boost::edge_weight, graph);
-    auto u = graph.null_vertex();
-    for (auto v : tsp_path) {
-        if (v != graph.null_vertex()) {
-            auto node = get_vertex_id(v);
-            double cost{0};
-            if (u == graph.null_vertex()) {
-                cost = 0;
-            } else {
-                /*
-                 * the cost is the weight
-                 */
-                auto the_edge = boost::edge(u, v, graph);
-                if (!the_edge.second) {
-                    cost = get_min_cost(graph, u, v);
-                    log << "\n(" << get_vertex_id(u) << "," << get_vertex_id(v) << ")=>" << cost;
-                } else {
-                    cost = weight[the_edge.first];
-                }
-            }
-            u = v;
-            results.push_back(std::make_pair(node, cost));
-        }
-    }
-    pgassert(results.size() == num_vertices(graph) + 1);
-    return results;
+
+    return eval_tour(tsp_path);
 }
+
+
 
 /**
  * @params[in] start_vid user's start vertex identifier, 0 when not set
@@ -248,7 +221,7 @@ std::deque<std::pair<int64_t, double>>
 TSP::tsp(
         int64_t start_vid,
         int64_t end_vid,
-        bool strict) {
+        int max_cycles) {
     std::deque<std::pair<int64_t, double>> result;
 
     if (start_vid == 0) std::swap(start_vid, end_vid);
@@ -256,63 +229,81 @@ TSP::tsp(
     /*
      * just get a tsp result
      */
-    if (start_vid == 0) return tsp();
+    if (start_vid == 0) return crossover_optimize(tsp(), 1, max_cycles);
 
     /*
      * the has a start value same as end_vid ignore end_vid
      */
-    if ((end_vid == 0) || (start_vid == end_vid)) return tsp(start_vid);
+    if ((end_vid == 0) || (start_vid == end_vid)) return crossover_optimize(tsp(start_vid), 1, max_cycles);
 
     /*
      * check that the start_vid, and end_vid exist on the data
      */
     if (id_to_V.find(start_vid) == id_to_V.end()) {
         throw std::make_pair(
-                std::string("INTERNAL: start_vid not found on data"),
+                std::string("INTERNAL: start_id not found on data"),
                 std::string("Check graph before calling"));
     }
 
     if (id_to_V.find(end_vid) == id_to_V.end()) {
         throw std::make_pair(
-                std::string("INTERNAL: end_vid not found on data"),
+                std::string("INTERNAL: end_id not found on data"),
                 std::string("Check graph before calling"));
     }
 
-    /*
-     * start_vid and end_vid have values
-     * find the edge (start_vid, end_vid)
-     */
     auto u = get_boost_vertex(start_vid);
     auto v = get_boost_vertex(end_vid);
-    auto e = boost::edge(u, v, graph);
 
-    auto weight = e.second ?
-        get(boost::edge_weight_t(), graph, e.first)
-        : get_min_cost(graph, u, v);
-    boost::put(boost::edge_weight_t(), graph, e.first, 0);
+    auto dummy_node = add_vertex(num_vertices(graph), graph);
+    id_to_V.insert(std::make_pair(0, dummy_node));
+    V_to_id.insert(std::make_pair(dummy_node, 0));
+    boost::add_edge(u, dummy_node, 0, graph);
+    boost::add_edge(v, dummy_node, 0, graph);
 
-
-    for (auto vd : boost::make_iterator_range(boost::vertices(graph))) {
-        auto tsp_path = tsp(get_vertex_id(vd));
-        auto where = std::find_if(tsp_path.begin(), tsp_path.end(),
-                [&](std::pair<int64_t, double>& row){return row.first == start_vid || row.first == end_vid;});
-        if ((where + 1)->first == start_vid ||  (where + 1)->first == end_vid) {
-            if (result.empty() || compare_tsp_path(tsp_path, result)) {
-                /** there is an answer with a contiguous start_vid -> end_vid */
-                result = tsp_path;
-                /*
-                 * !strict => find one solution and exist
-                 * strict => find all solutions and return the minimum
-                 */
-                if (!strict) break;
-            }
-        }
+    for (auto v1 : boost::make_iterator_range(boost::vertices(graph))) {
+        if (v1 == u || v1 == v) continue;
+        boost::add_edge(v1, dummy_node, 100, graph);
     }
 
-    return result.empty()?
-        tsp(start_vid):
-        start_vid_end_vid_are_fixed(result, start_vid, end_vid, weight);
+    result = tsp(start_vid);
+    result = start_vid_end_vid_are_fixed(result, start_vid, end_vid, 0);
+
+    return crossover_optimize(result, 2, max_cycles);
 }
+
+
+/*
+ * fixing (some) crossovers
+ */
+std::deque<std::pair<int64_t, double>>
+TSP::crossover_optimize(std::deque<std::pair<int64_t, double>> result, size_t limit, int cycles) {
+    auto best_cost = eval_tour(result);
+    for (int k = 0; k < cycles; ++k) {
+        bool change(false);
+        for (size_t i = 1; i < result.size() - limit; ++i) {
+            for (size_t j = result.size() - limit; j >=i + 1; --j) {
+                auto tmp = result;
+                std::reverse(tmp.begin() + i,  tmp.begin() + j);
+                auto new_cost = eval_tour(tmp);
+                if (new_cost < best_cost) {
+#ifdef DEBUG_TSP
+                    log << "\n" << k << ", " << i << "," << j << "\n";
+                    for (const auto e : tmp) {
+                        log << e.first << "->";
+                    }
+                    log <<" cost = " << new_cost;
+#endif
+                    result = tmp;
+                    best_cost = new_cost;
+                    change = true;
+                }
+            }
+        }
+        if (!change) break;
+    }
+    return result;
+}
+
 
 
 TSP::TSP(
@@ -325,6 +316,13 @@ TSP::TSP(
     for (size_t i = 0; i < total_distances; ++i) {
         ids += distances[i].from_vid;
         ids += distances[i].to_vid;
+        /*
+         * Its undirected graph:
+         * keeping from_vid < to_vid
+         */
+        if (distances[i].to_vid > distances[i].from_vid) {
+            std::swap(distances[i].to_vid, distances[i].from_vid);
+        }
     }
 
     size_t i {0};
@@ -335,11 +333,9 @@ TSP::TSP(
         ++i;
     }
 
-
     /*
      * Inserting edges
      */
-    bool added;
     for (size_t i = 0; i < total_distances; ++i) {
         auto edge = distances[i];
         /*
@@ -357,15 +353,17 @@ TSP::TSP(
             if (weight < edge.cost) continue;
             if (edge.cost < weight) {
                 /*
-                 * substitute with duplicate edge with less cost
+                 * substitute edge with new lesser cost found
                  */
                 boost::put(boost::edge_weight_t(), graph, e_exists.first, edge.cost);
             }
             continue;
         }
 
-        E e;
-        boost::tie(e, added) = boost::add_edge(v1, v2, edge.cost, graph);
+        auto add_result = boost::add_edge(v1, v2, edge.cost, graph);
+        if (!add_result.second) {
+            log << "INTERNAL: something went wrong when adding and edge\n";
+        }
     }
 
     /*
@@ -387,7 +385,8 @@ TSP::TSP(
 }
 
 
-/** The postgres user might inadvertently give duplicate points
+/**
+ * The postgres user might inadvertently give duplicate points with the same id
  * the approximation is quite right, for example
  * 1, 3.5, 1
  * 1, 3.499999999999 0.9999999
@@ -398,39 +397,20 @@ TSP::TSP(
  */
 TSP::TSP(Coordinate_t *coordinates,
         size_t total_coordinates,
-        bool remove_duplicates) {
+        bool ) {
     log << "before total_coordinates" << total_coordinates;
 
     /*
-     * Removing duplicates if so desired
-     - keeping the relative order of the data
-     * - so different order in input will give different sort result
-     * - the first occurrence will remain and kept
-     */
-    if (remove_duplicates) {
-        std::stable_sort(coordinates, coordinates + total_coordinates,
-                [](const Coordinate_t& lhs, const Coordinate_t& rhs){return lhs.id < rhs.id;});
-
-        total_coordinates = static_cast<size_t>(std::distance(coordinates,
-                    std::unique(coordinates, coordinates + total_coordinates,
-                        [&](const Coordinate_t& lhs, const Coordinate_t& rhs){return lhs.id == rhs.id;})));
-    }
-    log << "-> " << total_coordinates << "\n";
-
-    /*
-     * Inserting vertices
+     * keeping the vertex identifiers
      */
     Identifiers<int64_t> ids;
     for (size_t i = 0; i < total_coordinates; ++i) {
         ids += coordinates[i].id;
     }
 
-    if (!remove_duplicates && ids.size() != total_coordinates) {
-        log << "User data is wrong, duplicated ids found";
-    } else if (remove_duplicates && ids.size() != total_coordinates) {
-        log << "INTERNAL: duplicates were not removed correctly";
-    }
-
+    /*
+     * Inserting vertices
+     */
     size_t i{0};
     for (const auto id : ids) {
         auto v = add_vertex(i, graph);
@@ -448,10 +428,16 @@ TSP::TSP(Coordinate_t *coordinates,
         auto uy = coordinates[i].y;
 
         /*
-         *  undirected, so only need traverse higher vertices for connections
+         *  undirected, so only need traverse higher coordinates for connections
          */
         for (size_t j = i + 1; j < total_coordinates; ++j) {
             auto v = get_boost_vertex(coordinates[j].id);
+
+            /*
+             * ignoring duplicated coordinates
+             */
+            if (boost::edge(u, v, graph).second) continue;
+
             auto vx = coordinates[j].x;
             auto vy = coordinates[j].y;
 
@@ -463,10 +449,45 @@ TSP::TSP(Coordinate_t *coordinates,
              */
             auto add_result = boost::add_edge(u, v, sqrt(dx * dx + dy * dy), graph);
             if (!add_result.second) {
-                log << "INTERNAL: something went wrong when adding and edge with cost 0\n";
+                log << "INTERNAL: something went wrong when adding and edge\n";
             }
         }
     }
+}
+
+
+
+
+std::deque<std::pair<int64_t, double>>
+TSP::eval_tour(const std::vector<V> &tsp_tour) {
+    std::deque<std::pair<int64_t, double>> results;
+    auto u = graph.null_vertex();
+    for (auto v : tsp_tour) {
+        auto cost = (u == graph.null_vertex()) ?
+            0 :
+            get_min_cost(graph, u, v);
+        u = v;
+        results.push_back(std::make_pair(get_vertex_id(v), cost));
+    }
+    pgassert(results.size() == num_vertices(graph) + 1);
+    return results;
+}
+
+double
+TSP::eval_tour(std::deque<std::pair<int64_t, double>>& tsp_tour) {
+    std::deque<std::pair<int64_t, double>> results;
+    auto u = graph.null_vertex();
+    double agg_cost(0);
+    for (auto &node : tsp_tour) {
+        auto v = get_boost_vertex(node.first);
+        auto cost = (u == graph.null_vertex()) ?
+            0 :
+            get_min_cost(graph, u, v);
+        u = v;
+        node.second = cost;
+        agg_cost += cost;
+    }
+    return agg_cost;
 }
 
 bool
