@@ -32,28 +32,28 @@ BEGIN
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 5, end_id => 10) $$, tbl),
       'XX000',
-      $$Parameter 'end_vid' do not exist on the data$$,
+      $$Parameter 'end_id' do not exist on the data$$,
       tbl::TEXT ||' SHOULD throw because end_id does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', end_id => 10) $$, tbl),
       'XX000',
-      $$Parameter 'end_vid' do not exist on the data$$,
+      $$Parameter 'end_id' do not exist on the data$$,
       'SHOULD throw because end_id does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 10, end_id => 5) $$, tbl),
       'XX000',
-      $$Parameter 'start_vid' do not exist on the data$$,
+      $$Parameter 'start_id' do not exist on the data$$,
       'SHOULD throw because start_vid does not exist');
 
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 10) $$, tbl),
       'XX000',
-      $$Parameter 'start_vid' do not exist on the data$$,
+      $$Parameter 'start_id' do not exist on the data$$,
       'SHOULD throw because start_vid does not exist');
 
     RETURN QUERY
@@ -72,7 +72,7 @@ BEGIN
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 10) $$, tbl),
       'XX000',
-      $$Parameter 'start_vid' do not exist on the data$$,
+      $$Parameter 'start_id' do not exist on the data$$,
       '4 SHOULD throw because start_id does not exist');
 
     RETURN QUERY
