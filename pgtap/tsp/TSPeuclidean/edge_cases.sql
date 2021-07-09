@@ -2,7 +2,7 @@
 UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
 SET client_min_messages TO ERROR;
-SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(22) ELSE plan(9) END;
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(22) ELSE plan(15) END;
 
 CREATE TEMP TABLE data AS
 SELECT id, st_X(the_geom) AS x, st_Y(the_geom)AS y  FROM edge_table_vertices_pgr;
