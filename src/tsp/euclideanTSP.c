@@ -124,7 +124,7 @@ _pgr_tspeuclidean(PG_FUNCTION_ARGS) {
                 /*
                  * TODO(vicky) version 4.0.0
                  * Get parameter for max_cycles
-                 * IPG_GETARG_INT32(2),
+                 * PG_GETARG_INT32(3),
                  */
                 1,
 

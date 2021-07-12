@@ -48,7 +48,7 @@ process(
         char* distances_sql,
         int64_t start_vid,
         int64_t end_vid,
-        bool strict,
+        int max_cycles,
 
         TSP_tour_rt **result_tuples,
         size_t *result_count) {
@@ -79,7 +79,7 @@ process(
             distances, total_distances,
             start_vid,
             end_vid,
-            strict,
+            max_cycles,
 
             result_tuples,
             result_count,
@@ -129,10 +129,10 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT64(2),
                 /*
                  * TODO(vicky) version 4.0.0
-                 * Get as parameter
-                 * When start_vid and end_vid are set, true = find the min metric TSP possible
+                 * Get parameter for max_cycles
+                 * PG_GETARG_INT32(3),
                  */
-                false,
+                1,
 
                 &result_tuples,
                 &result_count);
