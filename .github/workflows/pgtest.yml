@@ -1,4 +1,4 @@
-name: Build for Ubuntu
+name: Build for new postgres
 
 # manually triggered workflow
 # to test compilation with PostgreSQL on beta, rc etc
