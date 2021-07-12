@@ -37,7 +37,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <deque>
 #include <set>
-#include <limits>
 
 #include "c_types/matrix_cell_t.h"
 #include "c_types/coordinate_t.h"
