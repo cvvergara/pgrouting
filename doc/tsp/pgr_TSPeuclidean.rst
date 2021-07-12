@@ -70,15 +70,17 @@ Characteristics
 - Duplicated identifiers with different coordinates are not allowed
 
   - The coordinates are quite the same for the same identifier, for example
-   ```
-     1, 3.5, 1
-     1, 3.499999999999 0.9999999
-   ```
+
+    ```
+    1, 3.5, 1
+    1, 3.499999999999 0.9999999
+    ```
   - The coordinates are quite different for the same identifier, for example
-   ```
-    * 2 , 3.5 1
-    * 2 , 3.6 1
-   ```
+
+    ```
+    2 , 3.5 1
+    2 , 3.6 1
+    ```
   - Any duplicated identifier will be ignored. The coordinate that will be kept
     is arbitrarly.
 
