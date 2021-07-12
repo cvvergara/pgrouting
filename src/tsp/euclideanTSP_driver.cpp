@@ -47,7 +47,7 @@ do_pgr_euclideanTSP(
         size_t total_coordinates,
         int64_t start_vid,
         int64_t end_vid,
-        bool strict,
+        bool max_cycles,
 
         TSP_tour_rt **return_tuples,
         size_t *return_count,
@@ -76,7 +76,7 @@ do_pgr_euclideanTSP(
             return;
         }
 
-        auto tsp_path = fn_tsp.tsp(start_vid, end_vid, strict);
+        auto tsp_path = fn_tsp.tsp(start_vid, end_vid, max_cycles);
         log << fn_tsp.get_log();
 
         if (!tsp_path.empty()) {

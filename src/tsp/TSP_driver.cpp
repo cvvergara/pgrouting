@@ -50,7 +50,7 @@ do_pgr_tsp(
         size_t total_distances,
         int64_t start_vid,
         int64_t end_vid,
-        bool strict,
+        bool max_cycles,
 
         TSP_tour_rt **return_tuples,
         size_t *return_count,
@@ -81,7 +81,7 @@ do_pgr_tsp(
             return;
         }
 
-        auto tsp_path = fn_tsp.tsp(start_vid, end_vid, strict);
+        auto tsp_path = fn_tsp.tsp(start_vid, end_vid, max_cycles);
         log << fn_tsp.get_log();
 
 
