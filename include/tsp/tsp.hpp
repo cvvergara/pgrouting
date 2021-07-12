@@ -69,7 +69,9 @@ class TSP : public Pgr_messages {
     /** @brief order the results with a start vertex and an endig vertex*/
     std::deque<std::pair<int64_t, double>> tsp(int64_t, int64_t, int);
     /** @brief crossover optimization **/
-    std::deque<std::pair<int64_t, double>> crossover_optimize(std::deque<std::pair<int64_t, double>> result, size_t limit, int cycles);
+    std::deque<std::pair<int64_t, double>> crossover_optimize(
+            std::deque<std::pair<int64_t, double>> result,
+            size_t limit, int cycles);
 
     TSP(Matrix_cell_t *, size_t, bool);
     TSP(Coordinate_t *, size_t, bool);
