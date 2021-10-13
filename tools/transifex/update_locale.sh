@@ -19,10 +19,11 @@ make locale
 popd > /dev/null || exit 1
 
 # List all the files that needs to be committed in build/doc/locale_changes.txt
-awk '/^Update|^Create/{print $2}' build/doc/locale_changes.txt > tmp && mv tmp build/doc/locale_changes.txt        # .po files
-cat build/doc/locale_changes.txt | perl -pe 's/(.*)en\/LC_MESSAGES(.*)/$1pot$2t/' >> build/doc/locale_changes.txt  # .pot files
+awk '/^Update|^Create/{print $2}' build/doc/locale_changes.txt > build/doc/locale_changes_po.txt # .po files
+cp build/doc/locale_changes_po.txt build/doc/locale_changes_po_pot.txt
+perl -pe 's/(.*)en\/LC_MESSAGES(.*)/$1pot$2t/' < build/doc/locale_changes_po.txt >> build/doc/locale_changes_po_pot.txt  # .pot files
 
 # Remove obsolete entries #~ from .po files
-tools/transifex/remove_obsolete_entries.sh
+bash tools/transifex/remove_obsolete_entries.sh
 
 popd > /dev/null || exit 1
