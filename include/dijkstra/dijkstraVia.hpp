@@ -43,10 +43,10 @@ namespace pgrouting {
 
 template <class G>
 void
-pgr_dijkstraVia(
+dijkstraVia(
         G &graph,
-        const std::vector< int64_t > &via_vertices,
-        std::deque< Path > &paths,
+        const std::vector<int64_t> &via_vertices,
+        std::deque<Path> &paths,
         bool strict,
         bool U_turn_on_edge,
         std::ostringstream &log) {
@@ -91,7 +91,7 @@ pgr_dijkstraVia(
         }
 
         log << "\nfrom " << prev_vertex << " to " << vertex;
-        path = algorithms::dijkstra(graph, prev_vertex, vertex);
+        path = pgrouting::dijkstra(graph, prev_vertex, vertex, false);
 
         if (!U_turn_on_edge && i > 1) {
             graph.restore_graph();
