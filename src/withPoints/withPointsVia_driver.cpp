@@ -32,7 +32,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <string>
 
-
 #include "c_types/routes_t.h"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
@@ -172,7 +171,7 @@ pgr_do_withPointsVia(
             pgrouting::DirectedGraph digraph(vertices);
             digraph.insert_edges(edges);
             digraph.insert_edges(pg_graph.new_edges());
-            pgrouting::pgr_dijkstraVia(
+            pgrouting::dijkstraVia(
                     digraph,
                     via_vertices,
                     paths,
@@ -183,7 +182,7 @@ pgr_do_withPointsVia(
             pgrouting::UndirectedGraph undigraph(vertices);
             undigraph.insert_edges(edges);
             undigraph.insert_edges(pg_graph.new_edges());
-            pgrouting::pgr_dijkstraVia(
+            pgrouting::dijkstraVia(
                     undigraph,
                     via_vertices,
                     paths,
