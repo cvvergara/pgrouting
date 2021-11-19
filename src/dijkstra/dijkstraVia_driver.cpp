@@ -39,7 +39,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dijkstra/dijkstraVia.hpp"
 
 
-namespace  {
+namespace {
+
 void
 get_path(
         int route_id,
@@ -96,7 +97,7 @@ pgr_do_dijkstraVia(
         bool directed,
         bool strict,
         bool U_turn_on_edge,
-        Routes_t** return_tuples,   size_t* return_count,
+        Routes_t** return_tuples, size_t* return_count,
 
         char** log_msg,
         char** notice_msg,
@@ -119,8 +120,6 @@ pgr_do_dijkstraVia(
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
-
-
 
         auto via = get_intArray(viaArr, false);
 
@@ -170,7 +169,6 @@ pgr_do_dijkstraVia(
 
         // get the space required to store all the paths
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
-        log << "\nConverting a set of paths into the tuples";
         (*return_count) = (get_route(return_tuples, paths));
         (*return_tuples)[count - 1].edge = -2;
 

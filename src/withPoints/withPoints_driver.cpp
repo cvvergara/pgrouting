@@ -32,6 +32,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <sstream>
 #include <deque>
+#include <set>
+#include <map>
 #include <vector>
 #include <cassert>
 #include <limits>
@@ -45,7 +47,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-#include "dijkstra/dijkstra.hpp"
 
 namespace {
 
