@@ -42,6 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string>
 
 
+#include "c_types/ii_t_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/combinations.hpp"
 #include "cpp_common/alloc.hpp"
@@ -149,8 +150,6 @@ pgr_do_dijkstra(
             return;
         }
 
-
-
         hint = edges_sql;
         auto edges = get_edges(std::string(edges_sql), normal, false);
 
@@ -163,6 +162,7 @@ pgr_do_dijkstra(
 
         size_t n = n_goals <= 0? (std::numeric_limits<size_t>::max)() : static_cast<size_t>(n_goals);
         std::deque<Path>paths;
+
 
         if (directed) {
             pgrouting::DirectedGraph graph;

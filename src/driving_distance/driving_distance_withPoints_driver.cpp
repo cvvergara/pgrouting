@@ -27,7 +27,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
- ********************************************************************PGR-GNU*/
+********************************************************************PGR-GNU*/
 
 
 #include "drivers/driving_distance/driving_distance_withPoints_driver.h"
@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <sstream>
 #include <deque>
 #include <vector>
+#include <set>
 #include <algorithm>
 #include <string>
 #include <map>
@@ -118,7 +119,6 @@ pgr_do_withPointsDD(
             *err_msg = pgr_msg(err.str().c_str());
             return;
         }
-
 
 
         std::deque<Path> paths;

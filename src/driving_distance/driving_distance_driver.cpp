@@ -34,14 +34,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 
 #include "cpp_common/pgdata_getters.hpp"
 #include "dijkstra/drivingDist.hpp"
+#include "dijkstra/dijkstra.hpp"
 
 #include "c_types/mst_rt.h"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
-
 
 void
 pgr_do_drivingDistance(

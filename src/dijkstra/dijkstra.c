@@ -124,40 +124,10 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-
-        if (PG_NARGS() == 7) {
-            /* kept for backwards compatibility
-             * TODO remove on 4.0.0 */
+        if (PG_NARGS() == 8) {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
-                    PG_GETARG_ARRAYTYPE_P(1),
-                    PG_GETARG_ARRAYTYPE_P(2),
-                    PG_GETARG_BOOL(3),
-                    PG_GETARG_BOOL(4),
-                    PG_GETARG_BOOL(5),
-                    PG_GETARG_INT64(6),
-                    true,
-                    &result_tuples,
-                    &result_count);
-
-        } else if (PG_NARGS() == 5) {
-            /* kept for backwards compatibility
-             * TODO remove on 4.0.0 */
-            process(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    text_to_cstring(PG_GETARG_TEXT_P(1)),
-                    NULL, NULL,
-                    PG_GETARG_BOOL(2),
-                    PG_GETARG_BOOL(3),
-                    true, 0, true,
-                    &result_tuples,
-                    &result_count);
-
-        } else if (PG_NARGS() == 8) {
-            process(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
+                    NULL, /* combinations sql */
                     PG_GETARG_ARRAYTYPE_P(1),
                     PG_GETARG_ARRAYTYPE_P(2),
                     PG_GETARG_BOOL(3),
@@ -167,7 +137,6 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
                     PG_GETARG_BOOL(7),
                     &result_tuples,
                     &result_count);
-
         } else /* (PG_NARGS() == 6) */ {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
