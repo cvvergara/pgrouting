@@ -44,6 +44,18 @@ pgRouting 4.0.0 Release Notes
 * ``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``
 * ``pgr_trspviavertices(text,anyarray,boolean,boolean,text)``
 
+* Simplify C/C++ code for combinations style
+
+  * pgr_dijkstra
+
+* Internal SQL functions are removed
+
+  * _pgr_dijkstranear(text,anyarray,anyarray,bigint,boolean)
+  * _pgr_dijkstranear(text,anyarray,bigint,bigint,boolean)
+  * _pgr_dijkstranear(text,bigint,anyarray,bigint,boolean)
+  * _pgr_dijkstra(text,anyarray,anyarray,boolean,boolean,boolean,bigint)
+  * _pgr_dijkstra(text,text,boolean,boolean,boolean)
+
 
 
 pgRouting 3
