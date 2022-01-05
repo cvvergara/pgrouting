@@ -103,6 +103,30 @@ milestone for 4.0.0
 * _v4trsp(text,text,anyarray,anyarray,boolean)``
 * _v4trsp(text,text,text,boolean)``
 
+Breaking changes
+...............................................................................
+
+.. rubric:: Traveling Salesman problem
+
+Functions affected:
+
+* pgr_TSP
+* pgr_TSPEuclidean
+
+Changes:
+
+* Deprecated signatures that include annaeling parameters are removed
+
+  * pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+  * pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+
+* New signatures:
+
+  * pgr_tsp(text,bigint,bigint,integer)
+  * pgr_tspeuclidean(text,bigint,bigint,integer)
+
+* New default parameter: max_cycles with default value `1`
+
 pgRouting 3
 *******************************************************************************
 
