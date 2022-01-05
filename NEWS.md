@@ -41,6 +41,8 @@ milestone for 4.0.0
 * pgr_edmondsKarp(Combinations)
 * pgr_maxFlow(Combinations)
 * pgr_pushRelabel(Combinations)
+* pgr_tsp(text,bigint,bigint,integer)
+* pgr_tspeuclidean(text,bigint,bigint,integer)
 
 **code enhancements:**
 
@@ -74,6 +76,11 @@ milestone for 4.0.0
   pgr_withPointsKSP
 
   * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,character,boolean)
+
+* TSP
+
+  * pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+  * pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
 
 **Removal of SQL deprecated functions**
 
