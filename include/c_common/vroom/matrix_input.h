@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: vroom_break_t.h
+File: matrix_input.h
 
 Copyright (c) 2021 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,30 +25,28 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
-/*! @file */
 
-#ifndef INCLUDE_C_TYPES_VROOM_VROOM_BREAK_T_H_
-#define INCLUDE_C_TYPES_VROOM_VROOM_BREAK_T_H_
+#ifndef INCLUDE_C_COMMON_VROOM_MATRIX_INPUT_H_
+#define INCLUDE_C_COMMON_VROOM_MATRIX_INPUT_H_
 #pragma once
 
-#include "c_types/typedefs.h"
+#include <stddef.h>
 
-/** @brief Vehicle's break attributes
+#include "c_common/get_check_data.h"
+#include "c_types/column_info_t.h"
+#include "c_types/vroom/vroom_matrix_t.h"
 
-@note C/C++/postgreSQL connecting structure for input
-name | description
-:----- | :-------
-id | Identifier of break
-vehicle_id | Identifier of vehicle
-service | Duration of break
-data | Metadata information of break
-*/
-struct Vroom_break_t {
-  Idx id; /** Identifier of break */
-  Idx vehicle_id;  /** Identifier of vehicle */
-  Duration service; /** Duration of break */
-  char *data; /** Metadata information of break */
-};
+#ifdef PROFILE
+#include "c_common/debug_macro.h"
+#include "c_common/time_msg.h"
+#endif
 
+/** @brief Reads the VROOM matrix */
+void
+get_vroom_matrix(
+    char *matrix_sql,
+    Vroom_matrix_t **matrix,
+    size_t *total_matrix_rows,
+    bool is_plain);
 
-#endif  // INCLUDE_C_TYPES_VROOM_VROOM_BREAK_T_H_
+#endif  // INCLUDE_C_COMMON_VROOM_MATRIX_INPUT_H_
