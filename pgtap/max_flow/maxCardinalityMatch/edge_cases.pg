@@ -69,6 +69,7 @@ END;
 SELECT lives_ok('mcm_noflag','noflag');
 SELECT lives_ok('mcm_dir1','directed');
 SELECT lives_ok('mcm_undir1','undirected');
+SELECT lives_ok('noflag','noflag');
 
 SELECT finish();
 ROLLBACK;

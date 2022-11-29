@@ -52,17 +52,26 @@ namespace pgrouting {
 
 namespace flow {
 
-class PgrCardinalityGraph {
+class MaxCardinalityMatch {
   using G = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;
+  using V = boost::graph_traits<G>::vertex_descriptor;
+  using E = boost::graph_traits<G>::edge_descriptor;
+  using V_it = boost::graph_traits<G>::vertex_iterator;
 
  public:
+  MaxCardinalityMatch(Edge_bool_t_rt *, size_t);
+  std::vector<int64_t> get_matched_vertices();
+
+ private:
+  inline V get_boost_vertex(int64_t id) {
+      return id_to_V[id];
+  }
+
+  inline int64_t get_edge_id(E e) {
+      return E_to_id[e];
+  }
+
   G boost_graph;
-
-  typedef typename boost::graph_traits<G>::vertex_descriptor V;
-  typedef typename boost::graph_traits<G>::edge_descriptor E;
-  typedef typename boost::graph_traits<G>::vertex_iterator V_it;
-  typedef typename boost::graph_traits<G>::edge_iterator E_it;
-
   std::map<int64_t, V> id_to_V;
   std::map<V, int64_t> V_to_id;
   std::map<E, int64_t> E_to_id;
@@ -148,6 +157,8 @@ class PgrCardinalityGraph {
       edmonds_maximum_cardinality_matching(boost_graph,
                                            &mate_map[0]);
   }
+=======
+>>>>>>> 41baef4382 ([maxCardinalityMatch] cleanup tasks):include/max_flow/pgr_maximumcardinalitymatching.hpp
 };
 
 }  // namespace flow

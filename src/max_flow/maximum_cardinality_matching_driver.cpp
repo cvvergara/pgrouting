@@ -46,12 +46,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 void
-pgr_do_maximum_cardinality_matching(
-    const char *edges_sql,
-    /* TODO(v4) flag directed is to be removed */
-    bool,
+do_maxCardinalityMatch(
+    Edge_bool_t_rt *data_edges,
+    size_t total_tuples,
 
-    Only_int_rt **return_tuples,
+    int64_t **return_tuples,
     size_t *return_count,
 
     char** log_msg,
@@ -77,7 +76,7 @@ pgr_do_maximum_cardinality_matching(
         }
         hint = nullptr;
 
-        pgrouting::flow::PgrCardinalityGraph G(edges);
+        pgrouting::flow::MaxCardinalityMatch G(edges);
         auto matched_vertices = G.get_matched_vertices();
 
         (*return_tuples) = pgr_alloc(matched_vertices.size(), (*return_tuples));

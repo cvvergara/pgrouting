@@ -650,6 +650,8 @@ Migration is needed, because:
 
 :Before migration:
 
+The following query could be done:
+
 .. literalinclude:: migration.queries
    :start-after: --maxcard1
    :end-before: --maxcard2

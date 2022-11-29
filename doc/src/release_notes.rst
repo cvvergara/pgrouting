@@ -160,6 +160,9 @@ Related issues: `#2897 <https://github.com/pgRouting/pgrouting/issues/2897>`__
 * _trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,anyarray,anyarray,boolean)
 * _v4trsp(text,text,text,boolean)
+* _pgr_maxcardinalitymatch(text,boolean)
+* _pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
+* _pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
 
 
 * `#2861 <https://github.com/pgRouting/pgrouting/issues/2861>`__:
