@@ -1,16 +1,11 @@
 /*PGR-GNU*****************************************************************
-File: maximum_cardinality_matching_driver.h
+File: edge_bool_t.h
 
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2017 pgRouting developers
 Mail: project@pgrouting.org
 
-Refactoring
-Copyright (c) 2022 Celia Virginia Vergara Castillo
+Copyright (c) 2017 Celia Virginia Vergara Castillo
 Mail: vicky_vergara at hotmail.com
-
-Function's developer:
-Copyright (c) 2016 Andrea Nardelli
-Mail: nrd.nardelli@gmail.com
 
 ------
 
@@ -29,37 +24,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*! @file */
 
-#ifndef INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_CARDINALITY_MATCHING_DRIVER_H_
-#define INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_CARDINALITY_MATCHING_DRIVER_H_
+#ifndef INCLUDE_C_TYPES_EDGE_BOOL_T_H_
+#define INCLUDE_C_TYPES_EDGE_BOOL_T_H_
 #pragma once
 
+/* for int64_t */
 #ifdef __cplusplus
-# include <cstddef>
-# include <cstdint>
-using Edges = struct Edge_bool_t;
+#   include <cstdint>
 #else
-# include <stddef.h>
-# include <stdint.h>
-typedef struct Edge_bool_t Edges;
+#   include <stdbool.h>
+#   include <stdint.h>
 #endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+struct Edge_bool_t {
+  int64_t id;
+  int64_t source;
+  int64_t target;
+  bool going;
+};
 
-void do_maxCardinalityMatch(
-            Edges *,
-            size_t,
-
-            bool,
-
-            Only_int_rt **, size_t *,
-            char**, char**, char **);
-
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // INCLUDE_DRIVERS_MAX_FLOW_MAXIMUM_CARDINALITY_MATCHING_DRIVER_H_
+#endif  // INCLUDE_C_TYPES_EDGE_BOOL_T_H_

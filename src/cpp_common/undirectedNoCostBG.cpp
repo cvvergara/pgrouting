@@ -1,5 +1,4 @@
 /*PGR-GNU*****************************************************************
-File: flowgraph.hpp
 
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
@@ -30,14 +29,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_CPP_COMMON_UNDIRECTEDNOCOSTBG_HPP_
-#define INCLUDE_CPP_COMMON_UNDIRECTEDNOCOSTBG_HPP_
-#pragma once
+#include "cpp_common/undirectedNoCostBG.hpp"
 
-#include <map>
+#include <set>
 
-#include <boost/config.hpp>
-#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/max_cardinality_matching.hpp>
 
 #include "c_types/edge_bool_t.h"
 
@@ -45,36 +41,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace graph {
 
+UndirectedNoCostsBG::UndirectedNoCostsBG(Edge_bool_t *edges, size_t edges_size) {
+    std::set<int64_t> vertices;
+    for (size_t i = 0; i < edges_size; ++i) {
+        vertices.insert(edges[i].source);
+        vertices.insert(edges[i].target);
+    }
+    for (auto id : vertices) {
+        V v = add_vertex(graph);
+        id_to_V.insert(std::pair<int64_t, V>(id, v));
+        V_to_id.insert(std::pair<V, int64_t>(v, id));
+    }
 
-class UndirectedNoCostsBG {
- public:
-     using G = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;
-     using V = boost::graph_traits<G>::vertex_descriptor;
-     using E = boost::graph_traits<G>::edge_descriptor;
-     using V_it = boost::graph_traits<G>::vertex_iterator;
-     using Edge_bool_t = struct Edge_bool_t;
-
-     UndirectedNoCostsBG(Edge_bool_t*, size_t);
-
-     V get_boost_vertex(int64_t id) {
-         return id_to_V[id];
-     }
-
-     int64_t get_edge_id(E e) {
-         return E_to_id[e];
-     }
-
-     G& operator()() {return graph;}
-     const G& operator()() const {return graph;}
-
- private:
-     G graph;
-     std::map<int64_t, V> id_to_V;
-     std::map<V, int64_t> V_to_id;
-     std::map<E, int64_t> E_to_id;
-};
+    for (size_t i = 0; i < edges_size; ++i) {
+        V v1 = get_boost_vertex(edges[i].source);
+        V v2 = get_boost_vertex(edges[i].target);
+        E e;
+        bool added;
+        if (edges[i].going) {
+            boost::tie(e, added) = boost::add_edge(v1, v2, graph);
+            if (added) {E_to_id.insert(std::pair<E, int64_t>(e, edges[i].id));}
+        }
+    }
+}
 
 }  // namespace graph
 }  // namespace pgrouting
-
-#endif  // INCLUDE_CPP_COMMON_UNDIRECTEDNOCOSTBG_HPP_
