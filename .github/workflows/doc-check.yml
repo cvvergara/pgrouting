@@ -132,7 +132,7 @@ jobs:
         run: |
           cd build
           make doxy
-          [ ! -s file.name ]
+          [ ! -s build/doxygen/LOG ] || exit 1
 
       - name: Check Links
         if: env.CHK_LINK == 'true'
