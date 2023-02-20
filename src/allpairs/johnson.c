@@ -35,12 +35,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 #include "c_common/edges_input.h"
+#include "allpairs/process_allpairs.h"
 
+
+#if 0
 #include "drivers/allpairs/johnson_driver.h"
+#endif
 
 PGDLLEXPORT Datum _pgr_johnson(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_johnson);
 
+#if 0
 static
 void process(
         char* edges_sql,
@@ -94,7 +99,7 @@ void process(
     pfree(edges);
     pgr_SPI_finish();
 }
-
+#endif
 
 PGDLLEXPORT Datum
 _pgr_johnson(PG_FUNCTION_ARGS) {
@@ -113,7 +118,7 @@ _pgr_johnson(PG_FUNCTION_ARGS) {
 
 
         PGR_DBG("Calling process");
-        process(
+        process_allpairs(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_BOOL(1),
                 &result_tuples,

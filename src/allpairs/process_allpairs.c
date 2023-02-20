@@ -1,13 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: floydWarshall.c
-
-Generated with Template by:
-Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
+File: process_allpairs.c
 
 Function's developer:
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Copyright (c) 2023 Celia Virginia Vergara Castillo
+Mail: vicky_vergara at hotmail.com
 
 ------
 
@@ -27,6 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+#include "allpairs/process_allpairs.h"
+
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
@@ -36,14 +34,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 #include "c_common/edges_input.h"
 
-#include "drivers/allpairs/floydWarshall_driver.h"
+#include "drivers/allpairs/johnson_driver.h"
 
-PGDLLEXPORT Datum _pgr_floydwarshall(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_floydwarshall);
+#if 0
+PGDLLEXPORT Datum _pgr_johnson(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_johnson);
+#endif
 
-#if 1
+#if 0
 static
-void process(
+#endif
+void process_allpairs(
         char* edges_sql,
         bool directed,
         IID_t_rt **result_tuples,
@@ -69,7 +70,7 @@ void process(
     char *notice_msg = NULL;
     char *err_msg = NULL;
     clock_t start_t = clock();
-    do_pgr_floydWarshall(
+    do_pgr_johnson(
             edges,
             total_tuples,
             directed,
@@ -77,7 +78,7 @@ void process(
             result_count,
             &log_msg,
             &err_msg);
-    time_msg(" processing FloydWarshall", start_t, clock());
+    time_msg(" processing Johnson", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         free(*result_tuples);
@@ -95,10 +96,11 @@ void process(
     pfree(edges);
     pgr_SPI_finish();
 }
-#endif
 
+
+#if 0
 PGDLLEXPORT Datum
-_pgr_floydwarshall(PG_FUNCTION_ARGS) {
+_pgr_johnson(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
@@ -162,4 +164,4 @@ _pgr_floydwarshall(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-
+#endif
