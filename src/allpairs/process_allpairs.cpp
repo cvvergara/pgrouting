@@ -37,9 +37,6 @@ extern "C" {
 #include "c_types/iid_t_rt.h"
 #include "c_common/debug_macro.h"
 
-#if 0
-#include "drivers/allpairs/johnson_driver.h"
-#endif
 #include "drivers/allpairs/allpairs_driver.h"
 
 /**

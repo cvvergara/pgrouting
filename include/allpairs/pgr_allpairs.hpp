@@ -49,6 +49,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 template < class G > class Pgr_allpairs;
 
+#if 0
 // user's functions
 template < class G >
 void
@@ -63,6 +64,7 @@ pgr_floydWarshall(G &graph, std::vector< IID_t_rt> &rows) {
     Pgr_allpairs< G > fn_floydWarshall;
     fn_floydWarshall.floydWarshall(graph, rows);
 }
+#endif
 
 // for postgres
 template < class G >
@@ -202,8 +204,8 @@ class Pgr_allpairs {
              for (typename G::V v_j = 0; v_j < graph.num_vertices(); v_j++) {
                  if (v_i == v_j) continue;
                  if (matrix[v_i][v_j] != (std::numeric_limits<double>::max)()) {
-                     (*postgres_rows)[seq].from_vid = graph[v_i].id;
-                     (*postgres_rows)[seq].to_vid = graph[v_j].id;
+                     (*postgres_rows)[seq].from_vid = static_cast<int64_t>(graph[v_i].id);
+                     (*postgres_rows)[seq].to_vid = static_cast<int64_t>(graph[v_j].id);
                      (*postgres_rows)[seq].cost =  matrix[v_i][v_j];
                      seq++;
                  }  // if
