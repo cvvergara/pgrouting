@@ -3,5 +3,5 @@ ADD_LIBRARY(allpairs OBJECT
     johnson.c
 
     process_allpairs.cpp
-    allpairs_driver.cpp
+    #allpairs_driver.cpp
     )

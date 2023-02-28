@@ -37,7 +37,9 @@ extern "C" {
 #include "c_types/iid_t_rt.h"
 #include "c_common/debug_macro.h"
 
+#if 0
 #include "drivers/allpairs/allpairs_driver.h"
+#endif
 
 /**
  which = 0 -> johnson
@@ -72,13 +74,14 @@ void process_allpairs(
     char *notice_msg = NULL;
     char *err_msg = NULL;
     clock_t start_t = clock();
+#if 0
     do_allpairs(edges, total_tuples, directed, which, result_tuples, result_count, &log_msg, &err_msg);
     if (which == 0) {
         time_msg(std::string(" processing pgr_johnson").c_str(), start_t, clock());
     } else {
         time_msg(std::string(" processing pgr_floydWarshall").c_str(), start_t, clock());
     }
-
+#endif
 
     if (err_msg && (*result_tuples)) {
         free(*result_tuples);
