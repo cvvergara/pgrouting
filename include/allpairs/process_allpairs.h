@@ -33,6 +33,7 @@ using IID_t_rt = struct IID_t_rt;
 #else
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 typedef struct IID_t_rt IID_t_rt;
 #endif
 
@@ -40,7 +41,7 @@ typedef struct IID_t_rt IID_t_rt;
 extern "C" {
 #endif
 
-void process_allpairs(char*, bool, int, IID_t_rt **, size_t *);
+void process_allpairs(char*, bool, int, IID_t_rt**, size_t*);
 
 #ifdef __cplusplus
 }
