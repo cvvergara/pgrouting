@@ -47,25 +47,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 // TODO(vicky) don't keep it here
 #include "cpp_common/pgr_alloc.hpp"
 
-template < class G > class Pgr_allpairs;
+template<class G> class Pgr_allpairs;
+
+template<class G>
+std::vector<std::vector<double>>
+pgr_johnson(G &graph) {
+    Pgr_allpairs<G> fn_johnson;
+    return fn_johnson.johnson(graph);
+}
+
+template < class G >
+std::vector<std::vector<double>>
+pgr_floydWarshall(G &graph) {
+    Pgr_allpairs<G> fn_floydWarshall;
+    return fn_floydWarshall.floydWarshall(graph);
+}
 
 #if 0
-// user's functions
-template < class G >
-void
-pgr_johnson(G &graph, std::vector< IID_t_rt> &rows) {
-    Pgr_allpairs< G > fn_johnson;
-    fn_johnson.johnson(graph, rows);
-}
-
-template < class G >
-void
-pgr_floydWarshall(G &graph, std::vector< IID_t_rt> &rows) {
-    Pgr_allpairs< G > fn_floydWarshall;
-    fn_floydWarshall.floydWarshall(graph, rows);
-}
-#endif
-
 // for postgres
 template < class G >
 void
@@ -87,12 +85,14 @@ pgr_floydWarshall(
     Pgr_allpairs< G > fn_floydWarshall;
     fn_floydWarshall.floydWarshall(graph, result_tuple_count, postgres_rows);
 }
+#endif
 
 
 // template class
 template < class G >
 class Pgr_allpairs {
  public:
+#if 0
      void floydWarshall(
              G &graph,
              size_t &result_tuple_count,
@@ -114,11 +114,10 @@ class Pgr_allpairs {
 
          make_result(graph, matrix, result_tuple_count, postgres_rows);
      }
+#endif
 
-     void floydWarshall(
-             G &graph,
-             std::vector< IID_t_rt> &rows) {
-         std::vector< std::vector<double>> matrix;
+      std::vector<std::vector<double>> floydWarshall(G &graph) {
+         std::vector<std::vector<double>> matrix;
          make_matrix(graph.num_vertices(), matrix);
          inf_plus<double> combine;
 
@@ -133,9 +132,10 @@ class Pgr_allpairs {
                  distance_inf((std::numeric_limits<double>::max)()).
                  distance_zero(0));
 
-         make_result(graph, matrix, rows);
+         return matrix;
      }
 
+#if 0
      void johnson(
              G &graph,
              size_t &result_tuple_count,
@@ -157,12 +157,11 @@ class Pgr_allpairs {
 
          make_result(graph, matrix, result_tuple_count, postgres_rows);
      }
+#endif
 
 
-     void johnson(
-             G &graph,
-             std::vector< IID_t_rt> &rows) {
-         std::vector< std::vector<double>> matrix;
+     std::vector<std::vector<double>> johnson(G &graph) {
+         std::vector<std::vector<double>> matrix;
          make_matrix(graph.num_vertices(), matrix);
          inf_plus<double> combine;
 
@@ -177,7 +176,7 @@ class Pgr_allpairs {
                  distance_inf((std::numeric_limits<double>::max)()).
                  distance_zero(0));
 
-         make_result(graph, matrix, rows);
+         return matrix;
      }
 
  private:
@@ -190,6 +189,7 @@ class Pgr_allpairs {
              matrix[i].resize(v_size);
      }
 
+#if 0
      void make_result(
              const G &graph,
              const std::vector< std::vector<double> > &matrix,
@@ -229,24 +229,25 @@ class Pgr_allpairs {
          return result_tuple_count;
      }
 
+     std::vector<IID_t_rt>
      void make_result(
              G &graph,
-             std::vector< std::vector<double> > &matrix,
-             std::vector< IID_t_rt> &rows) {
+             std::vector< std::vector<double> > &matrix} {
          size_t count = count_rows(graph, matrix);
-         rows.resize(count);
+         std::vector<IID_t_rt> rows{count};
          size_t seq = 0;
 
          for (typename G::V v_i = 0; v_i < graph.num_vertices(); v_i++) {
              for (typename G::V v_j = 0; v_j < graph.num_vertices(); v_j++) {
                  if (matrix[v_i][v_j] != (std::numeric_limits<double>::max)()) {
-                     rows[seq] =
-                     {graph[v_i].id, graph[v_j].id, matrix[v_i][v_j]};
+                     rows[seq] = {graph[v_i].id, graph[v_j].id, matrix[v_i][v_j]};
                      seq++;
                  }  // if
              }  // for j
          }  // for i
+         return rows;
      }
+#endif
 
      template <typename T>
      struct inf_plus {

@@ -37,6 +37,49 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "cpp_common/pgr_assert.h"
 
+namespace {
+
+template <typename G>
+size_t count_rows(
+        const G &graph,
+        const std::vector< std::vector<double> > &matrix) {
+    size_t result_tuple_count = 0;
+    for (size_t i = 0; i < graph.num_vertices(); i++) {
+        for (size_t j = 0; j < graph.num_vertices(); j++) {
+            if (i == j) continue;
+            if (matrix[i][j] != (std::numeric_limits<double>::max)()) {
+                result_tuple_count++;
+            }  // if
+        }  // for j
+    }  // for i
+    return result_tuple_count;
+}
+
+template <typename G>
+void make_result(
+        const G &graph,
+        const std::vector< std::vector<double> > &matrix,
+        size_t &result_tuple_count,
+        IID_t_rt **postgres_rows) {
+    result_tuple_count = count_rows(graph, matrix);
+    *postgres_rows = pgr_alloc(result_tuple_count, (*postgres_rows));
+
+
+    size_t seq = 0;
+    for (typename G::V v_i = 0; v_i < graph.num_vertices(); v_i++) {
+        for (typename G::V v_j = 0; v_j < graph.num_vertices(); v_j++) {
+            if (v_i == v_j) continue;
+            if (matrix[v_i][v_j] != (std::numeric_limits<double>::max)()) {
+                (*postgres_rows)[seq].from_vid = static_cast<int64_t>(graph[v_i].id);
+                (*postgres_rows)[seq].to_vid = static_cast<int64_t>(graph[v_j].id);
+                (*postgres_rows)[seq].cost =  matrix[v_i][v_j];
+                seq++;
+            }  // if
+        }  // for j
+    }  // for i
+}
+
+}  // namespace
 
 void
 do_allpairs(
@@ -61,24 +104,25 @@ do_allpairs(
 
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
+        std::vector<std::vector<double>> matrix;
 
         if (directed) {
             log << "Processing Directed graph\n";
             pgrouting::DirectedGraph digraph(gType);
             digraph.insert_edges(data_edges, total_edges);
             if (which == 0) {
-                pgr_johnson(digraph, *return_count, return_tuples);
+                matrix = pgr_johnson(digraph);
             } else {
-                pgr_floydWarshall(digraph, *return_count, return_tuples);
+                matrix = pgr_floydWarshall(digraph);
             }
         } else {
             log << "Processing Undirected graph\n";
             pgrouting::UndirectedGraph undigraph(gType);
             undigraph.insert_edges(data_edges, total_edges);
             if (which == 0) {
-                pgr_johnson(undigraph, *return_count, return_tuples);
+                matrix = pgr_johnson(undigraph);
             } else {
-                pgr_floydWarshall(undigraph, *return_count, return_tuples);
+                matrix = pgr_floydWarshall(undigraph);
             }
         }
 
