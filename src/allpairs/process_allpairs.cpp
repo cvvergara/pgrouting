@@ -35,9 +35,9 @@ extern "C" {
 }
 
 #include "c_types/iid_t_rt.h"
-#include "c_common/debug_macro.h"
 
 #if 0
+#include "c_common/debug_macro.h"
 #include "drivers/allpairs/allpairs_driver.h"
 #endif
 
@@ -55,15 +55,16 @@ void process_allpairs(
         size_t *result_count) {
     pgr_SPI_connect();
 
+#if 0
     PGR_DBG("Load data");
-    Edge_t *edges = NULL;
+    Edge_t *edges = nullptr;
     size_t total_tuples = 0;
     pgr_get_edges_no_id(edges_sql, &edges, &total_tuples);
 
     if (total_tuples == 0) {
         PGR_DBG("No edges found");
         (*result_count) = 0;
-        (*result_tuples) = NULL;
+        (*result_tuples) = nullptr;
         pgr_SPI_finish();
         return;
     }
@@ -97,5 +98,6 @@ void process_allpairs(
     if (err_msg) pfree(err_msg);
 
     pfree(edges);
+#endif
     pgr_SPI_finish();
 }
