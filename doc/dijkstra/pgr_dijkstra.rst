@@ -11,7 +11,8 @@
 
 * **Supported versions:**
   `Latest <https://docs.pgrouting.org/latest/en/pgr_dijkstra.html>`__
-  (`3.4 <https://docs.pgrouting.org/3.4/en/pgr_dijkstra.html>`__)
+  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_dijkstra.html>`__)
+  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_dijkstra.html>`__
   `3.3 <https://docs.pgrouting.org/3.3/en/pgr_dijkstra.html>`__
   `3.2 <https://docs.pgrouting.org/3.2/en/pgr_dijkstra.html>`__
   `3.1 <https://docs.pgrouting.org/3.1/en/pgr_dijkstra.html>`__
@@ -36,6 +37,14 @@
    Boost Graph Inside
 
 .. rubric:: Availability
+
+* Version 3.5.0
+
+  * Standarizing output columns to |short-generic-result|
+
+    * ``pgr_dijkstra`` (`One to One`_) added `start_vid` and `end_vid` columns.
+    * ``pgr_dijkstra`` (`One to Many`_) added `end_vid` column.
+    * ``pgr_dijkstra`` (`Many to One`_) added `start_vid` column.
 
 * Version 3.1.0
 
@@ -84,14 +93,20 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vid**  , [``directed``])
-   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vids** , [``directed``])
-   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vid**  , [``directed``])
-   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vids** , [``directed``])
-   | pgr_dijkstra(`Edges SQL`_, `Combinations SQL`_ , [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vid**, [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vids**, [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vid**, [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vids**, [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, `Combinations SQL`_, [``directed``])
 
-   | RETURNS SET OF |old-generic-result|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
+
+
+.. Warning:: Breaking change on 3.5.0
+
+   Read the :doc:`migration` about how to migrate from the old result columns to
+   the new result columns.
 
 .. index::
     single: dijkstra(One to One)
@@ -102,9 +117,9 @@ One to One
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vid**  , [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vid**, [``directed``])
 
-   | RETURNS SET OF |result-1-1|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertex :math:`6` to vertex  :math:`10` on a **directed** graph
@@ -122,9 +137,9 @@ One to Many
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vids** , [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vid**, **end vids**, [``directed``])
 
-   | RETURNS SET OF |result-1-m|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertex :math:`6` to vertices :math:`\{10, 17\}` on a **directed**
@@ -142,9 +157,9 @@ Many to One
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vid** , [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vid**, [``directed``])
 
-   | RETURNS SET OF |result-m-1|
+   | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
 
 :Example: From vertices :math:`\{6, 1\}` to vertex :math:`17` on a **directed**
@@ -163,7 +178,7 @@ Many to Many
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vids** , [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, **start vids**, **end vids**, [``directed``])
 
    | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
@@ -184,7 +199,7 @@ Combinations
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_dijkstra(`Edges SQL`_, `Combinations SQL`_ , [``directed``])
+   | pgr_dijkstra(`Edges SQL`_, `Combinations SQL`_, [``directed``])
 
    | RETURNS SET OF |short-generic-result|
    | OR EMPTY SET
@@ -202,7 +217,6 @@ The query:
 .. literalinclude:: doc-pgr_dijkstra.queries
     :start-after: -- q52
     :end-before: -- q6
-
 
 Parameters
 -------------------------------------------------------------------------------

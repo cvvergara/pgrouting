@@ -167,7 +167,11 @@ if (DOC_USE_BOOTSTRAP)
     set(SPHINX_INCLUDE "import sphinx_bootstrap_theme")
     set(SPHINX_THEME "bootstrap")
     set(SPHINX_THEME_DIR "sphinx_bootstrap_theme.get_html_theme_path()")
-    set(SPHINX_THEME_OPTIONS "'source_link_position': \"none\",")
+    set(SPHINX_THEME_OPTIONS "
+    'navbar_class': \"navbar\",
+    'source_link_position': \"nav\",
+    'bootstrap_version': \"2\",
+    ")
 else()
     set(SPHINX_INCLUDE "")
     set(SPHINX_THEME "haiku")
@@ -232,6 +236,7 @@ if (LOCALE)
     add_custom_target(locale
         COMMAND ${SPHINX_EXECUTABLE}
         -b gettext
+        -j auto
         -c "${PGR_DOCUMENTATION_SOURCE_DIR}"
         "${PGR_DOCUMENTATION_SOURCE_DIR}"
         "${CMAKE_SOURCE_DIR}/locale/pot"
@@ -269,7 +274,7 @@ foreach (target ${PROJECT_DOC_TARGETS})
             -v   # increase verbosity
             -W
             --keep-going
-            #-j auto
+            -j auto
             #-E  # don't use a saved environment, always read all file
             #-a  # write all files; default is to only write new and changed files
             -b ${target}
