@@ -9,22 +9,6 @@
 
 |
 
-* **Supported versions:**
-  `Latest <https://docs.pgrouting.org/latest/en/pgr_KSP.html>`__
-  (`3.5 <https://docs.pgrouting.org/3.5/en/pgr_KSP.html>`__)
-  `3.4 <https://docs.pgrouting.org/3.4/en/pgr_KSP.html>`__
-  `3.3 <https://docs.pgrouting.org/3.3/en/pgr_KSP.html>`__
-  `3.2 <https://docs.pgrouting.org/3.2/en/pgr_KSP.html>`__
-  `3.1 <https://docs.pgrouting.org/3.1/en/pgr_KSP.html>`__)
-  `3.0 <https://docs.pgrouting.org/3.0/en/pgr_KSP.html>`__
-* **Unsupported versions:**
-  `2.6 <https://docs.pgrouting.org/2.6/en/pgr_KSP.html>`__
-  `2.5 <https://docs.pgrouting.org/2.5/en/pgr_KSP.html>`__
-  `2.4 <https://docs.pgrouting.org/2.4/en/pgr_KSP.html>`__
-  `2.3 <https://docs.pgrouting.org/2.3/en/src/ksp/doc/pgr_ksp.html>`__
-  `2.2 <https://docs.pgrouting.org/2.2/en/src/ksp/doc/pgr_ksp.html>`__
-  `2.1 <https://docs.pgrouting.org/2.1/en/src/ksp/doc/index.html>`__
-  `2.0 <https://docs.pgrouting.org/2.0/en/src/ksp/doc/index.html>`__
 
 pgr_KSP
 ===============================================================================
@@ -97,10 +81,10 @@ Parameters
      - Identifier of the departure vertex.
    * - **end vid**
      - **ANY-INTEGER**
-     - Identifier of the departure vertex.
+     - Identifier of the arrival vertex.
    * - **K**
      - **ANY-INTEGER**
-     - Number of required paths
+     - Number of required paths.
 
 Where:
 
@@ -132,7 +116,7 @@ KSP Optional parameters
    * - ``heap_paths``
      - ``BOOLEAN``
      - ``false``
-     - * When ``false`` Returns at most K paths
+     - * When ``false`` Returns at most K paths.
        * When ``true`` all the calculated paths while processing are returned.
        * Roughly, when the shortest path has ``N`` edges, the heap will contain
          about than ``N * K`` paths for small value of ``K`` and ``K > 5``.
