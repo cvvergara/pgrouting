@@ -785,5 +785,6 @@ SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_aStar(
 (6 rows)
 
 /* --bdastar5 */
+/* --withPointsKSP1 */
 ROLLBACK;
 ROLLBACK
