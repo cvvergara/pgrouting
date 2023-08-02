@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: pgdata_getters.h
+File: pgget.hpp
 
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
@@ -32,13 +32,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_C_COMMON_PGDATA_GETTERS_H_
-#define INCLUDE_C_COMMON_PGDATA_GETTERS_H_
+#ifndef INCLUDE_CPP_COMMON_PGGET_H_
+#define INCLUDE_CPP_COMMON_PGGET_H_
 #pragma once
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 #include <postgres.h>
 #include <executor/spi.h>
 #include <funcapi.h>
@@ -47,19 +45,14 @@ extern "C" {
 #include <fmgr.h>
 #include <utils/array.h>
 #include <catalog/pg_type.h>
-#ifdef __cplusplus
 }
-#endif
 
-#ifdef __cplusplus
 #include <cstddef>
 #include <cstdint>
-#else
-#include <stddef.h>
-#include <stdint.h>
-#include <stdbool.h>
-#endif
+#include <string>
+#include <vector>
 
+#if 0
 #ifdef __cplusplus
 using IID_t_rt = struct IID_t_rt;
 using II_t_rt = struct II_t_rt;
@@ -89,56 +82,70 @@ typedef struct Point_on_edge_t Point_on_edge_t;
 typedef struct Restriction_t Restriction_t;
 typedef struct Vehicle_t Vehicle_t;
 #endif
-
-
-#ifdef __cplusplus
-extern "C" {
 #endif
+
+#include "c_types/info_t.hpp"
+#include "c_types/ii_t_rt.h"
+#include "c_types/coordinate_t.h"
+#include "c_types/delauny_t.h"
+#include "c_types/edge_bool_t_rt.h"
+#include "c_types/costFlow_t.h"
+#include "c_types/edge_xy_t.h"
+#include "c_types/edge_t.h"
+#include "c_types/iid_t_rt.h"
+#include "c_types/pickDeliver/orders_t.h"
+#include "c_types/restriction_t.h"
+#include "c_types/point_on_edge_t.h"
+#include "c_types/pickDeliver/vehicle_t.h"
+
+namespace pgrouting {
+namespace pgget {
 
 /** @brief Read rows of combinations, called from C file*/
-void pgr_get_combinations(char *, II_t_rt **, size_t *, char**);
+std::vector<II_t_rt> get_combinations(const std::string&);
 
 /** @brief Read rows of matrix, called from C file*/
-void pgr_get_coordinates(char*, Coordinate_t**, size_t*, char**);
+std::vector<Coordinate_t> get_coordinates(const std::string&);
 
 /** @brief Read rows of delauny triangles, called from C file*/
-void pgr_get_delauny(char*, Delauny_t**, size_t*, char**);
+std::vector<Delauny_t> get_delauny(const std::string&, Delauny_t**, size_t*);
 
-/** @brief Read edges called from C file*/
-void pgr_get_edges(char*, Edge_t**, size_t*, bool, bool, char**);
+/** @brief Read edges called from C++ file*/
+std::vector<Edge_t> get_edges(const std::string&, bool, bool);
 
 /** @brief Read edges with x, y endpointscalled from C file */
-void pgr_get_edges_xy(char*, Edge_xy_t**, size_t*, bool, char**);
+std::vector<Edge_xy_t> get_edges_xy(const std::string&, bool);
 
 /** @brief Read edges for flow called from C file */
-void pgr_get_flow_edges(char*, Edge_t**, size_t*, char**);
+std::vector<Edge_t> get_flow_edges(const std::string&);
 
 /** @brief Read edges for cost called from C fileflow */
-void pgr_get_costFlow_edges(char*, CostFlow_t**, size_t*, char**);
+std::vector<CostFlow_t> get_costFlow_edges(const std::string&);
 
 /** @brief Read "basic edges" called from C file */
-void pgr_get_basic_edges(char*, Edge_bool_t**, size_t*, char**);
+std::vector<Edge_bool_t> get_basic_edges(const std::string&);
 
 /** @brief Read rows of matrix, called from C file*/
-void pgr_get_matrixRows(char*, IID_t_rt**, size_t *, char **);
+std::vector<IID_t_rt> get_matrixRows(const std::string&);
 
 /** @brief Reads the pick-Deliver orders */
-void pgr_get_orders(char *, Orders_t **, size_t *, bool, char**);
+std::vector<Orders_t> get_orders(const std::string&, bool);
 
 /** @brief Read rows of points, called from C file*/
-void pgr_get_points(char*, Point_on_edge_t**, size_t*, char**);
+std::vector<Point_on_edge_t> get_points(const std::string&);
 
 /** @brief Read rows of matrix, called from C file*/
-void pgr_get_restrictions(char*, Restriction_t**, size_t*, char**);
+std::vector<Restriction_t> get_restrictions(const std::string&);
 
 /** @brief Reads the vehicles */
-void pgr_get_vehicles(char*, Vehicle_t**, size_t*, bool, char**);
+std::vector<Vehicle_t> get_vehicles(const std::string&, bool);
 
+#if 0
 /** @brief Enforces the input array to be @b NOT empty */
-int64_t* pgr_get_bigIntArray(size_t*, ArrayType*, bool, char**);
-
-#ifdef __cplusplus
-}
+int64_t* get_bigIntArray(size_t*, ArrayType*, bool);
 #endif
 
-#endif  // INCLUDE_C_COMMON_PGDATA_GETTERS_H_
+}  // namespace pgget
+}  // namespace pgrouting
+
+#endif  // INCLUDE_CPP_COMMON_PGGET_H_
