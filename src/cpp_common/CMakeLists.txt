@@ -8,6 +8,8 @@ ADD_LIBRARY(cpp_common OBJECT
 
     get_check_data.cpp
     pgdata_fetchers.cpp
+    pgfetch.cpp
+    pgget.cpp
     # linked as C, but compiled as C++
     pgdata_getters.cpp
     )
