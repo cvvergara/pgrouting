@@ -81,8 +81,10 @@ process(
     size_t size_end_pidsArr = 0;
     int64_t* end_pidsArr = NULL;
 
+#if 0
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
+#endif
 
     /* managing edges */
     char *edges_of_points_query = NULL;
@@ -92,6 +94,7 @@ process(
             &edges_of_points_query,
             &edges_no_points_query);
 
+#if 0
     Edge_t *edges_of_points = NULL;
     size_t total_edges_of_points = 0;
 
@@ -112,6 +115,7 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     /* Managing departure & destination */
     if (starts && ends) {
@@ -120,10 +124,13 @@ process(
         end_pidsArr = (int64_t*) pgr_get_bigIntArray(&size_end_pidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
+#endif
     }
 
+#if 0
     /* Managing Points */
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
@@ -137,15 +144,14 @@ process(
     throw_error(err_msg, restrictions_sql);
 
 
+#endif
     clock_t start_t = clock();
-
-    do_trsp_withPoints(
-            edges, total_edges,
-            restrictions, restrictions_size,
-            points, total_points,
-            edges_of_points, total_edges_of_points,
-
-            combinations, total_combinations,
+    pgr_do_trsp_withPoints(
+            edges_no_points_query,
+            restrictions_sql,
+            points_sql,
+            edges_of_points_query,
+            combinations_sql,
 
             start_pidsArr, size_start_pidsArr,
             end_pidsArr, size_end_pidsArr,
@@ -172,12 +178,18 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) {pfree(edges); edges = NULL;}
     if (edges_of_points) {pfree(edges_of_points); edges_of_points = NULL;}
     if (edges_of_points) {pfree(edges_of_points); edges_of_points = NULL;}
+#endif
     if (start_pidsArr) {pfree(start_pidsArr); start_pidsArr = NULL;}
     if (end_pidsArr) {pfree(end_pidsArr); end_pidsArr = NULL;}
+#if 0
     if (combinations) {pfree(combinations); combinations = NULL;}
+#endif
+    if (edges_of_points_query) {pfree(edges_of_points_query); edges_of_points_query = NULL;}
+    if (edges_no_points_query) {pfree(edges_no_points_query); edges_no_points_query = NULL;}
 
     pgr_SPI_finish();
 }
