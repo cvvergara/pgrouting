@@ -38,7 +38,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/components/connectedComponents_driver.h"
 
@@ -60,6 +62,7 @@ process(
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
@@ -70,11 +73,11 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
-    do_pgr_connectedComponents(
-            edges,
-            total_edges,
+    pgr_do_connectedComponents(
+            edges_sql,
 
             result_tuples,
             result_count,
@@ -86,10 +89,13 @@ process(
 
     if (err_msg) {
         if (*result_tuples) pfree(*result_tuples);
+        (*result_count) = 0;
     }
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (edges) pfree(edges);
+#endif
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
