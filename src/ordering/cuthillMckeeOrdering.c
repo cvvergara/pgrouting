@@ -25,11 +25,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/** @file cuthillMckeeOrdering.c
- * @brief Connecting code with postgres.
- *
- */
-
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
@@ -37,7 +32,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 #include "c_types/ii_t_rt.h"
 
 
@@ -45,19 +42,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 PGDLLEXPORT Datum _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_cuthillmckeeordering);
-
-/** @brief Static function, loads the data from postgres to C types for further processing.
- *
- * It first connects the C function to the SPI manager. Then converts
- * the postgres array to C array and loads the edges belonging to the graph
- * in C types. Then it calls the function `do_cuthillMckeeOrdering` defined
- * in the `cuthillMckeeOrdering_driver.h` file for further processing.
- * Finally, it frees the memory and disconnects the C function to the SPI manager.
- *
- * @param edges_sql      the edges of the SQL query
- * @param result_tuples  the rows in the result
- * @param result_count   the count of rows in the result
- */
 
 static
 void
@@ -74,6 +58,7 @@ process(
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
@@ -90,10 +75,11 @@ process(
     }
 
     PGR_DBG("Starting timer");
+#endif
     clock_t start_t = clock();
+    pgr_do_cuthillMckeeOrdering(
+            edges_sql,
 
-    do_cuthillMckeeOrdering(
-            edges, total_edges,
             result_tuples,
             result_count,
             &log_msg,
@@ -113,14 +99,12 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
 
     pgr_SPI_finish();
 }
-
-/** @brief Helps in converting postgres variables to C variables, and returns the result.
- *
- */
 
 PGDLLEXPORT Datum
 _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
@@ -134,12 +118,6 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-
-    /***********************************************************************
-         *
-         *   pgr_cuthillMckeeOrdering(edges_sql TEXT);
-         *
-    **********************************************************************/
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -170,13 +148,6 @@ _pgr_cuthillmckeeordering(PG_FUNCTION_ARGS) {
         Datum        result;
         Datum        *values;
         bool*        nulls;
-
-    /***********************************************************************
-         *
-         *   OUT seq BIGINT,
-         *   OUT node BIGINT,
-         *
-    **********************************************************************/
 
         size_t num  = 3;
         values = palloc(num * sizeof(Datum));
