@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2016 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Mail: vicky at erosion.dev
 
 
 ------
@@ -44,11 +44,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_bddijkstra);
 
-
-/******************************************************************************/
-/*                          MODIFY AS NEEDED                                  */
-static
-void
+static void
 process(
         char* edges_sql,
         char* combinations_sql,
@@ -68,23 +64,27 @@ process(
 
     int64_t* end_vidsArr = NULL;
     size_t size_end_vidsArr = 0;
-
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
 
+#endif
     if (starts && ends) {
         start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
         throw_error(err_msg, "While getting start vids");
         end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
+#endif
     }
 
+#if 0
     pgr_get_edges(edges_sql, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_sql);
     PGR_DBG("Total %ld edges in query:", total_edges);
@@ -96,10 +96,11 @@ process(
     }
 
     PGR_DBG("Starting processing");
+#endif
     clock_t start_t = clock();
-    do_pgr_bdDijkstra(
-            edges, total_edges,
-            combinations, total_combinations,
+    pgr_do_bddijkstra(
+            edges_sql,
+            combinations_sql,
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
 
@@ -126,24 +127,21 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
 
+    if (start_vidsArr) pfree(start_vidsArr);
+    if (end_vidsArr) pfree(end_vidsArr);
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
 
 PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
-    /**************************************************************************/
-    /*                          MODIFY AS NEEDED                              */
-    /*                                                                        */
     Path_rt  *result_tuples = NULL;
     size_t result_count = 0;
-    /*                                                                        */
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -180,9 +178,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
                 &result_count);
         }
 
-        /*                                                                    */
-        /**********************************************************************/
-
         funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
@@ -210,18 +205,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
         bool*        nulls;
         size_t       call_cntr = funcctx->call_cntr;
 
-
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        /*
-           OUT seq INTEGER,
-           OUT path_seq INTEGER,
-           OUT node BIGINT,
-           OUT edge BIGINT,
-           OUT cost FLOAT,
-           OUT agg_cost FLOAT
-         ***********************************************************************/
-
         size_t numb = 8;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
@@ -240,8 +223,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
         values[5] = Int64GetDatum(result_tuples[call_cntr].edge);
         values[6] = Float8GetDatum(result_tuples[call_cntr].cost);
         values[7] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
-
-        /**********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
