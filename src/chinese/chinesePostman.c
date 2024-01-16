@@ -37,15 +37,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+#if 0
 #include "c_common/pgdata_getters.h"
-
+#endif
 #include "drivers/chinese/chinesePostman_driver.h"
 
 PGDLLEXPORT Datum _pgr_chinesepostman(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_chinesepostman);
 
 
-/******************************************************************************/
 static
 void
 process(
@@ -58,6 +58,7 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
@@ -68,11 +69,12 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
 
-    do_pgr_directedChPP(
-            edges, total_edges,
+    pgr_do_directedChPP(
+            edges_sql,
             only_cost,
 
             result_tuples, result_count,
@@ -87,7 +89,9 @@ process(
         time_msg(" processing pgr_chinesePostman", start_t, clock());
     }
 
+#if 0
     if (edges) pfree(edges);
+#endif
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -109,18 +113,13 @@ PGDLLEXPORT Datum _pgr_chinesepostman(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
-    /**************************************************************************/
     Path_rt *result_tuples = NULL;
     size_t result_count = 0;
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-
-
-        /**********************************************************************/
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -128,10 +127,6 @@ PGDLLEXPORT Datum _pgr_chinesepostman(PG_FUNCTION_ARGS) {
                 &result_tuples,
                 &result_count);
 
-        /**********************************************************************/
-
-
-        funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
@@ -156,11 +151,6 @@ PGDLLEXPORT Datum _pgr_chinesepostman(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
         size_t call_cntr = funcctx->call_cntr;
-
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        /*
-         ***********************************************************************/
 
         size_t numb = 5;
         values =(Datum *)palloc(numb * sizeof(Datum));
