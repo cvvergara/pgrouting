@@ -36,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 #include "c_types/tsp_tour_rt.h"
 #include "drivers/tsp/euclideanTSP_driver.h"
 
@@ -59,6 +61,7 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     Coordinate_t *coordinates = NULL;
     size_t total_coordinates = 0;
     pgr_get_coordinates(coordinates_sql, &coordinates, &total_coordinates, &err_msg);
@@ -75,10 +78,11 @@ process(
     }
 
     PGR_DBG("Starting timer");
+#endif
+    
     clock_t start_t = clock();
-
-    do_pgr_euclideanTSP(
-            coordinates, total_coordinates,
+    pgr_do_euclideanTSP(
+            coordinates_sql,
             start_vid,
             end_vid,
             max_cycles,
@@ -102,7 +106,9 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (coordinates) pfree(coordinates);
+#endif
 
     pgr_SPI_finish();
 }
