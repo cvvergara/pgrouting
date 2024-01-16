@@ -35,7 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 #include "c_types/geom_text_rt.h"
 
 #include "drivers/alpha_shape/alphaShape_driver.h"
@@ -53,6 +55,7 @@ static void process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     Edge_xy_t *edgesArr = NULL;
     size_t edgesSize = 0;
 
@@ -77,10 +80,9 @@ static void process(
     }
 
     PGR_DBG("Calling alpha-shape driver\n");
-
-
+#endif
     do_alphaShape(
-            edgesArr, edgesSize,
+            edges_sql,
             alpha,
 
             res,
@@ -100,7 +102,9 @@ static void process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edgesArr) pfree(edgesArr);
+#endif
     pgr_SPI_finish();
 }
 
@@ -111,25 +115,19 @@ Datum _pgr_alphashape(PG_FUNCTION_ARGS) {
     FuncCallContext      *funcctx;
     TupleDesc            tuple_desc;
 
-    /**********************************************************************/
     GeomText_t *result_tuples = NULL;
     size_t      result_count = 0;
-    /**********************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        /******************************************************************/
-
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_FLOAT8(1),
                 &result_tuples,
                 &result_count);
-
-        /******************************************************************/
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
