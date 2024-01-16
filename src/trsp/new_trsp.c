@@ -75,6 +75,7 @@ void process(
     size_t size_end_vidsArr = 0;
     int64_t* end_vidsArr = NULL;
 
+#if 0
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
 
@@ -92,6 +93,7 @@ void process(
     }
     pgr_get_restrictions(restrictions_sql, &restrictions, &total_restrictions, &err_msg);
     throw_error(err_msg, restrictions_sql);
+#end if
 
     if (starts && ends) {
         start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
@@ -99,17 +101,17 @@ void process(
         end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
+#endif
     }
 
     clock_t start_t = clock();
-
-    do_trsp(
-            edges, total_edges,
-            restrictions, total_restrictions,
-
-            combinations, total_combinations,
+    pgr_do_trsp(
+            edges_sql,
+            restrictions_sql,
+            combinations_sql,
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
 
@@ -128,9 +130,11 @@ void process(
     }
 
     pgr_global_report(log_msg, notice_msg, err_msg);
+#if 0
     if (edges) {pfree(edges); edges=NULL;}
     if (restrictions) {pfree(restrictions); restrictions=NULL;}
     if (combinations) {pfree(combinations); combinations=NULL;}
+#endif
     if (start_vidsArr) {pfree(start_vidsArr); start_vidsArr=NULL;}
     if (end_vidsArr) {pfree(end_vidsArr); end_vidsArr=NULL;}
     if (log_msg) {pfree(log_msg); log_msg=NULL;}
