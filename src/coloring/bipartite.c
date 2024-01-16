@@ -28,8 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 
-/******************************************************************************/
-
 #include <stdbool.h>
 
 #include "c_common/postgres_connection.h"
@@ -38,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 #include "drivers/coloring/bipartite_driver.h"
 
 
@@ -56,6 +56,7 @@ process(char* edges_sql,
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     size_t total_edges = 0;
     Edge_t* edges = NULL;
     pgr_get_edges(edges_sql, &edges, &total_edges, true, false, &err_msg);
@@ -66,9 +67,10 @@ process(char* edges_sql,
     }
 
     PGR_DBG("Starting timer");
+#endif
     clock_t start_t = clock();
-    do_pgr_bipartite(
-            edges, total_edges,
+    pgr_do_bipartite(
+            edges_sql,
             result_tuples, result_count,
             &log_msg,
             &notice_msg,
@@ -88,7 +90,9 @@ process(char* edges_sql,
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
     pgr_SPI_finish();
 }
 
