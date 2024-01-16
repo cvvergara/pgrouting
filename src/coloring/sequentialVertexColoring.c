@@ -38,7 +38,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "c_types/ii_t_rt.h"
 
@@ -47,18 +49,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_sequentialvertexcoloring(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_sequentialvertexcoloring);
 
-/** @brief Static function, loads the data from postgres to C types for further processing.
- *
- * It first connects the C function to the SPI manager. Then converts
- * the postgres array to C array and loads the edges belonging to the graph
- * in C types. Then it calls the function `do_pgr_sequentialVertexColoring` defined
- * in the `sequentialVertexColoring_driver.h` file for further processing.
- * Finally, it frees the memory and disconnects the C function to the SPI manager.
- *
- * @param edges_sql      the edges of the SQL query
- * @param result_tuples  the rows in the result
- * @param result_count   the count of rows in the result
- */
 static
 void
 process(
@@ -80,9 +70,11 @@ process(
     pgr_get_edges(edges_sql, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_sql);
 
+#endif
     clock_t start_t = clock();
-    do_pgr_sequentialVertexColoring(
-            edges, total_edges,
+#if 0
+    pgr_do_sequentialVertexColoring(
+            edges_sql,
 
             result_tuples,
             result_count,
@@ -103,44 +95,28 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
-
+#endif
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
-
-/** @brief Helps in converting postgres variables to C variables, and returns the result.
- *
- */
 
 PGDLLEXPORT Datum _pgr_sequentialvertexcoloring(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
-    /**********************************************************************/
     II_t_rt *result_tuples = NULL;
     size_t result_count = 0;
-    /**********************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        /***********************************************************************
-         *
-         *   pgr_sequentialVertexColoring(edges_sql TEXT);
-         *
-         **********************************************************************/
-
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 &result_tuples,
                 &result_count);
-
-        /**********************************************************************/
-
 
         funcctx->max_calls = result_count;
 
@@ -167,13 +143,6 @@ PGDLLEXPORT Datum _pgr_sequentialvertexcoloring(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
-        /***********************************************************************
-         *
-         *   OUT node BIGINT,
-         *   OUT color BIGINT,
-         *
-         **********************************************************************/
-
         size_t num  = 2;
         values = palloc(num * sizeof(Datum));
         nulls = palloc(num * sizeof(bool));
@@ -186,8 +155,6 @@ PGDLLEXPORT Datum _pgr_sequentialvertexcoloring(PG_FUNCTION_ARGS) {
 
         values[0] = Int64GetDatum(result_tuples[funcctx->call_cntr].d1.id);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].d2.value);
-
-        /**********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
