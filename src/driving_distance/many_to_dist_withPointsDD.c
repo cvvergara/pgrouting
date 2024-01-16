@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: many_to_dist_driving_distance.c
+File: many_to_dist_withPointsDD.c
 
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
@@ -35,9 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 #include "c_types/mst_rt.h"
 
-#if 0
 #include "c_common/pgdata_getters.h"
-#endif
 
 #include "drivers/withPoints/get_new_queries.h"
 #include "drivers/driving_distance/withPoints_dd_driver.h"
