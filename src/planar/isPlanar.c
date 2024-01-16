@@ -35,7 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/planar/isPlanar_driver.h"
 PGDLLEXPORT Datum _pgr_isplanar(PG_FUNCTION_ARGS);
@@ -51,6 +53,7 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
@@ -61,12 +64,11 @@ process(
         pgr_SPI_finish();
         return (false);
     }
+#endif
 
     clock_t start_t = clock();
-
-    planarity = do_pgr_isPlanar(
-        edges,
-        total_edges,
+    planarity = pgr_do_isPlanar(
+        edges_sql,
 
         &log_msg,
         &notice_msg,
@@ -76,8 +78,10 @@ process(
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (edges)
         pfree(edges);
+#endif
     if (log_msg)
         pfree(log_msg);
     if (notice_msg)
@@ -91,12 +95,6 @@ process(
 }
 
 PGDLLEXPORT Datum _pgr_isplanar(PG_FUNCTION_ARGS) {
-        /**********************************************************************/
-        /*
-        pgr_isPlanar(
-            edge_sql TEXT)
-        */
-        /**********************************************************************/
         PG_RETURN_BOOL(process(text_to_cstring(PG_GETARG_TEXT_P(0))));
         /**********************************************************************/
 }
