@@ -37,15 +37,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #ifdef __cplusplus
 #   include <cstdint>
 #   include <cstddef>
-using Point_on_edge_t = struct Point_on_edge_t;
-using Edge_t = struct Edge_t;
 using Path_rt = struct Path_rt;
-using II_t_rt = struct II_t_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
-typedef struct Point_on_edge_t Point_on_edge_t;
-typedef struct Edge_t Edge_t;
 typedef struct Path_rt Path_rt;
 #endif
 
@@ -54,14 +49,12 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
-    int pgr_do_withPointsKsp(
-            Edge_t*,           size_t,
-            Point_on_edge_t*,  size_t,
-            Edge_t*,           size_t,
 
-            II_t_rt*, size_t,
-            int64_t*, size_t,
-            int64_t*, size_t,
+      int pgr_do_withPointsKsp(
+
+            char*, char*, char*,
+
+            int64_t, int64_t,
             size_t,
             bool, bool,
             char,
