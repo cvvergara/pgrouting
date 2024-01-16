@@ -63,6 +63,7 @@ void process(
     int64_t* start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
     throw_error(err_msg, "While getting start vids");
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_tuples = 0;
     pgr_get_edges(edges_sql, &edges, &total_tuples, true, false, &err_msg);
@@ -73,9 +74,10 @@ void process(
     }
 
     PGR_DBG("Starting timer");
+#endif
     clock_t start_t = clock();
     pgr_do_drivingdist(
-            edges, total_tuples,
+            edges_sql,
             start_vidsArr, size_start_vidsArr,
             distance,
             directed,
@@ -99,7 +101,9 @@ void process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
     if (start_vidsArr) pfree(start_vidsArr);
 
     pgr_SPI_finish();
