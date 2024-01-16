@@ -64,6 +64,7 @@ process(
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
@@ -72,7 +73,6 @@ process(
 
 #endif
     clock_t start_t = clock();
-#if 0
     pgr_do_sequentialVertexColoring(
             edges_sql,
 
