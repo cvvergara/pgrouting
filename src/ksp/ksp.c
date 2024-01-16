@@ -37,9 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
-#if 0
 #include "c_common/pgdata_getters.h"
-#endif
 
 #include "drivers/yen/ksp_driver.h"
 
@@ -149,7 +147,9 @@ void process(
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     pfree(edges);
+#endif
     pgr_SPI_finish();
 }
 
