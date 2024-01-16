@@ -68,11 +68,13 @@ process(
     int64_t *sink_vertices = NULL;
     size_t size_sink_verticesArr = 0;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
+#endif
 
     if (starts && ends) {
         source_vertices = pgr_get_bigIntArray(&size_source_verticesArr, starts, false, &err_msg);
@@ -80,6 +82,7 @@ process(
         sink_vertices = pgr_get_bigIntArray(&size_sink_verticesArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
         if (total_combinations == 0) {
@@ -88,8 +91,10 @@ process(
             pgr_SPI_finish();
             return;
         }
+#endif
     }
 
+#if 0
     /* NOTE:
      * For flow, cost and reverse_cost are really capacity and reverse_capacity
      */
@@ -105,11 +110,11 @@ process(
 
 
     PGR_DBG("Starting timer");
+#endif
     clock_t start_t = clock();
-
-    do_pgr_max_flow(
-            edges, total_edges,
-            combinations, total_combinations,
+    pgr_do_max_flow(
+            edges_sql,
+            combinations_sql,
             source_vertices, size_source_verticesArr,
             sink_vertices, size_sink_verticesArr,
             algorithm,
@@ -136,7 +141,9 @@ process(
     }
 
 
+#if 0
     if (edges) pfree(edges);
+#endif
     if (source_vertices) pfree(source_vertices);
     if (sink_vertices) pfree(sink_vertices);
 
