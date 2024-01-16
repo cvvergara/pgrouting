@@ -85,12 +85,14 @@ void process(
     size_t total_starts = 0;
     int64_t* start_pidsArr = pgr_get_bigIntArray(&total_starts, starts, false, &err_msg);
     throw_error(err_msg, "While getting start vids");
+#if 0
     PGR_DBG("sourcesArr size %ld ", total_starts);
 
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
+#endif
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
@@ -100,6 +102,7 @@ void process(
             &edges_no_points_query);
 
 
+#if 0
     Edge_t *edges_of_points = NULL;
     size_t total_edges_of_points = 0;
     pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
@@ -123,12 +126,13 @@ void process(
     }
 
     PGR_DBG("Starting timer");
+#endif
     clock_t start_t = clock();
     pgr_do_withPointsDD(
-            edges,              total_edges,
-            points,             total_points,
-            edges_of_points,    total_edges_of_points,
-            start_pidsArr,      total_starts,
+            edges_no_points_query,
+            points_sql,
+            edges_of_points_query,
+            start_pidsArr, total_starts,
             distance,
             d_side,
 
@@ -153,10 +157,14 @@ void process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
     if (edges_of_points) pfree(edges_of_points);
     if (points) pfree(points);
+#endif
     if (start_pidsArr) pfree(start_pidsArr);
+    pfree(edges_of_points_query);
+    pfree(edges_no_points_query);
     pgr_SPI_finish();
 }
 
