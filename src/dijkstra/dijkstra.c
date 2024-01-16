@@ -76,19 +76,25 @@ process(
     int64_t* end_vidsArr = NULL;
     size_t size_end_vidsArr = 0;
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
     II_t_rt *combinationsArr = NULL;
     size_t total_combinations = 0;
+#endif
 
     if (normal) {
+#if 0
         pgr_get_edges(edges_sql, &edges, &total_edges, true, false, &err_msg);
         throw_error(err_msg, edges_sql);
+#endif
 
         if (combinations_sql) {
+#if 0
             pgr_get_combinations(combinations_sql, &combinationsArr, &total_combinations, &err_msg);
             throw_error(err_msg, combinations_sql);
+#endif
         } else {
             start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
             throw_error(err_msg, "While getting start vids");
@@ -96,14 +102,17 @@ process(
             throw_error(err_msg, "While getting end vids");
         }
     } else {
+#if 0
         pgr_get_edges(edges_sql, &edges, &total_edges, false, false, &err_msg);
         throw_error(err_msg, edges_sql);
+#endif
         end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, starts, false, &err_msg);
         throw_error(err_msg, "While getting start vids");
         start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     }
 
+#if 0
     if (total_edges == 0) {
         if (end_vidsArr) pfree(end_vidsArr);
         if (start_vidsArr) pfree(start_vidsArr);
@@ -117,11 +126,12 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
     pgr_do_dijkstra(
-            edges, total_edges,
-            combinationsArr, total_combinations,
+            edges_sql,
+            combinations_sql,
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
 
@@ -164,10 +174,14 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
     if (start_vidsArr) pfree(start_vidsArr);
     if (end_vidsArr) pfree(end_vidsArr);
+#if 0
     if (combinationsArr) pfree(combinationsArr);
+#endif
     pgr_SPI_finish();
 }
 
@@ -290,4 +304,3 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
         SRF_RETURN_DONE(funcctx);
     }
 }
-
