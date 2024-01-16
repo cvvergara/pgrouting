@@ -37,7 +37,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/yen/ksp_driver.h"
 
@@ -74,8 +76,10 @@ void process(
     int64_t* end_vidsArr = NULL;
     size_t size_end_vidsArr = 0;
 
+#if 0
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
+#endif
 
     if (start_vertex && end_vertex) {
         start_vidsArr = start_vertex; size_start_vidsArr = 1;
@@ -86,10 +90,13 @@ void process(
         end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
+#endif
     }
 
+#if 0
     Edge_t *edges = NULL;
     size_t total_edges = 0;
 
@@ -101,12 +108,13 @@ void process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
 
     pgr_do_ksp(
-            edges, total_edges,
-            combinations, total_combinations,
+            edges_sql,
+            combinations_sql,
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
             k,
