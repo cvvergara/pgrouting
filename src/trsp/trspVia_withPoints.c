@@ -67,24 +67,25 @@ process(
     int64_t* via = pgr_get_bigIntArray(&size_via, viasArr, false, &err_msg);
     throw_error(err_msg, "While getting via vertices");
 
-    // TODO(vicky) figure out what happens when one point or 0 points are given
-
     /*
-     * Processing Points
+     * Estimate driving side
      */
     driving_side[0] = estimate_drivingSide(driving_side[0]);
     if (driving_side[0] != 'r' && driving_side[0] != 'l') {
-        driving_side[0] = 'l';
+        driving_side[0] = 'r';
     }
 
+#if 0
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
+#endif
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
     get_new_queries(edges_sql, points_sql, &edges_of_points_query, &edges_no_points_query);
+#if 0
 
     /*
      * Processing Edges
@@ -119,13 +120,14 @@ process(
 
     pgr_get_restrictions(restrictions_sql, &restrictions, &size_restrictions, &err_msg);
     throw_error(err_msg, restrictions_sql);
+#endif
 
     clock_t start_t = clock();
-    do_trspVia_withPoints(
-            edges, total_edges,
-            restrictions, size_restrictions,
-            points, total_points,
-            edges_of_points, total_edges_of_points,
+    pgr_do_trspVia_withPoints(
+            edges_no_points_query,
+            restrictions_sql,
+            points_sql,
+            edges_of_points_query,
             via, size_via,
 
             directed,
@@ -151,11 +153,18 @@ process(
     if (log_msg) {pfree(log_msg); log_msg = NULL;}
     if (notice_msg) {pfree(notice_msg); notice_msg = NULL;}
     if (err_msg) {pfree(err_msg); err_msg = NULL;}
+#if 0
     if (edges) {pfree(edges); edges = NULL;}
+#endif
     if (via) {pfree(via); via = NULL;}
+#if 0
     if (restrictions) {pfree(restrictions); restrictions = NULL;}
     if (edges_of_points) {pfree(edges_of_points); edges_of_points = NULL;}
     if (points) {pfree(points); points = NULL;}
+#endif
+    if (edges_of_points_query) {pfree(edges_of_points_query); edges_of_points_query = NULL;}
+    if (edges_no_points_query) {pfree(edges_no_points_query); edges_no_points_query = NULL;}
+
     pgr_SPI_finish();
 }
 
