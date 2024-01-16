@@ -50,11 +50,11 @@ extern "C" {
 #endif
 
 
-      int pgr_do_withPointsKsp(
+      void pgr_do_withPointsKsp(
+            char*, char*, char*, char*,
+            int64_t*, size_t,
+            int64_t*, size_t,
 
-            char*, char*, char*,
-
-            int64_t, int64_t,
             size_t,
             bool, bool,
             char,
