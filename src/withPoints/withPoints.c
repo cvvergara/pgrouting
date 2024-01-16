@@ -75,6 +75,7 @@ process(
     size_t size_end_pidsArr = 0;
     int64_t* end_pidsArr = NULL;
 
+#if 0
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
 
@@ -89,6 +90,7 @@ process(
         PGR_DBG("%ld ", points[i].pid);
     }
 #endif
+#endif
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
     get_new_queries(
@@ -97,17 +99,21 @@ process(
             &edges_no_points_query);
 
 
+#if 0
     Edge_t *edges_of_points = NULL;
     size_t total_edges_of_points = 0;
 
     Edge_t *edges = NULL;
     size_t total_edges = 0;
+#endif
 
     if (normal) {
+#if 0
         pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
         throw_error(err_msg, edges_of_points_query);
         pgr_get_edges(edges_no_points_query, &edges, &total_edges, true, false, &err_msg);
         throw_error(err_msg, edges_no_points_query);
+#endif
 
         if (starts && ends) {
             start_pidsArr = pgr_get_bigIntArray(&size_start_pidsArr, starts, false, &err_msg);
@@ -115,14 +121,18 @@ process(
             end_pidsArr = pgr_get_bigIntArray(&size_end_pidsArr, ends, false, &err_msg);
             throw_error(err_msg, "While getting end vids");
         } else if (combinations_sql) {
+#if 0
             pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
             throw_error(err_msg, combinations_sql);
+#endif
         }
     } else {
+#if 0
         pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, false, false, &err_msg);
         throw_error(err_msg, edges_of_points_query);
         pgr_get_edges(edges_no_points_query, &edges, &total_edges, false, false, &err_msg);
         throw_error(err_msg, edges_no_points_query);
+#endif
 
         end_pidsArr = pgr_get_bigIntArray(&size_end_pidsArr, starts, false, &err_msg);
         throw_error(err_msg, "While getting start vids");
@@ -130,6 +140,7 @@ process(
         throw_error(err_msg, "While getting end vids");
     }
 
+#if 0
 
     pfree(edges_of_points_query);
     pfree(edges_no_points_query);
@@ -140,15 +151,14 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
-
-    do_pgr_withPoints(
-            edges, total_edges,
-            points, total_points,
-            edges_of_points, total_edges_of_points,
-
-            combinations, total_combinations,
+    pgr_do_withPoints(
+            edges_no_points_query,
+            points_sql,
+            edges_of_points_query,
+            combinations_sql,
 
             start_pidsArr, size_start_pidsArr,
             end_pidsArr, size_end_pidsArr,
@@ -178,16 +188,18 @@ process(
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
-#if 0
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+    if (edges_of_points_query) pfree(edges_of_points_query);
+    if (edges_no_points_query) pfree(edges_no_points_query);
+#if 0
     if (edges) pfree(edges);
     if (points) pfree(points);
     if (edges_of_points) pfree(edges_of_points);
+#endif
     if (start_pidsArr) pfree(start_pidsArr);
     if (end_pidsArr) pfree(end_pidsArr);
-#endif
     pgr_SPI_finish();
 }
 
@@ -199,10 +211,8 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**********************************************************************/
     Path_rt *result_tuples = 0;
     size_t result_count = 0;
-    /**********************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -249,8 +259,6 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 &result_count);
         }
 
-        /**********************************************************************/
-
         funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
@@ -275,15 +283,6 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
-        /**********************************************************************/
-        // OUT seq BIGINT,
-        // OUT path_seq,
-        // OUT node BIGINT,
-        // OUT edge BIGINT,
-        // OUT cost FLOAT,
-        // OUT agg_cost FLOAT)
-
-
         values = palloc(8 * sizeof(Datum));
         nulls = palloc(8 * sizeof(bool));
 
@@ -301,7 +300,6 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
         values[5] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
         values[6] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
         values[7] = Float8GetDatum(result_tuples[funcctx->call_cntr].agg_cost);
-        /**********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
