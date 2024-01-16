@@ -35,7 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 #include "c_types/ii_t_rt.h"
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/dominator/lengauerTarjanDominatorTree_driver.h"
 
@@ -55,6 +57,7 @@ process(char* edges_sql,
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     size_t total_edges = 0;
     Edge_t* edges = NULL;
 
@@ -66,9 +69,11 @@ process(char* edges_sql,
     }
 
     PGR_DBG("Starting timer");
+#endif
     clock_t start_t = clock();
-    do_pgr_LTDTree(
-            edges, total_edges,
+    pgr_do_LTDTree(
+            edges_sql,
+
             root_vertex,
             result_tuples, result_count,
             &log_msg,
@@ -89,7 +94,9 @@ process(char* edges_sql,
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
     pgr_SPI_finish();
 }
 
@@ -98,17 +105,13 @@ _pgr_lengauertarjandominatortree(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**********************************************************************/
     II_t_rt *result_tuples = NULL;
     size_t result_count = 0;
-    /**********************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-        /**********************************************************************/
-
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -116,8 +119,6 @@ _pgr_lengauertarjandominatortree(PG_FUNCTION_ARGS) {
                 &result_tuples,
                 &result_count);
 
-
-        /**********************************************************************/
         funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
