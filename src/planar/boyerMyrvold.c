@@ -35,7 +35,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/planar/boyerMyrvold_driver.h"
 PGDLLEXPORT Datum _pgr_boyermyrvold(PG_FUNCTION_ARGS);
@@ -52,12 +54,10 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
-    PGR_DBG("Initializing arrays");
-
-
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     PGR_DBG("Load data");
     Edge_t *edges = NULL;
     size_t total_edges = 0;
@@ -72,10 +72,10 @@ process(
     }
 
     PGR_DBG("Starting processing");
+#endif
     clock_t start_t = clock();
-    do_pgr_boyerMyrvold(
-        edges,
-        total_edges,
+    pgr_do_boyerMyrvold(
+        edges_sql,
 
         result_tuples,
         result_count,
@@ -85,17 +85,19 @@ process(
         &err_msg);
 
     time_msg(" processing pgr_boyerMyrvold", start_t, clock());
-    PGR_DBG("Returning %ld tuples", *result_count);
 
     if (err_msg) {
         if (*result_tuples)
             pfree(*result_tuples);
+        (*result_count) = 0;
     }
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (edges)
         pfree(edges);
+#endif
     if (log_msg)
         pfree(log_msg);
     if (notice_msg)
@@ -110,30 +112,19 @@ PGDLLEXPORT Datum _pgr_boyermyrvold(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
     TupleDesc tuple_desc;
 
-    /**************************************************************************/
     IID_t_rt *result_tuples = NULL;
     size_t result_count = 0;
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        /**********************************************************************/
-        /*
-        pgr_boyerMyrvold(
-            edge_sql TEXT)
-        */
-        /**********************************************************************/
-
         PGR_DBG("Calling process");
         process(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
             &result_tuples,
             &result_count);
-
-        /**********************************************************************/
 
         funcctx->max_calls = result_count;
 
@@ -159,13 +150,6 @@ PGDLLEXPORT Datum _pgr_boyermyrvold(PG_FUNCTION_ARGS) {
         Datum *values;
         bool *nulls;
 
-        /**********************************************************************/
-        /*
-            OUT source BIGINT,
-            OUT target_vid BIGINT,
-            OUT cost FLOAT,
-        */
-        /**********************************************************************/
         size_t numb = 4;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
@@ -180,18 +164,10 @@ PGDLLEXPORT Datum _pgr_boyermyrvold(PG_FUNCTION_ARGS) {
         values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].target);
         values[3] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
 
-        /**********************************************************************/
-
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);
     } else {
-        /**********************************************************************/
-
-        PGR_DBG("Clean up code");
-
-        /**********************************************************************/
-
         SRF_RETURN_DONE(funcctx);
     }
 }
