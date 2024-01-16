@@ -33,7 +33,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/spanningTree/randomSpanningTree_driver.h"
 
@@ -59,6 +61,7 @@ process(
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     PGR_DBG("Load data");
     Edge_t *edges = NULL;
     size_t total_edges = 0;
@@ -72,10 +75,11 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     PGR_DBG("Starting processing");
     clock_t start_t = clock();
-    do_pgr_randomSpanningTree(
+    pgr_do_randomSpanningTree(
             edges,
             total_edges,
             root_vertex,
@@ -94,15 +98,15 @@ process(
     }
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (edges) pfree(edges);
+#endif
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
 
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
 
 PGDLLEXPORT Datum randomSpanningTree(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
@@ -158,14 +162,12 @@ PGDLLEXPORT Datum randomSpanningTree(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        // postgres starts counting from 1
         values[0] = Int64GetDatum((int64_t)funcctx->call_cntr + 1);
         values[1] =
             Int64GetDatum(result_tuples[funcctx->call_cntr].root_vertex);
         values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge);
         values[3] = Float8GetDatum(result_tuples[funcctx->call_cntr].cost);
         values[4] = Float8GetDatum(result_tuples[funcctx->call_cntr].tree_cost);
-        /**********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
