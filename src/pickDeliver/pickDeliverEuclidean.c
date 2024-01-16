@@ -33,7 +33,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 #include "c_types/iid_t_rt.h"
 #include "c_types/pickDeliver/orders_t.h"
 #include "c_types/pickDeliver/vehicle_t.h"
@@ -88,6 +90,7 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     PGR_DBG("Load orders");
     Orders_t *pd_orders_arr = NULL;
     size_t total_pd_orders = 0;
@@ -158,10 +161,11 @@ process(
     PGR_DBG("Total %ld orders in query:", total_pd_orders);
 
     PGR_DBG("Starting processing");
+#endif
     clock_t start_t = clock();
-    do_pgr_pickDeliverEuclidean(
-            pd_orders_arr, total_pd_orders,
-            vehicles_arr, total_vehicles,
+    pgr_do_pickDeliverEuclidean(
+            pd_orders_sql,
+            vehicles_sql,
 
             factor,
             max_cycles,
@@ -186,40 +190,26 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (pd_orders_arr) pfree(pd_orders_arr);
     if (vehicles_arr) pfree(vehicles_arr);
+#endif
 
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
 
 PGDLLEXPORT Datum
 _pgr_pickdelivereuclidean(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**************************************************************************/
-    /*                          MODIFY AS NEEDED                              */
-    /*                                                                        */
     Schedule_rt *result_tuples = 0;
     size_t result_count = 0;
-    /*                                                                        */
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        /*
-           orders_sql TEXT,
-           vehicles_sql INTEGER,
-           max_cycles INTEGER,
-           initial_id INTEGER,
-         **********************************************************************/
 
         PGR_DBG("Calling process");
         process(
@@ -230,10 +220,6 @@ _pgr_pickdelivereuclidean(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT32(4),
                 &result_tuples,
                 &result_count);
-
-        /*                                                                   */
-        /*********************************************************************/
-
 
         funcctx->max_calls = result_count;
 
@@ -261,19 +247,6 @@ _pgr_pickdelivereuclidean(PG_FUNCTION_ARGS) {
         bool*       nulls;
         size_t      call_cntr = funcctx->call_cntr;
 
-        /*********************************************************************/
-        /*                          MODIFY!!!!!                              */
-        /* This has to match you output otherwise the server crashes          */
-        /*
-           OUT seq INTEGER,
-           OUT vehicle_id INTEGER,
-           OUT vehicle_seq INTEGER,
-           OUT order_id BIGINT,
-           OUT cost FLOAT,
-           OUT agg_cost FLOAT
-         *********************************************************************/
-
-
         size_t numb = 12;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
@@ -284,7 +257,6 @@ _pgr_pickdelivereuclidean(PG_FUNCTION_ARGS) {
         }
 
 
-        // postgres starts counting from 1
         values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
         values[1] = Int32GetDatum(result_tuples[call_cntr].vehicle_seq);
         values[2] = Int64GetDatum(result_tuples[call_cntr].vehicle_id);
@@ -297,8 +269,6 @@ _pgr_pickdelivereuclidean(PG_FUNCTION_ARGS) {
         values[9] = Float8GetDatum(result_tuples[call_cntr].waitTime);
         values[10] = Float8GetDatum(result_tuples[call_cntr].serviceTime);
         values[11] = Float8GetDatum(result_tuples[call_cntr].departureTime);
-
-        /*********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
