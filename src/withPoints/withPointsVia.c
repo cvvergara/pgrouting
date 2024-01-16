@@ -66,6 +66,7 @@ process(
     int64_t* vias = pgr_get_bigIntArray(&size_vias, viasArr, false, &err_msg);
     throw_error(err_msg, "While getting via vertices");
 
+#if 0
     // TODO(vicky) figure out what happens when one point or 0 points are given
 
     /*
@@ -75,11 +76,13 @@ process(
     size_t total_points = 0;
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
+#endif
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
     get_new_queries(edges_sql, points_sql, &edges_of_points_query, &edges_no_points_query);
 
+#if 0
     Edge_t *edges_of_points = NULL;
     size_t total_edges_of_points = 0;
 
@@ -101,12 +104,13 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
-    do_withPointsVia(
-            edges, total_edges,
-            points, total_points,
-            edges_of_points, total_edges_of_points,
+    pgr_do_withPointsVia(
+            edges_no_points_query,
+            points_sql,
+            edges_of_points_query,
             vias, size_vias,
 
             directed,
@@ -129,13 +133,17 @@ process(
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (points) {pfree(points), points = NULL;}
     if (edges) {pfree(edges), edges = NULL;}
     if (edges_of_points) {pfree(edges_of_points), edges_of_points = NULL;}
+#endif
     if (vias) {pfree(vias), vias = NULL;}
     if (log_msg) {pfree(log_msg); log_msg = NULL;}
     if (notice_msg) {pfree(notice_msg); notice_msg = NULL;}
     if (err_msg) {pfree(err_msg); err_msg = NULL;}
+    if (edges_no_points_query) {pfree(edges_no_points_query), edges_no_points_query = NULL;}
+    if (edges_of_points_query) {pfree(edges_of_points_query), edges_of_points_query = NULL;}
     pgr_SPI_finish();
 }
 
@@ -145,10 +153,8 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    /**********************************************************************/
     Routes_t  *result_tuples = 0;
     size_t result_count = 0;
-    /**********************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -170,8 +176,6 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
 
                 &result_tuples,
                 &result_count);
-
-        /**********************************************************************/
 
         funcctx->max_calls = result_count;
 
@@ -206,7 +210,6 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        // postgres starts counting from 1
         values[0] = Int32GetDatum((int32_t)call_cntr + 1);
         values[1] = Int32GetDatum(result_tuples[call_cntr].path_id);
         values[2] = Int32GetDatum(result_tuples[call_cntr].path_seq + 1);
@@ -217,8 +220,6 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
         values[7] = Float8GetDatum(result_tuples[call_cntr].cost);
         values[8] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
         values[9] = Float8GetDatum(result_tuples[call_cntr].route_agg_cost);
-
-        /**********************************************************************/
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
