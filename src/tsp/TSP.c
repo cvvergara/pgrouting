@@ -36,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 #include "c_types/tsp_tour_rt.h"
 #include "drivers/tsp/TSP_driver.h"
 
@@ -58,6 +60,7 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     IID_t_rt *distances = NULL;
     size_t total_distances = 0;
     pgr_get_matrixRows(matrix_sql, &distances, &total_distances, &err_msg);
@@ -71,13 +74,13 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
 
     PGR_DBG("Starting timer");
     clock_t start_t = clock();
-
-    do_pgr_tsp(
-            distances, total_distances,
+    pgr_do_tsp(
+            matrix_sql,
             start_vid,
             end_vid,
             max_cycles,
@@ -101,7 +104,9 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (distances) pfree(distances);
+#endif
 
     pgr_SPI_finish();
 }
