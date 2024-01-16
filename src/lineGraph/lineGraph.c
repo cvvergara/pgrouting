@@ -27,21 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/** @file lineGraph.c
- * @brief Connecting code with postgres.
- *
- * This file is fully documented for understanding
- *  how the postgres connectinon works
- *
- * TODO Remove unnecessary comments before submiting the function.
- * some comments are in form of PGR_DBG message
- */
-
-/**
- *  postgres_connection.h
- *
- *  - should always be first in the C code
- */
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
@@ -50,16 +35,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
-#include "drivers/lineGraph/lineGraph_driver.h"  // the link to the C++ code of the function
+#include "drivers/lineGraph/lineGraph_driver.h"
 
 PGDLLEXPORT Datum _pgr_linegraph(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_linegraph);
 
 
-/******************************************************************************/
-/*                          MODIFY AS NEEDED                                  */
 static
 void
 process(
@@ -67,6 +52,7 @@ process(
         bool directed,
         Edge_t **result_tuples,
         size_t *result_count) {
+#if 0
     /*
      *  https://www.postgresql.org/docs/current/static/spi-spi-connect.html
      */
@@ -76,6 +62,7 @@ process(
     } else {
       PGR_DBG("\nUndirectedGraph\n");
     }
+#endif
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
@@ -84,6 +71,7 @@ process(
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     PGR_DBG("Load data");
     Edge_t *edges = NULL;
     size_t total_edges = 0;
@@ -99,10 +87,10 @@ process(
     }
 
     PGR_DBG("Starting processing");
+#endif
     clock_t start_t = clock();
-    do_pgr_lineGraph(
-            edges,
-            total_edges,
+    pgr_do_lineGraph(
+            edges_sql,
             directed,
             result_tuples,
             result_count,
@@ -111,34 +99,28 @@ process(
             &err_msg);
 
     time_msg(" processing pgr_lineGraph", start_t, clock());
-    PGR_DBG("Returning %ld tuples", *result_count);
 
     if (err_msg) {
         if (*result_tuples) pfree(*result_tuples);
     }
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (edges) pfree(edges);
+#endif
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
 
     pgr_SPI_finish();
 }
-/*                                                                            */
-/******************************************************************************/
 
 PGDLLEXPORT Datum _pgr_linegraph(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
-    /**************************************************************************/
-    /*                          MODIFY AS NEEDED                              */
-    /*                                                                        */
     Edge_t  *result_tuples = NULL;
     size_t result_count = 0;
-    /*                                                                        */
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -146,24 +128,11 @@ PGDLLEXPORT Datum _pgr_linegraph(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
 
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-        /*
-           TEXT,
-    directed BOOLEAN DEFAULT true,
-         **********************************************************************/
-
-
-        PGR_DBG("Calling process");
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_BOOL(1),
                 &result_tuples,
                 &result_count);
-
-
-        /*                                                                    */
-        /**********************************************************************/
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
@@ -198,7 +167,6 @@ PGDLLEXPORT Datum _pgr_linegraph(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        // postgres starts counting from 1
         values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
         values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].source);
         values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].target);
@@ -210,13 +178,6 @@ PGDLLEXPORT Datum _pgr_linegraph(PG_FUNCTION_ARGS) {
         result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);
     } else {
-        /**********************************************************************/
-        /*                          MODIFY AS NEEDED                          */
-
-        PGR_DBG("Clean up code");
-
-        /**********************************************************************/
-
         SRF_RETURN_DONE(funcctx);
     }
 }
