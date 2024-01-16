@@ -33,11 +33,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #ifdef __cplusplus
 #   include <cstdint>
 #   include <cstddef>
-using Path_rt = struct Path_rt;
+using MST_rt = struct MST_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
-typedef struct Path_rt Path_rt;
+typedef struct MST_rt MST_rt;
 #endif
 
 #ifdef __cplusplus
@@ -49,7 +49,7 @@ void pgr_do_drivingdist(
         int64_t*, size_t,
         double ,
         bool, bool,
-        Path_rt**, size_t*,
+        MST_rt**, size_t*,
         char **, char **, char **);
 
 #ifdef __cplusplus
