@@ -66,8 +66,10 @@ process(
     size_t size_end_vidsArr = 0;
     int64_t *end_vidsArr = NULL;
 
+#if 0
     size_t total_combinations = 0;
     II_t_rt *combinations = NULL;
+#endif
 
     if (starts && ends) {
         start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
@@ -75,6 +77,7 @@ process(
         end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
         if (total_combinations == 0) {
@@ -83,11 +86,13 @@ process(
             pgr_SPI_finish();
             return;
         }
+#endif
     }
 
     (*result_tuples) = NULL;
     (*result_count) = 0;
 
+#if 0
     PGR_DBG("Load data");
     Edge_t *edges = NULL;
     size_t total_edges = 0;
@@ -106,12 +111,11 @@ process(
     }
 
     PGR_DBG("Starting processing");
+#endif
     clock_t start_t = clock();
-    do_pgr_edwardMoore(
-        edges,
-        total_edges,
-        combinations,
-        total_combinations,
+    pgr_do_edwardMoore(
+            edges_sql,
+            combinations_sql,
         start_vidsArr, size_start_vidsArr,
         end_vidsArr, size_end_vidsArr,
 
@@ -125,17 +129,22 @@ process(
         &err_msg);
 
     time_msg(" processing pgr_edwardMoore", start_t, clock());
+#if 0
     PGR_DBG("Returning %ld tuples", *result_count);
+#endif
 
-    if (err_msg) {
-        if (*result_tuples)
-            pfree(*result_tuples);
+    if (err_msg && (*result_tuples)) {
+        pfree(*result_tuples);
+        (*result_tuples) = NULL;
+        (*result_count) = 0;
     }
 
     pgr_global_report(log_msg, notice_msg, err_msg);
 
+#if 0
     if (edges)
         pfree(edges);
+#endif
     if (log_msg)
         pfree(log_msg);
     if (notice_msg)
@@ -154,17 +163,17 @@ PGDLLEXPORT Datum _pgr_edwardmoore(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
     TupleDesc tuple_desc;
 
-    /**************************************************************************/
     Path_rt *result_tuples = NULL;
     size_t result_count = 0;
-    /**************************************************************************/
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+#if 0
         PGR_DBG("Calling process");
+#endif 
         if (PG_NARGS() == 4) {
             /*
              * many to many
@@ -192,9 +201,6 @@ PGDLLEXPORT Datum _pgr_edwardmoore(PG_FUNCTION_ARGS) {
                 &result_count);
         }
 
-
-        /**********************************************************************/
-
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
@@ -218,18 +224,6 @@ PGDLLEXPORT Datum _pgr_edwardmoore(PG_FUNCTION_ARGS) {
         Datum *values;
         bool *nulls;
 
-        /**********************************************************************/
-        /*
-            OUT seq BIGINT,
-            OUT path_seq BIGINT,
-            OUT start_vid BIGINT,
-            OUT end_vid BIGINT,
-            OUT node BIGINT,
-            OUT edge BIGINT,
-            OUT cost FLOAT,
-            OUT agg_cost FLOAT
-        */
-        /**********************************************************************/
         size_t numb = 8;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
@@ -254,12 +248,6 @@ PGDLLEXPORT Datum _pgr_edwardmoore(PG_FUNCTION_ARGS) {
         result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);
     } else {
-        /**********************************************************************/
-
-        PGR_DBG("Clean up code");
-
-        /**********************************************************************/
-
         SRF_RETURN_DONE(funcctx);
     }
 }
