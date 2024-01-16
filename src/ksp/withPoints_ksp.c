@@ -37,7 +37,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 #include "c_common/e_report.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/withPoints/get_new_queries.h"
 #include "drivers/yen/withPoints_ksp_driver.h"
@@ -98,10 +100,12 @@ process(
     char* notice_msg = NULL;
     char* err_msg = NULL;
 
+#if 0
     Point_on_edge_t *points = NULL;
     size_t total_points = 0;
     pgr_get_points(points_sql, &points, &total_points, &err_msg);
     throw_error(err_msg, points_sql);
+#endif
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
@@ -110,6 +114,7 @@ process(
             &edges_of_points_query,
             &edges_no_points_query);
 
+#if 0
     Edge_t *edges_of_points = NULL;
     size_t total_edges_of_points = 0;
     pgr_get_edges(edges_of_points_query, &edges_of_points, &total_edges_of_points, true, false, &err_msg);
@@ -119,13 +124,16 @@ process(
     size_t total_edges = 0;
     pgr_get_edges(edges_no_points_query, &edges, &total_edges, true, false, &err_msg);
     throw_error(err_msg, edges_no_points_query);
+#endif
 
     int64_t* start_pidsArr = NULL;
     size_t size_start_pidsArr = 0;
     int64_t* end_pidsArr = NULL;
     size_t size_end_pidsArr = 0;
+#if 0
     II_t_rt *combinationsArr = NULL;
     size_t total_combinations = 0;
+#endif
     if (start_pid && end_pid) {
         start_pidsArr = start_pid; size_start_pidsArr = 1;
         end_pidsArr = end_pid; size_end_pidsArr = 1;
@@ -135,10 +143,13 @@ process(
         end_pidsArr = pgr_get_bigIntArray(&size_end_pidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end pids");
     } else if (combinations_sql) {
+#if 0
         pgr_get_combinations(combinations_sql, &combinationsArr, &total_combinations, &err_msg);
         throw_error(err_msg, combinations_sql);
+#endif
     }
 
+#if 0
     pfree(edges_of_points_query);
     pfree(edges_no_points_query);
 
@@ -155,14 +166,15 @@ process(
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
 
     pgr_do_withPointsKsp(
-            edges,           total_edges,
-            points,          total_points,
-            edges_of_points, total_edges_of_points,
-            combinationsArr, total_combinations,
+            edges_no_points_query,
+            points_sql,
+            edges_of_points_query
+            combinations_sql,
             start_pidsArr,   size_start_pidsArr,
             end_pidsArr,     size_end_pidsArr,
 
@@ -192,14 +204,18 @@ process(
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
     if (start_pid && end_pid) {
         start_pidsArr = NULL;
         end_pidsArr = NULL;
     }
+#endif
     if (start_pidsArr) pfree(start_pidsArr);
     if (end_pidsArr) pfree(end_pidsArr);
+#if 0
     if (combinationsArr) pfree(combinationsArr);
+#endif
 
     pgr_SPI_finish();
 }
