@@ -37,16 +37,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #ifdef __cplusplus
 #   include <cstddef>
 #   include <cstdint>
-using Point_on_edge_t = struct Point_on_edge_t;
-using Edge_t = struct Edge_t;
 using Path_rt = struct Path_rt;
-using MST_rt = struct MST_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
-typedef struct Point_on_edge_t Point_on_edge_t;
-typedef struct Edge_t Edge_t;
-typedef struct MST_rt MST_rt;
+typedef struct Path_rt Path_rt;
 #endif
 
 #ifdef __cplusplus
@@ -54,14 +49,12 @@ extern "C" {
 #endif
 
     void pgr_do_withPointsDD(
-            Edge_t*,          size_t,
-            Point_on_edge_t*, size_t,
-            Edge_t*,          size_t,
+            char*, char*, char*,
             int64_t*,         size_t,
 
-            double, char, bool, bool, bool,
+            double, bool, char, bool, bool,
 
-            MST_rt**, size_t*,
+            Path_rt**, size_t*,
             char**, char**, char **);
 
 #ifdef __cplusplus
