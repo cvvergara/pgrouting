@@ -36,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 
+#if 0
 #include "c_common/pgdata_getters.h"
+#endif
 
 #include "drivers/bellman_ford/edwardMoore_driver.h"
 
@@ -173,7 +175,7 @@ PGDLLEXPORT Datum _pgr_edwardmoore(PG_FUNCTION_ARGS) {
 
 #if 0
         PGR_DBG("Calling process");
-#endif 
+#endif
         if (PG_NARGS() == 4) {
             /*
              * many to many
