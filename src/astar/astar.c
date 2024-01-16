@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: astarOneToOne.c
+File: astar.c
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail:
+Mail: vicky at erosion.dev
 
 ------
 
@@ -29,7 +29,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
-#include "utils/array.h"
 
 #include "c_types/path_rt.h"
 #include "c_common/debug_macro.h"
@@ -70,33 +69,42 @@ process(char* edges_sql,
     int64_t* end_vidsArr = NULL;
     size_t size_end_vidsArr = 0;
 
+#if 0
     Edge_xy_t *edges = NULL;
     size_t total_edges = 0;
 
     II_t_rt *combinations = NULL;
     size_t total_combinations = 0;
+#endif
 
     if (normal) {
+#if 0
         pgr_get_edges_xy(edges_sql, &edges, &total_edges, true, &err_msg);
         throw_error(err_msg, edges_sql);
+#endif
         if (starts && ends) {
             start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, starts, false, &err_msg);
             throw_error(err_msg, "While getting start vids");
             end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, ends, false, &err_msg);
             throw_error(err_msg, "While getting end vids");
         } else if (combinations_sql) {
+#if 0
             pgr_get_combinations(combinations_sql, &combinations, &total_combinations, &err_msg);
             throw_error(err_msg, combinations_sql);
+#endif
         }
     } else {
+#if 0
         pgr_get_edges_xy(edges_sql, &edges, &total_edges, false, &err_msg);
         throw_error(err_msg, edges_sql);
+#endif
         end_vidsArr = pgr_get_bigIntArray(&size_end_vidsArr, starts, false, &err_msg);
         throw_error(err_msg, "While getting start vids");
         start_vidsArr = pgr_get_bigIntArray(&size_start_vidsArr, ends, false, &err_msg);
         throw_error(err_msg, "While getting end vids");
     }
 
+#if 0
     if (total_edges == 0) {
         PGR_DBG("No edges found");
         (*result_count) = 0;
@@ -104,12 +112,12 @@ process(char* edges_sql,
         pgr_SPI_finish();
         return;
     }
+#endif
 
     clock_t start_t = clock();
     pgr_do_astar(
-            edges, total_edges,
-
-            combinations, total_combinations,
+            edges_sql,
+            combinations_sql,
 
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
@@ -142,7 +150,9 @@ process(char* edges_sql,
     if (log_msg) pfree(log_msg);
     if (notice_msg) pfree(notice_msg);
     if (err_msg) pfree(err_msg);
+#if 0
     if (edges) pfree(edges);
+#endif
     if (start_vidsArr) pfree(start_vidsArr);
     if (end_vidsArr) pfree(end_vidsArr);
 
