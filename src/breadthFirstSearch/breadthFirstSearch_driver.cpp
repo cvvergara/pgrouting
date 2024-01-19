@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <set>
 
 #include "cpp_common/pgget.hpp"
 #include "cpp_common/pgr_alloc.hpp"
@@ -45,17 +46,10 @@ template < class G >
 std::vector<MST_rt>
 pgr_breadthFirstSearch(
         G &graph,
-        std::vector < int64_t > sources,
+        std::set<int64_t> sources,
         int64_t max_depth) {
-    std::sort(sources.begin(), sources.end());
-    sources.erase(
-            std::unique(sources.begin(), sources.end()),
-            sources.end());
-
-
-    pgrouting::functions::Pgr_breadthFirstSearch< G > fn_breadthFirstSearch;
-    auto results = fn_breadthFirstSearch.breadthFirstSearch(
-            graph, sources, max_depth);
+    pgrouting::functions::Pgr_breadthFirstSearch<G> fn_breadthFirstSearch;
+    auto results = fn_breadthFirstSearch.breadthFirstSearch(graph, sources, max_depth);
     return results;
 }
 
@@ -101,7 +95,7 @@ pgr_do_breadthFirstSearch(
         }
         hint = nullptr;
 
-        std::vector<int64_t>
+        std::set<int64_t>
             start_vertices(start_vidsArr, start_vidsArr + size_start_vidsArr);
 
         std::vector<MST_rt> results;
