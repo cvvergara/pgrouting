@@ -62,7 +62,7 @@ data_eq(const Edge_xy_t &lhs, const Edge_xy_t &rhs, int64_t round) {
 }
 
 void
-do_alphaShape(
+pgr_do_alphaShape(
         char* edges_sql,
         double alpha,
 

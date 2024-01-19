@@ -69,7 +69,7 @@ cuthillMckeeOrdering(G &graph) {
 }  // namespace
 
 
-void do_cuthillMckeeOrdering(
+void pgr_do_cuthillMckeeOrdering(
     char *edges_sql,
 
     II_t_rt **return_tuples,
