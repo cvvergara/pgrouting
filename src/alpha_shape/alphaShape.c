@@ -81,7 +81,7 @@ static void process(
 
     PGR_DBG("Calling alpha-shape driver\n");
 #endif
-    do_alphaShape(
+    pgr_do_alphaShape(
             edges_sql,
             alpha,
 

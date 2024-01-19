@@ -31,14 +31,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 
-
 #include "c_types/path_rt.h"
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-
 #include "c_common/pgdata_getters.h"
-
 #include "drivers/bdDijkstra/bdDijkstra_driver.h"
 
 PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS);
@@ -46,10 +43,11 @@ PG_FUNCTION_INFO_V1(_pgr_bddijkstra);
 
 static void
 process(
-        char* edges_sql,
-        char* combinations_sql,
+        char *edges_sql,
+        char *combinations_sql,
         ArrayType *starts,
         ArrayType *ends,
+
         bool directed,
         bool only_cost,
         Path_rt **result_tuples,
@@ -136,9 +134,10 @@ process(
     pgr_SPI_finish();
 }
 
+
 PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
-    TupleDesc           tuple_desc;
+    TupleDesc            tuple_desc;
 
     Path_rt  *result_tuples = NULL;
     size_t result_count = 0;
@@ -147,8 +146,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
-
-
         if (PG_NARGS() == 5) {
             /*
              * many to many
@@ -179,7 +176,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
         }
 
         funcctx->max_calls = result_count;
-
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc)
                 != TYPEFUNC_COMPOSITE) {
@@ -195,7 +191,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-
     result_tuples = (Path_rt*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
@@ -208,7 +203,6 @@ PGDLLEXPORT Datum _pgr_bddijkstra(PG_FUNCTION_ARGS) {
         size_t numb = 8;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
-
 
         size_t i;
         for (i = 0; i < numb; ++i) {

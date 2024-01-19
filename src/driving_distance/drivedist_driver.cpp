@@ -42,7 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 
 void
-pgr_do_drivingdist(
+pgr_do_drivingDistance(
         char *edges_sql,
         int64_t *start_vertex, size_t s_len,
         double distance,
@@ -90,11 +90,11 @@ pgr_do_drivingdist(
 
         if (directedFlag) {
             pgrouting::DirectedGraph digraph(gType);
-            digraph.insert_edges(data_edges, total_edges);
+            digraph.insert_edges(edges);
             paths = drivingDistance(digraph, start_vertices, distance, equiCostFlag, depths, true);
         } else {
             pgrouting::UndirectedGraph undigraph(gType);
-            undigraph.insert_edges(data_edges, total_edges);
+            undigraph.insert_edges(edges);
             paths = drivingDistance(undigraph, start_vertices, distance, equiCostFlag, depths, true);
         }
 

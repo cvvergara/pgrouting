@@ -35,17 +35,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <deque>
 #include <vector>
 
-#include "yen/pgr_ksp.hpp"
 
+#include "c_types/ii_t_rt.h"
 #include "cpp_common/combinations.h"
+#include "cpp_common/pgget.hpp"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
 
-#include "cpp_common/pgr_base_graph.hpp"
+#include "yen/pgr_ksp.hpp"
 
-#include "c_types/ii_t_rt.h"
-
-void  pgr_do_ksp(
+void pgr_do_ksp(
         char *edges_sql,
         char *combinations_sql,
         int64_t*  start_vids, size_t size_start_vids,
@@ -63,11 +62,13 @@ void  pgr_do_ksp(
     using pgrouting::pgr_msg;
     using pgrouting::pgr_free;
     using pgrouting::yen::Pgr_ksp;
+    using pgrouting::utilities::get_combinations;
 
     std::ostringstream err;
     std::ostringstream log;
     std::ostringstream notice;
     char *hint = nullptr;
+
     try {
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
@@ -75,10 +76,18 @@ void  pgr_do_ksp(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
+        hint = combinations_sql;
+        auto combinationsArr = combinations_sql?
+            pgrouting::pgget::get_combinations(std::string(combinations_sql)) : std::vector<II_t_rt>();
+        hint = nullptr;
+
+        auto combinations = combinationsArr.empty()?
+            pgrouting::utilities::get_combinations(start_vids, size_start_vids, end_vids, size_end_vids)
+            : pgrouting::utilities::get_combinations(combinationsArr);
         graphType gType = directed? DIRECTED: UNDIRECTED;
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), normal, false);
+        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
 
         if (edges.empty()) {
             *notice_msg = pgr_msg("No edges found");
@@ -87,17 +96,7 @@ void  pgr_do_ksp(
         }
         hint = nullptr;
 
-        hint = combinations_sql;
-        auto combinationsArr = combinations_sql?
-            pgrouting::pgget::get_combinations(std::string(combinations_sql)) : std::vector<II_t_rt>();
-        hint = nullptr;
-
-        auto combinations = combinationsArr.empty()?
-            pgrouting::utilities::get_combinations(start_vidsArr, size_start_vidsArr, end_vidsArr, size_end_vidsArr)
-            : pgrouting::utilities::get_combinations(combinationsArr);
-
-        std::deque< Path > paths;
-
+        std::deque<Path>paths;
         if (directed) {
             pgrouting::DirectedGraph digraph(gType);
             digraph.insert_edges(edges);
@@ -107,23 +106,27 @@ void  pgr_do_ksp(
             undigraph.insert_edges(edges);
             paths = pgrouting::algorithms::Yen(undigraph, combinations, k, heap_paths);
         }
-
+        combinations.clear();
 
         auto count(count_tuples(paths));
 
-        if (!(count == 0)) {
-            *return_tuples = NULL;
-            *return_tuples = pgr_alloc(count, (*return_tuples));
+        if (count == 0) {
+            (*return_tuples) = NULL;
+            (*return_count) = 0;
+            notice << "No paths found";
+            *log_msg = pgr_msg(notice.str().c_str());
+            return;
+        }
 
-            size_t sequence = 0;
-            for (const auto &path : paths) {
-                if (path.size() > 0)
-                    path.get_pg_nksp_path(return_tuples, sequence);
-            }
+        (*return_tuples) = pgr_alloc(count, (*return_tuples));
+        (*return_count) = (collapse_paths(return_tuples, paths));
+
+        size_t sequence = 0;
+        for (const auto &path : paths) {
+            if (path.size() > 0) path.get_pg_nksp_path(return_tuples, sequence);
         }
         *return_count = count;
 
-        pgassert(*err_msg == NULL);
         *log_msg = log.str().empty()?
             *log_msg :
             pgr_msg(log.str().c_str());

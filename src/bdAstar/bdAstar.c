@@ -36,7 +36,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/time_msg.h"
 #include "c_common/pgdata_getters.h"
 #include "c_common/check_parameters.h"
-
 #include "drivers/bdAstar/bdAstar_driver.h"
 
 PGDLLEXPORT Datum _pgr_bdastar(PG_FUNCTION_ARGS);
@@ -105,9 +104,9 @@ process(char* edges_sql,
     pgr_do_bdAstar(
             edges_sql,
             combinations_sql,
-
             start_vidsArr, size_start_vidsArr,
             end_vidsArr, size_end_vidsArr,
+
             directed,
             heuristic,
             factor,
@@ -167,7 +166,6 @@ _pgr_bdastar(PG_FUNCTION_ARGS) {
                 NULL,
                 PG_GETARG_ARRAYTYPE_P(1),
                 PG_GETARG_ARRAYTYPE_P(2),
-
                 PG_GETARG_BOOL(3),
                 PG_GETARG_INT32(4),
                 PG_GETARG_FLOAT8(5),
@@ -177,7 +175,7 @@ _pgr_bdastar(PG_FUNCTION_ARGS) {
                 &result_count);
         } else if (PG_NARGS() == 7) {
             /*
-             * combinations
+             * Combinations
              */
             process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),

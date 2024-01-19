@@ -36,6 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #ifdef __cplusplus
 #   include <cstdint>
+#   include <cstddef>
 using Path_rt = struct Path_rt;
 #else
 #   include <stddef.h>

@@ -26,7 +26,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
@@ -35,9 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-
 #include "c_common/pgdata_getters.h"
-
 #include "drivers/bellman_ford/edwardMoore_driver.h"
 
 PGDLLEXPORT Datum _pgr_edwardmoore(PG_FUNCTION_ARGS);
@@ -49,6 +47,7 @@ process(
     char *combinations_sql,
     ArrayType *starts,
     ArrayType *ends,
+
     bool directed,
 
     Path_rt **result_tuples,

@@ -14,8 +14,6 @@ Mail: this.abhinav at gmail.com
 
 ------
 
-
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -40,14 +38,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 
 #include "c_types/ii_t_rt.h"
+#include "cpp_common/pgget.hpp"
 #include "cpp_common/combinations.h"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.h"
-
-#include "yen/pgr_ksp.hpp"
 #include "withPoints/pgr_withPoints.hpp"
 
-using pgrouting::yen::Pgr_ksp;
+#include "yen/pgr_ksp.hpp"
 
 void
 pgr_do_withPointsKsp(
@@ -73,28 +70,38 @@ pgr_do_withPointsKsp(
     using pgrouting::pgr_alloc;
     using pgrouting::pgr_msg;
     using pgrouting::pgr_free;
+    using pgrouting::yen::Pgr_ksp;
+    using pgrouting::utilities::get_combinations;
 
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
     char *hint = nullptr;
 
-try {
+    try {
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
+        hint = combinations_sql;
+        auto combinationsArr = combinations_sql?
+            pgrouting::pgget::get_combinations(std::string(combinations_sql)) : std::vector<II_t_rt>();
+        hint = nullptr;
+
+        auto combinations = combinationsArr.empty()?
+            pgrouting::utilities::get_combinations(start_pidsArr, size_start_pidsArr, end_pidsArr, size_end_pidsArr)
+            : pgrouting::utilities::get_combinations(combinationsArr);
 
         hint = points_sql;
         auto points = pgrouting::pgget::get_points(std::string(points_sql));
 
         hint = edges_of_points_sql;
-        auto edges_of_points = pgrouting::pgget::get_edges(std::string(edges_of_points_sql), normal, false);
+        auto edges_of_points = pgrouting::pgget::get_edges(std::string(edges_of_points_sql), true, false);
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), normal, false);
+        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
 
         if (edges.size() + edges_of_points.size() == 0) {
             *notice_msg = pgr_msg("No edges found");
@@ -103,20 +110,11 @@ try {
         }
         hint = nullptr;
 
-        hint = combinations_sql;
-        auto combinationsArr = combinations_sql?
-            pgrouting::pgget::get_combinations(std::string(combinations_sql)) : std::vector<II_t_rt>();
-        hint = nullptr;
-
-        auto combinations = combinationsArr.empty()?
-            pgrouting::utilities::get_combinations(start_vidsArr, size_start_vidsArr, end_vidsArr, size_end_vidsArr)
-            : pgrouting::utilities::get_combinations(combinationsArr);
-
         /*
          * processing points
          */
         pgrouting::Pg_points_graph pg_graph(points, edges_of_points,
-                normal,
+                true,
                 driving_side,
                 directed);
 
@@ -125,7 +123,7 @@ try {
             err << pg_graph.get_error();
             *log_msg = pgr_msg(log.str().c_str());
             *err_msg = pgr_msg(err.str().c_str());
-            return -1;
+            return;
         }
 
 
@@ -161,7 +159,9 @@ try {
             return;
         }
 
-        (*return_tuples) = pgr_alloc(count, (*return_tuples));
+
+        *return_tuples = pgr_alloc(count, (*return_tuples));
+
         size_t sequence = 0;
         for (const auto &path : paths) {
             if (path.size() > 0)

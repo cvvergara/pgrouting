@@ -68,6 +68,7 @@ process(
         Path_rt **result_tuples,
         size_t *result_count) {
     if (p_k < 0) {
+        /* TODO add error message */
         return;
     }
 
@@ -171,7 +172,7 @@ process(
     pgr_do_withPointsKsp(
             edges_no_points_query,
             points_sql,
-            edges_of_points_query
+            edges_of_points_query,
             combinations_sql,
             start_pidsArr,   size_start_pidsArr,
             end_pidsArr,     size_end_pidsArr,

@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 #include <stdbool.h>
-
 #include "c_common/postgres_connection.h"
 
 #include "c_types/iid_t_rt.h"
@@ -46,8 +45,7 @@ PGDLLEXPORT Datum _pgr_floydwarshall(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_floydwarshall);
 
 static
-void
-process(
+void process(
         char* edges_sql,
         bool directed,
         IID_t_rt **result_tuples,
@@ -147,7 +145,7 @@ _pgr_floydwarshall(PG_FUNCTION_ARGS) {
         HeapTuple    tuple;
         Datum        result;
         Datum        *values;
-        bool*        nulls;
+        bool         *nulls;
 
         values = palloc(3 * sizeof(Datum));
         nulls = palloc(3 * sizeof(bool));

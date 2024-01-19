@@ -35,9 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-
 #include "c_common/pgdata_getters.h"
-
 #include "drivers/bellman_ford/bellman_ford_neg_driver.h"
 
 PGDLLEXPORT Datum _pgr_bellmanfordneg(PG_FUNCTION_ARGS);
@@ -51,6 +49,7 @@ process(
         char *combinations_sql,
         ArrayType *starts,
         ArrayType *ends,
+
         bool directed,
         bool only_cost,
 
@@ -174,7 +173,7 @@ process(
 
 PGDLLEXPORT Datum _pgr_bellmanfordneg(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
-    TupleDesc           tuple_desc;
+    TupleDesc            tuple_desc;
 
     Path_rt  *result_tuples = NULL;
     size_t result_count = 0;
