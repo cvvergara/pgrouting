@@ -364,6 +364,11 @@ class Pgr_base_graph {
              insert_edges(std::vector < T >(edges, edges + count));
          }
 
+     template <typename T>
+         void insert_edges_neg(const std::vector<T> &edges) {
+             insert_edges(edges, false);
+         }
+
      template < typename T >
          void insert_edges_neg(const T *edges, size_t count) {
              insert_edges(std::vector < T >(edges, edges + count), false);
@@ -420,9 +425,12 @@ class Pgr_base_graph {
      template <typename T>
      void
      insert_min_edges_no_parallel(const std::vector<T> &edges) {
-         for (const auto edge : edges) {
+         insert_edges(edges);
+#if 0
+         for (const auto &edge : edges) {
              graph_add_min_edge_no_parallel(edge);
          }
+#endif
      }
 
      template < typename T >
@@ -972,12 +980,12 @@ Pgr_base_graph< G, T_V, T_E >::graph_add_edge(const T &edge, bool normal) {
     }
 }
 
-template < class G, typename T_V, typename T_E >
-template < typename T>
+template <class G, typename T_V, typename T_E>
+template <typename T>
 void
-Pgr_base_graph< G, T_V, T_E >::graph_add_min_edge_no_parallel(const T &edge) {
+Pgr_base_graph<G, T_V, T_E>::graph_add_min_edge_no_parallel(const T &edge) {
     bool inserted;
-    typename Pgr_base_graph< G, T_V, T_E >::E e;
+    typename Pgr_base_graph<G, T_V, T_E >::E e;
     if ((edge.cost < 0) && (edge.reverse_cost < 0))
         return;
 
