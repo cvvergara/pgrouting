@@ -50,7 +50,6 @@ pgr_do_withPointsVia(
         char*,
         char*,
         char*,
-
         int64_t*, size_t,
 
         bool,

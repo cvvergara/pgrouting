@@ -50,8 +50,8 @@ void pgr_do_trsp_withPoints(
         char*,
         char*,
 
-        int64_t *, size_t,
-        int64_t *, size_t,
+        int64_t*, size_t,
+        int64_t*, size_t,
 
         bool, char, bool,
 

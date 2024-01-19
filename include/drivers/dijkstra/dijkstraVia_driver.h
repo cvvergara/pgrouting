@@ -1,11 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: dijkstraViaVertex.c
+File: dijkstraVia_driver.h
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -29,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRAVIA_DRIVER_H_
 #pragma once
 
-/* for size-t */
 #ifdef __cplusplus
 #   include <cstdint>
 #   include <cstddef>
@@ -42,7 +43,6 @@ typedef struct Edge_t Edge_t;
 typedef struct Routes_t Routes_t;
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -54,7 +54,6 @@ void pgr_do_dijkstraVia(
         bool,
         bool,
         Routes_t**, size_t *,
-
         char**, char**, char**);
 
 #ifdef __cplusplus

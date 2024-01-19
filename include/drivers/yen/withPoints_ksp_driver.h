@@ -33,10 +33,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_YEN_WITHPOINTS_KSP_DRIVER_H_
 #pragma once
 
-/* for size-t */
+
 #ifdef __cplusplus
 #   include <cstdint>
-#   include <cstddef>
 using Path_rt = struct Path_rt;
 #else
 #   include <stddef.h>
@@ -44,28 +43,26 @@ using Path_rt = struct Path_rt;
 typedef struct Path_rt Path_rt;
 #endif
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-      void pgr_do_withPointsKsp(
-            char*, char*, char*, char*,
-            int64_t*, size_t,
-            int64_t*, size_t,
+void pgr_do_withPointsKsp(
+        char*, char*, char*, char*,
+        int64_t*, size_t,
+        int64_t*, size_t,
 
-            size_t,
-            bool, bool,
-            char,
-            bool,
+        size_t,
+        bool, bool,
+        char,
+        bool,
 
-            Path_rt**, size_t*,
-            char**, char**, char**);
-
+        Path_rt**, size_t*,
+        char**, char**, char**);
 
 #ifdef __cplusplus
-    }
+}
 #endif
 
 #endif  // INCLUDE_DRIVERS_YEN_WITHPOINTS_KSP_DRIVER_H_

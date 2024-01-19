@@ -49,7 +49,6 @@ void pgr_do_withPoints(
         char*,
         char*,
         char*,
-
         int64_t*, size_t,
         int64_t*, size_t,
 

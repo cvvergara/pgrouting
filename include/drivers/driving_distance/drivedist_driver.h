@@ -47,10 +47,9 @@ extern "C" {
 void pgr_do_drivingdist(
         char*,
         int64_t*, size_t,
-        double ,
-        bool, bool,
+        double, bool, bool,
         MST_rt**, size_t*,
-        char **, char **, char **);
+        char**, char**, char **);
 
 #ifdef __cplusplus
 }

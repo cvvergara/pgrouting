@@ -31,15 +31,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_SPANNINGTREE_RANDOMSPANNINGTREE_DRIVER_H_
 #pragma once
 
-/* for size-t */
+
 #ifdef __cplusplus
 #   include <cstddef>
+using  SpanTree_rt = struct SpanTree_rt;
 #else
 #   include <stddef.h>
+typedef SpanTree_rt SpanTree_rt;
 #endif
 
-typedef struct Edge_t Edge_t;
-typedef SpanTree_rt SpanTree_rt;
 
 #ifdef __cplusplus
 extern "C" {

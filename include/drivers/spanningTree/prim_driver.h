@@ -31,17 +31,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_SPANNINGTREE_PRIM_DRIVER_H_
 #pragma once
 
-/* for size-t */
 #ifdef __cplusplus
 #   include <cstddef>
 #   include <cstdint>
+using MST_rt = struct MST_rt;
 #else
 #   include <stddef.h>
 #   include <stdint.h>
+typedef struct MST_rt MST_rt;
 #endif
 
-typedef struct Edge_t Edge_t;
-typedef struct MST_rt MST_rt;
 
 #ifdef __cplusplus
 extern "C" {

@@ -49,7 +49,7 @@ extern "C" {
 #endif
 
 void
-do_cuthillMckeeOrdering(
+pgr_do_cuthillMckeeOrdering(
         char*,
 
         II_t_rt**,  size_t*,

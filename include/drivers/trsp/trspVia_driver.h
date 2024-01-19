@@ -29,7 +29,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_TRSP_TRSPVIA_DRIVER_H_
 #pragma once
 
-/* for size-t */
 #ifdef __cplusplus
 #   include <cstdint>
 #   include <cstddef>
@@ -39,7 +38,6 @@ using Routes_t = struct Routes_t;
 #   include <stdint.h>
 typedef struct Routes_t Routes_t;
 #endif
-
 
 #ifdef __cplusplus
 extern "C" {

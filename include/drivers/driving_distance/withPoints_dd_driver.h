@@ -33,7 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_DRIVING_DISTANCE_WITHPOINTS_DD_DRIVER_H_
 #pragma once
 
-/* for size-t */
 #ifdef __cplusplus
 #   include <cstddef>
 #   include <cstdint>
@@ -49,13 +48,13 @@ extern "C" {
 #endif
 
     void pgr_do_withPointsDD(
-            char*, char*, char*,
-            int64_t*,         size_t,
+        char*, char*, char*,
+        int64_t*, size_t,
 
-            double, bool, char, bool, bool,
+        double, char, bool, bool, bool,
 
-            MST_rt**, size_t*,
-            char**, char**, char **);
+        MST_rt**, size_t*,
+        char**, char**, char **);
 
 #ifdef __cplusplus
 }
