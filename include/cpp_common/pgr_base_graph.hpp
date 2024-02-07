@@ -465,6 +465,7 @@ class Pgr_base_graph {
      /** @name to be or not to be */
      /**@{*/
      bool is_directed() const {return m_is_directed == DIRECTED;}
+     bool is_undirected() const {return m_is_directed == UNDIRECTED;}
      bool is_source(V v_idx, E e_idx) const {return v_idx == source(e_idx);}
      bool is_target(V v_idx, E e_idx) const {return v_idx == target(e_idx);}
      /**@}*/
@@ -682,7 +683,7 @@ class Pgr_base_graph {
          return minEdge;
      }
 
-  private:
+ private:
      void graph_add_edge(const T_E &edge) {
          typename Pgr_base_graph< G, T_V, T_E >::LI vm_s, vm_t;
          typename Pgr_base_graph< G, T_V, T_E >::E e;
@@ -832,12 +833,13 @@ class Pgr_base_graph {
          }
      }
 
-  public:
+ public:
      /** @name The Graph */
      /**@{*/
      G graph;                //!< The graph
      id_to_V  vertices_map;   //!< id -> graph id
-  private:
+                              //
+ private:
      graphType m_is_directed;      //!< type (DIRECTED or UNDIRECTED)
      /**@}*/
 
