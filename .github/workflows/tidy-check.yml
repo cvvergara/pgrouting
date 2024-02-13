@@ -1,5 +1,16 @@
+name: clang-tidy check
+
 on:
   pull_request:
+    paths:
+      - 'include/**'
+      - 'src/**'
+    branches-ignore:
+      - 'gh-pages'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check-changelog:
@@ -41,5 +52,10 @@ jobs:
           cd build
           cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DWITH_DOC=OFF ..
 
+      - name: Add upstream
+        run: |
+          git remote add upstream https://github.com/pgRouting/pgrouting
+          git fetch upstream ${PR_BASE}
+
       - name: do clang-tidy
-        run: .github/scripts/tidy-vs-commit.sh "origin/${PR_BASE}"
+        run: .github/scripts/tidy-vs-commit.sh "upstream/${PR_BASE}"
