@@ -39,14 +39,14 @@ typedef int64_t int64;
 
 struct restrict_t {
     int target_id;
-    float to_cost;
+    double to_cost;
     int via[MAX_RULE_LENGTH];
 };
 
 struct path_element_tt {
     int64_t vertex_id;
     int64_t edge_id;
-    float cost;
+    double cost;
 };
 
 
