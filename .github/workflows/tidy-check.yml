@@ -2,9 +2,6 @@ name: clang-tidy check
 
 on:
   pull_request:
-    paths:
-      - 'include/**'
-      - 'src/**'
     branches-ignore:
       - 'gh-pages'
 
