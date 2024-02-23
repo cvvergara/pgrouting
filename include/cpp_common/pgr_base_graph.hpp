@@ -272,8 +272,7 @@ class Pgr_base_graph {
          propmapIndex(mapIndex) {
              // This code does not work with contraction
              size_t i = 0;
-             for (auto vi = boost::vertices(graph).first;
-                     vi != boost::vertices(graph).second; ++vi) {
+             for (auto vi = boost::vertices(graph).first; vi != boost::vertices(graph).second; ++vi) {
                  vertices_map[vertices[i].id] = (*vi);
                  graph[(*vi)].cp_members(vertices[i]);
                  // put(propmapIndex, *vi, num_vertices());
@@ -294,7 +293,7 @@ class Pgr_base_graph {
      /**
        Prepares the _graph_ to be of type gtype with 0 vertices
        */
-     explicit Pgr_base_graph<G , T_V, T_E >(bool directed)
+     explicit Pgr_base_graph<G, T_V, T_E >(bool directed)
          : graph(0),
          m_is_directed(directed),
          vertIndex(boost::get(boost::vertex_index, graph)),
@@ -308,6 +307,12 @@ class Pgr_base_graph {
          insert_edges(edges, false);
      }
 
+     template <typename T>
+     void insert_edges_as_vertices(const std::vector<T> &edges) {
+         for (const auto &e : edges) {
+             add_V(e.id);
+         }
+     }
 
      /** @brief Inserts *count* edges of type *Edge_t* into the graph
         The set of edges should not have an illegal vertex defined
@@ -410,13 +415,25 @@ class Pgr_base_graph {
          return vm_s->second;
      }
 
+     V add_V(const int64_t eid) {
+         auto vm_s(vertices_map.find(eid));
+         if (vm_s == vertices_map.end()) {
+             auto v =  add_vertex(graph);
+             graph[v].id = eid;
+             vertices_map[eid] =  v;
+             put(propmapIndex, v, num_vertices());
+             return v;
+         }
+         return vm_s->second;
+     }
+
      /** @brief get the vertex descriptor of the vid
        Call has_vertex(vid) before calling this function
        @param[in] vid vertex identifier
        @return V: The vertex descriptor of the vertex
        */
      V get_V(int64_t vid) const {
-         if (!has_vertex(vid)) throw std::string("Call to ") + __PRETTY_FUNCTION__ + "without checking with has_vertex";
+         if (!has_vertex(vid)) throw std::string("Call to ") + __PRETTY_FUNCTION__ + " without checking with has_vertex";
          return vertices_map.find(vid)->second;
      }
 
@@ -727,6 +744,7 @@ class Pgr_base_graph {
      }
      /**@}*/
 
+ public:
      template <typename T> void graph_add_edge(const T &edge, bool normal) {
          bool inserted;
          E e;
@@ -758,6 +776,7 @@ class Pgr_base_graph {
          }
      }
 
+ private:
      template <typename T> void graph_add_min_edge_no_parallel(const T &edge) {
          bool inserted;
          E e;
