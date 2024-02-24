@@ -41,10 +41,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "c_types/edge_rt.h"
 
-#if 0
-#include "cpp_common/linear_directed_graph.hpp"
-#include "lineGraph/pgr_lineGraph.hpp"
-#endif
 namespace {
 
 void get_postgres_result(
@@ -92,28 +88,12 @@ std::vector<Edge_rt> get_postgres_results(const G &graph, std::ostringstream &lo
         auto e1 = unique[std::pair<int64_t, int64_t>(s, t)];
         log << e1.id << ","<< e1.source <<","<< e1.target<<" add\n";
 
-#if 0
-        e_source *= -1;
-        e_target *= -1;
-        if (unique.find({e_target, e_source}) != unique.end()) {
-            unique[std::pair<int64_t, int64_t>(e_target,
-                    e_source)].reverse_cost = 1.0;
-            continue;
-        }
-        e_source *= -1;
-        e_target *= -1;
-
-        Edge_rt edge = { ++count, e_source, e_target, 1.0, -1.0 };
-        unique[std::pair<int64_t, int64_t>(e_source, e_target)] = edge;
-#endif
     }
-#if 1
     log << "\n";
     for (const auto &e : unique) {
         log << e.second.id << "," << "\n";
         results.push_back(e.second);
     }
-#endif
     return results;
 }
 
@@ -130,45 +110,6 @@ void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
     graph.graph[e].id = static_cast<int64_t>(graph.num_edges());
 }
 
-#if 0
-template<typename B_G>
-void line_graph(const B_G& original, pgrouting::UndirectedGraph& graph, std::ostringstream &log) {
-    typename G::V_i vertexIt, vertexEnd;
-    typename G::EO_i e_outIt, e_outEnd;
-    typename G::EI_i e_inIt, e_inEnd;
-
-    auto es = boost::edges(original.graph);
-    log << "cycle edges\n";
-    for (auto eit = es.first; eit != es.second; ++eit) {
-        log << boost::source(*eit, original.graph) << ' ' << boost::target(*eit, original.graph) << std::endl;
-        log << original.graph[*eit].id << "\n";
-        graph.add_V(original[*eit].id);
-    }
-    log << "end cycle edges\n";
-    log << graph;
-
-    /* for (each vertex v in original graph) */
-    for (boost::tie(vertexIt, vertexEnd) = boost::vertices(original.graph); vertexIt != vertexEnd; vertexIt++) {
-        auto vertex = *vertexIt;
-
-        /* for( all incoming edges in to vertex v) */
-        for (boost::tie(e_outIt, e_outEnd) = boost::out_edges(vertex, original.graph); e_outIt != e_outEnd; e_outIt++) {
-
-            /* for( all outgoing edges out from vertex v) */
-            for (boost::tie(e_inIt, e_inEnd) = boost::in_edges(vertex, original.graph); e_inIt != e_inEnd; e_inIt++) {
-                /*
-                 *  TODO Prevent self-edges from being created in the Line Graph
-                 */
-                auto s = graph.graph[*e_inIt].id;
-                auto t = graph.graph[*e_outIt].id;
-                if (s == t) continue;
-                log << s <<","<< t<<"\n";
-                my_add_edge<pgrouting::UndirectedGraph, pgrouting::Basic_vertex, pgrouting::Basic_edge>(s, t, graph);
-            }
-        }
-    }
-}
-#endif
 
 template<typename G>
 pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
@@ -244,20 +185,11 @@ pgr_do_lineGraph(
         }
         hint = nullptr;
 
-#if 1
         pgrouting::UndirectedGraph ograph(false);
         ograph.insert_edges(edges);
-#else
-        pgrouting::DirectedGraph ograph(true);
-        ograph.insert_edges(edges);
-#endif
         log << ograph;
 
-#if 1
         auto graph = line_graph<pgrouting::UndirectedGraph>(ograph, log);
-#else
-        line_graph<pgrouting::DirectedGraph>(ograph, graph, log);
-#endif
         auto line_graph_edges = get_postgres_results(graph, log);
 
         auto count = line_graph_edges.size();
