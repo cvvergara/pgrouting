@@ -29,20 +29,20 @@ SELECT * FROM pgr_lineGraph(
 
 /* example from wikipedia */
 CREATE TABLE edges_1 (
-    id BIGSERIAL PRIMARY KEY,
+    id BIGINT,
     source BIGINT,
     target BIGINT,
     cost FLOAT,
     geom geometry
 );
 
-INSERT INTO edges_1 (source, target, cost, geom) VALUES
-  (40, 50 , 1,  ST_MakeLine(ST_POINT(0,  0), ST_POINT(  2,  0))),
-  (40, 30 , 1,  ST_MakeLine(ST_POINT(0,  0), ST_POINT(  1,  1))),
-  (10, 40 , 1,  ST_MakeLine(ST_POINT(0,  2), ST_POINT(  0,  0))),
-  (10, 30 , 1,  ST_MakeLine(ST_POINT(0,  2), ST_POINT(  1,  1))),
-  (50, 20 , 1,  ST_MakeLine(ST_POINT(2,  0), ST_POINT(  2,  2))),
-  (10, 20 , 1,  ST_MakeLine(ST_POINT(0,  2), ST_POINT(  2,  2)));
+INSERT INTO edges_1 (id, source, target, cost, geom) VALUES
+  (405, 40, 50 , 1,  ST_MakeLine(ST_POINT(0,  0), ST_POINT(  2,  0))),
+  (304, 30, 40 , 1,  ST_MakeLine(ST_POINT(0,  0), ST_POINT(  1,  1))),
+  (104, 10, 40 , 1,  ST_MakeLine(ST_POINT(0,  2), ST_POINT(  0,  0))),
+  (103, 10, 30 , 1,  ST_MakeLine(ST_POINT(0,  2), ST_POINT(  1,  1))),
+  (205, 20, 50 , 1,  ST_MakeLine(ST_POINT(2,  0), ST_POINT(  2,  2))),
+  (102, 10, 20 , 1,  ST_MakeLine(ST_POINT(0,  2), ST_POINT(  2,  2)));
 
 SELECT * INTO vertices_1
 FROM pgr_extractVertices('SELECT id, geom FROM edges_1 ORDER BY id');
