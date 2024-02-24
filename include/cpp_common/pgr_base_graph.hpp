@@ -556,13 +556,13 @@ class Pgr_base_graph {
      /**@{*/
      friend std::ostream& operator<<(
              std::ostream &log, const Pgr_base_graph< G, T_V, T_E > &g) {
-         typename Pgr_base_graph< G, T_V, T_E >::EO_i out, out_end;
+         typename Pgr_base_graph< G, T_V, T_E >::EI_i out, out_end;
 
          for (auto vi = vertices(g.graph).first;
                  vi != vertices(g.graph).second; ++vi) {
              if ((*vi) >= g.num_vertices()) break;
-             log << (*vi) << ": " << " out_edges_of(" << g.graph[(*vi)] << "):";
-             for (boost::tie(out, out_end) = out_edges(*vi, g.graph);
+             log << (*vi) << ": " << " in_edges_of(" << g.graph[(*vi)] << "):";
+             for (boost::tie(out, out_end) = in_edges(*vi, g.graph);
                      out != out_end; ++out) {
                  log << ' '
                      << g.graph[*out].id << "=("

@@ -43,19 +43,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
-void get_postgres_result(
-        const std::vector<Edge_rt> &edge_result,
-        Edge_rt **return_tuples,
-        size_t &sequence) {
-    using pgrouting::pgr_alloc;
-    (*return_tuples) = pgr_alloc(edge_result.size(), (*return_tuples));
-
-    for (const auto &edge : edge_result) {
-        (*return_tuples)[sequence] = {edge.id, edge.source, edge.target, edge.cost, edge.reverse_cost};
-        sequence++;
-    }
-}
-
 template<typename G>
 std::vector<Edge_rt> get_postgres_results(const G &graph, std::ostringstream &log) {
     std::vector<Edge_rt> results;
@@ -123,26 +110,29 @@ pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log
     for (auto eit = es.first; eit != es.second; ++eit) {
         result.add_V(original[*eit].id);
     }
-    log << result;
+    log << "empty" << result;
 
     /* for (each vertex v in original graph) */
     for (boost::tie(vertexIt, vertexEnd) = boost::vertices(original.graph); vertexIt != vertexEnd; vertexIt++) {
         auto vertex = *vertexIt;
 
         /* for( all incoming edges in to vertex v) */
-        for (boost::tie(e_outIt, e_outEnd) = boost::out_edges(vertex, original.graph); e_outIt != e_outEnd; e_outIt++) {
+        for (boost::tie(e_inIt, e_inEnd) = boost::in_edges(vertex, original.graph); e_inIt != e_inEnd; e_inIt++) {
+            log << vertex << ":\t";
+            log << "in " << *e_inIt << "\t";
 
             /* for( all outgoing edges out from vertex v) */
-            for (boost::tie(e_inIt, e_inEnd) = boost::in_edges(vertex, original.graph); e_inIt != e_inEnd; e_inIt++) {
+            for (boost::tie(e_outIt, e_outEnd) = boost::out_edges(vertex, original.graph); e_outIt != e_outEnd; e_outIt++) {
+                auto s = original.graph[*e_inIt].id;
+                auto t = original.graph[*e_outIt].id;
                 /*
-                 *  TODO Prevent self-edges from being created in the Line Graph
+                 *  Prevent self-edges from being created in the Line Graph
                  */
-                auto s = result.graph[*e_inIt].id;
-                auto t = result.graph[*e_outIt].id;
                 if (s == t) continue;
                 log << s <<","<< t<<"\n";
                 my_add_edge<pgrouting::UndirectedGraph, pgrouting::Basic_vertex, pgrouting::Basic_edge>(s, t, result);
             }
+            log <<"\n";
         }
     }
     return result;
@@ -185,11 +175,16 @@ pgr_do_lineGraph(
         }
         hint = nullptr;
 
+#if 0
         pgrouting::UndirectedGraph ograph(false);
         ograph.insert_edges(edges);
+#else
+        pgrouting::DirectedGraph ograph(true);
+        ograph.insert_edges(edges);
+#endif
         log << ograph;
 
-        auto graph = line_graph<pgrouting::UndirectedGraph>(ograph, log);
+        auto graph = line_graph(ograph, log);
         auto line_graph_edges = get_postgres_results(graph, log);
 
         auto count = line_graph_edges.size();
@@ -201,10 +196,13 @@ pgr_do_lineGraph(
         } else {
             size_t sequence = 0;
 
-            get_postgres_result(
-                line_graph_edges,
-                return_tuples,
-                sequence);
+            using pgrouting::pgr_alloc;
+            (*return_tuples) = pgr_alloc(line_graph_edges.size(), (*return_tuples));
+
+            for (const auto &e : line_graph_edges) {
+                (*return_tuples)[sequence] = e;
+                sequence++;
+            }
             (*return_count) = sequence;
         }
         pgassert(*err_msg == NULL);
