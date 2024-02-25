@@ -41,6 +41,73 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "c_types/edge_rt.h"
 
+namespace pgrouting {
+namespace b_g {
+
+using B_G_R = boost::adjacency_list<
+    boost::vecS, boost::vecS, boost::undirectedS,
+    pgrouting::Basic_vertex, pgrouting::Basic_edge>;
+
+template<typename B_G>
+B_G_R line_graph(const B_G& original, std::ostringstream &log) {
+
+    pgrouting::UndirectedGraph result1(true);
+    using V = typename boost::graph_traits<B_G_R>::vertex_descriptor;
+    using IndexMap = std::map<int64_t, V>;
+
+    B_G_R result;
+    IndexMap id_to_descriptor;
+
+    auto o_edges = boost::edges(original);
+    log << "cycle edges\n";
+    for (auto e = o_edges.first; e != o_edges.second; ++e) {
+        auto v = add_vertex(result);
+        result[v].id = original[*e].id;
+        log << " add vertex" << original[*e].id << "(" << v << ")\n";
+        id_to_descriptor[original[*e].id] =  v;
+        log << original[*e].id << " id_to_descriptor" << id_to_descriptor[original[*e].id] << "\n";
+    }
+
+    /* for (each vertex v in original graph) */
+    auto vs = boost::vertices(original);
+    for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
+        auto vertex = *vertexIt;
+
+        log << "original vertex" << vertex << ":\n";
+        /* for( all incoming edges in to vertex v) */
+        auto o_inedges = boost::in_edges(vertex, original);
+        for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
+            auto s = original[*ine].id;
+            log << "in edge " << s << "\t";
+
+            auto o_out_edges = boost::out_edges(vertex, original);
+            for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
+                /* for( all outgoing edges out from vertex v) */
+                auto t = original[*eout].id;
+                log << "out edge " << t << "\t";
+                /*
+                 *  Prevent self-edges from being created in the Line Graph
+                 */
+                if (s == t) continue;
+                log << s <<","<< t<<"\n";
+                auto rs = id_to_descriptor[s];
+                auto rt = id_to_descriptor[t];
+                log << rs <<","<< rt<<"\n";
+                auto e = boost::add_edge(rs, rt, result);
+                result[e.first].id = static_cast<int64_t>(num_edges(result));
+                log << e.first << " added edge \n";
+                log << e.first << " added edge " << result[e.first].id <<"\n";
+            }
+            log <<"\n";
+        }
+        log <<"\n";
+    }
+    return result;
+}
+
+}  // namespace b_g
+}  // namespace pgrouting
+
 namespace {
 
 template<typename G>
@@ -98,14 +165,14 @@ void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
 }
 
 
-#if 0
 template<typename G>
 pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
-    typename G::V_i vertexIt, vertexEnd;
-    typename G::EO_i e_outIt, e_outEnd;
-    typename G::EI_i e_inIt, e_inEnd;
+    auto lg_result = pgrouting::b_g::line_graph(original.graph, log);
 
-    pgrouting::UndirectedGraph result(true);
+    pgrouting::UndirectedGraph result(false);
+    result.graph = lg_result;
+
+#if 0
     auto es = boost::edges(original.graph);
     log << "cycle edges\n";
     for (auto eit = es.first; eit != es.second; ++eit) {
@@ -137,9 +204,9 @@ pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log
             log <<"\n";
         }
     }
+#endif
     return result;
 }
-#endif
 
 #if 0
 template<typename B_G>
@@ -184,66 +251,6 @@ pgrouting::UndirectedGraph line_graph(const B_G& original, std::ostringstream &l
 #endif
 
 
-template<typename B_G>
-pgrouting::UndirectedGraph line_graph(const B_G& original, std::ostringstream &log) {
-
-    pgrouting::UndirectedGraph result1(true);
-    using B_G_R = boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS, pgrouting::Basic_vertex,
-          pgrouting::Basic_edge>;
-    using V = typename boost::graph_traits<B_G_R>::vertex_descriptor;
-    using IndexMap = std::map<int64_t, V>;
-
-    B_G_R result;
-    IndexMap id_to_descriptor;
-
-    auto o_edges = boost::edges(original);
-    log << "cycle edges\n";
-    for (auto e = o_edges.first; e != o_edges.second; ++e) {
-        auto v = add_vertex(result);
-        result[v].id = original[*e].id;
-        log << " add vertex" << original[*e].id << "(" << v << ")\n";
-        id_to_descriptor[original[*e].id] =  v;
-        log << original[*e].id << " id_to_descriptor" << id_to_descriptor[original[*e].id] << "\n";
-    }
-
-    /* for (each vertex v in original graph) */
-    auto vs = boost::vertices(original);
-    for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
-        auto vertex = *vertexIt;
-
-        log << "original vertex" << vertex << ":\n";
-        /* for( all incoming edges in to vertex v) */
-        auto o_inedges = boost::in_edges(vertex, original);
-        for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
-            auto s = original[*ine].id;
-            log << "in edge " << s << "\t";
-
-            auto o_out_edges = boost::out_edges(vertex, original);
-            for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
-                /* for( all outgoing edges out from vertex v) */
-                auto t = original[*eout].id;
-                log << "out edge " << t << "\t";
-                /*
-                 *  Prevent self-edges from being created in the Line Graph
-                 */
-                if (s == t) continue;
-                log << s <<","<< t<<"\n";
-                auto rs = id_to_descriptor[s];
-                auto rt = id_to_descriptor[t];
-                log << rs <<","<< rt<<"\n";
-                auto e = boost::add_edge(rs, rt, result);
-                result[e.first].id = static_cast<int64_t>(num_edges(result));
-                log << e.first << " added edge \n";
-                log << e.first << " added edge " << result[e.first].id <<"\n";
-            }
-            log <<"\n";
-        }
-        log <<"\n";
-    }
-    result1.graph = result;
-    return result1;
-}
-
 }  // namespace
 
 void
@@ -285,12 +292,12 @@ pgr_do_lineGraph(
         if (directed) {
             pgrouting::DirectedGraph ograph(true);
             ograph.insert_edges(edges);
-            auto lineG = line_graph(ograph.graph, log);
+            auto lineG = line_graph(ograph, log);
             line_graph_edges = get_postgres_results(lineG, log);
         } else {
             pgrouting::UndirectedGraph ograph(false);
             ograph.insert_edges(edges);
-            auto lineG = line_graph(ograph.graph, log);
+            auto lineG = line_graph(ograph, log);
             line_graph_edges = get_postgres_results(lineG, log);
         }
 
