@@ -124,17 +124,18 @@ std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log
         log << "out " << s <<", "<< t<<"\n";
 
         /*
-         * Already been added
-         */
-        if (st_to_edge.find({s, t}) != st_to_edge.end()) continue;
-
-        /*
          * Reverse edge already been added
          */
         if (st_to_edge.find({t, s}) != st_to_edge.end()) {
             st_to_edge[std::pair<int64_t, int64_t>(t, s)].reverse_cost = 1.0;
             continue;
         }
+
+        /*
+         * Already been added
+         */
+        if (st_to_edge.find({s, t}) != st_to_edge.end()) continue;
+
         st_to_edge[std::pair<int64_t, int64_t>(s, t)] = {++count, s, t, 1, -1};
     }
 
