@@ -51,7 +51,6 @@ using B_G_R = boost::adjacency_list<
 template<typename B_G>
 B_G_R line_graph(const B_G& original, std::ostringstream &log) {
 
-    pgrouting::UndirectedGraph result1(true);
     using V = typename boost::graph_traits<B_G_R>::vertex_descriptor;
     using IndexMap = std::map<int64_t, V>;
 
@@ -103,6 +102,47 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
         log <<"\n";
     }
     return result;
+}
+/** @brief converts a bg to Edges_t
+ * @param[in] bg the boost grah
+ * @returns a set of Edges_t that exist on the graph
+ *   id, source, target, cost, reverse_cost
+ *   source < target
+ */
+template<typename G>
+std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log) {
+    std::vector<Edge_t> results;
+
+    std::map<std::pair<int64_t, int64_t>, Edge_t> st_to_edge;
+    int64_t count = 0;
+
+    log << "\n";
+    auto bg_edges = boost::edges(bg);
+    for (auto e = bg_edges.first; e != bg_edges.second; ++e) {
+        auto s = bg[boost::source(*e, bg)].id;
+        auto t = bg[boost::target(*e, bg)].id;
+        log << "out " << s <<", "<< t<<"\n";
+
+        /*
+         * Already been added
+         */
+        if (st_to_edge.find({s, t}) != st_to_edge.end()) continue;
+
+        /*
+         * Reverse edge already been added
+         */
+        if (st_to_edge.find({t, s}) != st_to_edge.end()) {
+            st_to_edge[std::pair<int64_t, int64_t>(t, s)].reverse_cost = 1.0;
+            continue;
+        }
+        st_to_edge[std::pair<int64_t, int64_t>(s, t)] = {++count, s, t, 1, -1};
+    }
+
+    log << "\n";
+    for (const auto &st : st_to_edge) {
+        results.push_back(st.second);
+    }
+    return results;
 }
 
 }  // namespace b_g
@@ -164,7 +204,7 @@ void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
     graph.graph[e].id = static_cast<int64_t>(graph.num_edges());
 }
 
-
+#if 0
 template<typename G>
 pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
     auto lg_result = pgrouting::b_g::line_graph(original.graph, log);
@@ -172,40 +212,17 @@ pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log
     pgrouting::UndirectedGraph result(false);
     result.graph = lg_result;
 
-#if 0
-    auto es = boost::edges(original.graph);
-    log << "cycle edges\n";
-    for (auto eit = es.first; eit != es.second; ++eit) {
-        result.add_V(original[*eit].id);
-    }
-    log << "empty" << result;
+    auto new_result = pgrouting::b_g::graph_to_existing_edges(lg_result, log);
 
-    /* for (each vertex v in original graph) */
-    for (boost::tie(vertexIt, vertexEnd) = boost::vertices(original.graph); vertexIt != vertexEnd; vertexIt++) {
-        auto vertex = *vertexIt;
-
-        /* for( all incoming edges in to vertex v) */
-        for (boost::tie(e_inIt, e_inEnd) = boost::in_edges(vertex, original.graph); e_inIt != e_inEnd; e_inIt++) {
-            log << vertex << ":\t";
-            log << "in " << *e_inIt << "\t";
-
-            /* for( all outgoing edges out from vertex v) */
-            for (boost::tie(e_outIt, e_outEnd) = boost::out_edges(vertex, original.graph); e_outIt != e_outEnd; e_outIt++) {
-                auto s = original.graph[*e_inIt].id;
-                auto t = original.graph[*e_outIt].id;
-                /*
-                 *  Prevent self-edges from being created in the Line Graph
-                 */
-                if (s == t) continue;
-                log << s <<","<< t<<"\n";
-                my_add_edge(s, t, result);
-                log << result;
-            }
-            log <<"\n";
-        }
-    }
-#endif
     return result;
+}
+#endif
+
+template<typename G>
+std::vector<Edge_t> line_graph(const G& original, std::ostringstream &log) {
+    auto lg_result = pgrouting::b_g::line_graph(original.graph, log);
+
+    return pgrouting::b_g::graph_to_existing_edges(lg_result, log);
 }
 
 #if 0
@@ -288,17 +305,15 @@ pgr_do_lineGraph(
         }
         hint = nullptr;
 
-        std::vector<Edge_rt> line_graph_edges;
+        std::vector<Edge_t> line_graph_edges;
         if (directed) {
             pgrouting::DirectedGraph ograph(true);
             ograph.insert_edges(edges);
-            auto lineG = line_graph(ograph, log);
-            line_graph_edges = get_postgres_results(lineG, log);
+            line_graph_edges = line_graph(ograph, log);
         } else {
             pgrouting::UndirectedGraph ograph(false);
             ograph.insert_edges(edges);
-            auto lineG = line_graph(ograph, log);
-            line_graph_edges = get_postgres_results(lineG, log);
+            line_graph_edges = line_graph(ograph, log);
         }
 
         auto count = line_graph_edges.size();
@@ -315,7 +330,8 @@ pgr_do_lineGraph(
         (*return_tuples) = pgr_alloc(line_graph_edges.size(), (*return_tuples));
 
         for (const auto &e : line_graph_edges) {
-            (*return_tuples)[sequence] = e;
+            auto rev_c = directed? e.reverse_cost : -1;
+            (*return_tuples)[sequence] = {e.id, e.source, e.target, e.cost, rev_c};
             sequence++;
         }
         (*return_count) = sequence;
