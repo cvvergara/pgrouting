@@ -64,7 +64,6 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
         result[v].id = original[*e].id;
         log << " add vertex" << original[*e].id << "(" << v << ")\n";
         id_to_descriptor[original[*e].id] =  v;
-        log << original[*e].id << " id_to_descriptor" << id_to_descriptor[original[*e].id] << "\n";
     }
 
     /* for (each vertex v in original graph) */
@@ -72,17 +71,18 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
     for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
         auto vertex = *vertexIt;
 
-        log << "original vertex" << vertex << ":\n";
+        log << "original vertex " << original[vertex].id << ":\n";
         /* for( all incoming edges in to vertex v) */
         auto o_inedges = boost::in_edges(vertex, original);
         for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
             auto s = original[*ine].id;
-            log << "in edge " << s << "\t";
+            log << "in edge " << s << "\n";
 
             auto o_out_edges = boost::out_edges(vertex, original);
             for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
                 /* for( all outgoing edges out from vertex v) */
                 auto t = original[*eout].id;
+                log << "in edge " << s << "\t";
                 log << "out edge " << t << "\t";
                 /*
                  *  Prevent self-edges from being created in the Line Graph
@@ -199,13 +199,19 @@ pgr_do_lineGraph(
         }
         hint = nullptr;
 
+        log << "directed" << directed;
         std::vector<Edge_t> line_graph_edges;
         if (directed) {
-            pgrouting::DirectedGraph ograph(true);
+            log << "directed YES\n";
+            pgrouting::DirectedGraph ograph(directed);
+            for (const auto &e : edges) {
+                log << e.id << " " << e.source << " " << e.target << " " << e.cost << " " << e.reverse_cost << "\n ";
+            }
             ograph.insert_edges(edges);
+            log << ograph;
             line_graph_edges = line_graph(ograph, log);
         } else {
-            pgrouting::UndirectedGraph ograph(false);
+            pgrouting::UndirectedGraph ograph(directed);
             ograph.insert_edges(edges);
             line_graph_edges = line_graph(ograph, log);
         }

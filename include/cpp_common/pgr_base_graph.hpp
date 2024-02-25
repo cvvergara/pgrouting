@@ -561,14 +561,24 @@ class Pgr_base_graph {
          for (auto vi = vertices(g.graph).first;
                  vi != vertices(g.graph).second; ++vi) {
              if ((*vi) >= g.num_vertices()) break;
-             log << (*vi) << ": " << " in_edges_of(" << g.graph[(*vi)] << "):";
-             for (boost::tie(out, out_end) = in_edges(*vi, g.graph);
-                     out != out_end; ++out) {
+             log << (*vi) << ":\n " << " in_edges_of(" << g.graph[(*vi)] << "):\n";
+             for (boost::tie(out, out_end) = in_edges(*vi, g.graph); out != out_end; ++out) {
                  log << ' '
                      << g.graph[*out].id << "=("
                      << g[g.source(*out)].id << ", "
                      << g[g.target(*out)].id << ") = "
                      << g.graph[*out].cost <<"\t";
+             }
+             log << "\n";
+
+             auto e_out = boost::out_edges(*vi, g.graph);
+             log << (*vi) << ":\n " << " out_edges_of(" << g.graph[(*vi)] << "):\n";
+             for (auto e = e_out.first; e != e_out.second; ++e) {
+                 log << ' '
+                     << g.graph[*e].id << "=("
+                     << g[g.source(*e)].id << ", "
+                     << g[g.target(*e)].id << ") = "
+                     << g.graph[*e].cost <<"\t";
              }
              log << std::endl;
          }
@@ -760,16 +770,14 @@ class Pgr_base_graph {
          pgassert(vertices_map.find(edge.source) != vertices_map.end());
          pgassert(vertices_map.find(edge.target) != vertices_map.end());
          if (edge.cost >= 0) {
-             boost::tie(e, inserted) =
-                 boost::add_edge(vm_s, vm_t, graph);
+             boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
              graph[e].cost = edge.cost;
              graph[e].id = edge.id;
          }
 
          if (edge.reverse_cost >= 0
                  && (m_is_directed || (!m_is_directed && edge.cost != edge.reverse_cost))) {
-             boost::tie(e, inserted) =
-                 boost::add_edge(vm_t, vm_s, graph);
+             boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
 
              graph[e].cost = edge.reverse_cost;
              graph[e].id = normal? edge.id : -edge.id;
