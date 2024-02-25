@@ -151,6 +151,7 @@ std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log
 
 namespace {
 
+#if 0
 template<typename G>
 std::vector<Edge_rt> get_postgres_results(const G &graph, std::ostringstream &log) {
     std::vector<Edge_rt> results;
@@ -204,6 +205,7 @@ void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
 
     graph.graph[e].id = static_cast<int64_t>(graph.num_edges());
 }
+#endif
 
 #if 0
 template<typename G>
