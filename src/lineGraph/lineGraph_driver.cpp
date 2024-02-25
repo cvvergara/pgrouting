@@ -151,75 +151,7 @@ std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log
 
 namespace {
 
-#if 0
-template<typename G>
-std::vector<Edge_rt> get_postgres_results(const G &graph, std::ostringstream &log) {
-    std::vector<Edge_rt> results;
 
-    typename G::E_i  edgeIt, edgeEnd;
-    std::map<std::pair<int64_t, int64_t>, Edge_rt> unique;
-    int64_t count = 0;
-
-    log << "\n";
-    for (boost::tie(edgeIt, edgeEnd) = boost::edges(graph.graph); edgeIt != edgeEnd; edgeIt++) {
-        typename G::E e = *edgeIt;
-        auto s = graph[graph.source(e)].id;
-        auto t = graph[graph.target(e)].id;
-        log << s <<","<< t<<"\n";
-
-        if (unique.find({t, s}) != unique.end()) {
-            log << "t,s found\n";
-            unique[std::pair<int64_t, int64_t>(t, s)].reverse_cost = 1.0;
-            auto e1 = unique[std::pair<int64_t, int64_t>(t, s)];
-            log << e1.id << ","<< e1.source <<","<< e1.target<<" rev\n";
-            continue;
-        }
-        log << "t,s not found\n";
-
-        if (unique.find({s, t}) != unique.end()) continue;
-
-        //log << "s,t not found\n";
-        Edge_rt edge = {++count, s, t, 1.0, -1.0 };
-        unique[std::pair<int64_t, int64_t>(s, t)] = edge;
-        auto e1 = unique[std::pair<int64_t, int64_t>(s, t)];
-        log << e1.id << ","<< e1.source <<","<< e1.target<<" add\n";
-
-    }
-    log << "\n";
-    for (const auto &e : unique) {
-        log << e.second.id << "," << "\n";
-        results.push_back(e.second);
-    }
-    return results;
-}
-
-template<typename G>
-void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
-    bool inserted;
-    typename G::E e;
-
-    auto vm_s = graph.get_V(source);
-    auto vm_t = graph.get_V(target);
-
-    boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph.graph);
-
-    graph.graph[e].id = static_cast<int64_t>(graph.num_edges());
-}
-#endif
-
-#if 0
-template<typename G>
-pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
-    auto lg_result = pgrouting::b_g::line_graph(original.graph, log);
-
-    pgrouting::UndirectedGraph result(false);
-    result.graph = lg_result;
-
-    auto new_result = pgrouting::b_g::graph_to_existing_edges(lg_result, log);
-
-    return result;
-}
-#endif
 
 template<typename G>
 std::vector<Edge_t> line_graph(const G& original, std::ostringstream &log) {
@@ -228,47 +160,6 @@ std::vector<Edge_t> line_graph(const G& original, std::ostringstream &log) {
     return pgrouting::b_g::graph_to_existing_edges(lg_result, log);
 }
 
-#if 0
-template<typename B_G>
-pgrouting::UndirectedGraph line_graph(const B_G& original, std::ostringstream &log) {
-    pgrouting::UndirectedGraph result(true);
-    auto o_edges = boost::edges(original);
-    log << "cycle edges\n";
-    for (auto e = o_edges.first; e != o_edges.second; ++e) {
-        result.add_V(original[*e].id);
-    }
-    log << "empty" << result;
-
-    /* for (each vertex v in original graph) */
-    auto vs = boost::vertices(original);
-    for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
-        auto vertex = *vertexIt;
-
-        /* for( all incoming edges in to vertex v) */
-        auto o_inedges = boost::in_edges(vertex, original);
-        for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
-            log << vertex << ":\t";
-            log << "in " << *ine << "\t";
-
-            auto o_out_edges = boost::out_edges(vertex, original);
-            for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
-                /* for( all outgoing edges out from vertex v) */
-                auto s = original[*ine].id;
-                auto t = original[*eout].id;
-                /*
-                 *  Prevent self-edges from being created in the Line Graph
-                 */
-                if (s == t) continue;
-                log << s <<","<< t<<"\n";
-                my_add_edge(s, t, result);
-                log << result;
-            }
-            log <<"\n";
-        }
-    }
-    return result;
-}
-#endif
 
 
 }  // namespace
