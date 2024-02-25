@@ -141,33 +141,73 @@ pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log
 }
 #endif
 
-template<typename G>
-pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
-    typename G::V_i vertexIt, vertexEnd;
-    typename G::EO_i e_outIt, e_outEnd;
-    typename G::EI_i e_inIt, e_inEnd;
-
+#if 0
+template<typename B_G>
+pgrouting::UndirectedGraph line_graph(const B_G& original, std::ostringstream &log) {
     pgrouting::UndirectedGraph result(true);
-    auto es = boost::edges(original.graph);
+    auto o_edges = boost::edges(original);
     log << "cycle edges\n";
-    for (auto eit = es.first; eit != es.second; ++eit) {
-        result.add_V(original[*eit].id);
+    for (auto e = o_edges.first; e != o_edges.second; ++e) {
+        result.add_V(original[*e].id);
     }
     log << "empty" << result;
 
     /* for (each vertex v in original graph) */
-    for (boost::tie(vertexIt, vertexEnd) = boost::vertices(original.graph); vertexIt != vertexEnd; vertexIt++) {
+    auto vs = boost::vertices(original);
+    for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
         auto vertex = *vertexIt;
 
         /* for( all incoming edges in to vertex v) */
-        for (boost::tie(e_inIt, e_inEnd) = boost::in_edges(vertex, original.graph); e_inIt != e_inEnd; e_inIt++) {
+        auto o_inedges = boost::in_edges(vertex, original);
+        for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
             log << vertex << ":\t";
-            log << "in " << *e_inIt << "\t";
+            log << "in " << *ine << "\t";
 
-            /* for( all outgoing edges out from vertex v) */
-            for (boost::tie(e_outIt, e_outEnd) = boost::out_edges(vertex, original.graph); e_outIt != e_outEnd; e_outIt++) {
-                auto s = original.graph[*e_inIt].id;
-                auto t = original.graph[*e_outIt].id;
+            auto o_out_edges = boost::out_edges(vertex, original);
+            for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
+                /* for( all outgoing edges out from vertex v) */
+                auto s = original[*ine].id;
+                auto t = original[*eout].id;
+                /*
+                 *  Prevent self-edges from being created in the Line Graph
+                 */
+                if (s == t) continue;
+                log << s <<","<< t<<"\n";
+                my_add_edge(s, t, result);
+                log << result;
+            }
+            log <<"\n";
+        }
+    }
+    return result;
+}
+#endif
+template<typename B_G>
+pgrouting::UndirectedGraph line_graph(const B_G& original, std::ostringstream &log) {
+    pgrouting::UndirectedGraph result(true);
+    auto o_edges = boost::edges(original);
+    log << "cycle edges\n";
+    for (auto e = o_edges.first; e != o_edges.second; ++e) {
+        result.add_V(original[*e].id);
+    }
+    log << "empty" << result;
+
+    /* for (each vertex v in original graph) */
+    auto vs = boost::vertices(original);
+    for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
+        auto vertex = *vertexIt;
+
+        /* for( all incoming edges in to vertex v) */
+        auto o_inedges = boost::in_edges(vertex, original);
+        for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
+            log << vertex << ":\t";
+            log << "in " << *ine << "\t";
+
+            auto o_out_edges = boost::out_edges(vertex, original);
+            for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
+                /* for( all outgoing edges out from vertex v) */
+                auto s = original[*ine].id;
+                auto t = original[*eout].id;
                 /*
                  *  Prevent self-edges from being created in the Line Graph
                  */
@@ -223,11 +263,11 @@ pgr_do_lineGraph(
         if (directed) {
             pgrouting::DirectedGraph ograph(true);
             ograph.insert_edges(edges);
-            lineG = line_graph(ograph, log);
+            lineG = line_graph(ograph.graph, log);
         } else {
             pgrouting::UndirectedGraph ograph(false);
             ograph.insert_edges(edges);
-            lineG = line_graph(ograph, log);
+            lineG = line_graph(ograph.graph, log);
         }
 
         auto line_graph_edges = get_postgres_results(lineG, log);
