@@ -84,7 +84,7 @@ std::vector<Edge_rt> get_postgres_results(const G &graph, std::ostringstream &lo
     return results;
 }
 
-template<typename G, typename T_V, typename T_E>
+template<typename G>
 void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
     bool inserted;
     typename G::E e;
@@ -98,13 +98,14 @@ void my_add_edge(const int64_t &source, const int64_t &target, G& graph) {
 }
 
 
+#if 0
 template<typename G>
 pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
     typename G::V_i vertexIt, vertexEnd;
     typename G::EO_i e_outIt, e_outEnd;
     typename G::EI_i e_inIt, e_inEnd;
 
-    pgrouting::UndirectedGraph result(false);
+    pgrouting::UndirectedGraph result(true);
     auto es = boost::edges(original.graph);
     log << "cycle edges\n";
     for (auto eit = es.first; eit != es.second; ++eit) {
@@ -130,7 +131,50 @@ pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log
                  */
                 if (s == t) continue;
                 log << s <<","<< t<<"\n";
-                my_add_edge<pgrouting::UndirectedGraph, pgrouting::Basic_vertex, pgrouting::Basic_edge>(s, t, result);
+                my_add_edge(s, t, result);
+                log << result;
+            }
+            log <<"\n";
+        }
+    }
+    return result;
+}
+#endif
+
+template<typename G>
+pgrouting::UndirectedGraph line_graph(const G& original, std::ostringstream &log) {
+    typename G::V_i vertexIt, vertexEnd;
+    typename G::EO_i e_outIt, e_outEnd;
+    typename G::EI_i e_inIt, e_inEnd;
+
+    pgrouting::UndirectedGraph result(true);
+    auto es = boost::edges(original.graph);
+    log << "cycle edges\n";
+    for (auto eit = es.first; eit != es.second; ++eit) {
+        result.add_V(original[*eit].id);
+    }
+    log << "empty" << result;
+
+    /* for (each vertex v in original graph) */
+    for (boost::tie(vertexIt, vertexEnd) = boost::vertices(original.graph); vertexIt != vertexEnd; vertexIt++) {
+        auto vertex = *vertexIt;
+
+        /* for( all incoming edges in to vertex v) */
+        for (boost::tie(e_inIt, e_inEnd) = boost::in_edges(vertex, original.graph); e_inIt != e_inEnd; e_inIt++) {
+            log << vertex << ":\t";
+            log << "in " << *e_inIt << "\t";
+
+            /* for( all outgoing edges out from vertex v) */
+            for (boost::tie(e_outIt, e_outEnd) = boost::out_edges(vertex, original.graph); e_outIt != e_outEnd; e_outIt++) {
+                auto s = original.graph[*e_inIt].id;
+                auto t = original.graph[*e_outIt].id;
+                /*
+                 *  Prevent self-edges from being created in the Line Graph
+                 */
+                if (s == t) continue;
+                log << s <<","<< t<<"\n";
+                my_add_edge(s, t, result);
+                log << result;
             }
             log <<"\n";
         }
@@ -175,43 +219,40 @@ pgr_do_lineGraph(
         }
         hint = nullptr;
 
-#if 0
-        pgrouting::UndirectedGraph ograph(false);
-        ograph.insert_edges(edges);
-#else
-        pgrouting::DirectedGraph ograph(true);
-        ograph.insert_edges(edges);
-#endif
-        log << ograph;
+        pgrouting::UndirectedGraph lineG(true);
+        if (directed) {
+            pgrouting::DirectedGraph ograph(true);
+            ograph.insert_edges(edges);
+            lineG = line_graph(ograph, log);
+        } else {
+            pgrouting::UndirectedGraph ograph(false);
+            ograph.insert_edges(edges);
+            lineG = line_graph(ograph, log);
+        }
 
-        auto graph = line_graph(ograph, log);
-        auto line_graph_edges = get_postgres_results(graph, log);
-
+        auto line_graph_edges = get_postgres_results(lineG, log);
         auto count = line_graph_edges.size();
 
         if (count == 0) {
             (*return_tuples) = NULL;
             (*return_count) = 0;
-            notice << "Only vertices graph";
-        } else {
-            size_t sequence = 0;
+            *notice_msg = pgr_msg(notice.str().c_str());
+            return;
+        };
 
-            using pgrouting::pgr_alloc;
-            (*return_tuples) = pgr_alloc(line_graph_edges.size(), (*return_tuples));
+        size_t sequence = 0;
+        using pgrouting::pgr_alloc;
+        (*return_tuples) = pgr_alloc(line_graph_edges.size(), (*return_tuples));
 
-            for (const auto &e : line_graph_edges) {
-                (*return_tuples)[sequence] = e;
-                sequence++;
-            }
-            (*return_count) = sequence;
+        for (const auto &e : line_graph_edges) {
+            (*return_tuples)[sequence] = e;
+            sequence++;
         }
+        (*return_count) = sequence;
+
         pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty()?
-            *log_msg :
-            pgr_msg(log.str().c_str());
-        *notice_msg = notice.str().empty()?
-            *notice_msg :
-            pgr_msg(notice.str().c_str());
+        *log_msg = log.str().empty()?  *log_msg : pgr_msg(log.str().c_str());
+        *notice_msg = notice.str().empty()?  *notice_msg : pgr_msg(notice.str().c_str());
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
