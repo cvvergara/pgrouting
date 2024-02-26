@@ -43,10 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgr_base_graph.hpp"
 #include "c_types/edge_rt.h"
 
-
 namespace {
-
-
 
 template<typename G>
 std::vector<Edge_t> line_graph(const G& original) {
@@ -55,17 +52,16 @@ std::vector<Edge_t> line_graph(const G& original) {
     return pgrouting::b_g::graph_to_existing_edges(lg_result);
 }
 
-
-
 }  // namespace
 
 void
 pgr_do_lineGraph(
         char *edges_sql,
-
         bool directed,
+
         Edge_rt **return_tuples,
         size_t *return_count,
+
         char ** log_msg,
         char ** notice_msg,
         char ** err_msg) {
