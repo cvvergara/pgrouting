@@ -48,18 +48,16 @@ namespace b_g {
  *   source < target
  */
 template<typename G>
-std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log) {
+std::vector<Edge_t> graph_to_existing_edges(const G &bg) {
     std::vector<Edge_t> results;
 
     std::map<std::pair<int64_t, int64_t>, Edge_t> st_to_edge;
     int64_t count = 0;
 
-    log << "\n";
     auto bg_edges = boost::edges(bg);
     for (auto e = bg_edges.first; e != bg_edges.second; ++e) {
         auto s = bg[boost::source(*e, bg)].id;
         auto t = bg[boost::target(*e, bg)].id;
-        log << "out " << s <<", "<< t<<"\n";
 
         /*
          * Reverse edge already been added
@@ -77,7 +75,6 @@ std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log
         st_to_edge[std::pair<int64_t, int64_t>(s, t)] = {++count, s, t, 1, -1};
     }
 
-    log << "\n";
     for (const auto &st : st_to_edge) {
         results.push_back(st.second);
     }

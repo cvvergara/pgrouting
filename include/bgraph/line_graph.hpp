@@ -23,8 +23,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_BGRAPH_LINEGRAPH_HPP_
-#define INCLUDE_BGRAPH_LINEGRAPH_HPP_
+#ifndef INCLUDE_BGRAPH_LINE_GRAPH_HPP_
+#define INCLUDE_BGRAPH_LINE_GRAPH_HPP_
 
 #include <sstream>
 #include <deque>
@@ -46,7 +46,7 @@ using B_G_R = boost::adjacency_list<
     pgrouting::Basic_vertex, pgrouting::Basic_edge>;
 
 template<typename B_G>
-B_G_R line_graph(const B_G& original, std::ostringstream &log) {
+B_G_R line_graph(const B_G& original) {
 
     using V = typename boost::graph_traits<B_G_R>::vertex_descriptor;
     using IndexMap = std::map<int64_t, V>;
@@ -55,11 +55,9 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
     IndexMap id_to_descriptor;
 
     auto o_edges = boost::edges(original);
-    log << "cycle edges\n";
     for (auto e = o_edges.first; e != o_edges.second; ++e) {
         auto v = add_vertex(result);
         result[v].id = original[*e].id;
-        log << " add vertex" << original[*e].id << "(" << v << ")\n";
         id_to_descriptor[original[*e].id] =  v;
     }
 
@@ -68,35 +66,25 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
     for (auto vertexIt = vs.first; vertexIt != vs.second; vertexIt++) {
         auto vertex = *vertexIt;
 
-        log << "original vertex " << original[vertex].id << ":\n";
         /* for( all incoming edges in to vertex v) */
         auto o_inedges = boost::in_edges(vertex, original);
         for (auto ine = o_inedges.first; ine != o_inedges.second; ++ine) {
             auto s = original[*ine].id;
-            log << "in edge " << s << "\n";
 
             auto o_out_edges = boost::out_edges(vertex, original);
             for (auto eout = o_out_edges.first; eout != o_out_edges.second; ++eout) {
                 /* for( all outgoing edges out from vertex v) */
                 auto t = original[*eout].id;
-                log << "in edge " << s << "\t";
-                log << "out edge " << t << "\t";
                 /*
                  *  Prevent self-edges from being created in the Line Graph
                  */
                 if (s == t) continue;
-                log << s <<","<< t<<"\n";
                 auto rs = id_to_descriptor[s];
                 auto rt = id_to_descriptor[t];
-                log << rs <<","<< rt<<"\n";
                 auto e = boost::add_edge(rs, rt, result);
                 result[e.first].id = static_cast<int64_t>(num_edges(result));
-                log << e.first << " added edge \n";
-                log << e.first << " added edge " << result[e.first].id <<"\n";
             }
-            log <<"\n";
         }
-        log <<"\n";
     }
     return result;
 }
@@ -104,4 +92,4 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
 }  // namespace b_g
 }  // namespace pgrouting
 
-#endif  // INCLUDE_BGRAPH_LINEGRAPH_HPP_
+#endif  // INCLUDE_BGRAPH_LINE_GRAPH_HPP_

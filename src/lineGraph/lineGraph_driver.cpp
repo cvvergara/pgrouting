@@ -49,10 +49,10 @@ namespace {
 
 
 template<typename G>
-std::vector<Edge_t> line_graph(const G& original, std::ostringstream &log) {
-    auto lg_result = pgrouting::b_g::line_graph(original.graph, log);
+std::vector<Edge_t> line_graph(const G& original) {
+    auto lg_result = pgrouting::b_g::line_graph(original.graph);
 
-    return pgrouting::b_g::graph_to_existing_edges(lg_result, log);
+    return pgrouting::b_g::graph_to_existing_edges(lg_result);
 }
 
 
@@ -94,21 +94,15 @@ pgr_do_lineGraph(
         }
         hint = nullptr;
 
-        log << "directed" << directed;
         std::vector<Edge_t> line_graph_edges;
         if (directed) {
-            log << "directed YES\n";
             pgrouting::DirectedGraph ograph(directed);
-            for (const auto &e : edges) {
-                log << e.id << " " << e.source << " " << e.target << " " << e.cost << " " << e.reverse_cost << "\n ";
-            }
             ograph.insert_edges(edges);
-            log << ograph;
-            line_graph_edges = line_graph(ograph, log);
+            line_graph_edges = line_graph(ograph);
         } else {
             pgrouting::UndirectedGraph ograph(directed);
             ograph.insert_edges(edges);
-            line_graph_edges = line_graph(ograph, log);
+            line_graph_edges = line_graph(ograph);
         }
 
         auto count = line_graph_edges.size();
@@ -118,7 +112,7 @@ pgr_do_lineGraph(
             (*return_count) = 0;
             *log_msg = pgr_msg(log.str().c_str());
             return;
-        };
+        }
 
         size_t sequence = 0;
         using pgrouting::pgr_alloc;
