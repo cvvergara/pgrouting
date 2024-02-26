@@ -35,12 +35,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <string>
 
+#include "bgraph/line_graph.hpp"
+#include "bgraph/graph_to_edges.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/pgr_alloc.hpp"
 #include "cpp_common/pgr_assert.hpp"
 #include "cpp_common/pgr_base_graph.hpp"
 #include "c_types/edge_rt.h"
 
+#if 0
 namespace pgrouting {
 namespace b_g {
 
@@ -103,6 +106,7 @@ B_G_R line_graph(const B_G& original, std::ostringstream &log) {
     }
     return result;
 }
+
 /** @brief converts a bg to Edges_t
  * @param[in] bg the boost grah
  * @returns a set of Edges_t that exist on the graph
@@ -148,6 +152,7 @@ std::vector<Edge_t> graph_to_existing_edges(const G &bg, std::ostringstream &log
 
 }  // namespace b_g
 }  // namespace pgrouting
+#endif
 
 namespace {
 
