@@ -26,16 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #ifndef INCLUDE_BGRAPH_GRAPH_TO_EDGES_HPP_
 #define INCLUDE_BGRAPH_GRAPH_TO_EDGES_HPP_
 
-#include <sstream>
-#include <deque>
 #include <vector>
+#include <map>
 #include <utility>
-#include <string>
 
-#include "cpp_common/pgdata_getters.hpp"
-#include "cpp_common/pgr_alloc.hpp"
-#include "cpp_common/pgr_assert.hpp"
-#include "cpp_common/pgr_base_graph.hpp"
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+
+#include "cpp_common/edge_t.hpp"
 #include "c_types/edge_rt.h"
 
 namespace pgrouting {

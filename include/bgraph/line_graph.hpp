@@ -26,17 +26,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #ifndef INCLUDE_BGRAPH_LINE_GRAPH_HPP_
 #define INCLUDE_BGRAPH_LINE_GRAPH_HPP_
 
-#include <sstream>
-#include <deque>
-#include <vector>
-#include <utility>
-#include <string>
+#include <map>
 
-#include "cpp_common/pgdata_getters.hpp"
-#include "cpp_common/pgr_alloc.hpp"
-#include "cpp_common/pgr_assert.hpp"
-#include "cpp_common/pgr_base_graph.hpp"
-#include "c_types/edge_rt.h"
+#include <boost/config.hpp>
+#include <boost/graph/adjacency_list.hpp>
+
+#include "cpp_common/basic_vertex.hpp"
+#include "cpp_common/basic_edge.hpp"
 
 namespace pgrouting {
 namespace b_g {
@@ -47,7 +43,6 @@ using B_G_R = boost::adjacency_list<
 
 template<typename B_G>
 B_G_R line_graph(const B_G& original) {
-
     using V = typename boost::graph_traits<B_G_R>::vertex_descriptor;
     using IndexMap = std::map<int64_t, V>;
 
