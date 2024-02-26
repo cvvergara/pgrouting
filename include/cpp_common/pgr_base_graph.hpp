@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <set>
 #include <map>
 #include <limits>
+#include <string>
 
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/config.hpp>
@@ -272,7 +273,8 @@ class Pgr_base_graph {
          propmapIndex(mapIndex) {
              // This code does not work with contraction
              size_t i = 0;
-             for (auto vi = boost::vertices(graph).first; vi != boost::vertices(graph).second; ++vi) {
+             for (auto vi = boost::vertices(graph).first;
+                     vi != boost::vertices(graph).second; ++vi) {
                  vertices_map[vertices[i].id] = (*vi);
                  graph[(*vi)].cp_members(vertices[i]);
                  // put(propmapIndex, *vi, num_vertices());
@@ -293,7 +295,7 @@ class Pgr_base_graph {
      /**
        Prepares the _graph_ to be of type gtype with 0 vertices
        */
-     explicit Pgr_base_graph<G, T_V, T_E >(bool directed)
+     explicit Pgr_base_graph<G , T_V, T_E >(bool directed)
          : graph(0),
          m_is_directed(directed),
          vertIndex(boost::get(boost::vertex_index, graph)),
@@ -307,12 +309,6 @@ class Pgr_base_graph {
          insert_edges(edges, false);
      }
 
-     template <typename T>
-     void insert_edges_as_vertices(const std::vector<T> &edges) {
-         for (const auto &e : edges) {
-             add_V(e.id);
-         }
-     }
 
      /** @brief Inserts *count* edges of type *Edge_t* into the graph
         The set of edges should not have an illegal vertex defined
@@ -415,25 +411,13 @@ class Pgr_base_graph {
          return vm_s->second;
      }
 
-     V add_V(const int64_t eid) {
-         auto vm_s(vertices_map.find(eid));
-         if (vm_s == vertices_map.end()) {
-             auto v =  add_vertex(graph);
-             graph[v].id = eid;
-             vertices_map[eid] =  v;
-             put(propmapIndex, v, num_vertices());
-             return v;
-         }
-         return vm_s->second;
-     }
-
      /** @brief get the vertex descriptor of the vid
        Call has_vertex(vid) before calling this function
        @param[in] vid vertex identifier
        @return V: The vertex descriptor of the vertex
        */
      V get_V(int64_t vid) const {
-         if (!has_vertex(vid)) throw std::string("Call to ") + __PRETTY_FUNCTION__ + " without checking with has_vertex";
+         if (!has_vertex(vid)) throw std::string("Call to ") + __PRETTY_FUNCTION__ + "without checking with has_vertex";
          return vertices_map.find(vid)->second;
      }
 
@@ -556,29 +540,19 @@ class Pgr_base_graph {
      /**@{*/
      friend std::ostream& operator<<(
              std::ostream &log, const Pgr_base_graph< G, T_V, T_E > &g) {
-         typename Pgr_base_graph< G, T_V, T_E >::EI_i out, out_end;
+         typename Pgr_base_graph< G, T_V, T_E >::EO_i out, out_end;
 
          for (auto vi = vertices(g.graph).first;
                  vi != vertices(g.graph).second; ++vi) {
              if ((*vi) >= g.num_vertices()) break;
-             log << (*vi) << ":\n " << " in_edges_of(" << g.graph[(*vi)] << "):\n";
-             for (boost::tie(out, out_end) = in_edges(*vi, g.graph); out != out_end; ++out) {
+             log << (*vi) << ": " << " out_edges_of(" << g.graph[(*vi)] << "):";
+             for (boost::tie(out, out_end) = out_edges(*vi, g.graph);
+                     out != out_end; ++out) {
                  log << ' '
                      << g.graph[*out].id << "=("
                      << g[g.source(*out)].id << ", "
                      << g[g.target(*out)].id << ") = "
                      << g.graph[*out].cost <<"\t";
-             }
-             log << "\n";
-
-             auto e_out = boost::out_edges(*vi, g.graph);
-             log << (*vi) << ":\n " << " out_edges_of(" << g.graph[(*vi)] << "):\n";
-             for (auto e = e_out.first; e != e_out.second; ++e) {
-                 log << ' '
-                     << g.graph[*e].id << "=("
-                     << g[g.source(*e)].id << ", "
-                     << g[g.target(*e)].id << ") = "
-                     << g.graph[*e].cost <<"\t";
              }
              log << std::endl;
          }
@@ -641,8 +615,8 @@ class Pgr_base_graph {
          if (!has_vertex(p_from) || !has_vertex(p_to)) return;
 
          EO_i out, out_end;
-         auto u (get_V(p_from));
-         auto v (get_V(p_to));
+         auto u(get_V(p_from));
+         auto v(get_V(p_to));
 
          for (boost::tie(out, out_end) = out_edges(u, graph); out != out_end; ++out) {
              if (target(*out) == v) {
@@ -665,7 +639,7 @@ class Pgr_base_graph {
          /* nothing to do, the vertex doesn't exist */
          if (!has_vertex(vid)) return;
 
-         auto v (get_V(vid));
+         auto v(get_V(vid));
          EO_i out, out_end;
          bool change = true;
          while (change) {
@@ -754,7 +728,6 @@ class Pgr_base_graph {
      }
      /**@}*/
 
- public:
      template <typename T> void graph_add_edge(const T &edge, bool normal) {
          bool inserted;
          E e;
@@ -770,21 +743,22 @@ class Pgr_base_graph {
          pgassert(vertices_map.find(edge.source) != vertices_map.end());
          pgassert(vertices_map.find(edge.target) != vertices_map.end());
          if (edge.cost >= 0) {
-             boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
+             boost::tie(e, inserted) =
+                 boost::add_edge(vm_s, vm_t, graph);
              graph[e].cost = edge.cost;
              graph[e].id = edge.id;
          }
 
          if (edge.reverse_cost >= 0
                  && (m_is_directed || (!m_is_directed && edge.cost != edge.reverse_cost))) {
-             boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
+             boost::tie(e, inserted) =
+                 boost::add_edge(vm_t, vm_s, graph);
 
              graph[e].cost = edge.reverse_cost;
              graph[e].id = normal? edge.id : -edge.id;
          }
      }
 
- private:
      template <typename T> void graph_add_min_edge_no_parallel(const T &edge) {
          bool inserted;
          E e;
@@ -879,6 +853,7 @@ class Pgr_base_graph {
      /**@{*/
      G graph;                /**< The graph */
      id_to_V  vertices_map;   /**< id -> graph id */
+
  private:
      bool m_is_directed;      /**< type (DIRECTED or UNDIRECTED) */
      /**@}*/
