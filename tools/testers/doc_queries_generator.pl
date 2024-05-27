@@ -209,17 +209,16 @@ for my $c (@cfgs) {
 
     print Data::Dumper->Dump([\%main::tests],['test']) if $VERBOSE;
 
-    if ($main::tests{any} && !$DOCUMENTATION) {
+    if ($main::tests{any}{tests} && !$DOCUMENTATION) {
         push @{$stats{$c}}, run_test($c, $main::tests{any});
         $found++;
-    }
-    elsif ($main::tests{any}{documentation} && $DOCUMENTATION) {
+    } elsif ($main::tests{any}{documentation} && $DOCUMENTATION) {
         push @{$stats{$c}}, run_test($c, $main::tests{any});
         $found++;
     }
 
     if (! $found) {
-        $stats{$c} = "No tests were found for '$vpg-$postgis_ver'!";
+        $stats{$c} = "No files found for '$c'!";
     }
 }
 
@@ -392,19 +391,18 @@ sub process_single_test{
         mysystem("grep -v NOTICE '$TMP' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile2");
         $dfile = $TMP3;
         mysystem("grep -v NOTICE '$resultsFile' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
-    }
-    elsif ($DEBUG1) { #to delete CONTEXT lines
+    } elsif ($DEBUG1) { #to delete CONTEXT lines
         $dfile2 = $TMP2;
         mysystem("grep -v '^CONTEXT:' '$TMP' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile2");
         $dfile = $TMP3;
         mysystem("grep -v '^CONTEXT:' '$resultsFile' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
-    }
-    else {
+    } else {
         $dfile2 = $TMP2;
         mysystem("grep -v '^COPY' '$TMP' | grep -v 'psql:tools' > $dfile2");
         $dfile = $TMP3;
         mysystem("grep -v '^COPY' '$resultsFile' | grep -v 'psql:tools' > $dfile");
     }
+
     if (! -f "$resultsFile") {
         $res->{"$inputFile"} = "\nFAILED: '$resultsFile` file missing : $!";
         $stats{z_fail}++;
