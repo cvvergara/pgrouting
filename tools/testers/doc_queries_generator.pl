@@ -116,7 +116,7 @@ while (my $a = shift @ARGV) {
     }
     elsif ($a eq '-alg') {
         $alg = shift @ARGV || Usage();
-        @testpath = ("docqueries/$alg");
+        @testpath = ("$alg");
     }
     elsif ($a eq '-psql') {
         $psql = shift @ARGV || Usage();
@@ -238,18 +238,19 @@ if ($stats{z_crash} > 0 || $stats{z_fail} > 0) {
 exit 0;      # signal we passed all the tests
 
 
-# c  one file in cfgs
+# file  one file in cfgs
 # t  contents of array that has keys comment, data and test
 sub run_test {
-    my $c = shift;
+    my $confFile = shift;
     my $t = shift;
     my %res = ();
 
-    my $dir = dirname($c);
+    my $dir = dirname($confFile);
 
     $res{comment} = $t->{comment} if $t->{comment};
-    #t->{data}  referencing the key data of the data files
 
+=pod
+    # not doing singleTests anymore
     my $singleDB = "____pgr___single_test___";
     for my $testName (@{$t->{singleTest}}) {
         createTestDB($singleDB);
@@ -260,29 +261,34 @@ sub run_test {
         process_single_test($testName, $dir, $singleDB,\%res);
         mysystem("dropdb $connopts $singleDB");
     }
+=cut
 
+    # Load the sample data & any other relevant data files
     mysystem("$psql $connopts -A -t -q -f tools/testers/sampledata.sql $DBNAME >> $TMP2 2>\&1 ");
-    for my $x (@{$t->{data}}) {
-        mysystem("$psql $connopts -A -t -q -f '$dir/$x' $DBNAME >> $TMP2 2>\&1 ");
+
+    # There is data to load relative to the directory
+    for my $datafile (@{$t->{data}}) {
+        mysystem("$psql $connopts -A -t -q -f '$dir/$datafile' $DBNAME >> $TMP2 2>\&1 ");
     }
 
+=pod
     if ($INTERNAL_TESTS) {
         for my $x (@{$t->{debugtests}}) {
             process_single_test($x, $dir,, $DBNAME, \%res)
         }
     }
+=cut
+
     if ($DOCUMENTATION) {
-        for my $x (@{$t->{documentation}}) {
-            process_single_test($x, $dir,, $DBNAME, \%res);
-            my $cmd = q(perl -pi -e 's/[ \t]+$//');
-            $cmd .= " $dir/$x.result";
-            mysystem( $cmd );
+        for my $file (@{$t->{documentation}}) {
+            process_single_test($file, $dir,, $DBNAME, \%res);
         }
-    }
-    else {
+    } else {
         for my $x (@{$t->{tests}}) {
             process_single_test($x, $dir,, $DBNAME, \%res)
         }
+
+        # Just in case but its not used
         if ($OS =~/msys/ || $OS=~/MSW/ || $OS =~/cygwin/) {
             for my $x (@{$t->{windows}}) {
                 process_single_test($x, $dir,, $DBNAME, \%res)
@@ -301,18 +307,28 @@ sub run_test {
     return \%res;
 }
 
+# file: file to be processed. Example: johnson.pg
+# dir: apth of the file. Example: docqueries/allpairs/
+# database: the database name: Example: pgr_test__db__test
+# res: Where the result is stored
+# each tests will use clean data
+
 sub process_single_test{
-    my $x = shift;
+    my $file = shift;
     my $dir = shift;
     my $database = shift;
     my $res = shift;
-    #each tests will use clean data
 
-    print "Processing queries $dir/$x";
+    my $inputFile = "$dir/$file";
+    (my $filename = $file) =~ s/\.[^.]+$//;
+    my $resultsFile = "$dir/$filename.result";
+
+    print "Processing $inputFile";
     my $t0 = [gettimeofday];
-    #TIN = test_input_file
-    open(TIN, "$dir/$x.test.sql") || do {
-        $res->{"$dir/$x.test.sql"} = "FAILED: could not open '$dir/$x.test.sql' : $!";
+
+    # TIN = test input file
+    open(TIN, "$inputFile") || do {
+        $res->{"$inputFile"} = "FAILED: could not open '$inputFile' : $!";
         $stats{z_fail}++;
         next;
     };
@@ -321,46 +337,51 @@ sub process_single_test{
     $level = "WARNING" if $ignore;
     $level = "DEBUG3" if $DEBUG1;
 
+    # Processing is handled kinda like a file
+    # Where the commands are stored on PSQL file
+    # When the PSQL is closed is when everything gets executed
 
+    # Connect to the database with PSQL
     if ($DOCUMENTATION) {
-        open(PSQL, "|$psql $connopts --set='VERBOSITY terse' -e $database > $dir/$x.result 2>\&1 ") || do {
-            $res->{"$dir/$x.test.sql"} = "FAILED: could not open connection to db : $!";
+        # For rewriting the results files
+        # Do the rewrite or store FAILURE
+        open(PSQL, "|$psql $connopts --set='VERBOSITY terse' -e $database > $resultsFile 2>\&1 ") || do {
+            $res->{"$inputFile"} = "FAILED: could not open connection to db : $!";
+            $stats{z_fail}++;
             next;
         };
-    }
-    else {
-        #open(PSQL, "|$psql $connopts --set='VERBOSITY terse' -e $database > $dir/$x.result 2>\&1 ") || do {
-        #    $res->{"$dir/$x.test.sql"} = "FAILED: could not open connection to db : $!";
-        #    $stats{z_fail}++;
-        #    next;
-        #};
-
+    } else {
+        # For comparing the result
+        # Create temp file with current results
         open(PSQL, "|$psql $connopts  --set='VERBOSITY terse' -e $database > $TMP 2>\&1 ") || do {
-            $res->{"$dir/$x.test.sql"} = "FAILED: could not open connection to db : $!";
-            if (!$INTERNAL_TESTS) {
-               $stats{z_fail}++;
-            }
+            $res->{"$inputFile"} = "FAILED: could not open connection to db : $!";
+            $stats{z_fail}++;
             next;
         };
     }
 
-
-    my @d = ();
-    @d = <TIN>; #reads the whole file into the array @d
+    # Read the whole (input) file into the array @d
+    my @queries = ();
+    @queries = <TIN>;
 
     print PSQL "BEGIN;\n";
     print PSQL "SET client_min_messages TO $level;\n";
-    #prints the whole fle stored in @d
-    print PSQL @d;
+    # prints the whole fle stored in @queries
+    print PSQL @queries;
     print PSQL "\nROLLBACK;";
 
     # executes everything
     close(PSQL);
+
     #closes the input file  /TIN = test input
     close(TIN);
 
     if ($DOCUMENTATION) {
+        # Nothing else to do when rewriting the results file
         print "\n";
+        my $cmd = q(perl -pi -e 's/[ \t]+$//');
+        $cmd .= " $resultsFile";
+        mysystem( $cmd );
         return;
     }
 
@@ -370,22 +391,22 @@ sub process_single_test{
         $dfile2 = $TMP2;
         mysystem("grep -v NOTICE '$TMP' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile2");
         $dfile = $TMP3;
-        mysystem("grep -v NOTICE '$dir/$x.result' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
+        mysystem("grep -v NOTICE '$resultsFile' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
     }
     elsif ($DEBUG1) { #to delete CONTEXT lines
         $dfile2 = $TMP2;
         mysystem("grep -v '^CONTEXT:' '$TMP' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile2");
         $dfile = $TMP3;
-        mysystem("grep -v '^CONTEXT:' '$dir/$x.result' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
+        mysystem("grep -v '^CONTEXT:' '$resultsFile' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
     }
     else {
         $dfile2 = $TMP2;
         mysystem("grep -v '^COPY' '$TMP' | grep -v 'psql:tools' > $dfile2");
         $dfile = $TMP3;
-        mysystem("grep -v '^COPY' '$dir/$x.result' | grep -v 'psql:tools' > $dfile");
+        mysystem("grep -v '^COPY' '$resultsFile' | grep -v 'psql:tools' > $dfile");
     }
-    if (! -f "$dir/$x.result") {
-        $res->{"$dir/$x.test.sql"} = "\nFAILED: result file missing : $!";
+    if (! -f "$resultsFile") {
+        $res->{"$inputFile"} = "\nFAILED: '$resultsFile` file missing : $!";
         $stats{z_fail}++;
         next;
     }
@@ -398,24 +419,24 @@ sub process_single_test{
     #looks for removing leading blanks and trailing blanks
     $r =~ s/^\s*|\s*$//g;
     if ($r =~ /connection to server was lost/) {
-        $res->{"$dir/$x.test.sql"} = "CRASHED SERVER: $r";
+        $res->{"$inputFile"} = "CRASHED SERVER: $r";
         $stats{z_crash}++;
         # allow the server some time to recover from the crash
-        warn "CRASHED SERVER: '$dir/$x.test.sql', sleeping 5 ...\n";
+        warn "CRASHED SERVER: '$inputFile', sleeping 5 ...\n";
         sleep 20;
     }
     #if the diff has 0 length then everything was the same, so here we detect changes
     elsif (length($r)) {
-        $res->{"$dir/$x.test.sql"} = "FAILED: $r";
+        $res->{"$inputFile"} = "FAILED: $r";
         $stats{z_fail}++ unless $DEBUG1;
-        print "\t FAIL\n";
+        print "\t FAIL";
     }
     else {
-        $res->{"$dir/$x.test.sql"} = "Passed";
+        $res->{"$inputFile"} = "Passed";
         $stats{z_pass}++;
-        print "\t PASS\n";
+        print "\t PASS";
     }
-    print "    test run time: " . tv_interval($t0, [gettimeofday]) . "\n";
+    print "\tRun time: " . tv_interval($t0, [gettimeofday]) . "\n";
 }
 
 sub createTestDB {
