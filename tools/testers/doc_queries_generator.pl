@@ -280,8 +280,8 @@ sub process_single_test{
 
     (my $filename = $file) =~ s/((\.[^.\s]+)+)$//;
     if ($filename eq $file) {
-        # the filename has no extension then its the old style with .test.sql
-        $file = "$file.test.sql"
+        # the filename has no extension then its the new style with .pg
+        $file = "$file.pg"
     };
     my $inputFile = "$dir/$file";
     my $resultsFile = "$dir/$filename.result";
@@ -291,9 +291,10 @@ sub process_single_test{
 
     # TIN = test input file
     open(TIN, "$inputFile") || do {
+        print "\tFAILED: could not open '$inputFile \n";
         $stats{"$inputFile"} = "FAILED: could not open '$inputFile' : $!";
         $stats{z_fail}++;
-        next;
+        return;
     };
 
     my $level = "NOTICE";
