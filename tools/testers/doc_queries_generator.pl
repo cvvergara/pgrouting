@@ -279,10 +279,6 @@ sub process_single_test{
     my $database = shift;
 
     (my $filename = $file) =~ s/((\.[^.\s]+)+)$//;
-    if ($filename eq $file) {
-        # the filename has no extension then its the new style with .pg
-        $file = "$file.pg"
-    };
     my $inputFile = "$dir/$file";
     my $resultsFile = "$dir/$filename.result";
 
