@@ -1,7 +1,7 @@
 #! /usr/bin/perl -w
 
 =pod
-File: aplgorithm testes
+File: doc_queries_generator.pl
 
 Copyright (c) 2013 pgRouting developers
 
@@ -167,7 +167,7 @@ mysystem("dropdb $connopts $DBNAME") if $clean;
 
 %main::tests = ();
 my @cfgs = ();
-my %stats = (z_pass=>0, z_fail=>0, z_crash=>0);
+my %stats = (z_pass=>0, z_fail=>0, z_crash=>0,RunTimeTotal=>0);
 my $TMP = "/tmp/pgr-test-runner-$$";
 my $TMP2 = "/tmp/pgr-test-runner-$$-2";
 my $TMP3 = "/tmp/pgr-test-runner-$$-3";
@@ -210,10 +210,10 @@ for my $c (@cfgs) {
     print Data::Dumper->Dump([\%main::tests],['test']) if $VERBOSE;
 
     if ($main::tests{any}{tests} && !$DOCUMENTATION) {
-        push @{$stats{$c}}, run_test($c, $main::tests{any});
+        run_test($c, $main::tests{any});
         $found++;
     } elsif ($main::tests{any}{documentation} && $DOCUMENTATION) {
-        push @{$stats{$c}}, run_test($c, $main::tests{any});
+        run_test($c, $main::tests{any});
         $found++;
     }
 
@@ -242,25 +242,8 @@ exit 0;      # signal we passed all the tests
 sub run_test {
     my $confFile = shift;
     my $t = shift;
-    my %res = ();
 
     my $dir = dirname($confFile);
-
-    $res{comment} = $t->{comment} if $t->{comment};
-
-=pod
-    # not doing singleTests anymore
-    my $singleDB = "____pgr___single_test___";
-    for my $testName (@{$t->{singleTest}}) {
-        createTestDB($singleDB);
-        mysystem("$psql $connopts -A -t -q -f tools/testers/sampledata.sql' $singleDB >> $TMP2 2>\&1 ");
-        for my $x (@{$t->{data}}) {
-            mysystem("$psql $connopts -A -t -q -f '$dir/$x' $singleDB >> $TMP2 2>\&1 ");
-        }
-        process_single_test($testName, $dir, $singleDB,\%res);
-        mysystem("dropdb $connopts $singleDB");
-    }
-=cut
 
     # Load the sample data & any other relevant data files
     mysystem("$psql $connopts -A -t -q -f tools/testers/sampledata.sql $DBNAME >> $TMP2 2>\&1 ");
@@ -270,56 +253,49 @@ sub run_test {
         mysystem("$psql $connopts -A -t -q -f '$dir/$datafile' $DBNAME >> $TMP2 2>\&1 ");
     }
 
-=pod
-    if ($INTERNAL_TESTS) {
-        for my $x (@{$t->{debugtests}}) {
-            process_single_test($x, $dir,, $DBNAME, \%res)
-        }
-    }
-=cut
 
     if ($DOCUMENTATION) {
         for my $file (@{$t->{documentation}}) {
-            process_single_test($file, $dir,, $DBNAME, \%res);
+            process_single_test($file, $dir, $DBNAME);
         }
     } else {
         for my $x (@{$t->{tests}}) {
-            process_single_test($x, $dir,, $DBNAME, \%res)
+            process_single_test($x, $dir, $DBNAME)
         }
 
         # Just in case but its not used
         if ($OS =~/msys/ || $OS=~/MSW/ || $OS =~/cygwin/) {
             for my $x (@{$t->{windows}}) {
-                process_single_test($x, $dir,, $DBNAME, \%res)
+                process_single_test($x, $dir, $DBNAME)
             }
         } elsif ($OS=~/Mac/ ||  $OS=~/dar/) {
             for my $x (@{$t->{macos}}) {
-                process_single_test($x, $dir,, $DBNAME, \%res)
+                process_single_test($x, $dir, $DBNAME)
             }
         } else {
             for my $x (@{$t->{linux}}) {
-                process_single_test($x, $dir,, $DBNAME, \%res)
+                process_single_test($x, $dir, $DBNAME)
             }
         }
     }
-
-    return \%res;
 }
 
 # file: file to be processed. Example: johnson.pg
 # dir: apth of the file. Example: docqueries/allpairs/
 # database: the database name: Example: pgr_test__db__test
-# res: Where the result is stored
 # each tests will use clean data
 
 sub process_single_test{
     my $file = shift;
     my $dir = shift;
     my $database = shift;
-    my $res = shift;
 
+    (my $filename = $file) =~ s/((\.[^.\s]+)+)$//;
+    if ($filename eq $file) {
+        # the filename has no extension then its the old style with .test.sql
+        $file = "$file.test.sql"
+    };
     my $inputFile = "$dir/$file";
-    (my $filename = $file) =~ s/\.[^.]+$//;
     my $resultsFile = "$dir/$filename.result";
 
     print "Processing $inputFile";
@@ -327,7 +303,7 @@ sub process_single_test{
 
     # TIN = test input file
     open(TIN, "$inputFile") || do {
-        $res->{"$inputFile"} = "FAILED: could not open '$inputFile' : $!";
+        $stats{"$inputFile"} = "FAILED: could not open '$inputFile' : $!";
         $stats{z_fail}++;
         next;
     };
@@ -345,7 +321,7 @@ sub process_single_test{
         # For rewriting the results files
         # Do the rewrite or store FAILURE
         open(PSQL, "|$psql $connopts --set='VERBOSITY terse' -e $database > $resultsFile 2>\&1 ") || do {
-            $res->{"$inputFile"} = "FAILED: could not open connection to db : $!";
+            $stats{"$inputFile"} = "FAILED: could not open connection to db : $!";
             $stats{z_fail}++;
             next;
         };
@@ -353,7 +329,7 @@ sub process_single_test{
         # For comparing the result
         # Create temp file with current results
         open(PSQL, "|$psql $connopts  --set='VERBOSITY terse' -e $database > $TMP 2>\&1 ") || do {
-            $res->{"$inputFile"} = "FAILED: could not open connection to db : $!";
+            $stats{"$inputFile"} = "FAILED: could not open connection to db : $!";
             $stats{z_fail}++;
             next;
         };
@@ -375,8 +351,12 @@ sub process_single_test{
     #closes the input file  /TIN = test input
     close(TIN);
 
+    my $runTime = tv_interval($t0, [gettimeofday]);
+    print "\tRun time: $runTime";
+    $stats{RunTimeTotal} += $runTime;
+
     if ($DOCUMENTATION) {
-        # Nothing else to do when rewriting the results file
+        # convert tabs to spaces
         print "\n";
         my $cmd = q(perl -pi -e 's/[ \t]+$//');
         $cmd .= " $resultsFile";
@@ -384,57 +364,59 @@ sub process_single_test{
         return;
     }
 
-    my $dfile;
-    my $dfile2;
+=pod
+    my $expectedResults;
+    my $currentResults;
     if ($ignore) { #decide how to compare results, if ignoring or not ignoring
-        $dfile2 = $TMP2;
-        mysystem("grep -v NOTICE '$TMP' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile2");
-        $dfile = $TMP3;
-        mysystem("grep -v NOTICE '$resultsFile' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
+        $currentResults = $TMP2;
+        mysystem("grep -v NOTICE '$TMP' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $currentResults");
+        $expectedResults = $TMP3;
+        mysystem("grep -v NOTICE '$resultsFile' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $expectedResults");
     } elsif ($DEBUG1) { #to delete CONTEXT lines
-        $dfile2 = $TMP2;
-        mysystem("grep -v '^CONTEXT:' '$TMP' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile2");
-        $dfile = $TMP3;
-        mysystem("grep -v '^CONTEXT:' '$resultsFile' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $dfile");
+        $currentResults = $TMP2;
+        mysystem("grep -v '^CONTEXT:' '$TMP' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $currentResults");
+        $expectedResults = $TMP3;
+        mysystem("grep -v '^CONTEXT:' '$resultsFile' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $expectedResults");
     } else {
-        $dfile2 = $TMP2;
-        mysystem("grep -v '^COPY' '$TMP' | grep -v 'psql:tools' > $dfile2");
-        $dfile = $TMP3;
-        mysystem("grep -v '^COPY' '$resultsFile' | grep -v 'psql:tools' > $dfile");
+        $currentResults = $TMP2;
+        mysystem("grep -v '^COPY' '$TMP' | grep -v 'psql:tools' > $currentResults");
+        $expectedResults = $TMP3;
+        mysystem("grep -v '^COPY' '$resultsFile' | grep -v 'psql:tools' > $expectedResults");
     }
+=cut
 
     if (! -f "$resultsFile") {
-        $res->{"$inputFile"} = "\nFAILED: '$resultsFile` file missing : $!";
+        $stats{"$inputFile"} = "\nFAILED: '$resultsFile` file missing : $!";
         $stats{z_fail}++;
         next;
     }
 
-    # use diff -w to ignore white space differences like \r vs \r\n
-    #ignore white spaces when comparing
-    #dfile is expected results
-    #dfile2 is the actual results
-    my $r = `diff -w '$dfile' '$dfile2' `;
+    # diff ignore white spaces when comparing
+=pod
+    my $r = `diff -w '$expectedResults' '$currentResults' `;
+=cut
+    my $originalDiff = `diff -w '$resultsFile' '$TMP' `;
+
+    print "\noriginalDiff = $originalDiff\n" if $VERBOSE;
+
     #looks for removing leading blanks and trailing blanks
-    $r =~ s/^\s*|\s*$//g;
-    if ($r =~ /connection to server was lost/) {
-        $res->{"$inputFile"} = "CRASHED SERVER: $r";
+    $originalDiff =~ s/^\s*|\s*$//g;
+    if ($originalDiff =~ /connection to server was lost/) {
+        # when the server crashed
+        $stats{"$inputFile"} = "CRASHED SERVER: $originalDiff";
         $stats{z_crash}++;
         # allow the server some time to recover from the crash
         warn "CRASHED SERVER: '$inputFile', sleeping 5 ...\n";
         sleep 20;
-    }
-    #if the diff has 0 length then everything was the same, so here we detect changes
-    elsif (length($r)) {
-        $res->{"$inputFile"} = "FAILED: $r";
+    } elsif (length($originalDiff)) {
+        # Things changed print the diff
+        $stats{"$inputFile"} = "FAILED: $originalDiff";
         $stats{z_fail}++ unless $DEBUG1;
-        print "\t FAIL";
-    }
-    else {
-        $res->{"$inputFile"} = "Passed";
+        print "\t FAIL\n";
+    } else {
         $stats{z_pass}++;
-        print "\t PASS";
+        print "\t PASS\n";
     }
-    print "\tRun time: " . tv_interval($t0, [gettimeofday]) . "\n";
 }
 
 sub createTestDB {
@@ -589,12 +571,8 @@ sub mysystem {
 }
 
 sub want_tests {
-#    /^bd_d.*\z/s &&
-#    ($File::Find::prune = 1)
-#    ||
     /^test\.conf\z/s &&
     push @cfgs, $name;
-    #print join("\n",@cfgs),"\n";
 }
 
 
