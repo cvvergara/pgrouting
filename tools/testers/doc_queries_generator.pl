@@ -209,13 +209,8 @@ for my $c (@cfgs) {
 
     print Data::Dumper->Dump([\%main::tests],['test']) if $VERBOSE;
 
-    if ($main::tests{any}{tests} && !$DOCUMENTATION) {
-        run_test($c, $main::tests{any});
-        $found++;
-    } elsif ($main::tests{any}{documentation} && $DOCUMENTATION) {
-        run_test($c, $main::tests{any});
-        $found++;
-    }
+    run_test($c, $main::tests{any});
+    $found++;
 
     if (! $found) {
         $stats{$c} = "No files found for '$c'!";
@@ -253,29 +248,22 @@ sub run_test {
         mysystem("$psql $connopts -A -t -q -f '$dir/$datafile' $DBNAME >> $TMP2 2>\&1 ");
     }
 
+    for my $file (@{$t->{files}}) {
+        process_single_test($file, $dir, $DBNAME);
+    }
 
-    if ($DOCUMENTATION) {
-        for my $file (@{$t->{documentation}}) {
-            process_single_test($file, $dir, $DBNAME);
-        }
-    } else {
-        for my $x (@{$t->{tests}}) {
+    # Just in case but its not used
+    if ($OS =~/msys/ || $OS=~/MSW/ || $OS =~/cygwin/) {
+        for my $x (@{$t->{windows}}) {
             process_single_test($x, $dir, $DBNAME)
         }
-
-        # Just in case but its not used
-        if ($OS =~/msys/ || $OS=~/MSW/ || $OS =~/cygwin/) {
-            for my $x (@{$t->{windows}}) {
-                process_single_test($x, $dir, $DBNAME)
-            }
-        } elsif ($OS=~/Mac/ ||  $OS=~/dar/) {
-            for my $x (@{$t->{macos}}) {
-                process_single_test($x, $dir, $DBNAME)
-            }
-        } else {
-            for my $x (@{$t->{linux}}) {
-                process_single_test($x, $dir, $DBNAME)
-            }
+    } elsif ($OS=~/Mac/ ||  $OS=~/dar/) {
+        for my $x (@{$t->{macos}}) {
+            process_single_test($x, $dir, $DBNAME)
+        }
+    } else {
+        for my $x (@{$t->{linux}}) {
+            process_single_test($x, $dir, $DBNAME)
         }
     }
 }
@@ -364,27 +352,6 @@ sub process_single_test{
         return;
     }
 
-=pod
-    my $expectedResults;
-    my $currentResults;
-    if ($ignore) { #decide how to compare results, if ignoring or not ignoring
-        $currentResults = $TMP2;
-        mysystem("grep -v NOTICE '$TMP' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $currentResults");
-        $expectedResults = $TMP3;
-        mysystem("grep -v NOTICE '$resultsFile' | grep -v '^CONTEXT:' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $expectedResults");
-    } elsif ($DEBUG1) { #to delete CONTEXT lines
-        $currentResults = $TMP2;
-        mysystem("grep -v '^CONTEXT:' '$TMP' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $currentResults");
-        $expectedResults = $TMP3;
-        mysystem("grep -v '^CONTEXT:' '$resultsFile' | grep -v '^PL/pgSQL function' | grep -v '^COPY' > $expectedResults");
-    } else {
-        $currentResults = $TMP2;
-        mysystem("grep -v '^COPY' '$TMP' | grep -v 'psql:tools' > $currentResults");
-        $expectedResults = $TMP3;
-        mysystem("grep -v '^COPY' '$resultsFile' | grep -v 'psql:tools' > $expectedResults");
-    }
-=cut
-
     if (! -f "$resultsFile") {
         $stats{"$inputFile"} = "\nFAILED: '$resultsFile` file missing : $!";
         $stats{z_fail}++;
@@ -392,9 +359,6 @@ sub process_single_test{
     }
 
     # diff ignore white spaces when comparing
-=pod
-    my $r = `diff -w '$expectedResults' '$currentResults' `;
-=cut
     my $originalDiff = `diff -w '$resultsFile' '$TMP' `;
 
     print "\noriginalDiff = $originalDiff\n" if $VERBOSE;
