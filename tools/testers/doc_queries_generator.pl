@@ -48,13 +48,11 @@ use vars qw/*name *dir *prune/;
 *dir    = *File::Find::dir;
 *prune  = *File::Find::prune;
 
-my $POSGRESQL_MIN_VERSION = '9.2';
+my $POSGRESQL_MIN_VERSION = '12';
 my $DOCUMENTATION = 0;
-my $INTERNAL_TESTS = 0;
+my $DATA = 0;
 my $VERBOSE = 0;
-my $DRYRUN = 0;
-my $DEBUG = 0;
-my $DEBUG1 = 0;
+my $LEVEL = "NOTICE";
 my $FORCE = 0;
 
 my $DBNAME = "pgr_test__db__test";
@@ -64,35 +62,30 @@ my $DBPORT;
 
 sub Usage {
     die "Usage: doc_queries_generator.pl -pgver vpg -pgisver vpgis -psql /path/to/psql\n" .
-    "       -pgver vpg          - postgresql version\n" .
+    "       -alg 'dir'          - directory to select which algorithm subdirs to test\n" .
+    "       -pgver version      - postgresql version\n" .
     "       -pghost host        - postgresql host or socket directory to use\n" .
     "       -pgport port        - postgresql port to use\n" .
     "       -pguser username    - postgresql user role to use\n" .
-    "       -pgisver vpgis      - postgis version\n" .
-    "       -pgrver vpgr        - pgrouting version\n" .
+    "       -dbname name        - Database name defaults to $DBNAME\n" .
+    "       -pgrver version     - pgrouting version. (Not all compares will pass)\n" .
     "       -psql /path/to/psql - optional path to psql\n" .
-    "       -v                  - verbose messages for small debuging\n" .
-    "       -dbg                - use when CMAKE_BUILD_TYPE = DEBUG\n" .
-    "       -debug              - verbose messages for debuging(enter twice for more)\n" .
-    "       -debug1             - DEBUG1 messages (for timing reports)\n" .
-    "       -clean              - dropdb pgr_test__db__test\n" .
-    "       -ignorenotice       - ignore NOTICE statements when reporting failures\n" .
-    "       -alg 'dir'          - directory to select which algorithm subdirs to test\n" .
-    "       -documentation      - ONLY generate documentation examples\n" .
-    "       -force              - Force tests for unsupported versions >= 9.1 of postgreSQL \n" .
-    "       -h                  - help\n";
+    "       -data               - only install the sampledata.\n" .
+    "       -l(evel)  NOTICE    - client_min_messages value. Defaults to $LEVEL. other values can be WARNING, DEBUG3, etc\n" .
+    "       -c(lean)            - dropdb before running.\n" .
+    "       -doc(umentation)    - ONLY generate documentation examples. LEVEL is set to NOTICE\n" .
+    "       -v(erbose)          - verbose messages of the execution\n" .
+    "       -h(elp)             - help\n";
 }
 
 print "RUNNING: doc_queries_generator.pl " . join(" ", @ARGV) . "\n";
 
-my ($vpg, $postgis_ver, $vpgr, $psql);
+my ($vpg, $vpgr, $psql);
 my $alg = '';
 my @testpath = ("docqueries/");
 my @test_direcotry = ();
 my $clean;
-my $ignore;
 
-$postgis_ver = '';
 
 while (my $a = shift @ARGV) {
     if ( $a eq '-pgver') {
@@ -107,10 +100,6 @@ while (my $a = shift @ARGV) {
     elsif ($a eq '-pguser') {
         $DBUSER = shift @ARGV || Usage();
     }
-    elsif ($a eq '-pgisver') {
-        $postgis_ver = shift @ARGV || Usage();
-        $postgis_ver = " VERSION '$postgis_ver'";
-    }
     elsif ($a eq '-pgrver') {
         $vpgr = shift @ARGV || Usage();
     }
@@ -118,26 +107,25 @@ while (my $a = shift @ARGV) {
         $alg = shift @ARGV || Usage();
         @testpath = ("$alg");
     }
+    elsif ($a eq '-dbname') {
+        $DBNAME = shift @ARGV || Usage();
+    }
     elsif ($a eq '-psql') {
         $psql = shift @ARGV || Usage();
         die "'$psql' is not executable!\n"
         unless -x $psql;
     }
+    elsif ($a eq '-data') {
+        $DATA = 1;
+    }
     elsif ($a =~ /^-h/) {
         Usage();
     }
-    elsif ($a =~ /^-clean/) {
-        $clean = 1;;
+    elsif ($a =~ /^-c/i) {
+        $clean = 1;
     }
-    elsif ($a =~ /^-ignoren/i) {
-        $ignore = 1;;
-    }
-    elsif ($a =~ /^-debug1$/i) {
-        $DEBUG1 = 1 unless $DOCUMENTATION;
-    }
-    elsif ($a =~ /^-debug$/i) {
-        $DEBUG++;
-        $VERBOSE = 1;
+    elsif ($a =~ /^-l$/i) {
+        $LEVEL = $psql = shift @ARGV || Usage();
     }
     elsif ($a =~ /^-v/i) {
         $VERBOSE = 1;
@@ -147,10 +135,6 @@ while (my $a = shift @ARGV) {
     }
     elsif ($a =~ /^-doc(umentation)?/i) {
         $DOCUMENTATION = 1;
-        $DEBUG1 = 0; # disbale timing reports during documentation generation
-    }
-    elsif ($a =~ /^-dbg/i) {
-        $INTERNAL_TESTS = 1; #directory internalQueryTests is also tested
     }
     else {
         warn "Error: unknown option '$a'\n";
@@ -158,12 +142,14 @@ while (my $a = shift @ARGV) {
     }
 }
 
+# documentation gets NOTICE
+$LEVEL = "NOTICE" if $DOCUMENTATION;
+
 my $connopts = "";
 $connopts .= " -U $DBUSER" if defined $DBUSER;
 $connopts .= " -h $DBHOST" if defined $DBHOST;
 $connopts .= " -p $DBPORT" if defined $DBPORT;
-
-mysystem("dropdb $connopts $DBNAME") if $clean;
+print "connoptions '$connopts'\n" if $VERBOSE;
 
 %main::tests = ();
 my @cfgs = ();
@@ -186,15 +172,19 @@ if (length($psql)) {
 print "Operative system found: $OS\n";
 
 
+createTestDB($DBNAME);
+
+# Load the sample data & any other relevant data files
+mysystem("$psql $connopts -A -t -q -f tools/testers/sampledata.sql $DBNAME >> $TMP2 2>\&1 ");
+
+if ($DATA) {exit 0;};
+
 # Traverse desired filesystems
 File::Find::find({wanted => \&want_tests}, @testpath);
 
-die "Error: no test files found. Run this command from the top level pgRouting directory!\n" unless @cfgs;
-
-createTestDB($DBNAME);
+die "Error: no queries files found. Run this command from the top path of pgRouting repository!\n" unless @cfgs;
 
 $vpg = '' if ! $vpg;
-$postgis_ver = '' if ! $postgis_ver;
 
 # cfgs = SET of configuration file names
 # c  one file in cfgs
@@ -217,8 +207,6 @@ for my $c (@cfgs) {
     }
 }
 
-dropTestDB();
-
 print Data::Dumper->Dump([\%stats], ['stats']);
 
 unlink $TMP;
@@ -239,9 +227,6 @@ sub run_test {
     my $t = shift;
 
     my $dir = dirname($confFile);
-
-    # Load the sample data & any other relevant data files
-    mysystem("$psql $connopts -A -t -q -f tools/testers/sampledata.sql $DBNAME >> $TMP2 2>\&1 ");
 
     # There is data to load relative to the directory
     for my $datafile (@{$t->{data}}) {
@@ -293,9 +278,6 @@ sub process_single_test{
         return;
     };
 
-    my $level = "NOTICE";
-    $level = "WARNING" if $ignore;
-    $level = "DEBUG3" if $DEBUG1;
 
     # Processing is handled kinda like a file
     # Where the commands are stored on PSQL file
@@ -325,7 +307,7 @@ sub process_single_test{
     @queries = <TIN>;
 
     print PSQL "BEGIN;\n";
-    print PSQL "SET client_min_messages TO $level;\n";
+    print PSQL "SET client_min_messages TO $LEVEL;\n";
     # prints the whole fle stored in @queries
     print PSQL @queries;
     print PSQL "\nROLLBACK;";
@@ -358,8 +340,6 @@ sub process_single_test{
     # diff ignore white spaces when comparing
     my $originalDiff = `diff -w '$resultsFile' '$TMP' `;
 
-    print "\noriginalDiff = $originalDiff\n" if $VERBOSE;
-
     #looks for removing leading blanks and trailing blanks
     $originalDiff =~ s/^\s*|\s*$//g;
     if ($originalDiff =~ /connection to server was lost/) {
@@ -372,7 +352,7 @@ sub process_single_test{
     } elsif (length($originalDiff)) {
         # Things changed print the diff
         $stats{"$inputFile"} = "FAILED: $originalDiff";
-        $stats{z_fail}++ unless $DEBUG1;
+        $stats{z_fail}++ unless $LEVEL ne "NOTICE";
         print "\t FAIL\n";
     } else {
         $stats{z_pass}++;
@@ -381,56 +361,49 @@ sub process_single_test{
 }
 
 sub createTestDB {
+    print "-> createTestDB\n" if $VERBOSE;
     my $databaseName = shift;
-    dropTestDB() if dbExists($databaseName);
+    dropTestDB() if $clean && dbExists($databaseName);
 
     my $template;
 
     my $dbver = getServerVersion();
     my $dbshare = getSharePath($dbver);
 
-    if ($DEBUG) {
-        print "-- DBVERSION: $dbver\n";
-        print "-- DBSHARE: $dbshare\n";
+    if ($VERBOSE) {
+        print "\tDBVERSION: $dbver\n";
+        print "\tDBSHARE: $dbshare\n";
     }
 
     die "
     Unsupported postgreSQL version $dbver
     Minimum requierment is $POSGRESQL_MIN_VERSION version
     Use -force to force the tests\n"
-    unless version_greater_eq($dbver, $POSGRESQL_MIN_VERSION) or ($FORCE and version_greater_eq($dbver, '9.1'));
-
-    die "postGIS extension $postgis_ver not found\n"
-    unless -f "$dbshare/extension/postgis.control";
-
+    unless version_greater_eq($dbver, $POSGRESQL_MIN_VERSION);
 
     # Create a database with postgis installed in it
     mysystem("createdb $connopts $databaseName");
-    die "ERROR: Failed to create database '$databaseName'!\n"
-    unless dbExists($databaseName);
+    die "ERROR: Failed to create database '$databaseName'!\n" unless dbExists($databaseName);
     my $encoding = '';
     if ($OS =~ /msys/
         || $OS =~ /MSWin/) {
         $encoding = "SET client_encoding TO 'UTF8';";
     }
-    print "-- Installing postgis extension $postgis_ver\n" if $DEBUG;
-    mysystem("$psql $connopts -c \"$encoding CREATE EXTENSION postgis $postgis_ver \" $databaseName");
 
     # Install pgrouting into the database
     my $myver = '';
     if ($vpgr) {
         $myver = " VERSION '$vpgr'";
     }
-    print "Installing pgrouting extension $myver\n" if $DEBUG;
-    mysystem("$psql $connopts -c \"CREATE EXTENSION pgrouting $myver\" $databaseName");
+    print "Installing pgrouting extension $myver\n" if $VERBOSE;
+    mysystem("$psql $connopts -c \"CREATE EXTENSION pgrouting $myver CASCADE\" $databaseName");
 
     # Verify pgrouting was installed
 
     my $pgrv = `$psql $connopts -c "select pgr_version()" $databaseName`;
-    die "ERROR: failed to install pgrouting into the database!\n"
-    unless $pgrv;
+    die "ERROR: failed to install pgrouting into the database!\n" unless $pgrv;
 
-    print `$psql $connopts -c "select version();" postgres `, "\n";
+    print `$psql $connopts -c "select version();" $databaseName `, "\n";
     print `$psql $connopts -c "select postgis_full_version();" $databaseName `, "\n";
     print `$psql $connopts -c "select pgr_full_version();" $databaseName `, "\n";
 }
@@ -463,13 +436,14 @@ sub version_greater_eq {
 
 
 sub getServerVersion {
+    print "-> getServerVersion\n" if $VERBOSE;
     my $v = `$psql $connopts -q -t -c "select version()" postgres`;
-    print "$psql $connopts -q -t -c \"select version()\" postgres\n    # RETURNED: $v\n" if $VERBOSE;
+    print "\t$psql $connopts -q -t -c \"select version()\" postgres\n    # RETURNED: $v\n" if $VERBOSE;
     if ($v =~ m/PostgreSQL (\d+(\.\d+)?)/) {
         my $version = $1 + 0;
-        print "    Got: $version\n" if $VERBOSE;
+        print "\tGot: $version\n" if $VERBOSE;
         $version = int($version) if $version >= 10;
-        print "    Got: $version\n" if $VERBOSE;
+        print "\tGot: $version\n" if $VERBOSE;
         return $version;
     }
     return undef;
@@ -527,8 +501,8 @@ sub getSharePath {
 
 sub mysystem {
     my $cmd = shift;
-    print "$cmd\n" if $VERBOSE || $DRYRUN;
-    system($cmd) unless $DRYRUN;
+    print "$cmd\n" if $VERBOSE;
+    system($cmd);
 }
 
 sub want_tests {
