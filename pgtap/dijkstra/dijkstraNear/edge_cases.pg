@@ -24,6 +24,7 @@ SELECT plan(122);
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 
 
+
 CREATE TABLE expected AS
 WITH
 a AS (SELECT start_vid, d_w_1, u_w_1, d_n_1, u_n_1

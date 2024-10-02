@@ -103,6 +103,13 @@ milestone for 4.0.0
 * _v4trsp(text,text,anyarray,anyarray,boolean)``
 * _v4trsp(text,text,text,boolean)``
 
+.. rubric:: Removal of deprecated functions and signatures
+
+* ``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``
+* ``pgr_trspviavertices(text,anyarray,boolean,boolean,text)``
+* ``pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)``
+* ``pgr_trsp(text,integer,integer,boolean,boolean,text)``
+
 Breaking changes
 ...............................................................................
 

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
 
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(282);
 
 -- ONE TO ONE
@@ -30,8 +31,8 @@ SELECT style_dijkstra('pgr_dijkstraCost(', ', ARRAY[2], 3, true)');
 -- MANY TO MANY
 SELECT style_dijkstra('pgr_dijkstraCost(', ', ARRAY[2], ARRAY[3], true)');
 -- COMBINATIONS
-SELECT style_dijkstra('pgr_dijkstraCost(', ', $$SELECT * FROM combinations_table$$, true)');
-SELECT innerquery_combinations('pgr_dijkstraCost($$SELECT * FROM edge_table$$,',', true)');
+SELECT style_dijkstra('pgr_dijkstraCost(', ', $$SELECT * FROM combinations$$, true)');
+SELECT innerquery_combinations('pgr_dijkstraCost($$SELECT * FROM edges$$,',', true)');
 
 SELECT finish();
 ROLLBACK;

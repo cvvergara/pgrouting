@@ -28,8 +28,8 @@ SELECT style_dijkstra('pgr_dijkstraNear(', ', ARRAY[2], 3, true)');
 -- MANY TO MANY
 SELECT style_dijkstra('pgr_dijkstraNear(', ', ARRAY[2], ARRAY[3], true)');
 -- COMBINATIONS
-SELECT style_dijkstra('pgr_dijkstraNear(', ', $$SELECT * FROM combinations_table$$, true)');
-SELECT innerquery_combinations('pgr_dijkstraNear($$SELECT * FROM edge_table$$,',', true)');
+SELECT style_dijkstra('pgr_dijkstraNear(', ', $$SELECT * FROM combinations$$, true)');
+SELECT innerquery_combinations('pgr_dijkstraNear($$SELECT * FROM edges$$,',', true)');
 
 SELECT finish();
 ROLLBACK;
