@@ -20,7 +20,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 SET extra_float_digits = -3;
-UPDATE edge_table SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+
 SELECT plan(26);
 
 CREATE TEMP TABLE data AS
@@ -90,8 +91,8 @@ BEGIN
 
     RETURN QUERY
     SELECT is(
-      (SELECT agg_cost FROM pgr_TSPeuclidean(format('SELECT * FROM %1$I WHERE id IN (2,4,5,8,9,15)', tbl)) WHERE seq = 7),
-      9.302775637732239::FLOAT,
+      (SELECT round(agg_cost::numeric,10)::FLOAT FROM pgr_TSPeuclidean(format('SELECT * FROM %1$I WHERE id IN (2,4,5,8,9,15)', tbl)) WHERE seq = 7),
+      11.4535204853::FLOAT,
       'The cost from is 9.x');
 
   RETURN QUERY
