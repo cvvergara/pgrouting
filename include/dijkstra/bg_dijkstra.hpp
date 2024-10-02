@@ -50,10 +50,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
 #include "visitors/found_goals.hpp"
+#if 1
+#include "visitors/dijkstra_visitors.hpp"
+#else
 #include "visitors/dijkstra_one_goal_visitor.hpp"
 #include "visitors/dijkstra_distance_visitor_no_init.hpp"
 #include "visitors/dijkstra_many_goal_visitor.hpp"
 #include "visitors/dijkstra_distance_visitor.hpp"
+#endif
 
 namespace pgrouting {
 namespace bg_algorithms {

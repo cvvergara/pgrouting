@@ -387,6 +387,8 @@ std::deque<Path> dijkstra_one_to_many(
 
 /* **************************************************************************************************************** */
 
+namespace algorithms {
+
 /**
  * @brief Driving distance for a set of start vertices
  *
@@ -479,6 +481,7 @@ dijkstra(
     return paths;
 }
 
+}  // namespace algorithms
 }  // namespace pgrouting
 
 

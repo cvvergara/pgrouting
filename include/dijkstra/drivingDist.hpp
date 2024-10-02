@@ -135,7 +135,7 @@ void dijkstra_1_to_distance_no_init(
                 std::less<double>(),
                 boost::closed_plus<double>(),
                 static_cast<double>(0),
-                pgrouting::visitors::dijkstra_distance_visitor_no_init<V, E>(root, distance, predecessors, distances,
+                pgrouting::visitors::dijkstra_distance_visitor_no_init<V>(root, distance, predecessors, distances,
                     color_map),
                 make_iterator_property_map(color_map.begin(), vidx, color_map[0]));
     } catch(pgrouting::found_goals &) {
