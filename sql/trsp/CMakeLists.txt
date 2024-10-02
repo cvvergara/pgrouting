@@ -4,8 +4,8 @@ SET(LOCAL_FILES
     trsp.sql
     _array_reverse.sql
 
-    trsp_withPoints.sql
     _trsp_withPoints.sql
+    trsp_withPoints.sql
 
     trspVia.sql
     _trspVia.sql
