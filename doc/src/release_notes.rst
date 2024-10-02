@@ -44,41 +44,6 @@ pgRouting 4.0.0 Release Notes
 * ``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``
 * ``pgr_trspviavertices(text,anyarray,boolean,boolean,text)``
 
-* Simplify C/C++ code for combinations style
-
-  * pgr_dijkstra
-
-* Internal SQL functions are removed
-
-  * _pgr_dijkstranear(text,anyarray,anyarray,bigint,boolean)
-  * _pgr_dijkstranear(text,anyarray,bigint,bigint,boolean)
-  * _pgr_dijkstranear(text,bigint,anyarray,bigint,boolean)
-  * _pgr_dijkstra(text,anyarray,anyarray,boolean,boolean,boolean,bigint)
-  * _pgr_dijkstra(text,text,boolean,boolean,boolean)
-
-Breaking changes
-...............................................................................
-
-.. rubric:: Traveling Salesman problem
-
-Functions affected:
-
-* pgr_TSP
-* pgr_TSPEuclidean
-
-Changes:
-
-* Deprecated signatures that include annaeling parameters are removed
-
-  * pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
-  * pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
-
-* New signatures:
-
-  * pgr_tsp(text,bigint,bigint,integer)
-  * pgr_tspeuclidean(text,bigint,bigint,integer)
-
-* New default parameter: max_cycles with default value `1`
 
 
 pgRouting 3
