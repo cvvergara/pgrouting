@@ -9,7 +9,6 @@ SET(LOCAL_FILES
     _pgr_trspViaVertices.sql
     pgr_trspViaVertices.sql
 
-    pgr_trspViaEdges.sql
     _trsp_withPoints.sql
     trsp_withPoints.sql
 
