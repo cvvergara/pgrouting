@@ -9,7 +9,6 @@ SET(LOCAL_FILES
     _trspViaVertices_deprecated.sql
     trspViaVertices_deprecated.sql
 
-    trspViaEdges_deprecated.sql
     _trsp_withPoints.sql
     trsp_withPoints.sql
 
