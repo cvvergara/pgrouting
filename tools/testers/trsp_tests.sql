@@ -46,6 +46,7 @@ $BODY$
 language plpgsql;
 
 
+/* TODO delete function on 4.0 */
 CREATE OR REPLACE FUNCTION compare_trsp_dijkstra(cant INTEGER default 18, flag boolean default true )
 RETURNS SETOF TEXT AS
 $BODY$
