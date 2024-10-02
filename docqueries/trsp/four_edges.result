@@ -17,63 +17,6 @@ INSERT INTO four_edges (id, source, target, cost, reverse_cost) VALUES
 ( 718 ,  52220 ,  52222 , 961.000001 ,   961.000001),
 ( 716 , -21019 ,  52220 , 992.000001 ,   992.000001);
 INSERT 0 4
-SELECT * FROM pgr_trsp(
-  $$SELECT
-    id::int, source::int, target::int, cost::float, reverse_cost::float
-  FROM
-    (VALUES
-      (719, 52163, -56570, 179.400001, 179.400001),
-      (717, 52222, 52163, 977.000001, 977.000001),
-      (718, 52220, 52222, 961.000001, 961.000001),
-      (716, -21019, 52220, 992.000001, 992.000001)
-    ) AS t (id, source, target, cost, reverse_cost)$$,
-  719, 0,
-  718, 0,
-  true, true, NULL);
-WARNING:  pgr_trsp(text,integer,float,integer,float,boolean,boolean) deprecated signature on v3.4.0
- seq |  id1  | id2 |    cost
------+-------+-----+------------
-   0 | 52163 | 717 | 977.000001
-   1 | 52222 | 718 | 961.000001
-   2 | 52220 |  -1 |          0
-(3 rows)
-
-SELECT * FROM pgr_trsp(
-  $$SELECT
-    id::int, source::int, target::int, cost::float, reverse_cost::float
-  FROM
-    (VALUES
-      (719, 52163, -56570, 179.40000, 179.40000),
-      (717, 52222, 52163, 977.00000, 977.00000),
-      (718, 52220, 52222, 961.00000, 961.00000),
-      (716, -21019, 52220, 992.00000, 992.00000)
-    ) AS t (id, source, target, cost, reverse_cost)$$,
-  (SELECT source::int  FROM four_edges WHERE id = 719),
-  (SELECT source::int  FROM four_edges WHERE id = 718),
-  true, true, NULL);
-WARNING:  pgr_trsp(text,integer,integer,boolean,boolean) deprecated signature on v3.4.0
- seq |  id1  | id2 | cost
------+-------+-----+------
-   0 | 52163 | 717 |  977
-   1 | 52222 | 718 |  961
-   2 | 52220 |  -1 |    0
-(3 rows)
-
-SELECT * FROM pgr_trsp(
-  $$SELECT
-    id::int, source::int, target::int, cost::float, reverse_cost::float
-  FROM four_edges$$,
-  719, 0,
-  718, 0,
-  true, true, NULL);
-WARNING:  pgr_trsp(text,integer,float,integer,float,boolean,boolean) deprecated signature on v3.4.0
- seq |  id1  | id2 |    cost
------+-------+-----+------------
-   0 | 52163 | 717 | 977.000001
-   1 | 52222 | 718 | 961.000001
-   2 | 52220 |  -1 |          0
-(3 rows)
-
 SELECT * FROM pgr_dijkstra(
   $$SELECT
     id::int, source::int, target::int, cost::float, reverse_cost::float
@@ -101,23 +44,6 @@ SELECT * FROM pgr_dijkstra(
    2 |        2 |     52163 |   52220 | 52222 |  718 | 961.000001 |  977.000001
    3 |        3 |     52163 |   52220 | 52220 |   -1 |          0 | 1938.000002
 (3 rows)
-
-/* Comparing withPoints and trsp*/
-SELECT * FROM pgr_trsp(
-  $$SELECT
-    id::int, source::int, target::int, cost::float, reverse_cost::float
-  FROM four_edges$$,
-  719, 0.5,
-  718, 0,
-  true, true, NULL);
-WARNING:  pgr_trsp(text,integer,float,integer,float,boolean,boolean) deprecated signature on v3.4.0
- seq |  id1  | id2 |    cost
------+-------+-----+------------
-   0 |    -1 | 719 | 89.7000005
-   1 | 52163 | 717 | 977.000001
-   2 | 52222 | 718 | 961.000001
-   3 | 52220 |  -1 |          0
-(4 rows)
 
 SELECT * FROM pgr_withPoints(
   $$SELECT
@@ -150,21 +76,6 @@ SELECT * FROM pgr_withPoints(
 -----+----------+------+------+------+----------
 (0 rows)
 
-SELECT * FROM pgr_trsp(
-  $$SELECT
-    id::int, source::int, target::int, cost::float, reverse_cost::float
-  FROM four_edges$$,
-  719, 0,
-  718, 0.5,
-  true, true, NULL);
-WARNING:  pgr_trsp(text,integer,float,integer,float,boolean,boolean) deprecated signature on v3.4.0
- seq |  id1  | id2 |    cost
------+-------+-----+-------------
-   0 | 52163 | 717 |  977.000001
-   1 | 52222 | 718 | 480.5000005
-   2 |    -2 |  -1 |           0
-(3 rows)
-
 SELECT * FROM pgr_withPoints(
   $$SELECT
     id, source, target, cost, reverse_cost
@@ -194,22 +105,6 @@ SELECT * FROM pgr_withPoints(
  seq | path_seq | node | edge | cost | agg_cost
 -----+----------+------+------+------+----------
 (0 rows)
-
-SELECT * FROM pgr_trsp(
-  $$SELECT
-    id::int, source::int, target::int, cost::float, reverse_cost::float
-  FROM four_edges$$,
-  719, 0.5,
-  718, 0.5,
-  true, true, NULL);
-WARNING:  pgr_trsp(text,integer,float,integer,float,boolean,boolean) deprecated signature on v3.4.0
- seq |  id1  | id2 |    cost
------+-------+-----+-------------
-   0 |    -1 | 719 |  89.7000005
-   1 | 52163 | 717 |  977.000001
-   2 | 52222 | 718 | 480.5000005
-   3 |    -2 |  -1 |           0
-(4 rows)
 
 SELECT * FROM pgr_withPoints(
   $$SELECT
