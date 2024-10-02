@@ -103,13 +103,6 @@ milestone for 4.0.0
 * _v4trsp(text,text,anyarray,anyarray,boolean)``
 * _v4trsp(text,text,text,boolean)``
 
-.. rubric:: Removal of deprecated functions and signatures
-
-* ``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``
-* ``pgr_trspviavertices(text,anyarray,boolean,boolean,text)``
-* ``pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)``
-* ``pgr_trsp(text,integer,integer,boolean,boolean,text)``
-
 Breaking changes
 ...............................................................................
 
@@ -122,17 +115,18 @@ Functions affected:
 
 Changes:
 
-* Deprecated signatures that include annaeling parameters are removed
+- Deprecated signatures that include annaeling parameters are removed
 
   * pgr_tsp(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
   * pgr_tspeuclidean(text,bigint,bigint,double precision,integer,integer,integer,double precision,double precision,double precision,boolean)
 
-* New signatures:
+- New signatures:
 
   * pgr_tsp(text,bigint,bigint,integer)
   * pgr_tspeuclidean(text,bigint,bigint,integer)
 
-* New default parameter: max_cycles with default value `1`
+- New default parameter: max_cycles with default value `1`
+>>>>>>> 887b8d60a2 (updating some files)
 
 pgRouting 3
 *******************************************************************************
