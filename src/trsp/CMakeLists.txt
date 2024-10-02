@@ -1,9 +1,8 @@
 add_library(trsp OBJECT
-    # keeping these for backwards compatibility
     edgeInfo.cpp
-    trspHandler.cpp
+    pgr_trspHandler.cpp
 
-    trsp.c
+    new_trsp.c
     trsp_driver.cpp
 
     trsp_withPoints.c
