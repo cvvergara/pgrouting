@@ -6,8 +6,8 @@ SET(LOCAL_FILES
     _array_reverse.sql
     trsp_deprecated.sql
 
-    trsp_withPoints.sql
     _trsp_withPoints.sql
+    trsp_withPoints.sql
 
     trspVia.sql
     _trspVia.sql
