@@ -6,9 +6,6 @@ SET(LOCAL_FILES
     _array_reverse.sql
     pgr_trsp.sql
 
-    _pgr_trspViaVertices.sql
-    pgr_trspViaVertices.sql
-
     _trsp_withPoints.sql
     trsp_withPoints.sql
 
