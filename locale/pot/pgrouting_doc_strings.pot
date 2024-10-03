@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.0.0-dev\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-02 11:55-0600\n"
+"POT-Creation-Date: 2024-10-02 18:34-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3940,7 +3940,19 @@ msgstr ""
 msgid "pgRouting 4.0.0 Release Notes"
 msgstr ""
 
-msgid "No Changes Yet"
+msgid "Removal of deprecated functions and signatures"
+msgstr ""
+
+msgid "``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``"
+msgstr ""
+
+msgid "pgRouting 3"
+msgstr ""
+
+msgid "Minors 3.x"
+msgstr ""
+
+msgid "pgRouting 3.7"
 msgstr ""
 
 msgid "pgRouting 3.7.0 Release Notes"
@@ -4903,34 +4915,25 @@ msgstr ""
 msgid ":doc:`pgr_trspVia`:"
 msgstr ""
 
-msgid "Migration of ``pgr_trspViaEdges``"
+msgid "Migration of pgr_trspViaEdges"
 msgstr ""
 
-msgid "And will travel thru the following Via points :math:`4\\rightarrow3\\rightarrow6`"
+msgid "In this section this set of points is going to be used:"
 msgstr ""
 
-msgid ":doc:`pgr_withPointsVia` when there are no restrictions,"
+msgid "Migrating pgr_trspViaEdges using pgr_withPointsVia"
 msgstr ""
 
-msgid ":doc:`pgr_trspVia_withPoints` when there are restrictions."
+msgid "Using :doc:`pgr_withPointsVia`."
 msgstr ""
 
-msgid "Migrating ``pgr_trspViaEdges`` using ``pgr_withPointsVia``"
+msgid "When the need of using the same (meaningless) names and and strict types then convert the result to the deprecated function columns:"
 msgstr ""
 
-msgid "Use :doc:`pgr_withPointsVia` instead."
-msgstr ""
-
-msgid ":doc:`pgr_withPointsVia`:"
-msgstr ""
-
-msgid "Migrating ``pgr_trspViaEdges`` using ``pgr_trspVia_withPoints``"
+msgid "Migrating pgr_trspViaEdges using pgr_trspVia_withPoints"
 msgstr ""
 
 msgid "Use :doc:`pgr_trspVia_withPoints` instead."
-msgstr ""
-
-msgid ":doc:`pgr_trspVia_withPoints`:"
 msgstr ""
 
 msgid ":doc:`withPoints-category`"
@@ -12220,9 +12223,6 @@ msgstr ""
 msgid "``pgr_trspViaVertices(text,anyarray,boolean,boolean,text)``"
 msgstr ""
 
-msgid "``pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)``"
-msgstr ""
-
 msgid "New prototypes"
 msgstr ""
 
@@ -13243,13 +13243,13 @@ msgstr ""
 msgid "Mayors"
 msgstr ""
 
-msgid "pgRouting 3"
+msgid "pgRouting 4"
 msgstr ""
 
-msgid "Minors 3.x"
+msgid "Minors 4.x"
 msgstr ""
 
-msgid "pgRouting 3.7"
+msgid "pgRouting 4.0"
 msgstr ""
 
 msgid "pgRouting 3.6"
