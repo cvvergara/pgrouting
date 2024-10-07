@@ -59,7 +59,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/point_on_edge_t.hpp"
 #include "cpp_common/vehicle_t.hpp"
 
+#if PGSQL_VERSION < 130
+typedef ArrayType ArrayType;
+#else
 typedef struct ArrayType ArrayType;
+#endif
 
 namespace pgrouting {
 namespace pgget {
