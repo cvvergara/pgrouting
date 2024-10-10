@@ -30,14 +30,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_YEN_TURNRESTRICTEDPATH_HPP_
 #pragma once
 
-#include "yen/ksp.hpp"
-
 #include <sstream>
 #include <deque>
 #include <vector>
 #include <set>
 #include <limits>
 
+#include "yen/ksp.hpp"
 #include "cpp_common/assert.hpp"
 #include "cpp_common/basePath_SSEC.hpp"
 #include "cpp_common/compPaths.hpp"
