@@ -33,7 +33,7 @@ extern "C" {
 #include <catalog/pg_type.h>
 }
 
-#include "cpp_common/pgr_alloc.hpp"
+#include "cpp_common/alloc.hpp"
 
 namespace {
 
