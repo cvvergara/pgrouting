@@ -1,9 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: alloc.cpp
 
-Copyright (c) 2015 pgRouting developers
-Mail: project@pgrouting.org
+File: _version.h.in
 
+Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
@@ -25,19 +24,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "cpp_common/alloc.hpp"
-#include <cstring>
-#include <string>
+#define	BOOST_VERSION "1.74.0";
+#define CMAKE_BUILD_TYPE "Debug";
+#define COMPILER_VERSION "GNU-12.3.0";
+#define COMPILATION_DATE "2024/08/12";
+#define PGROUTING_GIT_HASH "cff856b8d3";
+#define PGROUTING_LIB_NAME "pgrouting-3.0";
+#define CMAKE_SYSTEM_NAME "Linux-6.5.0-28-generic";
+#define POSTGRES_VERSION "PostgreSQL 15.8 (Ubuntu 15.8-1.pgdg22.04+~20240809.0311.g8c0944a)";
 
-namespace pgrouting {
-
-char *
-pgr_msg(const std::string &msg) {
-    char* duplicate = NULL;
-    duplicate = pgr_alloc(msg.size() + 1, duplicate);
-    memcpy(duplicate, msg.c_str(), msg.size());
-    duplicate[msg.size()] = '\0';
-    return duplicate;
-}
-
-}  // namespace pgrouting

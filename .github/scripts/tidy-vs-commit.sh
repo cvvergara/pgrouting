@@ -6,7 +6,7 @@ readonly BUILD_DIR=build
 
 MODIFIED_FILES=$(git diff-tree --no-commit-id --diff-filter=d --name-only -r "$BASE" HEAD | grep '\.c')
 MODIFIED_HEADERS=$(git diff-tree --no-commit-id --diff-filter=d --name-only -r "$BASE" HEAD | grep '\.h')
-POSTGRES_SERVER=$(grep -o -m1 '\-isystem .*' "${BUILD_DIR}/compile_commands.json" | head -1 | awk '{print $1" "$2}')
+POSTGRES_SERVER=$(grep -o -m1 '\-isystem .*' "${BUILD_DIR}/compile_commands.json" | head -1 | awk '{print $2}')
 
 echo "POSTGRES_SERVER ${POSTGRES_SERVER}"
 
@@ -33,7 +33,7 @@ if [ ${#MODIFIED_HEADERS[@]} != 0 ] ; then
     for f in ${MODIFIED_HEADERS}
     do
         echo "${f}"
-        echo clang-tidy "${CHECKS}" -header-filter=.* "${f}" -- -I./include "${POSTGRES_SERVER}"
-        clang-tidy "${CHECKS}" -header-filter=.* "${f}" -- -I./include ${POSTGRES_SERVER}
+        clang-tidy "${CHECKS}" -header-filter=.* "${f}" \
+            -- -I./include -isystem "${POSTGRES_SERVER}"
     done
 fi
