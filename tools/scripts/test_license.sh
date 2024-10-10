@@ -31,7 +31,8 @@ missing=$(! { mylicensecheck src & mylicensecheck  sql &  mylicensecheck include
 missing1=$(mylicensecheck doc | grep "No copyright")
 missing2=$(grep --files-without-match 'Creative Commons' doc/*/*.rst)
 missing3=$(mylicensecheck docqueries | grep "No copyright")
-missing4=$(grep --files-without-match 'Creative Commons' "$(git ls-files docqueries | grep '.sql')")
+read -ra files < <(git ls-files docqueries/*.pg)
+missing4=$(grep --files-without-match 'Creative Commons' "${files[@]}")
 popd > /dev/null || exit
 
 #mylicensecheck doc
