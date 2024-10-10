@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: pgr_randomSpanningTree.hpp
+File: randomSpanningTree.hpp
 
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
@@ -25,8 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_SPANNINGTREE_PGR_RANDOMSPANNINGTREE_HPP_
-#define INCLUDE_SPANNINGTREE_PGR_RANDOMSPANNINGTREE_HPP_
+#ifndef INCLUDE_SPANNINGTREE_RANDOMSPANNINGTREE_HPP_
+#define INCLUDE_SPANNINGTREE_RANDOMSPANNINGTREE_HPP_
 #pragma once
 
 #include <vector>
@@ -41,7 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/graph_traits.hpp>
 
 #include "cpp_common/basePath_SSEC.hpp"
-#include "cpp_common/pgr_base_graph.hpp"
+#include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 
 template < class G > class Pgr_randomSpanningTree;
@@ -148,4 +148,4 @@ Pgr_randomSpanningTree< G >::randomSpanningTree(
 }
 
 
-#endif  // INCLUDE_SPANNINGTREE_PGR_RANDOMSPANNINGTREE_HPP_
+#endif  // INCLUDE_SPANNINGTREE_RANDOMSPANNINGTREE_HPP_
