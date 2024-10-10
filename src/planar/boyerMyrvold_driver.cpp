@@ -33,13 +33,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <string>
 
-#include "cpp_common/alloc.hpp"
-#include "cpp_common/assert.hpp"
+#include "cpp_common/pgr_alloc.hpp"
+#include "cpp_common/pgr_assert.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 #include "c_types/iid_t_rt.h"
 
-#include "planar/boyerMyrvold.hpp"
-#include "cpp_common/base_graph.hpp"
+#include "planar/pgr_boyerMyrvold.hpp"
+#include "cpp_common/pgr_base_graph.hpp"
 
 
 
