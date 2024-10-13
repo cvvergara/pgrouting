@@ -26,10 +26,10 @@ permissions:
 
 jobs:
   build:
-    name: centos-7-gcc-4.8.5
+    name: centos-8
     runs-on:
       - self-hosted
-      - centos-7 gcc-4.8.5
+      - centos-8
 
     steps:
       - uses: actions/checkout@v4
