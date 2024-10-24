@@ -49,7 +49,7 @@ if test -z "$DIRECTORY"; then
     echo "--------------------"
     echo "------   *.c  ------"
     echo "--------------------"
-    code_linter/cpplint/cpplint.py --extensions=c --linelength=120 --filter=-readability/casting,-whitespace/newline src/*/*.c
+    code_linter/cpplint/cpplint.py --extensions=c  --linelength=120 --filter=-readability/casting src/*/*.c
     echo "--------------------"
     echo "------ *.cpp  ------"
     echo "--------------------"
