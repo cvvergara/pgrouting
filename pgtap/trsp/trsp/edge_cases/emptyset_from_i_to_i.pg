@@ -1,4 +1,3 @@
-
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
@@ -20,160 +19,64 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(144);
+SELECT plan(76);
 
+PREPARE restriction AS SELECT * FROM restrictions;
+PREPARE with_reverse AS SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id;
+PREPARE no_reverse AS SELECT id, source, target, cost FROM edges ORDER BY id;
 
-create or REPLACE FUNCTION edge_cases(cant INTEGER default 18, flag boolean default true )
+CREATE OR REPLACE FUNCTION edge_cases(cant INTEGER DEFAULT 18, flag BOOLEAN DEFAULT true )
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-trsp_sql TEXT;
-restrictions_sql TEXT;
-with_reverse_cost TEXT;
-no_reverse_cost TEXT;
-k integer;
-directed TEXT;
-msg TEXT;
-parameters TEXT;
+  trsp_sql TEXT;
+  restrictions_sql TEXT;
+  with_reverse_cost TEXT;
+  no_reverse_cost TEXT;
+  k integer;
+  directed TEXT;
+  msg TEXT;
+  parameters TEXT;
 BEGIN
-IF min_version('3.4.0') THEN
-  directed = 'Undirected';
-  IF flag THEN directed = 'Directed'; END IF;
-  k := 1;
-  with_reverse_cost = quote_literal('SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost from edges ORDER BY id');
-  no_reverse_cost = quote_literal('SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost from edges ORDER BY id');
-  restrictions_sql = quote_literal('SELECT 100::float AS to_cost, 25::INTEGER AS target_id, ''32, 33''::TEXT AS via_path');
-  restrictions_sql = 'NULL::TEXT';
+    directed = 'Undirected';
+    IF flag THEN directed = 'Directed'; END IF;
 
-  FOR i IN 1.. cant LOOP
-    parameters = restrictions_sql || ', ' || i || ', ' || i || ', ' || flag;
+    k := 1;
+    with_reverse_cost = quote_literal('with_reverse');
+    no_reverse_cost = quote_literal('no_reverse');
+    restrictions_sql = quote_literal('restriction');
 
-    trsp_sql := 'SELECT * from pgr_trsp( ' || with_reverse_cost || ', ' || parameters || ')';
-    msg := k || ' ' || directed || ', with reverse_cost and saying we use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || ' is_empty');
-      EXCEPTION WHEN OTHERS THEN
-        IF (i < 18) THEN
-          RETURN query SELECT throws_ok(trsp_sql,'38001','Error computing path: Path Not Found', msg);
-        ELSE
-          RETURN query SELECT throws_ok(trsp_sql,'XX000','Start id was not found.', msg);
-        END IF;
-    END;
-    k := k + 1;
+    FOR i IN 1.. cant LOOP
 
+      parameters = restrictions_sql || ', ' || i || ', ' || i || ', ' || flag;
 
-    trsp_sql := 'SELECT * from pgr_trsp( ' || with_reverse_cost || ', ' || parameters || ')';
-    msg := k || ' ' || directed || ', with reverse_cost and saying we dont use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || 'is empty');
-      EXCEPTION WHEN OTHERS THEN
-        IF (i < 18) THEN
-          RETURN query SELECT throws_ok(trsp_sql,'38001','Error computing path: Path Not Found', msg);
-        ELSE
-          RETURN query SELECT throws_ok(trsp_sql,'XX000','Start id was not found.', msg);
-        END IF;
-    END;
-    k := k + 1;
+      trsp_sql := 'SELECT * from pgr_trsp( ' || with_reverse_cost || ', ' || parameters || ')';
+      msg := k || ' ' || trsp_sql;
+      EXECUTE trsp_sql;
+      RETURN query SELECT is_empty(trsp_sql, msg);
+      k := k + 1;
 
-    trsp_sql := 'SELECT * from pgr_trsp( ' || no_reverse_cost || ', ' || parameters || ')';
-    msg := k || ' ' || directed || ', No reverse_cost and saying we dont use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || 'is empty');
-      EXCEPTION WHEN OTHERS THEN
-        IF (i < 18) THEN
-          RETURN query SELECT throws_ok(trsp_sql,'38001','Error computing path: Path Not Found', msg);
-        ELSE
-          RETURN query SELECT throws_ok(trsp_sql,'XX000','Start id was not found.', msg);
-        END IF;
-    END;
-    k := k + 1;
+      trsp_sql := 'SELECT * from pgr_trsp( ' || no_reverse_cost || ', ' || parameters || ')';
+      msg := k || ' ' || trsp_sql;
+      EXECUTE trsp_sql;
+      RETURN query SELECT is_empty(trsp_sql, msg);
+      k := k + 1;
 
-    /* Ignoring has_rcost flag */
-    trsp_sql := 'SELECT * from pgr_trsp( ' || no_reverse_cost || ', ' || parameters || ')';
-    msg := k || ' ' || directed || ', No reverse_cost and saying we use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || 'is empty');
-      EXCEPTION WHEN OTHERS THEN
-        RETURN query SELECT throws_ok(trsp_sql,'XX000',$$Error, reverse_cost is used, but query did't return 'reverse_cost' column$$);
-    END;
-    k := k + 1;
+    END LOOP;
 
-  END LOOP;
-
-ELSE
-
-  directed = 'Undirected';
-  IF flag THEN directed = 'Directed'; END IF;
-  k := 1;
-  with_reverse_cost = quote_literal('SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost, reverse_cost from edges ORDER BY id');
-  no_reverse_cost = quote_literal('SELECT id::INTEGER, source::INTEGER, target::INTEGER, cost from edges ORDER BY id');
-
-  FOR i IN 1.. cant LOOP
-    trsp_sql := 'SELECT * from pgr_trsp( ' || with_reverse_cost || ', ' || i || ', ' || i || ', ' || flag || ', true)';
-    msg := k || ' ' || directed || ', with reverse_cost and saying we use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || ' is_empty');
-      EXCEPTION WHEN OTHERS THEN
-        IF (i < 18) THEN
-          RETURN query SELECT throws_ok(trsp_sql,'38001','Error computing path: Path Not Found', msg);
-        ELSE
-          RETURN query SELECT throws_ok(trsp_sql,'XX000','Start id was not found.', msg);
-        END IF;
-    END;
-    k := k + 1;
-
-
-    trsp_sql := 'SELECT * from pgr_trsp( ' || with_reverse_cost || ', ' || i || ', ' || i || ', ' || flag || ', false)';
-    msg := k || ' ' || directed || ', with reverse_cost and saying we dont use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || 'is empty');
-      EXCEPTION WHEN OTHERS THEN
-        IF (i < 18) THEN
-          RETURN query SELECT throws_ok(trsp_sql,'38001','Error computing path: Path Not Found', msg);
-        ELSE
-          RETURN query SELECT throws_ok(trsp_sql,'XX000','Start id was not found.', msg);
-        END IF;
-    END;
-    k := k + 1;
-
-    trsp_sql := 'SELECT * from pgr_trsp( ' || no_reverse_cost || ', ' || i || ', ' || i || ', ' || flag || ', false)';
-    msg := k || ' ' || directed || ', No reverse_cost and saying we dont use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || 'is empty');
-      EXCEPTION WHEN OTHERS THEN
-        IF (i < 18) THEN
-          RETURN query SELECT throws_ok(trsp_sql,'38001','Error computing path: Path Not Found', msg);
-        ELSE
-          RETURN query SELECT throws_ok(trsp_sql,'XX000','Start id was not found.', msg);
-        END IF;
-    END;
-    k := k + 1;
-
-    /* Ignoring has_rcost flag */
-    trsp_sql := 'SELECT * from pgr_trsp( ' || no_reverse_cost || ', ' || i || ', ' || i || ', ' || flag || ', true)';
-    msg := k || ' ' || directed || ', No reverse_cost and saying we use it: from '  || i || ' to ' || i;
-    BEGIN
-      execute trsp_sql;
-      RETURN query SELECT is_empty(trsp_sql, msg || 'is empty');
-      EXCEPTION WHEN OTHERS THEN
-          RETURN query SELECT throws_ok(trsp_sql,'XX000',$$Error, reverse_cost is used, but query did't return 'reverse_cost' column$$);
-    END;
-    k := k + 1;
-  END LOOP;
-END IF;
 END
 $BODY$
 language plpgsql;
 
-SELECT * from edge_cases(18, true);
-SELECT * from edge_cases(18, false);
+SELECT CASE WHEN min_version('3.4.0')
+THEN test
+ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
+FROM edge_cases(19, true) AS test;
+
+SELECT CASE WHEN min_version('3.4.0')
+THEN test
+ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
+FROM edge_cases(19, false) AS test;
 
 
 -- Finish the tests and clean up.
