@@ -27,7 +27,7 @@ CREATE OR REPLACE FUNCTION edge_cases() RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-  PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[4,8] AS path;
+  PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[5,9] AS path;
   PREPARE unrelated_restriction AS SELECT 100 AS cost, ARRAY[33, 32, 25] AS path;
 
     PREPARE q1 AS
@@ -42,7 +42,6 @@ BEGIN
     SELECT seq, node, edge, cost from pgr_trsp(
       'select id, source, target,cost, reverse_cost from edges',
       'unrelated_restriction',
-      $$SELECT 1 AS id, 100::float AS cost, 25::INTEGER AS target_id, ARRAY[33, 32, 25] AS path$$,
       10, 15,
       true);
 
@@ -53,15 +52,14 @@ BEGIN
   RETURN QUERY SELECT set_eq('q2','q2_expected','2: without retrictions returns the same as pgr_dijkstra');
 
     PREPARE q3 AS
-    SELECT seq-1, node, edge, cost from pgr_trsp(
+    SELECT seq-1, node, edge, cost::TEXT from pgr_trsp(
       'select id, source, target, cost, reverse_cost from edges',
       'related_restriction',
-      $$SELECT 1 AS id, 100.2::float AS cost, ARRAY[5,9] AS path$$,
       10, 15,
       true);
 
-  PREPARE q2_expected AS
-  SELECT (row_number() over() -1), node, (CASE WHEN edge = -2 THEN -1 ELSE edge END), cost
+  PREPARE q3_expected AS
+  SELECT (row_number() over() -1), node, (CASE WHEN edge = -2 THEN -1 ELSE edge END), cost::TEXT
   FROM pgr_dijkstraVia(
     'select id, source, target, cost, reverse_cost from edges',
     ARRAY[10, 6, 15],
