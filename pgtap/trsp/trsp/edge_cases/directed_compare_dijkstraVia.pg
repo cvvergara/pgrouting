@@ -30,33 +30,33 @@ BEGIN
   PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[5,9] AS path;
   PREPARE unrelated_restriction AS SELECT 100 AS cost, ARRAY[33, 32, 25] AS path;
 
-    PREPARE q1 AS
-    SELECT * from pgr_trsp(
-      'select id, source, target,cost, reverse_cost from edges',
-      'unrelated_restriction',
-      5, 5,
-      true);
+  PREPARE q1 AS
+  SELECT * from pgr_trsp(
+    'select id, source, target,cost, reverse_cost from edges',
+    'unrelated_restriction',
+    5, 5,
+    true);
   RETURN QUERY SELECT is_empty('q1', '1: No path from 1 to 1');
 
-    PREPARE q2 AS
-    SELECT seq, node, edge, cost from pgr_trsp(
-      'select id, source, target,cost, reverse_cost from edges',
-      'unrelated_restriction',
-      10, 15,
-      true);
+  PREPARE q2 AS
+  SELECT seq, node, edge, cost from pgr_trsp(
+    'select id, source, target,cost, reverse_cost from edges',
+    'unrelated_restriction',
+    10, 15,
+    true);
 
-    PREPARE q2_expected AS
-    SELECT seq, node, edge, cost from pgr_dijkstra(
-      'select id, source, target, cost, reverse_cost from edges',
-      10, 15);
+  PREPARE q2_expected AS
+  SELECT seq, node, edge, cost from pgr_dijkstra(
+    'select id, source, target, cost, reverse_cost from edges',
+    10, 15);
   RETURN QUERY SELECT set_eq('q2','q2_expected','2: without retrictions returns the same as pgr_dijkstra');
 
-    PREPARE q3 AS
-    SELECT seq-1, node, edge, cost::TEXT from pgr_trsp(
-      'select id, source, target, cost, reverse_cost from edges',
-      'related_restriction',
-      10, 15,
-      true);
+  PREPARE q3 AS
+  SELECT seq-1, node, edge, cost::TEXT from pgr_trsp(
+    'select id, source, target, cost, reverse_cost from edges',
+    'related_restriction',
+    10, 15,
+    true);
 
   PREPARE q3_expected AS
   SELECT (row_number() over() -1), node, (CASE WHEN edge = -2 THEN -1 ELSE edge END), cost::TEXT
@@ -72,8 +72,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
+THEN test ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
 FROM edge_cases() AS test;
 
 SELECT finish();
