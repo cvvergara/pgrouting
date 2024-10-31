@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(76);
+SELECT CASE WHEN min_version('3.4.0') THEN plan(76) ELSE plan(2) END;
 
 PREPARE restriction AS SELECT * FROM restrictions;
 PREPARE with_reverse AS SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id;
@@ -38,6 +38,11 @@ DECLARE
   msg TEXT;
   parameters TEXT;
 BEGIN
+    IF NOT min_version('3.4.0') THEN
+      RETURN QUERY SELECT skip(1, 'pgr_signature added on 3.4.0');
+      RETURN;
+    END IF;
+
     directed = 'Undirected';
     IF flag THEN directed = 'Directed'; END IF;
 
@@ -68,18 +73,8 @@ END
 $BODY$
 language plpgsql;
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM edge_cases(19, true) AS test;
+SELECT edge_cases(19, true);
+SELECT edge_cases(19, false);
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM edge_cases(19, false) AS test;
-
-
--- Finish the tests and clean up.
 SELECT * FROM finish();
 ROLLBACK;
-

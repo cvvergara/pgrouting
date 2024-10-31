@@ -19,8 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
 
-UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(216) END;
+UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+SELECT CASE WHEN min_version('3.4.0') THEN plan(6) ELSE plan(1) END;
+
 
 CREATE OR REPLACE FUNCTION inner_query()
 RETURNS SETOF TEXT AS
@@ -30,6 +31,11 @@ DECLARE
   unrelated_restriction TEXT;
   empty_restriction TEXT;
 BEGIN
+
+    IF NOT min_version('3.4.0') THEN
+      RETURN QUERY SELECT skip(1, 'pgr_signature added on 3.4.0');
+      RETURN;
+    END IF;
 
     unrelated_restriction := '$$SELECT 1 AS id, 100 AS cost, ARRAY[33, 32, 25] AS path$$';
     empty_restriction := '$$SELECT * FROM restrictions WHERE id > 7$$';
@@ -44,10 +50,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM inner_query() AS test;
+SELECT inner_query();
 
 
 SELECT finish();

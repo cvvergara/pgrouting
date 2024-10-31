@@ -28,6 +28,11 @@ $BODY$
 DECLARE
 BEGIN
 
+  IF NOT min_version('3.4.0') THEN
+    RETURN QUERY SELECT skip(1, 'pgr_signature added on 3.4.0');
+    RETURN;
+  END IF;
+
   RETURN QUERY SELECT lives_ok($q$
   SELECT * FROM pgr_trsp(
   $$SELECT * FROM edges order by id$$,
@@ -63,10 +68,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM edge_cases() AS test;
+SELECT edge_cases();
 
 SELECT finish();
 ROLLBACK;

@@ -25,6 +25,12 @@ CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
+
+  IF NOT min_version('3.4.0') THEN
+    RETURN QUERY SELECT skip(1, 'pgr_signature added on 3.4.0');
+    RETURN;
+  END IF;
+
   PREPARE q1 AS
   SELECT seq, node, edge, cost::text FROM pgr_trsp(
     $$SELECT id, source, target, cost FROM edges$$,
@@ -43,10 +49,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM edge_cases() AS test;
+SELECT edge_cases();
 
 SELECT finish();
 ROLLBACK;

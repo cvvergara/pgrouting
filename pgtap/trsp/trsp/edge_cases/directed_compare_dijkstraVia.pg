@@ -21,14 +21,19 @@ BEGIN;
 SET extra_float_digits = -3;
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
-SELECT plan(3);
+SELECT CASE WHEN min_version('3.4.0') THEN plan(3) ELSE plan(1) END;
+
+PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[5,9] AS path;
+PREPARE unrelated_restriction AS SELECT 100 AS cost, ARRAY[33, 32, 25] AS path;
 
 CREATE OR REPLACE FUNCTION edge_cases() RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-  PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[5,9] AS path;
-  PREPARE unrelated_restriction AS SELECT 100 AS cost, ARRAY[33, 32, 25] AS path;
+  IF NOT min_version('3.4.0') THEN
+    RETURN QUERY SELECT skip(1, 'pgr_signature added on 3.4.0');
+    RETURN;
+  END IF;
 
   PREPARE q1 AS
   SELECT * from pgr_trsp(
@@ -71,9 +76,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM edge_cases() AS test;
+SELECT edge_cases();
 
 SELECT finish();
 ROLLBACK;

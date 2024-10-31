@@ -21,15 +21,20 @@ BEGIN;
 SET extra_float_digits=-3;
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
-SELECT plan(6);
+SELECT CASE WHEN min_version('3.4.0') THEN plan(6) ELSE plan(1) END;
+
+PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[4,8] AS path;
+PREPARE unrelated_restriction AS SELECT 100 AS cost, ARRAY[33, 32, 25] AS path;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-  PREPARE related_restriction AS SELECT 100.2 AS cost, ARRAY[4,8] AS path;
-  PREPARE unrelated_restriction AS SELECT 100 AS cost, ARRAY[33, 32, 25] AS path;
+  IF NOT min_version('3.4.0') THEN
+    RETURN QUERY SELECT skip(1, 'pgr_signature added on 3.4.0');
+    RETURN;
+  END IF;
 
   /* Directed */
   PREPARE q1 AS
@@ -91,14 +96,14 @@ BEGIN
   RETURN QUERY SELECT set_eq('q51','q51_expected','6: Undirected: without retrictions returns the same as pgr_dijkstra');
 
   PREPARE q61 AS
-  SELECT seq-1::INTEGER, node::INTEGER, edge::INTEGER, cost::TEXT from pgr_trsp(
+  SELECT seq-1, node, edge, cost::TEXT from pgr_trsp(
     'SELECT  id, source, target, cost, reverse_cost from edges',
     'related_restriction',
     5, 10, false);
 
   PREPARE q61_expected AS
-  SELECT (row_number() over() -1)::INTEGER, node::INTEGER,
-  (CASE WHEN edge = -2 THEN -1 ELSE edge END)::INTEGER, cost::text
+  SELECT (row_number() over() -1), node,
+  (CASE WHEN edge = -2 THEN -1 ELSE edge END), cost::text
   FROM pgr_dijkstraVia(
     'select  id, source, target, cost, reverse_cost from edges',
     ARRAY[5, 6, 10],
@@ -109,10 +114,7 @@ END;
 $BODY$
 LANGUAGE plpgsql;
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM edge_cases() AS test;
+SELECT edge_cases();
 
 SELECT finish();
 ROLLBACK;

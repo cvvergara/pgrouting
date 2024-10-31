@@ -20,14 +20,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SELECT plan(14);
+SELECT CASE WHEN min_version('3.4.0') THEN plan(14) ELSE plan(2) END;
 
 SELECT has_function('pgr_trsp');
 
-SELECT CASE WHEN min_version('3.4.0')
-THEN test
-ELSE skip('pgr_trsp new signatures were created on 3.4.0', 1) END
-FROM types_check_general('pgr_trsp') AS test;
+SELECT types_check_general('pgr_trsp') AS test;
 
 SELECT finish();
 ROLLBACK;
