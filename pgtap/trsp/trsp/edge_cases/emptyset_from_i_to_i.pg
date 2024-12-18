@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.4.0') THEN plan(76) ELSE plan(2) END;
+SELECT CASE WHEN min_version('3.4.0') THEN plan(72) ELSE plan(2) END;
 
 PREPARE restriction AS SELECT * FROM restrictions;
 PREPARE with_reverse AS SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id;
