@@ -150,6 +150,8 @@ pgr_do_dijkstra(
             return;
         }
 
+
+
         hint = edges_sql;
         auto edges = get_edges(std::string(edges_sql), normal, false);
 
@@ -162,7 +164,6 @@ pgr_do_dijkstra(
 
         size_t n = n_goals <= 0? (std::numeric_limits<size_t>::max)() : static_cast<size_t>(n_goals);
         std::deque<Path>paths;
-
 
         if (directed) {
             pgrouting::DirectedGraph graph;
