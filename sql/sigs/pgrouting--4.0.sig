@@ -277,13 +277,6 @@ pgr_trsp(text,text,bigint,bigint,boolean)
 pgr_trsp(text,text,text,boolean)
 _pgr_trspv4(text,text,anyarray,anyarray,boolean)
 _pgr_trspv4(text,text,text,boolean)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)
->>>>>>> 01c1066076 (updating some files)
-=======
->>>>>>> 756838dcad (removing deprecated signatures)
 _pgr_trspvia(text,text,anyarray,boolean,boolean,boolean)
 pgr_trspvia(text,text,anyarray,boolean,boolean,boolean)
 _pgr_trspvia_withpoints(text,text,text,anyarray,boolean,boolean,boolean,character,boolean)
