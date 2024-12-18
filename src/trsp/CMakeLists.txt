@@ -1,6 +1,6 @@
 add_library(trsp OBJECT
     edgeInfo.cpp
-    pgr_trspHandler.cpp
+    trspHandler.cpp
 
     trsp.c
     trsp_driver.cpp
