@@ -94,13 +94,12 @@ jobs:
           cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Release -DWITH_DOC=OFF ..
           make -j 4
           sudo make install
-          sudo service postgresql start
-          createdb -p "${PGPORT}"  ___pgr___test___
-          psql -p "${PGPORT}"  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
 
       - name: Test old version before update with current tests
         run: |
           sudo service postgresql start
+          createdb -p "${PGPORT}"  ___pgr___test___
+          psql -p "${PGPORT}"  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           DIR=$(git rev-parse --show-toplevel)
           bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "${{ matrix.old_pgr }}"
@@ -118,6 +117,9 @@ jobs:
       - name: Test old version with currrent tests after installing current
         run: |
           sudo service postgresql start
+          dropdb -p "${PGPORT}"  ___pgr___test___
+          createdb -p "${PGPORT}"  ___pgr___test___
+          psql -p "${PGPORT}"  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           DIR=$(git rev-parse --show-toplevel)
           pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
