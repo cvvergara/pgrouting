@@ -99,10 +99,9 @@ jobs:
         run: |
           sudo service postgresql start
           createdb -p "${PGPORT}"  ___pgr___test___
-          psql -p "${PGPORT}"  -d ___pgr___test___ -c "CREATE EXTENSION pgrouting CASCADE;"
-          psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           DIR=$(git rev-parse --show-toplevel)
           bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "${{ matrix.old_pgr }}"
+          psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
 
       - name: Build current version
