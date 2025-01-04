@@ -139,6 +139,9 @@ while (my $line = <$ifh>) {
   }
 
 
+  # Convert :pr: & issue to markdown
+  $line =~ s/:pr:`([^<]+?)`/\[#$1\](https:\/\/github.com\/pgRouting\/pgrouting\/pull\/$1)/g;
+  $line =~ s/:issue:`([^<]+?)`/\[#$1\](https:\/\/github.com\/pgRouting\/pgrouting\/issues\/$1)/g;
 
   # convert urls to markdown
   $line =~ s/`([^<]+?)\s*<([^>]+)>`_*/\[$1\]($2)/g;

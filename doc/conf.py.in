@@ -55,6 +55,7 @@ extensions = [
         'sphinx.ext.graphviz',
         'sphinx.ext.autosectionlabel',
         'sphinx_collapse',
+        'sphinx_issues',
         ]
 autosectionlabel_prefix_document = True
 
@@ -116,6 +117,10 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
+
+# -- Options for sphinx_issues ---------------------------------------------------
+
+issues_github_path = "pgRouting/pgrouting"
 
 # -- Options for internationalization ---------------------------------------------------
 
