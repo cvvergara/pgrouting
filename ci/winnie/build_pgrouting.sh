@@ -20,8 +20,6 @@
 # File used in Jenkis setup
 #-------------------------
 
-
-
 # Setting defaults
 if  [[ "${OS_BUILD}" == '' ]] ; then
     OS_BUILD=64
@@ -142,7 +140,7 @@ cmake --version
 
 cd "${PROJECTS}/pgrouting" || exit 1
 DATABASE="___pgr___test___"
-PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
+PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' "../branches/${PGROUTING_VER}/CMakeLists.txt")
 echo "pgRouting VERSION ${PGR_VERSION}"
 rm -rf "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 mkdir "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
