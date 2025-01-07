@@ -21,9 +21,6 @@
 #-------------------------
 
 
-DATABASE="___pgr___test___"
-PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
-echo "pgRouting VERSION ${PGR_VERSION}"
 
 # Setting defaults
 if  [[ "${OS_BUILD}" == '' ]] ; then
@@ -58,7 +55,7 @@ BOOST_VER_WU=$(echo "${BOOST_VER//./_}")
 echo "DEBUG ${DEBUG}"
 
 # debugging options
-if [ $DEBUG -eq 1 ]
+if [[ "$DEBUG" == 'true' ]]
 then
     JENKINS_DEBUG=1
     VERBOSE=ON
@@ -144,6 +141,9 @@ fi
 cmake --version
 
 cd "${PROJECTS}/pgrouting" || exit 1
+DATABASE="___pgr___test___"
+PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
+echo "pgRouting VERSION ${PGR_VERSION}"
 rm -rf "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 mkdir "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 cd "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}" || exit 1
