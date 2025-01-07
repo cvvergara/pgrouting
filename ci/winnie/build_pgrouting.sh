@@ -64,6 +64,9 @@ else
     BUILD_TYPE=Release
 fi
 
+TAPTEST=${TAPTEST%%*([[:blank:]])}
+TAPTEST=${TAPTEST##*([[:blank:]])}
+
 echo "GIT_COMMIT ${GIT_COMMIT}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
