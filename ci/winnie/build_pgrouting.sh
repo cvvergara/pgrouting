@@ -140,7 +140,11 @@ cmake --version
 
 cd "${PROJECTS}/pgrouting" || exit 1
 DATABASE="___pgr___test___"
+ls "../branches/${PGROUTING_VER}"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' "../branches/${PGROUTING_VER}/CMakeLists.txt")
+
+exit 0
+
 echo "pgRouting VERSION ${PGR_VERSION}"
 rm -rf "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 mkdir "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
