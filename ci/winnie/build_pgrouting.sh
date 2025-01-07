@@ -22,23 +22,11 @@
 
 JENKINS_DEBUG=1
 
-#-----------------
-# variables setup
-#  Variables recived by jenkins setup
-#-----------------
-#export OS_BUILD=
-#export PG_VER=
-#export PGHOST=
-#export PGPORT=
-#export PGROUTING_VER=
-#export POSTIGS_VER=
-#GCC_TYPE=
-#export GIT_COMMIT=
-
 DATABASE="___pgr___test___"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
 echo "pgRouting VERSION ${VERSION}"
 
+BOOST_VER_WU=echo "${BOOST_VER//./_}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
@@ -49,63 +37,55 @@ then
 
     echo "OS_BUILD ${OS_BUILD}"
     echo "PG_VER ${PG_VER}"
-    echo "PGHOST ${PGHOST}"
+    echo "Not used in the build script PGHOST ${PGHOST}"
     echo "PGPORT ${PGPORT}"
     echo "PGROUTING_VER ${PGROUTING_VER}"
     echo "POSTGIS_VER ${POSTGIS_VER}"
     echo "GCC_TYPE ${GCC_TYPE}"
-    echo "GIT_COMMIT ${GIT_COMMIT}"
-    echo "SFCGAL_VER ${SFCGAL_VER}"
-    echo "PROJ_VER ${PROJ_VER}"
-    echo "GDAL_VER ${GDAL_VER}"
-    echo "GEOS_VER ${GEOS_VER}"
+    echo "Not used in the build script GIT_COMMIT ${GIT_COMMIT}"
+    echo "Not used in the build script SFCGAL_VER ${SFCGAL_VER}"
+    echo "Not used in the build script PROJ_VER ${PROJ_VER}"
+    echo "Not used in the build script GDAL_VER ${GDAL_VER}"
+    echo "Not used in the build script GEOS_VER ${GEOS_VER}"
     echo "BOOST_VER ${BOOST_VER}"
+    echo "calculated BOOST_VER_WU ${BOOST_VER_WU}"
     echo "TAPTEST ${TAPTEST}"
 fi
-
-echo
-echo "***************************"
-echo Deduced variables
-echo "***************************"
-
 
 export PGUSER=postgres
 export PROJECTS=/projects
 export PGPATHEDB=${PROJECTS}/postgresql/rel/pg${PG_VER}w${OS_BUILD}${GCC_TYPE}edb  #this is so winnie know's where to copy the dlls for vc++ edb compiled postgresql testing
 export PGPATH=${PROJECTS}/postgresql/rel/pg${PG_VER}w${OS_BUILD}${GCC_TYPE}
-export PATHOLD=$PATH
-#export PATHOLD="/mingw/bin:/mingw/include:/c/Windows/system32:/c/Windows"
 export PGWINVER=${PG_VER}w${OS_BUILD}${GCC_TYPE}edb
-export PATH="${PATHOLD}:/usr/bin:${PGPATH}/bin:${PGPATH}/lib:${PGPATH}/include"
+export PATH="${PATH}:/usr/bin:${PGPATH}/bin:${PGPATH}/lib:${PGPATH}/include"
 export PATH="${PROJECTS}/rel-libiconv-1.13.1w${OS_BUILD}${GCC_TYPE}/include:${PATH}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
+    echo "***************************"
+    echo Deduced variables
+    echo "***************************"
+
     echo "PGUSER ${PGUSER}"
     echo "PROJECTS ${PROJECTS}"
     echo "PGPATHEDB ${PGPATHEDB}"
     echo "PGPATH ${PGPATH}"
-    echo "PATHOLD ${PATHOLD}"
     echo "PGWINVER ${PGWINVER}"
     echo "PATH ${PATH}"
 fi
 
 BOOST_VER=1.78.0
 BOOST_VER_WU=1_78_0
-BOOST_VER_WUM=1_78
+#BOOST_VER_WUM=1_78
 #ZLIB_VER=1.2.13
 echo "${BOOST_VER}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
     echo "BOOST_VER_WU ${BOOST_VER_WU}"
-    echo "BOOST_VER_WUM ${BOOST_VER_WUM}"
+    #echo "BOOST_VER_WUM ${BOOST_VER_WUM}"
     #echo "ZLIB_VER ${ZLIB_VER}"
 fi
-
-#zlib
-#ZLIB_PATH="${PROJECTS}/zlib/rel-${ZLIB_VER}w${OS_BUILD}${GCC_TYPE}"
-#PATH="${PATH}:${ZLIB_PATH}/include:${ZLIB_PATH}/lib:${ZLIB_PATH}/bin"
 
 #boost
 BOOSTROOT_PATH="${PROJECTS}/boost/rel-${BOOST_VER_WU}w${OS_BUILD}${GCC_TYPE}"
