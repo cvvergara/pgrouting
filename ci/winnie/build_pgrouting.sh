@@ -136,6 +136,7 @@ cd "${PROJECTS}/pgrouting" || exit 1
 DATABASE="___pgr___test___"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' "branches/${PGROUTING_VER}/CMakeLists.txt")
 if [ $JENKINS_DEBUG -eq 1 ]
+then
     echo "pgRouting VERSION ${PGR_VERSION}"
 fi
 
