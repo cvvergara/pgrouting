@@ -23,7 +23,7 @@
 
 DATABASE="___pgr___test___"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
-echo "pgRouting VERSION ${VERSION}"
+echo "pgRouting VERSION ${PGR_VERSION}"
 
 # Setting defaults
 if  [[ "${OS_BUILD}" == '' ]] ; then
@@ -55,6 +55,8 @@ if  [[ "${BOOST_VER}" == '' ]] ; then
 fi;
 BOOST_VER_WU=$(echo "${BOOST_VER//./_}")
 
+echo "DEBUG ${DEBUG}"
+
 # debugging options
 if [ $DEBUG -eq 1 ]
 then
@@ -67,6 +69,7 @@ else
     BUILD_TYPE=Release
 fi
 
+JENKINS_DEBUG=1
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
@@ -186,7 +189,7 @@ if [ $JENKINS_DEBUG -eq 1 ]
 then
     echo
     echo "***************************"
-    echo "Instllation on PGPATHEDB ${PGPATHEDB}"
+    echo "Installation on PGPATHEDB ${PGPATHEDB}"
     echo "***************************"
     ls ${PGPATHEDB}/lib/libpgrouting*
     ls ${PGPATHEDB}/share/extension/pgrouting*
@@ -199,7 +202,7 @@ if [ -n "${TAPTEST}" ]
 then
 
 psql -c "CREATE DATABASE ${DATABASE}"
-bash tools/testers/setup_db.sh "${PGPORT}"  "${DATABASE}"  "${PGUSER}" "${PGR_VERSION}"
+bash tools/testers/setup_db.sh "${PGPORT}" "${DATABASE}"  "${PGUSER}" "${PGR_VERSION}"
 pg_prove -v --normalize --directives --recurse -p "${PGPORT}" -d "${DATABASE}" "${TAPTEST}"
 psql -c "DROP DATABASE ${DATABASE}"
 
