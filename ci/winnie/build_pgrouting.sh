@@ -64,7 +64,7 @@ else
     BUILD_TYPE=Release
 fi
 
-JENKINS_DEBUG=1
+echo "GIT_COMMIT ${GIT_COMMIT}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
