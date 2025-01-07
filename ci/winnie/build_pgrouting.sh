@@ -26,7 +26,7 @@ DATABASE="___pgr___test___"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
 echo "pgRouting VERSION ${VERSION}"
 
-BOOST_VER_WU=echo "${BOOST_VER//./_}"
+BOOST_VER_WU=$(echo "${BOOST_VER//./_}")
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
