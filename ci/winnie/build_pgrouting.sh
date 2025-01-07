@@ -35,15 +35,18 @@ JENKINS_DEBUG=1
 #GCC_TYPE=
 #export GIT_COMMIT=
 
+DATABASE="___pgr___test___"
+PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
+echo "pgRouting VERSION ${VERSION}"
+
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
-    #---------------
     echo
     echo "***************************"
     echo Recived variables
     echo "**************************"
-    #---------------
+
     echo "OS_BUILD ${OS_BUILD}"
     echo "PG_VER ${PG_VER}"
     echo "PGHOST ${PGHOST}"
@@ -52,14 +55,19 @@ then
     echo "POSTGIS_VER ${POSTGIS_VER}"
     echo "GCC_TYPE ${GCC_TYPE}"
     echo "GIT_COMMIT ${GIT_COMMIT}"
+    echo "SFCGAL_VER ${SFCGAL_VER}"
+    echo "PROJ_VER ${PROJ_VER}"
+    echo "GDAL_VER ${GDAL_VER}"
+    echo "GEOS_VER ${GEOS_VER}"
+    echo "BOOST_VER ${BOOST_VER}"
+    echo "TAPTEST ${TAPTEST}"
 fi
 
-#---------------
 echo
 echo "***************************"
 echo Deduced variables
 echo "***************************"
-#---------------
+
 
 export PGUSER=postgres
 export PROJECTS=/projects
@@ -85,19 +93,19 @@ fi
 BOOST_VER=1.78.0
 BOOST_VER_WU=1_78_0
 BOOST_VER_WUM=1_78
-ZLIB_VER=1.2.13
+#ZLIB_VER=1.2.13
 echo "${BOOST_VER}"
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
     echo "BOOST_VER_WU ${BOOST_VER_WU}"
     echo "BOOST_VER_WUM ${BOOST_VER_WUM}"
-    echo "ZLIB_VER ${ZLIB_VER}"
+    #echo "ZLIB_VER ${ZLIB_VER}"
 fi
 
 #zlib
-ZLIB_PATH="${PROJECTS}/zlib/rel-${ZLIB_VER}w${OS_BUILD}${GCC_TYPE}"
-PATH="${PATH}:${ZLIB_PATH}/include:${ZLIB_PATH}/lib:${ZLIB_PATH}/bin"
+#ZLIB_PATH="${PROJECTS}/zlib/rel-${ZLIB_VER}w${OS_BUILD}${GCC_TYPE}"
+#PATH="${PATH}:${ZLIB_PATH}/include:${ZLIB_PATH}/lib:${ZLIB_PATH}/bin"
 
 #boost
 BOOSTROOT_PATH="${PROJECTS}/boost/rel-${BOOST_VER_WU}w${OS_BUILD}${GCC_TYPE}"
@@ -123,6 +131,8 @@ echo "***************************"
 echo "Current contents of PGPATH ${PGPATH}"
 echo "***************************"
 #---------------
+rm ${PGPATH}/lib/libpgrouting*
+rm ${PGPATH}/share/extension/pgrouting*
 ls ${PGPATH}/lib/libpgrouting*
 ls ${PGPATH}/share/extension/pgrouting*
 
@@ -132,31 +142,12 @@ echo "***************************"
 echo "Current contents of PGPATHEDB ${PGPATHEDB}"
 echo "***************************"
 #---------------
-ls ${PGPATHEDB}/lib/libpgrouting*
-ls ${PGPATHEDB}/share/extension/pgrouting*
-
-rm ${PGPATH}/lib/libpgrouting*
-rm ${PGPATH}/share/extension/pgrouting*
-rm ${PGPATHEDB}/lib/libpgrouting
+rm ${PGPATHEDB}/lib/libpgrouting*
 rm ${PGPATHEDB}/share/extension/pgrouting*
-
-#---------------
-echo
-echo "***************************"
-echo "After removing in PGPATH ${PGPATH}"
-echo "***************************"
-#---------------
-ls ${PGPATH}/lib/libpgrouting*
-ls ${PGPATH}/share/extension/pgrouting*
-
-#---------------
-echo
-echo "***************************"
-echo "After removing in PGPATHEDB ${PGPATHEDB}"
-echo "***************************"
-#---------------
 ls ${PGPATHEDB}/lib/libpgrouting*
 ls ${PGPATHEDB}/share/extension/pgrouting*
+
+
 cmake --version
 
 cmake -G "MSYS Makefiles" -DCMAKE_VERBOSE_MAKEFILE=ON \
@@ -164,14 +155,6 @@ cmake -G "MSYS Makefiles" -DCMAKE_VERBOSE_MAKEFILE=ON \
  -DBoost_USE_STATIC_LIBS=ON \
  -DCMAKE_BUILD_TYPE=Release \
  "../branches/${PGROUTING_VER}"
-
-#---------------
-echo
-echo "***************************"
-echo make
-echo "***************************"
-#---------------
-make
 
 #---------------
 echo
@@ -218,12 +201,16 @@ ls ${PGPATHEDB}/share/extension/pgrouting*
 
 cd "${PROJECTS}/pgrouting/branches/${PGROUTING_VER}" || exit 1
 
-#perl tools/test-runner.pl   -pgver ${PG_VER} -pgport "${PGPORT}"  -clean
-#perl tools/testers/doc_queries_generator.pl  -pgver ${PG_VER} -pgisver "${POSTGIS_VER}" -pgport "${PGPORT}"  -alg common -clean -v
-#perl tools/testers/doc_queries_generator.pl  -pgver ${PG_VER} -pgisver "${POSTGIS_VER}" -pgport "${PGPORT}"  -alg dijkstra -clean -v
-#perl tools/testers/doc_queries_generator.pl  -pgver ${PG_VER} -pgisver "${POSTGIS_VER}" -pgport "${PGPORT}"  -alg contraction
 
-#perl tools/testers/doc_queries_generator.pl  -pgver ${PG_VER} -pgisver "${POSTGIS_VER}" -pgport "${PGPORT}"
+if [ -n "${TAPTEST}" ]
+then
+
+psql -c "CREATE DATABASE ${DATABASE}"
+bash tools/testers/setup_db.sh "${PGPORT}"  "${DATABASE}"  "${PGUSER}" "${PGR_VERSION}"
+pg_prove -v --normalize --directives --recurse -p "${PGPORT}" -d "${DATABASE}" "${TAPTEST}"
+psql -c "DROP DATABASE ${DATABASE}"
+
+fi
 
 if [ "${OS_BUILD}" -eq 32 ]
 then
@@ -232,9 +219,9 @@ then
 
 else
 
-    psql -c "CREATE DATABASE ___pgr___test___"
+    psql -c "CREATE DATABASE ${DATABASE}"
     tools/testers/pg_prove_tests.sh "${PGUSER}" "${PGPORT}"
-    psql -c "DROP DATABASE ___pgr___test___"
+    psql -c "DROP DATABASE ${DATABASE}"
 
 fi
 
