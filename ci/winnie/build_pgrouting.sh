@@ -20,13 +20,53 @@
 # File used in Jenkis setup
 #-------------------------
 
-JENKINS_DEBUG=1
 
 DATABASE="___pgr___test___"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' CMakeLists.txt)
 echo "pgRouting VERSION ${VERSION}"
 
+# Setting defaults
+if  [[ "${OS_BUILD}" == '' ]] ; then
+    OS_BUILD=64
+fi;
+
+if  [[ "${PG_VER}" == '' ]] ; then
+    PG_VER=14
+fi;
+
+if  [[ "${PGPORT}" == '' ]] ; then
+    PGPORT=54613
+fi;
+
+if  [[ "${PGROUTING_VER}" == '' ]] ; then
+    PGROUTING_VER=cvvergara
+fi;
+
+if  [[ "${POSTGIS_VER}" == '' ]] ; then
+    POSTGIS_VER=3.3.2
+fi;
+
+if  [[ "${GCC_TYPE}" == '' ]] ; then
+    GCC_TYPE=gcc81
+fi;
+
+if  [[ "${BOOST_VER}" == '' ]] ; then
+    BOOST_VER=1.78.0
+fi;
 BOOST_VER_WU=$(echo "${BOOST_VER//./_}")
+
+# debugging options
+if [ $DEBUG -eq 1 ]
+then
+    JENKINS_DEBUG=1
+    VERBOSE=ON
+    BUILD_TYPE=Debug
+else
+    JENKINS_DEBUG=0
+    VERBOSE=OFF
+    BUILD_TYPE=Release
+fi
+
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
@@ -37,28 +77,37 @@ then
 
     echo "OS_BUILD ${OS_BUILD}"
     echo "PG_VER ${PG_VER}"
-    echo "Not used in the build script PGHOST ${PGHOST}"
+    #echo "Not used in the build script PGHOST ${PGHOST}"
     echo "PGPORT ${PGPORT}"
     echo "PGROUTING_VER ${PGROUTING_VER}"
     echo "POSTGIS_VER ${POSTGIS_VER}"
     echo "GCC_TYPE ${GCC_TYPE}"
-    echo "Not used in the build script GIT_COMMIT ${GIT_COMMIT}"
-    echo "Not used in the build script SFCGAL_VER ${SFCGAL_VER}"
-    echo "Not used in the build script PROJ_VER ${PROJ_VER}"
-    echo "Not used in the build script GDAL_VER ${GDAL_VER}"
-    echo "Not used in the build script GEOS_VER ${GEOS_VER}"
+    #echo "Not used in the build script GIT_COMMIT ${GIT_COMMIT}"
+    #echo "Not used in the build script SFCGAL_VER ${SFCGAL_VER}"
+    #echo "Not used in the build script PROJ_VER ${PROJ_VER}"
+    #echo "Not used in the build script GDAL_VER ${GDAL_VER}"
+    #echo "Not used in the build script GEOS_VER ${GEOS_VER}"
     echo "BOOST_VER ${BOOST_VER}"
     echo "calculated BOOST_VER_WU ${BOOST_VER_WU}"
     echo "TAPTEST ${TAPTEST}"
+    echo "DEBUG ${DEBUG}"
 fi
 
 export PGUSER=postgres
 export PROJECTS=/projects
-export PGPATHEDB=${PROJECTS}/postgresql/rel/pg${PG_VER}w${OS_BUILD}${GCC_TYPE}edb  #this is so winnie know's where to copy the dlls for vc++ edb compiled postgresql testing
+
+#this is so winnie know's where to copy the dlls for vc++ edb compiled postgresql testing
+export PGPATHEDB=${PROJECTS}/postgresql/rel/pg${PG_VER}w${OS_BUILD}${GCC_TYPE}edb
+
 export PGPATH=${PROJECTS}/postgresql/rel/pg${PG_VER}w${OS_BUILD}${GCC_TYPE}
 export PGWINVER=${PG_VER}w${OS_BUILD}${GCC_TYPE}edb
+export BOOSTROOT_PATH="${PROJECTS}/boost/rel-${BOOST_VER_WU}w${OS_BUILD}${GCC_TYPE}"
 export PATH="${PATH}:/usr/bin:${PGPATH}/bin:${PGPATH}/lib:${PGPATH}/include"
 export PATH="${PROJECTS}/rel-libiconv-1.13.1w${OS_BUILD}${GCC_TYPE}/include:${PATH}"
+export PATH="${PATH}:${BOOSTROOT_PATH}/lib"
+export PATH="${PATH}:/cmake/bin"
+export PATH="${PATH}:.:/bin:/include"
+
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
@@ -74,66 +123,32 @@ then
     echo "PATH ${PATH}"
 fi
 
-BOOST_VER=1.78.0
-BOOST_VER_WU=1_78_0
-#BOOST_VER_WUM=1_78
-#ZLIB_VER=1.2.13
-echo "${BOOST_VER}"
+#---------------
+echo "Cleanup ${PGPATH} & ${PGPATHEDB}"
+rm -f ${PGPATH}/lib/libpgrouting*
+rm -f ${PGPATH}/share/extension/pgrouting*
+rm -f ${PGPATHEDB}/lib/libpgrouting*
+rm -f ${PGPATHEDB}/share/extension/pgrouting*
 
 if [ $JENKINS_DEBUG -eq 1 ]
 then
-    echo "BOOST_VER_WU ${BOOST_VER_WU}"
-    #echo "BOOST_VER_WUM ${BOOST_VER_WUM}"
-    #echo "ZLIB_VER ${ZLIB_VER}"
+    ls ${PGPATH}/lib/libpgrouting* 2>/dev/null
+    ls ${PGPATH}/share/extension/pgrouting* 2>/dev/null
+    ls ${PGPATHEDB}/lib/libpgrouting* 2>/dev/null
+    ls ${PGPATHEDB}/share/extension/pgrouting* 2>/dev/null
 fi
 
-#boost
-BOOSTROOT_PATH="${PROJECTS}/boost/rel-${BOOST_VER_WU}w${OS_BUILD}${GCC_TYPE}"
-PATH="${PATH}:${BOOSTROOT_PATH}/lib"
-
-#cmake
-export PATH="${PATH}:/cmake/bin"
-export PATH="${PATH}:.:/bin:/include"
-
 cmake --version
-
-echo "PATH ${PATH}"
 
 cd "${PROJECTS}/pgrouting" || exit 1
 rm -rf "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 mkdir "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 cd "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}" || exit 1
 
-
-#---------------
-echo
-echo "***************************"
-echo "Current contents of PGPATH ${PGPATH}"
-echo "***************************"
-#---------------
-rm ${PGPATH}/lib/libpgrouting*
-rm ${PGPATH}/share/extension/pgrouting*
-ls ${PGPATH}/lib/libpgrouting*
-ls ${PGPATH}/share/extension/pgrouting*
-
-#---------------
-echo
-echo "***************************"
-echo "Current contents of PGPATHEDB ${PGPATHEDB}"
-echo "***************************"
-#---------------
-rm ${PGPATHEDB}/lib/libpgrouting*
-rm ${PGPATHEDB}/share/extension/pgrouting*
-ls ${PGPATHEDB}/lib/libpgrouting*
-ls ${PGPATHEDB}/share/extension/pgrouting*
-
-
-cmake --version
-
-cmake -G "MSYS Makefiles" -DCMAKE_VERBOSE_MAKEFILE=ON \
+cmake -G "MSYS Makefiles" -DCMAKE_VERBOSE_MAKEFILE="${VERBOSE}" \
  -DBOOST_ROOT:PATH="${BOOSTROOT_PATH}" \
  -DBoost_USE_STATIC_LIBS=ON \
- -DCMAKE_BUILD_TYPE=Release \
+ -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
  "../branches/${PGROUTING_VER}"
 
 #---------------
@@ -144,24 +159,21 @@ echo "***************************"
 #---------------
 make install
 
-#---------------
-echo
-echo "***************************"
-echo "Current contents of PGPATH ${PGPATH}"
-echo "***************************"
-#---------------
-ls ${PGPATH}/lib/libpgrouting*
-ls ${PGPATH}/share/extension/pgrouting*
+if [ $JENKINS_DEBUG -eq 1 ]
+then
+    echo "***************************"
+    echo "Installation on PGPATH ${PGPATH}"
+    echo "***************************"
+    ls ${PGPATH}/lib/libpgrouting*
+    ls ${PGPATH}/share/extension/pgrouting*
 
-#---------------
-echo
-echo "***************************"
-echo "Current contents of PGPATHEDB ${PGPATHEDB}"
-echo Should be empty
-echo "***************************"
-#---------------
-ls ${PGPATHEDB}/lib/libpgrouting*
-ls ${PGPATHEDB}/share/extension/pgrouting*
+    echo "***************************"
+    echo "Current contents of PGPATHEDB ${PGPATHEDB}"
+    echo Should be empty
+    echo "***************************"
+    ls ${PGPATHEDB}/lib/libpgrouting*
+    ls ${PGPATHEDB}/share/extension/pgrouting*
+fi
 
 
 #we need uninstall and reinstall copy to VC++ EDB instance if we want to test on standard Windows installed versions
@@ -170,14 +182,15 @@ cp -r ${PGPATH}/lib/libpgrouting*.dll ${PGPATHEDB}/lib/
 cp -r ${PGPATH}/share/extension/pgrouting*.sql ${PGPATHEDB}/share/extension/
 cp -r ${PGPATH}/share/extension/pgrouting.control ${PGPATHEDB}/share/extension/
 
-#---------------
-echo
-echo "***************************"
-echo "After copying to PGPATHEDB ${PGPATHEDB}"
-echo "***************************"
-#---------------
-ls ${PGPATHEDB}/lib/libpgrouting*
-ls ${PGPATHEDB}/share/extension/pgrouting*
+if [ $JENKINS_DEBUG -eq 1 ]
+then
+    echo
+    echo "***************************"
+    echo "Instllation on PGPATHEDB ${PGPATHEDB}"
+    echo "***************************"
+    ls ${PGPATHEDB}/lib/libpgrouting*
+    ls ${PGPATHEDB}/share/extension/pgrouting*
+fi
 
 cd "${PROJECTS}/pgrouting/branches/${PGROUTING_VER}" || exit 1
 
