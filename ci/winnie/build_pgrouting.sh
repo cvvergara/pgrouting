@@ -70,21 +70,15 @@ if [ $JENKINS_DEBUG -eq 1 ]
 then
     echo
     echo "***************************"
-    echo Recived variables
+    echo Recived variables used in this script
     echo "**************************"
 
     echo "OS_BUILD ${OS_BUILD}"
     echo "PG_VER ${PG_VER}"
-    #echo "Not used in the build script PGHOST ${PGHOST}"
     echo "PGPORT ${PGPORT}"
     echo "PGROUTING_VER ${PGROUTING_VER}"
     echo "POSTGIS_VER ${POSTGIS_VER}"
     echo "GCC_TYPE ${GCC_TYPE}"
-    #echo "Not used in the build script GIT_COMMIT ${GIT_COMMIT}"
-    #echo "Not used in the build script SFCGAL_VER ${SFCGAL_VER}"
-    #echo "Not used in the build script PROJ_VER ${PROJ_VER}"
-    #echo "Not used in the build script GDAL_VER ${GDAL_VER}"
-    #echo "Not used in the build script GEOS_VER ${GEOS_VER}"
     echo "BOOST_VER ${BOOST_VER}"
     echo "calculated BOOST_VER_WU ${BOOST_VER_WU}"
     echo "TAPTEST ${TAPTEST}"
@@ -141,7 +135,9 @@ cmake --version
 cd "${PROJECTS}/pgrouting" || exit 1
 DATABASE="___pgr___test___"
 PGR_VERSION=$(grep -Po '(?<=project\(PGROUTING VERSION )[^;]+' "branches/${PGROUTING_VER}/CMakeLists.txt")
-echo "pgRouting VERSION ${PGR_VERSION}"
+if [ $JENKINS_DEBUG -eq 1 ]
+    echo "pgRouting VERSION ${PGR_VERSION}"
+fi
 
 rm -rf "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
 mkdir "build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}"
@@ -196,6 +192,7 @@ fi
 
 cd "${PROJECTS}/pgrouting/branches/${PGROUTING_VER}" || exit 1
 
+# Testing
 
 if [ -n "${TAPTEST}" ]
 then
@@ -207,18 +204,11 @@ psql -c "DROP DATABASE ${DATABASE}"
 
 fi
 
-if [ "${OS_BUILD}" -eq 32 ]
-then
 
-    perl tools/testers/doc_queries_generator.pl  -pgver "${PG_VER}" -pgisver "${POSTGIS_VER}" -pgport "${PGPORT}"
+psql -c "CREATE DATABASE ${DATABASE}"
+tools/testers/pg_prove_tests.sh "${PGUSER}" "${PGPORT}"
+psql -c "DROP DATABASE ${DATABASE}"
 
-else
-
-    psql -c "CREATE DATABASE ${DATABASE}"
-    tools/testers/pg_prove_tests.sh "${PGUSER}" "${PGPORT}"
-    psql -c "DROP DATABASE ${DATABASE}"
-
-fi
 
 cd "${PROJECTS}/pgrouting/build${PGROUTING_VER}w${OS_BUILD}${GCC_TYPE}/lib" || exit 1
 strip ./*.dll
