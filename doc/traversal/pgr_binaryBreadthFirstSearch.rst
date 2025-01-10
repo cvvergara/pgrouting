@@ -7,12 +7,12 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Traversal Family ; pgr_binaryBreadthFirstSearch
    single: Breadth First Search Category ; pgr_binaryBreadthFirstSearch
    single: binaryBreadthFirstSearch
+
+|
 
 ``pgr_binaryBreadthFirstSearch`` - Experimental
 ===============================================================================

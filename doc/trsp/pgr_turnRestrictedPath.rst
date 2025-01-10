@@ -7,14 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Turn Restriction Shortest Path Family ; pgr_turnRestrictedPath
    single: Shortest Path Category ; pgr_turnRestrictedPath
    single: Restrictions Category ; pgr_turnRestrictedPath
    single: turnRestrictedPath
 
+|
 
 pgr_turnRestrictedPath - Experimental
 ===============================================================================

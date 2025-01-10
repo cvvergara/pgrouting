@@ -7,9 +7,9 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index:: K Shortest Paths Category
+
+|
 
 K shortest paths - Category
 ===============================================================================

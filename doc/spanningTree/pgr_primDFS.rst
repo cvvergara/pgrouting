@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Prim Family ; pgr_primDFS
    single: Spanning Tree Category ; pgr_primDFS
    single: Depth First Search Category ; pgr_primDFS
    single: primDFS
+
+|
 
 ``pgr_primDFS``
 ===============================================================================

@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Metrics Family ; pgr_betweennessCentrality
    single: betweennessCentrality - Experimental on v3.7
+
+|
 
 ``pgr_betweennessCentrality``
 ===============================================================================

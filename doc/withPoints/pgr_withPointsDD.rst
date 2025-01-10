@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: withPoints Family ; pgr_withPointsDD
    single: With Points Category ; pgr_withPointsDD
    single: Driving Distance Category ; pgr_withPointsDD
    single: withPointsDD
+
+|
 
 ``pgr_withPointsDD`` - Proposed
 ===============================================================================

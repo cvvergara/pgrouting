@@ -7,11 +7,11 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Ordering Family ; pgr_topologicalSort
    single: topologicalSort - Experimental on v3.0
+
+|
 
 ``pgr_topologicalSort`` - Experimental
 ===============================================================================

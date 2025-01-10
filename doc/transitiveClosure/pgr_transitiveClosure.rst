@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Miscellaneous Algorithms ; pgr_transitiveClosure
    single: transitiveClosure - Experimental on v3.0
+
+|
 
 ``pgr_transitiveClosure`` - Experimental
 ===============================================================================

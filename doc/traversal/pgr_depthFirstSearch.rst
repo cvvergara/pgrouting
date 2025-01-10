@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Traversal Family ; pgr_depthFirstSearch
    single: Depth First Search Category ; pgr_depthFirstSearch
    single: depthFirstSearch
+
+|
 
 ``pgr_depthFirstSearch`` - Proposed
 ===============================================================================

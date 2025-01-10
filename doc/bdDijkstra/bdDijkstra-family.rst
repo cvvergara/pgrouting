@@ -7,10 +7,10 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 
 .. index:: Bidirectional Dijkstra Family
+
+|
 
 Bidirectional Dijkstra - Family of functions
 ===============================================================================

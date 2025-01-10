@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: All Pairs Family ; pgr_johnson
    single: johnson
+
+|
 
 ``pgr_johnson``
 ===============================================================================

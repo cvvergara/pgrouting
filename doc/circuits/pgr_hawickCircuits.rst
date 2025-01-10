@@ -7,11 +7,11 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Miscellaneous Algorithms ; pgr_hawickCircuits
    single: Hawick Circuits - Experimental on v3.4
+
+|
 
 ``pgr_hawickCircuits - Experimental``
 ===============================================================================

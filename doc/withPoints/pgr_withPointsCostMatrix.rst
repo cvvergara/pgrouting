@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: withPoints Family ; pgr_withPointsCostMatrix
    single: With Points Category ; pgr_withPointsCostMatrix
    single: Cost Matrix Category ; pgr_withPointsCostMatrix
    single: withPointsCostMatrix - proposed on v2.0
+
+|
 
 ``pgr_withPointsCostMatrix`` - proposed
 ===============================================================================

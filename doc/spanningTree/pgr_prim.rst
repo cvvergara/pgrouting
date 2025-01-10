@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Prim Family ; pgr_prim
    single: Spanning Tree Category ; pgr_prim
    single: prim
+
+|
 
 ``pgr_prim``
 ===============================================================================

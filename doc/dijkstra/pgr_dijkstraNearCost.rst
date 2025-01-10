@@ -7,14 +7,14 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 
 .. index::
    single: Dijkstra Family ; pgr_dijkstraNearCost
    single: Near Category ; pgr_dijkstraNearCost
    single: Cost Category ; pgr_dijkstraNearCost
    single: dijkstraNearCost
+
+|
 
 ``pgr_dijkstraNearCost`` - Proposed
 ===============================================================================

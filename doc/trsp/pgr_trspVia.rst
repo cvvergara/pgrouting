@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Turn Restriction Shortest Path Family ; pgr_trspVia
    single: Via Category ; pgr_trspVia
    single: Restrictions Category ; pgr_trspVia
    single: trspVia
+
+|
 
 ``pgr_trspVia`` - Proposed
 ===============================================================================

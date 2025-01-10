@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Dijkstra Family ; pgr_dijkstraVia
    single: Via Category ; pgr_dijkstraVia
    single: dijkstraVia
+
+|
 
 ``pgr_dijkstraVia`` - Proposed
 ===============================================================================

@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Bidirectional A* Family ; pgr_bdAstar
    single: bdAstar
+
+|
 
 ``pgr_bdAstar``
 ===============================================================================

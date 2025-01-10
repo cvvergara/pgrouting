@@ -7,14 +7,14 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 
 .. index::
    single: Kruskal Family ; pgr_kruskalDD
    single: Spanning Tree Category ; pgr_kruskalDD
    single: Driving Distance Category ; pgr_kruskalDD
    single: kruskalDD
+
+|
 
 ``pgr_kruskalDD``
 ===============================================================================

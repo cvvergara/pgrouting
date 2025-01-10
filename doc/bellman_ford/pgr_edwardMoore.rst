@@ -7,11 +7,11 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Shortest Path Category; pgr_edwardMoore
    single: edwardMoore
+
+|
 
 ``pgr_edwardMoore - Experimental``
 ===============================================================================

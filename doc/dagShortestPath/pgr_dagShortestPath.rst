@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Shortest Path Category ; pgr_dagShortestPath
    single: Directed Acyclic Graph Category ; pgr_dagShortestPath
    single: dagShortestPath
+
+|
 
 pgr_dagShortestPath - Experimental
 ===============================================================================

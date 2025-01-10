@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Kruskal Family ; pgr_kruskalBFS
    single: Spanning Tree Category ; pgr_kruskalBFS
    single: Breadth First Search Category ; pgr_kruskalBFS
    single: kruskalBFS
+
+|
 
 ``pgr_kruskalBFS``
 ===============================================================================

@@ -7,11 +7,11 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Ordering Family ; pgr_cuthillMckeeOrdering
    single: pgr_cuthillMckeeOrdering
+
+|
 
 ``pgr_cuthillMckeeOrdering`` - Experimental
 ===============================================================================

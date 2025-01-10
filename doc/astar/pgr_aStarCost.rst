@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 
 .. index::
    single: aStar Family ; pgr_aStarCost
    single: aStarCost
+
+|
 
 pgr_aStarCost
 ===============================================================================

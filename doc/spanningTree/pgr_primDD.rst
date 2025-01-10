@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Prim Family ; pgr_primDD
    single: Spanning Tree Category ; pgr_primDD
    single: Driving Distance Category ; pgr_primDD
    single: primDD
+
+|
 
 ``pgr_primDD``
 ===============================================================================

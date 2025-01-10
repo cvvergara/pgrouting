@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Dijkstra Family ; pgr_dijkstra
    single: Shortest Path Category ; pgr_dijkstra
    single: dijkstra
+
+|
 
 ``pgr_dijkstra``
 ===============================================================================

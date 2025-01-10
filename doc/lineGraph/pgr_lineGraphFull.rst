@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Transformation Family ; pgr_lineGraphFull
    single: lineGraphFull - Experimental on v2.6
+
+|
 
 ``pgr_lineGraphFull`` - Experimental
 ===============================================================================

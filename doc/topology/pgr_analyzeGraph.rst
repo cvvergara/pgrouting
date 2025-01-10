@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Topology Family ; pgr_analyzeGraph
    single: analyzeGraph
+
+|
 
 pgr_analyzeGraph
 ===============================================================================

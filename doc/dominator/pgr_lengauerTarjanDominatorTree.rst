@@ -7,12 +7,11 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Miscellaneous Algorithms ; pgr_lengauerTarjanDominatorTree
    single: lengauerTarjanDominatorTree - Experimental on v3.2
 
+|
 
 pgr_lengauerTarjanDominatorTree -Experimental
 ===============================================================================

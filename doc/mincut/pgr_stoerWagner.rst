@@ -11,6 +11,8 @@
    single: Miscellaneous Algorithms ; pgr_stoerWagner
    single: stoerWagner - Experimental on v3.0
 
+|
+
 pgr_stoerWagner - Experimental
 ===============================================================================
 

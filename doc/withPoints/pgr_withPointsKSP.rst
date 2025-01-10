@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: withPoints Family ; pgr_withPointsKSP
    single: With Points Category ; pgr_withPointsKSP
    single: K Shortest Paths Category ; pgr_withPointsKSP
    single: withPointsKSP
+
+|
 
 pgr_withPointsKSP - Proposed
 ===============================================================================

@@ -7,14 +7,14 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Turn Restriction Shortest Path Family ; pgr_trsp_withPoints
    single: Shortest Path Category ; pgr_trsp_withPoints
    single: Restrictions Category ; pgr_trsp_withPoints
    single: With Points Category ; pgr_trsp_withPoints
    single: trsp_withPoints
+
+|
 
 pgr_trsp_withPoints - Proposed
 ===============================================================================

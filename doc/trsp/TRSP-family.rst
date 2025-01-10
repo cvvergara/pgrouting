@@ -7,9 +7,9 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index:: Turn Restriction Shortest Path Family
+
+|
 
 TRSP - Family of functions
 ===============================================================================

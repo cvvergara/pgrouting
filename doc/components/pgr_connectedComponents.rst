@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Components Family ; pgr_connectedComponents
    single: connectedComponents
+
+|
 
 pgr_connectedComponents
 ===============================================================================

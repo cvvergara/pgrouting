@@ -7,11 +7,11 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Vehicle Routing Functions Category ; pgr_vrpOneDepot
    single: vrpOneDepot - Experimental on v2.1.0
+
+|
 
 pgr_vrpOneDepot - Experimental
 ===============================================================================

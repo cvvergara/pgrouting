@@ -7,12 +7,12 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Dijkstra Family ; pgr_dijkstraNear
    single: Near Category ; pgr_dijkstraNear
    single: dijkstraNear
+
+|
 
 ``pgr_dijkstraNear`` - Proposed
 ===============================================================================

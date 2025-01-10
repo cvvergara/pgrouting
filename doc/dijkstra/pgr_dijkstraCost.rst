@@ -7,13 +7,13 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 
 .. index::
    single: Dijkstra Family ; pgr_dijkstraCost
    single: Cost Category ; pgr_dijkstraCost
    single: dijkstraCost
+
+|
 
 ``pgr_dijkstraCost``
 ===============================================================================

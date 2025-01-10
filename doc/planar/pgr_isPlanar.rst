@@ -7,11 +7,11 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-|
-
 .. index::
    single: Planar Family ; pgr_isPlanar
    single: isPlanar - Experimental on v3.2
+
+|
 
 ``pgr_isPlanar`` - Experimental
 ===============================================================================
