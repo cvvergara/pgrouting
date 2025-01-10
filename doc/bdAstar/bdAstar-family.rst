@@ -17,7 +17,7 @@ Bidirectional A* - Family of functions
 The bidirectional A* (pronounced "A Star") algorithm is based on the A*
 algorithm.
 
-.. index from here
+.. official-start
 
 - :doc:`pgr_bdAstar` - Bidirectional A* algorithm for obtaining paths.
 - :doc:`pgr_bdAstarCost` - Bidirectional A* algorithm to calculate the cost of
@@ -25,7 +25,7 @@ algorithm.
 - :doc:`pgr_bdAstarCostMatrix` - Bidirectional A* algorithm to calculate a cost
   matrix of paths.
 
-.. index to here
+.. official-end
 
 .. toctree::
     :hidden:

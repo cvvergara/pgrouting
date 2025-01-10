@@ -18,14 +18,14 @@ Metrics - Family of functions
 .. rubric:: Experimental
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
-.. index experimental from here
+.. experimental-start
 
 * :doc:`pgr_betweennessCentrality` - Calculates relative betweenness centrality using Brandes Algorithm
 
-.. index experimental to here
+.. experimental-end
 
 
 .. toctree::

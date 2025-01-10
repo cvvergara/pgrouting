@@ -13,12 +13,12 @@
 Chinese Postman Problem - Family of functions (Experimental)
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_chinesePostman`
 * :doc:`pgr_chinesePostmanCost`
 
-.. index to here
+.. official-end
 
 .. toctree::
   :hidden:
@@ -27,8 +27,8 @@ Chinese Postman Problem - Family of functions (Experimental)
   pgr_chinesePostmanCost
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 Description
 -------------------------------------------------------------------------------

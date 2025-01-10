@@ -27,8 +27,8 @@ In particular, the DAG shortest paths algorithm implemented by Boost.Graph.
    Boost Graph Inside
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. rubric:: Availability
 

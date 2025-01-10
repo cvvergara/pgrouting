@@ -22,8 +22,8 @@
    :target: https://www.boost.org/libs/graph/doc/hawick_circuits.html
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. rubric:: Availability
 

@@ -20,8 +20,8 @@
 ``pgr_dijkstraVia`` — Route that goes through a list of vertices.
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/libs/graph/doc/table_of_contents.html

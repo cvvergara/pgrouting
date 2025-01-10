@@ -16,14 +16,14 @@
 Kruskal - Family of functions
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_kruskal`
 * :doc:`pgr_kruskalBFS`
 * :doc:`pgr_kruskalDD`
 * :doc:`pgr_kruskalDFS`
 
-.. index to here
+.. official-end
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html

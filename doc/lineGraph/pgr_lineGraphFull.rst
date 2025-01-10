@@ -20,8 +20,8 @@
 the vertices from the original graph are converted to line graphs.
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. rubric:: Availability
 

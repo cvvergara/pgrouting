@@ -15,11 +15,11 @@
 Contraction - Family of functions
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_contraction`
 
-.. index to here
+.. official-end
 
 .. toctree::
     :hidden:

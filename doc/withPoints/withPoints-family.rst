@@ -20,7 +20,7 @@ When points are also given as input:
    :start-after: begin-warning
    :end-before: end-warning
 
-.. index proposed from here
+.. proposed-start
 
 - :doc:`pgr_withPoints` - Route from/to points anywhere on the graph.
 - :doc:`pgr_withPointsCost` - Costs of the shortest paths.
@@ -29,7 +29,7 @@ When points are also given as input:
 - :doc:`pgr_withPointsDD` - Driving distance.
 - :doc:`pgr_withPointsVia` - Via routing
 
-.. index proposed to here
+.. proposed-end
 
 .. toctree::
     :hidden:

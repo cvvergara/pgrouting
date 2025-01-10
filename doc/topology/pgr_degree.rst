@@ -20,8 +20,8 @@
 
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. rubric:: Availability
 

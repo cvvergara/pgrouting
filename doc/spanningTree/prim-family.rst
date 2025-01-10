@@ -16,14 +16,14 @@
 Prim - Family of functions
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_prim`
 * :doc:`pgr_primBFS`
 * :doc:`pgr_primDD`
 * :doc:`pgr_primDFS`
 
-.. index to here
+.. official-end
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html

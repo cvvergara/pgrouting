@@ -14,14 +14,14 @@
 Cost Matrix - Category
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_aStarCostMatrix`
 * :doc:`pgr_dijkstraCostMatrix`
 * :doc:`pgr_bdAstarCostMatrix`
 * :doc:`pgr_bdDijkstraCostMatrix`
 
-.. index to here
+.. official-end
 
 
 .. rubric:: proposed
@@ -30,11 +30,11 @@ Cost Matrix - Category
     :start-after: begin-warning
     :end-before: end-warning
 
-.. index proposed from here
+.. proposed-start
 
 * :doc:`pgr_withPointsCostMatrix`
 
-.. index proposed to here
+.. proposed-end
 
 General Information
 -------------------------------------------------------------------------------

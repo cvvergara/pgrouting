@@ -16,7 +16,7 @@
 Cost - Category
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_aStarCost`
 * :doc:`pgr_bdAstarCost`
@@ -24,7 +24,7 @@ Cost - Category
 * :doc:`pgr_bdDijkstraCost`
 * :doc:`pgr_dijkstraNearCost`
 
-.. index to here
+.. official-end
 
 .. rubric:: Proposed
 
@@ -32,11 +32,11 @@ Cost - Category
     :start-after: begin-warning
     :end-before: end-warning
 
-.. index proposed from here
+.. proposed-start
 
 * :doc:`pgr_withPointsCost`
 
-.. index proposed to here
+.. proposed-end
 
 
 General Information

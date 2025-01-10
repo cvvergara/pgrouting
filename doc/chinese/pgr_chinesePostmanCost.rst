@@ -18,8 +18,8 @@ which contains every edge in a directed graph and starts and ends on the same
 vertex.
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. rubric:: Availability
 

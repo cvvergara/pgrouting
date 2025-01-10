@@ -14,12 +14,12 @@
 Traveling Sales Person - Family of functions
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_TSP` - When input is given as matrix cell information.
 * :doc:`pgr_TSPeuclidean` - When input are coordinates.
 
-.. index to here
+.. official-end
 
 .. toctree::
     :hidden:

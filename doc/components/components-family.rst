@@ -15,7 +15,7 @@ Components - Family of functions
 ===============================================================================
 
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_connectedComponents` - Connected components of an undirected graph.
 * :doc:`pgr_strongComponents` - Strongly connected components of a directed
@@ -25,19 +25,19 @@ Components - Family of functions
 * :doc:`pgr_articulationPoints` - Articulation points of an undirected graph.
 * :doc:`pgr_bridges` - Bridges of an undirected graph.
 
-.. index to here
+.. official-end
 
 .. rubric:: Experimental
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
-.. index experimental from here
+.. experimental-start
 
 * :doc:`pgr_makeConnected` - Details of edges to make graph connected.
 
-.. index experimental to here
+.. experimental-end
 
 
 .. toctree::

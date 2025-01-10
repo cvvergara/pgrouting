@@ -17,17 +17,17 @@ Ordering - Family of functions
 .. rubric:: Experimental
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_cuthillMckeeOrdering` - Return reverse Cuthill-McKee ordering of an undirected graph.
 * :doc:`pgr_topologicalSort` - Linear ordering of the vertices for directed
   acyclic graph.
 
-.. index to here
+.. official-end
 
 .. toctree::
     :hidden:

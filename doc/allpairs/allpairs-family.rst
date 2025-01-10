@@ -17,12 +17,12 @@ All Pairs - Family of Functions
 
 The following functions work on all vertices pair combinations
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_floydWarshall` - Floyd-Warshall's algorithm.
 * :doc:`pgr_johnson` - Johnson's algorithm
 
-.. index to here
+.. official-end
 
 .. toctree::
     :hidden:

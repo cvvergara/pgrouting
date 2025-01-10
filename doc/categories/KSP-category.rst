@@ -14,23 +14,23 @@
 K shortest paths - Category
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_KSP` - Yen's algorithm based on pgr_dijkstra
 
-.. index to here
+.. official-end
 
 .. rubric:: Proposed
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: begin-warning
+   :end-before: end-warning
 
-.. index proposed from here
+.. proposed-start
 
 * :doc:`pgr_withPointsKSP` - Yen's algorithm based on pgr_withPoints
 
-.. index proposed to here
+.. proposed-end
 
 
 .. rubric:: Indices and tables

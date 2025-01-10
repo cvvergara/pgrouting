@@ -29,8 +29,8 @@ non-negative integer, is termed as a 'binary graph'.
    Boost Graph Inside
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
 .. rubric:: Availability
 

@@ -14,12 +14,12 @@
 BFS - Category
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_kruskalBFS`
 * :doc:`pgr_primBFS`
 
-.. index to here
+.. official-end
 
 
 Traversal using breadth first search.

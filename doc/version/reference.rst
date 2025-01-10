@@ -15,12 +15,12 @@
 Reference
 ===============================================================================
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_version`
 * :doc:`pgr_full_version`
 
-.. index to here
+.. official-end
 
 .. toctree::
     :hidden:

@@ -17,29 +17,29 @@ Coloring - Family of functions
 .. rubric:: Proposed
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: begin-warning
+   :end-before: end-warning
 
-.. index proposed from here
+.. proposed-start
 
 * :doc:`pgr_sequentialVertexColoring` - Vertex coloring algorithm using greedy
   approach.
 
-.. index proposed to here
+.. proposed-end
 
 .. rubric:: Experimental
 
 .. include:: experimental.rst
-   :start-after: begin-warn-expr
-   :end-before: end-warn-expr
+   :start-after: begin-warning
+   :end-before: end-warning
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_bipartite` - Bipartite graph algorithm using a DFS-based coloring
   approach.
 * :doc:`pgr_edgeColoring` - Edge Coloring algorithm using Vizing's theorem.
 
-.. index to here
+.. official-end
 
 
 .. toctree::

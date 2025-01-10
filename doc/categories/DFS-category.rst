@@ -16,19 +16,19 @@ DFS - Category
 
 Traversal using Depth First Search.
 
-.. index from here
+.. official-start
 
 * :doc:`pgr_kruskalDFS`
 * :doc:`pgr_primDFS`
 
-.. index to here
+.. official-end
 
 
 .. rubric:: Proposed
 
 .. include:: proposed.rst
-   :start-after: stable-begin-warning
-   :end-before: stable-end-warning
+   :start-after: begin-warning
+   :end-before: end-warning
 
 * :doc:`pgr_depthFirstSearch` - Depth first search traversal of the graph.
 
