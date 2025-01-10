@@ -15,7 +15,7 @@
 
 |
 
-pgr_trsp - Proposed
+``pgr_trsp`` - Proposed
 ===============================================================================
 
 ``pgr_trsp`` - routing vertices with restrictions.

@@ -13,7 +13,7 @@
 
 |
 
-pgr_lineGraph - Proposed
+``pgr_lineGraph`` - Proposed
 ===============================================================================
 
 ``pgr_lineGraph`` — Transforms the given graph into its corresponding edge-based
@@ -32,7 +32,7 @@ graph.
 
 * Version 3.7.0
 
-  * Promoted to **proposed** signature.
+  * Function promoted to **proposed**.
   * Works for directed and undirected graphs.
 
 * Version 2.5.0

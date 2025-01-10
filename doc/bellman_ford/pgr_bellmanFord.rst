@@ -8,8 +8,8 @@
    ****************************************************************************
 
 .. index::
-   single: Shortest Path Category; pgr_bellmanFord
-   single: bellmanFord
+   single: Shortest Path Category; pgr_bellmanFord - Experimental
+   single: bellmanFord - Experimental
 
 |
 
@@ -100,7 +100,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-   single: bellmanFord ; One to One - Experimental on v3.0
+   single: bellmanFord - Experimental; One to One - Experimental on v3.0
 
 One to One
 ...............................................................................
@@ -120,7 +120,7 @@ One to One
    :end-before: -- q3
 
 .. index::
-   single: bellmanFord ; One to Many - Experimental on v3.0
+   single: bellmanFord - Experimental; One to Many - Experimental on v3.0
 
 One to Many
 ...............................................................................
@@ -141,7 +141,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-   single: bellmanFord ; Many to One - Experimental on v3.0
+   single: bellmanFord - Experimental; Many to One - Experimental on v3.0
 
 Many to One
 ...............................................................................
@@ -162,7 +162,7 @@ Many to One
    :end-before: -- q5
 
 .. index::
-    single: bellmanFord ; Many to Many - Experimental on v3.0
+    single: bellmanFord - Experimental; Many to Many - Experimental on v3.0
 
 Many to Many
 ...............................................................................
@@ -183,7 +183,7 @@ Many to Many
    :end-before: -- q51
 
 .. index::
-    single: bellmanFord ; Combinations - Experimental on v3.2
+    single: bellmanFord - Experimental; Combinations - Experimental on v3.2
 
 Combinations
 ...............................................................................

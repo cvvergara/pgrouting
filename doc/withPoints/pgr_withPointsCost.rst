@@ -8,9 +8,9 @@
    ****************************************************************************
 
 .. index::
-   single: withPoints Family ; pgr_withPointsCost
-   single: With Points Category ; pgr_withPointsCost
-   single: Cost Category ; pgr_withPointsCost
+   single: withPoints Family ; pgr_withPointsCost - Proposed
+   single: With Points Category ; pgr_withPointsCost - Proposed
+   single: Cost Category ; pgr_withPointsCost - Proposed
    single: withPointsCost
 
 |
@@ -114,7 +114,7 @@ Signatures
    withPoints family of functions.
 
 .. index::
-    single: withPointsCost ; One To One - Proposed on v2.2
+    single: withPointsCost - Proposed ; One To One - Proposed on v2.2
 
 One to One
 ...............................................................................
@@ -135,7 +135,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: withPointsCost ; One To Many - Proposed on v2.2
+    single: withPointsCost - Proposed ; One To Many - Proposed on v2.2
 
 One to Many
 ...............................................................................
@@ -157,7 +157,7 @@ One to Many
    :end-before: -- q3
 
 .. index::
-    single: withPointsCost ; Many To One - Proposed on v2.2
+    single: withPointsCost - Proposed ; Many To One - Proposed on v2.2
 
 Many to One
 ...............................................................................
@@ -178,7 +178,7 @@ Many to One
    :end-before: -- q4
 
 .. index::
-    single: withPointsCost ; Many To Many - Proposed on v2.2
+    single: withPointsCost - Proposed ; Many To Many - Proposed on v2.2
 
 Many to Many
 ...............................................................................
@@ -200,7 +200,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: withPointsCost ; Combinations -- Proposed on v3.2
+    single: withPointsCost - Proposed ; Combinations -- Proposed on v3.2
 
 Combinations
 ...............................................................................

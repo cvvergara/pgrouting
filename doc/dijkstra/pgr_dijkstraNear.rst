@@ -8,9 +8,9 @@
    ****************************************************************************
 
 .. index::
-   single: Dijkstra Family ; pgr_dijkstraNear
-   single: Near Category ; pgr_dijkstraNear
-   single: dijkstraNear
+   single: Dijkstra Family ; pgr_dijkstraNear - Proposed
+   single: Near Category ; pgr_dijkstraNear - Proposed
+   single: dijkstraNear - Proposed
 
 |
 
@@ -33,11 +33,11 @@ the nearest vertex.
 
 * Version 3.3.0
 
-  * Promoted to **proposed** function
+  * Function promoted to **proposed**.
 
 * Version 3.2.0
 
-  * New **experimental** function
+  * New **experimental** function.
 
 
 Description
@@ -97,7 +97,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: dijkstraNear ; One to Many - Proposed on v3.3
+    single: dijkstraNear - Proposed; One to Many - Proposed on v3.3
 
 One to Many
 ...............................................................................
@@ -130,7 +130,7 @@ One to Many
 The result shows that station at vertex :math:`11` is the nearest.
 
 .. index::
-    single: dijkstraNear ; Many to One - Proposed on v3.3
+    single: dijkstraNear - Proposed; Many to One - Proposed on v3.3
 
 Many to One
 ...............................................................................
@@ -161,7 +161,7 @@ The result shows that station at vertex :math:`10` is the nearest and the next
 best is :math:`11`.
 
 .. index::
-    single: dijkstraNear ; Many to Many - Proposed on v3.3
+    single: dijkstraNear - Proposed; Many to Many - Proposed on v3.3
 
 Many to Many
 ...............................................................................
@@ -197,7 +197,7 @@ the first subway line and at vertex :math:`10` of the second subway line.
 Only `one` route is returned because `global` is ``true`` and `cap` is ``1``
 
 .. index::
-    single: dijkstraNear ; Combinations - Proposed on v3.3
+    single: dijkstraNear - Proposed; Combinations - Proposed on v3.3
 
 Combinations
 ...............................................................................

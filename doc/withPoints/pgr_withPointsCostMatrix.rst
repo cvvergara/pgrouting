@@ -8,9 +8,9 @@
    ****************************************************************************
 
 .. index::
-   single: withPoints Family ; pgr_withPointsCostMatrix
-   single: With Points Category ; pgr_withPointsCostMatrix
-   single: Cost Matrix Category ; pgr_withPointsCostMatrix
+   single: withPoints Family ; pgr_withPointsCostMatrix - Proposed
+   single: With Points Category ; pgr_withPointsCostMatrix - Proposed
+   single: Cost Matrix Category ; pgr_withPointsCostMatrix - Proposed
    single: withPointsCostMatrix - proposed on v2.0
 
 |

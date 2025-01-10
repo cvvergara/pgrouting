@@ -7,9 +7,13 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Coloring Family ; pgr_edgeColoring - Experimental
+   single: edgeColoring - Experimental on v3.3
+
 |
 
-pgr_edgeColoring - Experimental
+``pgr_edgeColoring`` - Experimental
 ===============================================================================
 
 ``pgr_edgeColoring`` — Returns the edge coloring of undirected and loop-free
@@ -28,7 +32,7 @@ graphs
 
 * Version 3.3.0
 
-  * New **experimental** signature
+  * New **experimental** signature.
 
 
 Description
@@ -71,9 +75,6 @@ no two adjacent edges have the same color.
 
 Signatures
 ------------------------------------------------------------------------------
-
-.. index::
-    single: edgeColoring - Experimental on v3.3
 
 .. admonition:: \ \
    :class: signatures

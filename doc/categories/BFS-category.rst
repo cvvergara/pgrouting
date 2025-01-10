@@ -7,7 +7,7 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-.. index:: BFS Category
+.. index:: Breadth First Search Category
 
 |
 

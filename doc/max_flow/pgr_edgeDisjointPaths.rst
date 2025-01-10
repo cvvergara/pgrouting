@@ -8,7 +8,7 @@
    ****************************************************************************
 
 .. index::
-   single: Flow Family ; edgeDisjointPaths
+   single: Flow Family ; pgr_edgeDisjointPaths
    single: edgeDisjointPaths
 
 |
@@ -29,7 +29,7 @@ vertices.
 
 * Version 3.2.0
 
-  * New **proposed** function:
+  * New **proposed** signature:
 
     * pgr_edgeDisjointPaths(Combinations)
 

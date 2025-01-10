@@ -13,7 +13,7 @@
 
 |
 
-pgr_analyzeOneWay
+``pgr_analyzeOneWay``
 ===============================================================================
 
 ``pgr_analyzeOneWay`` — Analyzes oneway Sstreets and identifies flipped segments.

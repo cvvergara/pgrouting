@@ -29,9 +29,9 @@
 
   * Standarizing output columns to |short-generic-result|
 
-    * ``pgr_aStar`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_aStar`` (`One to Many`_) added ``end_vid`` column.
-    * ``pgr_aStar`` (`Many to One`_) added ``start_vid`` column.
+    * pgr_aStar(One to One) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_aStar(One to Many) added ``end_vid`` column.
+    * pgr_aStar(Many to One) added ``start_vid`` column.
 
 * Version 3.2.0
 
@@ -41,25 +41,25 @@
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to **official**.
 
 * Version 2.4.0
 
   * New **Proposed** signatures:
 
-    * ``pgr_aStar`` (`One to Many`_)
-    * ``pgr_aStar`` (`Many to One`_)
-    * ``pgr_aStar`` (`Many to Many`_)
+    * pgr_aStar(One to Many)
+    * pgr_aStar(Many to One)
+    * pgr_aStar(Many to Many)
 
 * Version 2.3.0
 
-  * Signature change on ``pgr_astar`` (`One to One`_)
+  * Signature change on pgr_astar(One to One)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** ``pgr_aStar`` (`One to One`_)
+  * **Official** pgr_aStar(One to One)
 
 Description
 -------------------------------------------------------------------------------

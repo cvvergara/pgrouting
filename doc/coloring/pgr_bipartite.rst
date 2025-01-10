@@ -7,9 +7,13 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Coloring Family ; pgr_bipartite - Experimental
+   single: bipartite - Experimental on v3.2
+
 |
 
-pgr_bipartite -Experimental
+``pgr_bipartite`` - Experimental
 ===============================================================================
 
 ``pgr_bipartite`` — Disjoint sets of vertices such that no two vertices within
@@ -28,7 +32,7 @@ the same set are adjacent.
 
 * Version 3.2.0
 
-  * New **experimental** signature
+  * New **experimental** signature.
 
 
 Description
@@ -50,10 +54,6 @@ colored with the same color.
 
 Signatures
 -------------------------------------------------------------------------------
-
-.. index::
-    single: bipartite - Experimental on v3.2
-
 
 .. admonition:: \ \
    :class: signatures

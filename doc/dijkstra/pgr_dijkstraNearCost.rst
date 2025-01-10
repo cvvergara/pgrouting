@@ -9,10 +9,10 @@
 
 
 .. index::
-   single: Dijkstra Family ; pgr_dijkstraNearCost
-   single: Near Category ; pgr_dijkstraNearCost
-   single: Cost Category ; pgr_dijkstraNearCost
-   single: dijkstraNearCost
+   single: Dijkstra Family ; pgr_dijkstraNearCost - Proposed
+   single: Near Category ; pgr_dijkstraNearCost - Proposed
+   single: Cost Category ; pgr_dijkstraNearCost - Proposed
+   single: dijkstraNearCost - Proposed
 
 |
 
@@ -35,11 +35,11 @@ to the nearest vertex.
 
 * Version 3.3.0
 
-  * Promoted to **proposed** function
+  * Function promoted to **proposed**.
 
 * Version 3.2.0
 
-  * New **experimental** function
+  * New **experimental** function.
 
 
 Description
@@ -74,7 +74,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: dijkstraNearCost ; One to Many - Proposed on v3.3
+    single: dijkstraNearCost - Proposed ; One to Many - Proposed on v3.3
 
 One to Many
 ...............................................................................
@@ -107,7 +107,7 @@ One to Many
 The result shows that station at vertex :math:`11` is the nearest.
 
 .. index::
-    single: dijkstraNearCost ; Many to One - Proposed on v3.3
+    single: dijkstraNearCost - Proposed ; Many to One - Proposed on v3.3
 
 Many to One
 ...............................................................................
@@ -138,7 +138,7 @@ The result shows that station at vertex :math:`10` is the nearest and the next
 best is :math:`11`.
 
 .. index::
-    single: dijkstraNearCost ; Many to Many - Proposed on v3.3
+    single: dijkstraNearCost - Proposed ; Many to Many - Proposed on v3.3
 
 Many to Many
 ...............................................................................
@@ -174,7 +174,7 @@ the first subway line and at vertex :math:`10` of the second subway line.
 Only `one` route is returned because `global` is ``true`` and `cap` is ``1``
 
 .. index::
-    single: dijkstraNearCost ; Combinations - Proposed on v3.3
+    single: dijkstraNearCost - Proposed ; Combinations - Proposed on v3.3
 
 Combinations
 ...............................................................................

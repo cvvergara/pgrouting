@@ -13,7 +13,7 @@
 
 |
 
-pgr_connectedComponents
+``pgr_connectedComponents``
 ===============================================================================
 
 ``pgr_connectedComponents`` — Connected components of an undirected graph using
@@ -33,7 +33,7 @@ a DFS-based approach.
     * ``n_seq`` is removed
     * ``seq`` changed type to ``BIGINT``
 
-  * **Official** function
+  * Function propoted to **Official**.
 
 * Version 2.5.0
 
@@ -58,9 +58,6 @@ from each other.
   - ``node`` ascending
 
 - Running time: :math:`O(V + E)`
-
-.. index::
-    single: connectedComponents
 
 Signatures
 -------------------------------------------------------------------------------

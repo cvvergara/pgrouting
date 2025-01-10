@@ -8,8 +8,8 @@
    ****************************************************************************
 
 .. index::
-   single: Topology Family ; pgr_degree
-   single: degree
+   single: Topology Family ; pgr_degree - Proposed
+   single: degree - Proposed
 
 |
 
@@ -38,9 +38,6 @@ Calculates the degree of the vertices of an **undirected** graph
 
 Signatures
 -------------------------------------------------------------------------------
-
-.. index::
-    single: pgr_degree - Proposed on v3.4
 
 .. admonition:: \ \
    :class: signatures

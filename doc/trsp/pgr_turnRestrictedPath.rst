@@ -15,7 +15,7 @@
 
 |
 
-pgr_turnRestrictedPath - Experimental
+``pgr_turnRestrictedPath`` - Experimental
 ===============================================================================
 
 ``pgr_turnRestrictedPath`` Using Yen's algorithm Vertex - Vertex routing with
@@ -29,7 +29,7 @@ restrictions
 
 * Version 3.0.0
 
-  * New experimental function
+  * New **experimental** function.
 
 Description
 -------------------------------------------------------------------------------

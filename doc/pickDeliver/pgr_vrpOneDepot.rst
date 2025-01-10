@@ -13,7 +13,7 @@
 
 |
 
-pgr_vrpOneDepot - Experimental
+``pgr_vrpOneDepot`` - Experimental
 ===============================================================================
 
 .. include:: experimental.rst

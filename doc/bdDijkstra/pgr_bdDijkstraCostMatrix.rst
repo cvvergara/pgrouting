@@ -9,6 +9,7 @@
 
 .. index::
    single: Bidirectional Dijkstra Family ; pgr_bdDijkstraCostMatrix
+   single: Cost Matrix Category ; pgr_bdDijkstraCostMatrix
    single: bdDijkstraCostMatrix
 
 |

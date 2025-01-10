@@ -8,7 +8,7 @@
    ****************************************************************************
 
 .. index::
-   single: Flow Family ; edmondsKarp
+   single: Flow Family ; pgr_edmondsKarp
    single: edmondsKarp
 
 |
@@ -30,7 +30,7 @@ flow from the sources to the targets using Edmonds Karp Algorithm.
 
   * New **proposed** signature
 
-    * ``pgr_edmondsKarp`` (`Combinations`_)
+    * pgr_edmondsKarp(Combinations)
 
 * Version 3.0.0
 

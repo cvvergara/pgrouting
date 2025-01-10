@@ -7,7 +7,10 @@
     Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
-* **Supported versions**
+.. index::
+   single: Cost Category ; pgr_chinesePostman - Experimental
+   single: Miscellaneous Algorithms ; pgr_chinesePostman - Experimental
+   single: chinesePostman - Experimental on v3.0
 
 |
 
@@ -38,9 +41,6 @@ Description
 
 Signatures
 -------------------------------------------------------------------------------
-
-.. index::
-    single: chinesePostman - Experimental on v3.0
 
 .. admonition:: \ \
    :class: signatures

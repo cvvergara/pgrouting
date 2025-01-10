@@ -8,12 +8,12 @@
    ****************************************************************************
 
 .. index::
-   single: Utilities ; pgr_findCloseEdges
-   single: findCloseEdges
+   single: Utilities ; pgr_findCloseEdges - Proposed
+   single: findCloseEdges - Proposed
 
 |
 
-``pgr_findCloseEdges``
+``pgr_findCloseEdges`` - Proposed
 ===============================================================================
 
 ``pgr_findCloseEdges`` - Finds the close edges to a point geometry.
@@ -59,7 +59,7 @@ Signatures
    | OR EMPTY SET
 
 .. index::
-    single: findCloseEdges ; One point - Proposed on 3.4
+    single: findCloseEdges - Proposed ; One point - Proposed on 3.4
 
 One point
 ...............................................................................
@@ -94,7 +94,7 @@ One point
    :end-before: -- q2
 
 .. index::
-   single: findCloseEdges ; Many points - Proposed on 3.4
+   single: findCloseEdges - Proposed ; Many points - Proposed on 3.4
 
 Many points
 ...............................................................................

@@ -8,9 +8,9 @@
    ****************************************************************************
 
 .. index::
-   single: Flow Family ; pgr_maxFlowMinCost_Cost
-   single: Cost Category ; pgr_maxFlowMinCost_Cost
-   single: maxFlowMinCost_Cost
+   single: Flow Family ; pgr_maxFlowMinCost_Cost - Experimental
+   single: Cost Category ; pgr_maxFlowMinCost_Cost - Experimental
+   single: maxFlowMinCost_Cost - Experimental
 
 |
 
@@ -83,7 +83,7 @@ Signatures
    | RETURNS FLOAT
 
 .. index::
-    single: maxFlowMinCost_Cost ; One to One - Experimental on v3.0
+    single: maxFlowMinCost_Cost - Experimental ; One to One - Experimental on v3.0
 
 One to One
 ...............................................................................
@@ -102,7 +102,7 @@ One to One
    :end-before: -- q2
 
 .. index::
-    single: maxFlowMinCost_Cost ; One to Many - Experimental on v3.0
+    single: maxFlowMinCost_Cost - Experimental ; One to Many - Experimental on v3.0
 
 One to Many
 ...............................................................................
@@ -121,7 +121,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-    single: maxFlowMinCost_Cost ; Many to One - Experimental on v3.0
+    single: maxFlowMinCost_Cost - Experimental ; Many to One - Experimental on v3.0
 
 Many to One
 ...............................................................................
@@ -140,7 +140,7 @@ Many to One
    :end-before: -- q3
 
 .. index::
-    single: maxFlowMinCost_Cost ; Many to Many - Experimental on v3.0
+    single: maxFlowMinCost_Cost - Experimental ; Many to Many - Experimental on v3.0
 
 Many to Many
 ...............................................................................
@@ -160,7 +160,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: maxFlowMinCost_Cost ; Combinations - Experimental on v3.2
+    single: maxFlowMinCost_Cost - Experimental ; Combinations - Experimental on v3.2
 
 Combinations
 ...............................................................................

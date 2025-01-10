@@ -8,12 +8,11 @@
    ****************************************************************************
 
 .. index::
-   single: Metrics Family ; pgr_betweennessCentrality
-   single: betweennessCentrality - Experimental on v3.7
+   single: Metrics Family ; pgr_betweennessCentrality - Experimental
 
 |
 
-``pgr_betweennessCentrality``
+``pgr_betweennessCentrality`` - Experimental
 ===============================================================================
 
 ``pgr_betweennessCentrality`` - Calculates the relative betweeness centrality
@@ -55,6 +54,9 @@ This implementation work for both directed and undirected graphs.
 
 Signatures
 -------------------------------------------------------------------------------
+
+.. index::
+   single: betweennessCentrality - Experimental on v3.7
 
 .. rubric:: Summary
 

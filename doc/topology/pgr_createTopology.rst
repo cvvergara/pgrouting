@@ -13,7 +13,7 @@
 
 |
 
-pgr_createTopology
+``pgr_createTopology``
 ===============================================================================
 
 ``pgr_createTopology`` — Builds a network topology based on the geometry

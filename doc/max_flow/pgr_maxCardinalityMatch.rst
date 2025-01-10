@@ -13,7 +13,7 @@
 
 |
 
-pgr_maxCardinalityMatch
+``pgr_maxCardinalityMatch``
 ===============================================================================
 
 ``pgr_maxCardinalityMatch`` — Calculates a maximum cardinality matching in a

@@ -10,6 +10,7 @@
 
 .. index::
    single: aStar Family ; pgr_aStarCostMatrix
+   single: Cost Matrix Category ; pgr_aStarCostMatrix
    single: aStarCostMatrix
 
 |
@@ -28,11 +29,11 @@
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to **official**.
 
 * Version 2.4.0
 
-  * New **proposed** function
+  * New **proposed** function.
 
 Description
 -------------------------------------------------------------------------------

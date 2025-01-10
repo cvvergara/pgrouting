@@ -14,7 +14,7 @@
 
 |
 
-pgr_aStarCost
+``pgr_aStarCost``
 ===============================================================================
 
 ``pgr_aStarCost`` - Total cost of the shortest path using the A* algorithm.
@@ -30,15 +30,15 @@ pgr_aStarCost
 
   * New **proposed** signature:
 
-    * ``pgr_aStarCost`` (`Combinations`_)
+    * pgr_aStarCost(Combinations)
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to **official**.
 
 * Version 2.4.0
 
-  * New **proposed** function
+  * New **proposed** function.
 
 Description
 -------------------------------------------------------------------------------

@@ -13,7 +13,7 @@
 
 |
 
-pgr_analyzeGraph
+``pgr_analyzeGraph``
 ===============================================================================
 
 ``pgr_analyzeGraph`` — Analyzes the network topology.

@@ -8,7 +8,7 @@
    ****************************************************************************
 
 .. index::
-   single: Kruskal Family ; pgr_kruska
+   single: Kruskal Family ; pgr_kruskal
    single: Spanning Tree Category ; pgr_kruskal
    single: kruskal
 

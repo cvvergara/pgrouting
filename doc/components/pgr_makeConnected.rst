@@ -8,8 +8,7 @@
    ****************************************************************************
 
 .. index::
-   single: Components Family ; pgr_makeConnected
-   single: makeConnected - Experimental on v3.2
+   single: Components Family ; pgr_makeConnected - Experimental
 
 |
 
@@ -57,6 +56,11 @@ The main characteristics are:
 
 Signatures
 -------------------------------------------------------------------------------
+
+.. index::
+   single: makeConnected - Experimental on v3.2
+
+.. rubric:: Summary
 
 .. admonition:: \ \
    :class: signatures

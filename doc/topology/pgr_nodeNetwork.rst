@@ -13,7 +13,7 @@
 
 |
 
-pgr_nodeNetwork
+``pgr_nodeNetwork``
 ===============================================================================
 
 ``pgr_nodeNetwork`` - Nodes an network edge table.

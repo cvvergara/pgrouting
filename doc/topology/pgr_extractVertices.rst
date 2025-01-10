@@ -13,7 +13,7 @@
 
 |
 
-pgr_extractVertices -- Proposed
+``pgr_extractVertices`` -- Proposed
 ===============================================================================
 
 ``pgr_extractVertices`` — Extracts the vertices information

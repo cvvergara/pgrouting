@@ -13,7 +13,7 @@
 
 |
 
-pgr_bdAstarCost
+``pgr_bdAstarCost``
 ===============================================================================
 
 ``pgr_bdAstarCost`` - Total cost of the shortest path using the bidirectional

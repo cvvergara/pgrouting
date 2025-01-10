@@ -9,6 +9,7 @@
 
 .. index::
    single: Bidirectional A* Family ; pgr_bdAstarCostMatrix
+   single: Cost Matrix Category ; pgr_bdAstarCostMatrix
    single: bdAstarCostMatrix
 
 |

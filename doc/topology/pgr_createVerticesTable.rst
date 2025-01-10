@@ -13,7 +13,7 @@
 
 |
 
-pgr_createVerticesTable
+``pgr_createVerticesTable``
 ===============================================================================
 
 ``pgr_createVerticesTable`` — Reconstructs the vertices table based on the

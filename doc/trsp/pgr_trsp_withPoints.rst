@@ -16,7 +16,7 @@
 
 |
 
-pgr_trsp_withPoints - Proposed
+``pgr_trsp_withPoints`` - Proposed
 ===============================================================================
 
 ``pgr_trsp_withPoints`` Routing Vertex/Point with restrictions.
@@ -34,13 +34,7 @@ pgr_trsp_withPoints - Proposed
 
 * Version 3.4.0
 
-  * New proposed signatures:
-
-    * ``pgr_trsp_withPoints`` (`One to One`_)
-    * ``pgr_trsp_withPoints`` (`One to Many`_)
-    * ``pgr_trsp_withPoints`` (`Many to One`_)
-    * ``pgr_trsp_withPoints`` (`Many to Many`_)
-    * ``pgr_trsp_withPoints`` (`Combinations`_)
+  * New **proposed** function.
 
 Description
 -------------------------------------------------------------------------------

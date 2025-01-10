@@ -8,9 +8,9 @@
    ****************************************************************************
 
 .. index::
-   single: Dijkstra Family ; pgr_dijkstraVia
-   single: Via Category ; pgr_dijkstraVia
-   single: dijkstraVia
+   single: Dijkstra Family ; pgr_dijkstraVia - Proposed
+   single: Via Category ; pgr_dijkstraVia - Proposed
+   single: dijkstraVia - Proposed
 
 |
 
@@ -48,7 +48,7 @@ Signatures
 -------------------------------------------------------------------------------
 
 .. index::
-    single: dijkstraVia - Proposed on 2.2
+    single: dijkstraVia - Proposed ; One Via - Proposed on 2.2
 
 One Via
 ...............................................................................

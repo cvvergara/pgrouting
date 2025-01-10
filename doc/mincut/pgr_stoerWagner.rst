@@ -13,7 +13,7 @@
 
 |
 
-pgr_stoerWagner - Experimental
+``pgr_stoerWagner`` - Experimental
 ===============================================================================
 
 ``pgr_stoerWagner`` — The min-cut of graph using stoerWagner algorithm.

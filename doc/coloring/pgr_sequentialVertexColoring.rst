@@ -7,9 +7,13 @@
     Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
+.. index::
+   single: Coloring Family ; pgr_sequentialVertexColoring - Proposed
+   single: sequentialVertexColoring - Proposed on v3.3
+
 |
 
-pgr_sequentialVertexColoring - Proposed
+``pgr_sequentialVertexColoring`` - Proposed
 ===============================================================================
 
 ``pgr_sequentialVertexColoring`` — Returns the vertex coloring of an undirected
@@ -28,11 +32,11 @@ graph, using greedy approach.
 
 * Version 3.3.0
 
-  * Promoted to **proposed** signature
+  * Function promoted to **proposed**.
 
 * Version 3.2.0
 
-  * New **experimental** signature
+  * New **experimental** function.
 
 
 Description
@@ -61,9 +65,6 @@ manner, such that no edge connects two identically colored vertices.
 
 Signatures
 ------------------------------------------------------------------------------
-
-.. index::
-    single: sequentialVertexColoring - Proposed on v3.3
 
 .. admonition:: \ \
    :class: signatures
