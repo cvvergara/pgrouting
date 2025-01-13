@@ -48,7 +48,9 @@ of the Minimum Spanning Tree created using Prims's algorithm.
 - Returned tree nodes from a root vertex are on Breath First Search order
 - Breath First Search Running time: :math:`O(E + V)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

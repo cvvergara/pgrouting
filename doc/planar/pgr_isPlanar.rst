@@ -118,8 +118,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
-* https://www.boost.org/libs/graph/doc/boyer_myrvold.html
-* `Boost: Boyer Myrvold <https://www.boost.org/libs/graph/doc/boyer_myrvold.html>__
+* `Boost: Boyer Myrvold
+  <https://www.boost.org/libs/graph/doc/boyer_myrvold.html>`__
 
 .. rubric:: Indices and tables
 

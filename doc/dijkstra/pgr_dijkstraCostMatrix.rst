@@ -110,7 +110,7 @@ See Also
 * :doc:`TSP-family`
 * :doc:`sampledata`
 * `Boost: Dijkstra shortest paths
-  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 
 .. rubric:: Indices and tables
 

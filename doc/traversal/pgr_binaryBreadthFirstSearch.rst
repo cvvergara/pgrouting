@@ -259,7 +259,7 @@ See Also
 -------------------------------------------------------------------------------
 * :doc:`sampledata`
 * `Boost: Breadth First Search
-  <https://www.boost.org/libs/graph/doc/breadth_first_search.html>__
+  <https://www.boost.org/libs/graph/doc/breadth_first_search.html>`__
 * https://cp-algorithms.com/graph/01_bfs.html
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Specialized_variants
 

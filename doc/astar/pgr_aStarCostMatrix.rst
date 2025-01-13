@@ -127,10 +127,7 @@ See Also
 * :doc:`costMatrix-category`
 * :doc:`TSP-family`
 * :doc:`sampledata`
-* `Boost <https://www.boost.org//libs/graph/doc/astar_search.html>__
-
-   Boost Graph Inside
-
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 
 .. rubric:: Indices and tables
 

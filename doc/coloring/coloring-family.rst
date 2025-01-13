@@ -88,18 +88,7 @@ Column           Type        Description
 See Also
 -------------------------------------------------------------------------------
 
-.. include:: pgr_sequentialVertexColoring.rst
-    :start-after: see also start
-    :end-before: see also end
-
-.. include:: pgr_bipartite.rst
-    :start-after: see also start
-    :end-before: see also end
-
-.. include:: pgr_edgeColoring.rst
-    :start-after: see also start
-    :end-before: see also end
-
+* `Boost: <https://www.boost.org/libs/graph/doc/table_of_contents.html>`__
 
 .. rubric:: Indices and tables
 

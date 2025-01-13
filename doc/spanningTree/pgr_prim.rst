@@ -39,7 +39,9 @@ graph using Prim's algorithm.
 
 - EMPTY SET is returned when there are no edges in the graph.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

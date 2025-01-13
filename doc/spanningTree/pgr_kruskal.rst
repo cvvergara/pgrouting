@@ -40,7 +40,7 @@ graph using Kruskal's algorithm.
 
 - EMPTY SET is returned when there are no edges in the graph.
 
-|Boost| >Signatures
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

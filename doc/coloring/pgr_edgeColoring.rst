@@ -116,7 +116,6 @@ See Also
 -------------------------------------------------------------------------------
 
 * The queries use the :doc:`sampledata` network.
-
 * `Boost: Edge Coloring
   <https://www.boost.org/libs/graph/doc/edge_coloring.html>`__
 * `Wikipedia: Graph coloring <https://en.wikipedia.org/wiki/Graph_coloring>`__

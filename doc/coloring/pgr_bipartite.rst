@@ -112,14 +112,10 @@ Edges in blue represent odd length cycle subgraph.
 See Also
 -------------------------------------------------------------------------------
 
-.. see also start
-
 * `Boost: is_bipartite
   <https://www.boost.org/libs/graph/doc/is_bipartite.html>`__
 * `Wikipedia: bipartite graph
   <https://en.wikipedia.org/wiki/Bipartite_graph>`__
-
-.. see also end
 
 * :doc:`sampledata` network.
 

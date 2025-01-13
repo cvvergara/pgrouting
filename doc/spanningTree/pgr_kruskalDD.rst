@@ -53,7 +53,9 @@ calculated minimum spanning tree.
 - Returned tree nodes from a root vertex are on Depth First Search order.
 - Depth First Search running time: :math:`O(E + V)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

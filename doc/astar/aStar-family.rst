@@ -180,7 +180,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`bdAstar-family`
-* https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 * https://en.wikipedia.org/wiki/A*_search_algorithm
 
 .. rubric:: Indices and tables

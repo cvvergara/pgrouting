@@ -112,7 +112,8 @@ Returns set of |result-component-make|
 See Also
 -------------------------------------------------------------------------------
 
-* `Boost: make connected <https://www.boost.org/libs/graph/doc/make_connected.html>__
+* `Boost: make connected
+  <https://www.boost.org/libs/graph/doc/make_connected.html>`__
 * The queries use the :doc:`sampledata` network.
 
 .. rubric:: Indices and tables

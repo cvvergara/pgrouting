@@ -160,7 +160,7 @@ See Also
 * :doc:`dijkstra-family`.
 * :doc:`sampledata` network.
 * `Boost: Dijkstra shortest paths
-  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 .. rubric:: Indices and tables

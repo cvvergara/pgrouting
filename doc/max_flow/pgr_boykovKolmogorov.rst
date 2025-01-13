@@ -224,9 +224,8 @@ See Also
   * :doc:`pgr_edmondsKarp`
   * :doc:`pgr_pushRelabel`
 
-* https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
 * `Boost: boykov kolmogorov max flow
-  <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>__
+  <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>`__
 
 .. rubric:: Indices and tables
 
