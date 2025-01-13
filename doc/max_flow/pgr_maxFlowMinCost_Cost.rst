@@ -25,21 +25,17 @@ flow on a graph
 
    Boost Graph Inside
 
-.. include:: experimental.rst
-   :start-after: begin-warning
-   :end-before: end-warning
-
 .. rubric:: Availability
 
 * Version 3.2.0
 
-  * New **experimental** function:
+  * New **experimental** signature:
 
-    * ``pgr_maxFlowMinCost_Cost`` (`Combinations`_)
+    * pgr_maxFlowMinCost_Cost(Combinations)
 
 * Version 3.0.0
 
-  * New **experimental** function
+  * New **experimental** function.
 
 
 Description
@@ -65,6 +61,10 @@ Description
   * where :math:`U` is the value of the max flow.
   * :math:`U` is upper bound on number of iterations.
     In many real world cases number of iterations is much smaller than :math:`U`.
+
+.. include:: experimental.rst
+   :start-after: begin-warning
+   :end-before: end-warning
 
 Signatures
 -------------------------------------------------------------------------------

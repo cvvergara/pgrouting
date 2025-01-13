@@ -32,11 +32,11 @@ algorithm.
 
   * New **proposed** signature:
 
-    * ``pgr_dijkstraCost`` (`Combinations`_)
+    * pgr_dijkstraCost(Combinations)
 
 * Version 2.2.0
 
-  * New **Official** function
+  * New **official** function.
 
 
 Description
