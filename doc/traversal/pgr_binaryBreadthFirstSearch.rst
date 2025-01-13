@@ -31,13 +31,13 @@ non-negative integer, is termed as a 'binary graph'.
 
 * Version 3.2.0
 
-  * New **experimental** signature:
+  * New experimental signature:
 
     * pgr_binaryBreadthFirstSearch(`Combinations`_)
 
 * Version 3.0.0
 
-  * New **experimental** signatures:
+  * New experimental signatures:
 
     * pgr_binaryBreadthFirstSearch(`One to One`_)
     * pgr_binaryBreadthFirstSearch(`One to Many`_)

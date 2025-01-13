@@ -27,7 +27,7 @@ the same set are adjacent.
 
 * Version 3.2.0
 
-  * New **experimental** signature.
+  * New experimental signature.
 
 
 Description

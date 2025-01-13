@@ -27,7 +27,7 @@
 
 * Version 3.2.0
 
-  * New **experimental** signature:
+  * New experimental signature:
 
     * ``pgr_edwardMoore`` (`Combinations`_)
 

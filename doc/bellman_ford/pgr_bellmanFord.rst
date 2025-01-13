@@ -26,13 +26,13 @@
 
 * Version 3.2.0
 
-  * New **experimental** signature:
+  * New experimental signature:
 
     * ``pgr_bellmanFord`` (`Combinations`_)
 
 * Version 3.0.0
 
-  * New **experimental** signatures:
+  * New experimental signatures:
 
     * ``pgr_bellmanFord`` (`One to One`_)
     * ``pgr_bellmanFord`` (`One to Many`_)

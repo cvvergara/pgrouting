@@ -24,7 +24,7 @@ flow on a graph
 
 * Version 3.2.0
 
-  * New **experimental** signature:
+  * New experimental signature:
 
     * pgr_maxFlowMinCost_Cost(Combinations)
 

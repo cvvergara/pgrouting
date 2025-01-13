@@ -28,7 +28,7 @@ every edge in a directed graph and starts and ends on the same vertex.
 
 * Version 3.0.0
 
-  * New **experimental** signature
+  * New experimental signature
 
 Description
 -------------------------------------------------------------------------------

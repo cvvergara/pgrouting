@@ -27,7 +27,7 @@ graphs
 
 * Version 3.3.0
 
-  * New **experimental** signature.
+  * New experimental signature.
 
 
 Description
