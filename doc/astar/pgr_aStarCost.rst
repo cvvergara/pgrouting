@@ -67,6 +67,8 @@ using the A* algorithm.
   - `start_vid` ascending
   - `end_vid` ascending
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

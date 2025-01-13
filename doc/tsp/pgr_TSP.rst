@@ -108,6 +108,8 @@ Description
 
   - the missing values will be calculated with dijkstra algorithm.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

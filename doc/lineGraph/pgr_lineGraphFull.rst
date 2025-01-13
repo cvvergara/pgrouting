@@ -57,6 +57,8 @@ The main characteristics are:
 - Results are undefined when a duplicated edge id is used in the input graph.
 - Running time: TBD
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

@@ -63,6 +63,8 @@ Given a graph :math:`G`, its line graph :math:`L(G)` is a graph such that:
 
   - The ``reverse_cost`` is always :math:`-1`.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

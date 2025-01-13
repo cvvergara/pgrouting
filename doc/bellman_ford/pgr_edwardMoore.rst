@@ -79,6 +79,8 @@ and is at-worst,as good as Bellman-Ford algorithm
   * Worst case: :math:`O(| V | * | E |)`
   * Average case: :math:`O( | E | )`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

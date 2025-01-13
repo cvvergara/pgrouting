@@ -34,6 +34,8 @@ The function returns:
 - ``OK`` after the vertices table has been reconstructed.
 - ``FAIL`` when the vertices table was not reconstructed due to an error.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

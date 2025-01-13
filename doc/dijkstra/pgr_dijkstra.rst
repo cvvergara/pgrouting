@@ -73,6 +73,8 @@ Description
     :end-before: dijkstra_details_end
 
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

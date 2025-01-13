@@ -60,6 +60,8 @@ Characteristics
 * When the total number of points is less than 3, returns an EMPTY geometry
 
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 .. rubric:: Summary

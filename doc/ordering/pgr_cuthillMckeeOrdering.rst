@@ -55,6 +55,8 @@ each step, the adjacent vertices are placed in the queue in order of increasing 
   - where :math:`|V|` is the number of vertices,
   - :math:`m` is the maximum degree of the vertices in the graph.
 
+|Boost| Boost Graph Inside
+
 Signatures
 ------------------------------------------------------------------------------
 

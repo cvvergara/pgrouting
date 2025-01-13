@@ -60,6 +60,8 @@ table <edge_table>_vertices_pgr that stores the vertices information.
 - Use :doc:`pgr_createVerticesTable` to create the vertices table.
 - Use :doc:`pgr_createTopology` to create the topology and the vertices table.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

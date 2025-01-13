@@ -35,6 +35,8 @@ The function returns:
   created.
 - ``FAIL`` when the network topology was not built due to an error.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

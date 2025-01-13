@@ -66,6 +66,8 @@ Description
    :start-after: begin-warning
    :end-before: end-warning
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

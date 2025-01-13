@@ -57,6 +57,8 @@ using Dijkstra Algorithm.
     :start-after: cost_traits_start
     :end-before: cost_traits_end
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

@@ -57,6 +57,8 @@ Description
 The K shortest path routing algorithm based on Yen's algorithm. "K" is the
 number of shortest paths desired.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

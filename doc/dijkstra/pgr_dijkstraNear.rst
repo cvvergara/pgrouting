@@ -78,6 +78,8 @@ Characteristics
 
 .. dijkstraNear characteristics end
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

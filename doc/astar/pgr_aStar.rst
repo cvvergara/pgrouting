@@ -78,6 +78,8 @@ Description
   * ``pgr_aStar`` (`Many to Many`_)
   * ``pgr_aStar`` (`Combinations`_)
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

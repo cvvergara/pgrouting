@@ -56,6 +56,8 @@ The main characteristics are:
 - The algorithm does not considers geometric topology in the calculations.
 - Running time: :math:`O(V + E)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

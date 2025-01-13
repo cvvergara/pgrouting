@@ -55,6 +55,8 @@ The general algorithm is as follows:
   * **NOTE** when this is done, ``U_turn_on_edge`` flag is ignored.
 
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

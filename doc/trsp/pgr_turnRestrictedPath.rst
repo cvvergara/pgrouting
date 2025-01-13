@@ -37,6 +37,8 @@ Description
 Using Yen's algorithm to obtain K shortest paths and analyze the paths to select
 the paths that do not use the restrictions
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

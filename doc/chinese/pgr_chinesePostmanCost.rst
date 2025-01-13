@@ -40,6 +40,8 @@ Description
 
 - Return value when the graph if disconnected
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

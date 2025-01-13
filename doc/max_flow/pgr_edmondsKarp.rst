@@ -55,6 +55,8 @@ Description
 
 * Running time: :math:`O( V * E ^ 2)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

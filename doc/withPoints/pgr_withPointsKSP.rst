@@ -62,6 +62,8 @@ Description
 Modifies the graph to include the points defined in the `Points SQL`_ and
 using Yen algorithm, finds the :math:`K` shortest paths.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

@@ -39,6 +39,8 @@ Description
 
 - Returns ``EMPTY SET`` on a disconnected graph
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

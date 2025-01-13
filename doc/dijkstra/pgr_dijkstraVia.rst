@@ -44,6 +44,8 @@ shortest path between :math:`vertex_i` and :math:`vertex_{i+1}` for all :math:`i
 :Route: is a sequence of paths.
 :Path: is a section of the route.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

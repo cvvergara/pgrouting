@@ -61,6 +61,8 @@ implemenent this variation.
   - :math:`|V|` is the number of vertices in the graph.
   - :math:`|c|` is the number of circuts in the graph.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

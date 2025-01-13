@@ -51,6 +51,8 @@ particular depth.
   target depth level.
 * Running time: :math:`O(E + V)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

@@ -52,6 +52,8 @@ This implementation work for both directed and undirected graphs.
 - Running space: :math:`\Theta(VE)`
 - Throws when there are no edges in the graph
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

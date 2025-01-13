@@ -54,6 +54,8 @@ This implementation can only be used with an undirected graph.
 
 - Running time: :math:`O(V + E)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

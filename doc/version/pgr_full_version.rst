@@ -30,6 +30,8 @@ Description
 
 Get complete details of pgRouting version information
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

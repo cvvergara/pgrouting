@@ -70,6 +70,8 @@ weight on the cut determines whether it is a minimum cut.
 
 * Running time: :math:`O(V*E + V^2*log V)`.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

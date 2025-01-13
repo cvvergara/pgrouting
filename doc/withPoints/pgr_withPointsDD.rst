@@ -73,6 +73,8 @@ the nodes and points that have costs less than or equal to the value
 ``**distance**`` from the starting point.
 The edges extracted will conform the corresponding spanning tree.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

@@ -63,6 +63,8 @@ manner, such that no edge connects two identically colored vertices.
   - :math:`d` is the maximum degree of the vertices in the graph,
   - :math:`k` is the number of colors used.
 
+|Boost| Boost Graph Inside
+
 Signatures
 ------------------------------------------------------------------------------
 

@@ -47,6 +47,8 @@ We use Boost's implementation which runs in :math:`\Theta(V^3)` time,
    :start-after: characteristics_start
    :end-before: characteristics_end
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

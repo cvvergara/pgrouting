@@ -55,6 +55,8 @@ Description
 
 * Running time: Polynomial
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

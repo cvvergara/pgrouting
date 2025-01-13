@@ -53,6 +53,8 @@ of the Minimum Spanning Tree created using Prims's algorithm.
 - Returned tree nodes from a root vertex are on Depth First Search order
 - Depth First Search Running time: :math:`O(E + V)`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

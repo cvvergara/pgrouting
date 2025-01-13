@@ -58,6 +58,8 @@ The main characterics are:
   - The graph can be directed or undirected.
   - Uses :doc:`pgr_boykovKolmogorov` to calculate the paths.
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

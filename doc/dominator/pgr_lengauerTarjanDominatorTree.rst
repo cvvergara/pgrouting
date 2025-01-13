@@ -49,6 +49,8 @@ The algorithm calculates the *immidiate dominator* of each vertex called
 - If the *root vertex* not present in the graph then it returns empty set.
 - Running time: :math:`O((V+E)log(V+E))`
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

@@ -36,6 +36,8 @@ Description
 Calculates the degree of the vertices of an **undirected** graph
 
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 

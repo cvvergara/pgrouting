@@ -55,6 +55,8 @@ Characteristics
     :start-after: dijkstraNear characteristics start
     :end-before: dijkstraNear characteristics end
 
+|Boost| Boost Graph Inside
+
 Signatures
 -------------------------------------------------------------------------------
 
