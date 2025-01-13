@@ -73,7 +73,6 @@ Description
       2, 3.5, 1.0
       2, 3.6, 1.1
 
-
 |Boost| Boost Graph Inside
 
 Signatures

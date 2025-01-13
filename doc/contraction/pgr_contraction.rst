@@ -66,7 +66,6 @@ The main Characteristics are:
   - column ``id`` ascending when type is ``v``
   - column ``id`` descending when type is ``e``
 
-
 |Boost| Boost Graph Inside
 
 Signatures

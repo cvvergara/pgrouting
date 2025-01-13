@@ -72,7 +72,6 @@ Description
     :start-after: dijkstra_details_start
     :end-before: dijkstra_details_end
 
-
 |Boost| Boost Graph Inside
 
 Signatures

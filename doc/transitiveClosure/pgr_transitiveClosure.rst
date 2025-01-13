@@ -52,7 +52,6 @@ The main characteristics are:
 * The returned graph is compresed
 * Running time: :math:`O(|V||E|)`
 
-
 |Boost| Boost Graph Inside
 
 Signatures
