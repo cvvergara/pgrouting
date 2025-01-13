@@ -23,7 +23,7 @@ the flow from the sources to the targets using Boykov Kolmogorov algorithm.
 
 * Version 3.2.0
 
-  * New **proposed** signature
+  * New proposed signature
 
     * ``pgr_boykovKolmogorov`` (`Combinations`_)
 

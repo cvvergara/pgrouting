@@ -30,7 +30,7 @@
 
 * Version 3.2.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
     * ``pgr_bdAstar`` (`Combinations`_)
 

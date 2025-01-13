@@ -22,7 +22,7 @@
 
 * Version 3.4.0
 
-  * New **proposed** signatures:
+  * New proposed signatures:
 
     * ``pgr_findCloseEdges`` (`One point`_)
     * ``pgr_findCloseEdges`` (`Many points`_)

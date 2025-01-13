@@ -23,7 +23,7 @@ flow from the sources to the targets using Edmonds Karp Algorithm.
 
 * Version 3.2.0
 
-  * New **proposed** signature
+  * New proposed signature
 
     * pgr_edmondsKarp(Combinations)
 

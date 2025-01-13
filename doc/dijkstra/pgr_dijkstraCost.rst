@@ -25,7 +25,7 @@ algorithm.
 
 * Version 3.1.0
 
-  * New **proposed** signature:
+  * New proposed signature:
 
     * pgr_dijkstraCost(Combinations)
 

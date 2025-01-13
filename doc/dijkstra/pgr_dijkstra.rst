@@ -41,7 +41,7 @@
 
 * Version 2.2.0
 
-  * New **proposed** signatures:
+  * New proposed signatures:
 
     * ``pgr_dijkstra`` (`One to Many`_)
     * ``pgr_dijkstra`` (`Many to One`_)

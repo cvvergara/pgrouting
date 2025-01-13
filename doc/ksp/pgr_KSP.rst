@@ -27,7 +27,7 @@
 
   * Added ``start_vid`` and ``end_vid`` result columns.
 
-* New **proposed** signatures:
+* New proposed signatures:
 
   * pgr_ksp(One to Many)
   * pgr_ksp(Many to One)
