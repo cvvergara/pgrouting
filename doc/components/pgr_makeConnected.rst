@@ -64,8 +64,7 @@ Signatures
    | Returns set of |result-component-make|
    | OR EMPTY SET
 
-:Example: Query done on :doc:`sampledata`gives the list of edges that
-          are needed to connect the graph.
+:Example: List of edges that are needed to connect the graph.
 
 .. literalinclude:: makeConnected.queries
    :start-after: -- q1
