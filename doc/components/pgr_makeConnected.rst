@@ -62,7 +62,7 @@ The main characteristics are:
    | Returns set of |result-component-make|
    | OR EMPTY SET
 
-:Example: Query done on :doc:`sampledata` network gives the list of edges that
+:Example: Query done on :doc:`sampledata`gives the list of edges that
           are needed to connect the graph.
 
 .. literalinclude:: makeConnected.queries
@@ -114,7 +114,7 @@ See Also
 
 * `Boost: make connected
   <https://www.boost.org/libs/graph/doc/make_connected.html>`__
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

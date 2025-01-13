@@ -99,7 +99,7 @@ See Also
 * :doc:`pgr_johnson`
 * Boost `floyd-Warshall
   <https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html>`_
-* Queries uses the :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

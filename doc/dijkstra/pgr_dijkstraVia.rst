@@ -158,7 +158,7 @@ See Also
 
 * :doc:`via-category`.
 * :doc:`dijkstra-family`.
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Dijkstra shortest paths
   <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm

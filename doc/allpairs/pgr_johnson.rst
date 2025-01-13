@@ -97,7 +97,7 @@ See Also
 * :doc:`pgr_floydWarshall`
 * Boost `Johnson
   <https://www.boost.org/libs/graph/doc/johnson_all_pairs_shortest.html>`_
-* Queries uses the :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

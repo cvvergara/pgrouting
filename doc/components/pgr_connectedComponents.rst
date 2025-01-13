@@ -135,7 +135,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Connected components
   <https://www.boost.org/libs/graph/doc/connected_components.html>`__
 * wikipedia: `Connected component

@@ -282,7 +282,7 @@ See Also
 * :doc:`TRSP-family`
 * :doc:`via-category`
 * :doc:`withPoints-category`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

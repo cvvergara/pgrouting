@@ -200,7 +200,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`VRP-category`
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

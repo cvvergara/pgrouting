@@ -276,7 +276,7 @@ values for the column names do not match the column names of the table.
    :start-after: --q17
    :end-before: --q17.1
 
-The example uses the :doc:`sampledata` network.
+The example uses the :doc:`sampledata`
 
 See Also
 -------------------------------------------------------------------------------

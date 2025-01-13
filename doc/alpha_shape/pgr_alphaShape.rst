@@ -105,7 +105,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`pgr_drivingDistance`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 * `ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__
 
 .. rubric:: Indices and tables

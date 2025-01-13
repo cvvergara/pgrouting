@@ -117,7 +117,7 @@ See Also
 * `Wikipedia: bipartite graph
   <https://en.wikipedia.org/wiki/Bipartite_graph>`__
 
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

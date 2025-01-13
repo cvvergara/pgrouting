@@ -90,7 +90,7 @@ See Also
 
 * :doc:`spanningTree-family`
 * :doc:`prim-family`
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Prim's algorithm documentation
   <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>`__
 * `Wikipedia: Prim's algorithm

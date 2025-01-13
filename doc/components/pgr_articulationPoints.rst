@@ -109,7 +109,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Biconnected components & articulation points
   <https://www.boost.org/libs/graph/doc/biconnected_components.html>`__
 * wikipedia: `Biconnected component

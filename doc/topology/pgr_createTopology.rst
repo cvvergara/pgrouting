@@ -273,7 +273,7 @@ the rest of the edges.
    :start-after: --q17
    :end-before: --q17.1
 
-The example uses the :doc:`sampledata` network.
+The example uses the :doc:`sampledata`
 
 See Also
 -------------------------------------------------------------------------------

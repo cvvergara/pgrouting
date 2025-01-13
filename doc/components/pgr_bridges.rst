@@ -103,7 +103,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * https://en.wikipedia.org/wiki/Bridge_%28graph_theory%29
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost <https://www.boost.org/libs/graph/doc/connected_components.html>`__
 
 .. rubric:: Indices and tables

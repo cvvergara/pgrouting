@@ -88,7 +88,7 @@ See Also
 
 * :doc:`spanningTree-family`
 * :doc:`kruskal-family`
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Kruskal's algorithm
   <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html>`__
 * `Wikipedia: Kruskal's algorithm

@@ -230,7 +230,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`via-category`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

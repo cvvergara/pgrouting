@@ -203,7 +203,7 @@ See Also
 
 * :doc:`withPoints-family`
 * :doc:`via-category`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

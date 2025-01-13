@@ -324,7 +324,7 @@ See Also
 
 * :doc:`dijkstra-family`
 * :doc:`pgr_dijkstraNearCost`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Dijkstra shortest paths
   <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 * Wikipedia: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm

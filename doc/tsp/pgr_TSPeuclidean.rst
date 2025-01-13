@@ -190,7 +190,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`TSP-family`
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: metric TSP approx
   <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>`__
 * `University of Waterloo TSP <https://www.math.uwaterloo.ca/tsp/>`__

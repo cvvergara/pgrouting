@@ -328,7 +328,7 @@ point :math:`2` with heap paths and details.
    :start-after: --q8
    :end-before: --q9
 
-The queries use the :doc:`sampledata` network.
+:doc:`sampledata`
 
 See Also
 -------------------------------------------------------------------------------

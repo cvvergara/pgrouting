@@ -278,7 +278,7 @@ Additional Examples
    :start-after: -- q28
    :end-before: -- q28.1
 
-The examples use the :doc:`sampledata` network.
+The examples use the :doc:`sampledata`
 
 
 See Also

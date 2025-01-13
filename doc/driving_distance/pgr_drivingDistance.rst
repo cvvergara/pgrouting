@@ -171,7 +171,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`pgr_alphaShape` - Alpha shape computation
-* :doc:`sampledata` network.
+* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

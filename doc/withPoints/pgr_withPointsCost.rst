@@ -358,7 +358,7 @@ Traveling from point :math:`1` and vertex :math:`5` to points :math:`\{2, 3,
    :start-after: -- q8
    :end-before: -- q9
 
-The queries use the :doc:`sampledata` network.
+:doc:`sampledata`
 
 See Also
 -------------------------------------------------------------------------------

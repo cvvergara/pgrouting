@@ -101,7 +101,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`components-family`
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Strong components
   <https://www.boost.org/libs/graph/doc/strong_components.html>`__
 * wikipedia: `Strongly connected component

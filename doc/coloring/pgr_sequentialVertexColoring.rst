@@ -105,7 +105,7 @@ Result columns
 See Also
 -------------------------------------------------------------------------------
 
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Sequential Vertex Coloring
   <https://www.boost.org/libs/graph/doc/sequential_vertex_coloring.html>`__
 * `Wikipedia: Graph coloring <https://en.wikipedia.org/wiki/Graph_coloring>`__

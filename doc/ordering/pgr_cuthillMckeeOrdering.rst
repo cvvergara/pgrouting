@@ -104,7 +104,7 @@ Column           Type        Description
 See Also
 -------------------------------------------------------------------------------
 
-* The queries use the :doc:`sampledata` network.
+* :doc:`sampledata`
 * `Boost: Cuthill-McKee Ordering
   <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html>`__
 * `Wikipedia: Cuthill-McKee Ordering
