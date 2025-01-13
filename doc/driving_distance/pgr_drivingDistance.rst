@@ -18,8 +18,7 @@
 
 ``pgr_drivingDistance`` - Returns the driving distance from a start node.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -55,9 +54,7 @@ Using the Dijkstra algorithm, extracts all the nodes that have costs less than
 or equal to the value ``distance``.
 The edges extracted will conform to the corresponding spaning tree.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

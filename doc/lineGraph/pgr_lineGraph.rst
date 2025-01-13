@@ -19,8 +19,7 @@
 ``pgr_lineGraph`` — Transforms the given graph into its corresponding edge-based
 graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
 
    Boost Graph Inside
 
@@ -63,9 +62,7 @@ Given a graph :math:`G`, its line graph :math:`L(G)` is a graph such that:
 
   - The ``reverse_cost`` is always :math:`-1`.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

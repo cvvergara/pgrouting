@@ -20,8 +20,7 @@
 ``pgr_breadthFirstSearch`` — Returns the traversal order(s) using Breadth First
 Search algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/breadth_first_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html
 
    Boost Graph Inside
 
@@ -51,9 +50,7 @@ particular depth.
   target depth level.
 * Running time: :math:`O(E + V)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

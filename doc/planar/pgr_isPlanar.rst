@@ -18,8 +18,7 @@
 
 ``pgr_isPlanar`` — Returns a boolean depending upon the planarity of the graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/boyer_myrvold.html
+* `Boost <https://www.boost.org/libs/graph/doc/boyer_myrvold.html
 
    Boost Graph Inside
 
@@ -52,9 +51,7 @@ The main characteristics are:
 * The algorithm does not considers traversal costs in the calculations.
 * Running time: :math:`O(|V|)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

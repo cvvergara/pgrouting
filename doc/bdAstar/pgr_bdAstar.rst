@@ -18,8 +18,7 @@
 
 ``pgr_bdAstar`` — Shortest path using the bidirectional A* algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html
 
    Boost Graph Inside
 
@@ -76,9 +75,7 @@ Description
   * ``pgr_bdAstar`` (`Many to Many`_)
   * ``pgr_bdAstar`` (`Combinations`_)
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

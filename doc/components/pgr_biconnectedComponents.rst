@@ -19,8 +19,7 @@
 
 ``pgr_biconnectedComponents`` — Biconnected components of an undirected graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/biconnected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html
 
    Boost Graph Inside
 
@@ -62,9 +61,7 @@ only be contained in a single biconnected component.
 
 - Running time: :math:`O(V + E)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

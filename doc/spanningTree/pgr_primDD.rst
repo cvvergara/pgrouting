@@ -20,8 +20,7 @@
 
 ``pgr_primDD`` — Catchament nodes using Prim's algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
 
    Boost Graph Inside
 
@@ -57,9 +56,7 @@ calculated minimum spanning tree.
 - Returned tree nodes from a root vertex are on Depth First Search order.
 - Depth First Search running time: :math:`O(E + V)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

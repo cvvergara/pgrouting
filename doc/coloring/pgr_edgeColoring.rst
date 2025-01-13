@@ -19,8 +19,7 @@
 ``pgr_edgeColoring`` — Returns the edge coloring of undirected and loop-free
 graphs
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/edge_coloring.html
+* `Boost <https://www.boost.org/libs/graph/doc/edge_coloring.html
 
    Boost Graph Inside
 
@@ -73,9 +72,7 @@ no two adjacent edges have the same color.
     - where :math:`|E|` is the number of edges in the graph,
     - :math:`|V|` is the number of vertices in the graph.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 ------------------------------------------------------------------------------
 
 .. admonition:: \ \

@@ -19,8 +19,7 @@
 ``pgr_KSP`` — Yen's algorithm for K shortest paths using Dijkstra.
 
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -57,9 +56,7 @@ Description
 The K shortest path routing algorithm based on Yen's algorithm. "K" is the
 number of shortest paths desired.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

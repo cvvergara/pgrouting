@@ -25,12 +25,9 @@ Prim - Family of functions
 
 .. official-end
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
 
-   Boost Graph Inside
-
-.. toctree::
+   >.. toctree::
     :hidden:
 
     pgr_prim

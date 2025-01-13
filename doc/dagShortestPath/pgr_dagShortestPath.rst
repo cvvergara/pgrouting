@@ -21,8 +21,7 @@
 acyclic graphs(DAG).
 In particular, the DAG shortest paths algorithm implemented by Boost.Graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/dag_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dag_shortest_paths.html
 
    Boost Graph Inside
 
@@ -82,9 +81,7 @@ The main characteristics are:
 
   * Running time: :math:`O(| start\_vids | * (V + E))`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

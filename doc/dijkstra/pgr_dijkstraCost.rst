@@ -21,8 +21,7 @@
 ``pgr_dijkstraCost`` - Total cost of the shortest path using Dijkstra
 algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
 
    Boost Graph Inside
 
@@ -57,9 +56,7 @@ using Dijkstra Algorithm.
     :start-after: cost_traits_start
     :end-before: cost_traits_end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

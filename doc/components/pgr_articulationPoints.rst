@@ -20,8 +20,7 @@
 ``pgr_articulationPoints`` - Return the articulation points of an undirected
 graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/biconnected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html
 
    Boost Graph Inside
 
@@ -54,9 +53,7 @@ This implementation can only be used with an undirected graph.
 
 - Running time: :math:`O(V + E)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

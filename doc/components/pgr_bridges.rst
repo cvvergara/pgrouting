@@ -18,8 +18,7 @@
 
 ``pgr_bridges`` - Return the bridges of an undirected graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/connected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html
 
    Boost Graph Inside
 
@@ -50,9 +49,7 @@ This implementation can only be used with an undirected graph.
 
 - Running time: :math:`O(E * (V + E))`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

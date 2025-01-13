@@ -18,8 +18,7 @@
 
 ``pgr_aStar`` — Shortest path using the A* algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html
 
    Boost Graph Inside
 
@@ -78,9 +77,7 @@ Description
   * ``pgr_aStar`` (`Many to Many`_)
   * ``pgr_aStar`` (`Combinations`_)
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

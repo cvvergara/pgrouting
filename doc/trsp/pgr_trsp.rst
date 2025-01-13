@@ -20,8 +20,7 @@
 
 ``pgr_trsp`` - routing vertices with restrictions.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -77,9 +76,7 @@ The general algorithm is as follows:
 
   * Execute the **TRSP** algorithm with restrictions.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Proposed

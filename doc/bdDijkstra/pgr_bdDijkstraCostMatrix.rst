@@ -21,8 +21,7 @@
 :doc:`pgr_bdDijkstra`.
 
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -49,9 +48,7 @@ Using bidirectional Dijkstra algorithm, calculate and return a cost matrix.
     :start-after: costMatrix_details_start
     :end-before: costMatrix_details_end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

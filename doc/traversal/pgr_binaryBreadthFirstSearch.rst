@@ -23,8 +23,7 @@ graph.
 Any graph whose edge-weights belongs to the set {0,X}, where 'X' is any
 non-negative integer, is termed as a 'binary graph'.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/breadth_first_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html
 
    Boost Graph Inside
 
@@ -81,9 +80,7 @@ edge belongs to the set {0,X}, where 'X' is any non-negative real integer.
 
 * Running time: :math:`O(| start\_vids | * |E|)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

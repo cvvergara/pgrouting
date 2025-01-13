@@ -18,8 +18,7 @@
 ``pgr_betweennessCentrality`` - Calculates the relative betweeness centrality
 using Brandes Algorithm
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
+* `Boost <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
 
    Boost Graph Inside
 
@@ -52,9 +51,7 @@ This implementation work for both directed and undirected graphs.
 - Running space: :math:`\Theta(VE)`
 - Throws when there are no edges in the graph
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. index::

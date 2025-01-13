@@ -19,8 +19,7 @@
 ``pgr_lengauerTarjanDominatorTree`` — Returns the immediate dominator of all
 vertices.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/lengauer_tarjan_dominator.htm
+* `Boost <https://www.boost.org/libs/graph/doc/lengauer_tarjan_dominator.htm
 
    Boost Graph Inside
 
@@ -49,9 +48,7 @@ The algorithm calculates the *immidiate dominator* of each vertex called
 - If the *root vertex* not present in the graph then it returns empty set.
 - Running time: :math:`O((V+E)log(V+E))`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

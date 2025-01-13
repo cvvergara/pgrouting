@@ -21,8 +21,7 @@
 ``pgr_kruskalBFS`` — Kruskal's algorithm for Minimum Spanning Tree with breadth
 First Search ordering.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
 
    Boost Graph Inside
 
@@ -53,9 +52,7 @@ of the Minimum Spanning Tree created using Kruskal's algorithm.
 - Returned tree nodes from a root vertex are on Breath First Search order
 - Breath First Search Running time: :math:`O(E + V)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

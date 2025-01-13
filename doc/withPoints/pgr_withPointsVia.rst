@@ -25,8 +25,7 @@ points.
    :start-after: begin-warning
    :end-before: end-warning
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -56,9 +55,7 @@ The general algorithm is as follows:
 
 * Execute a :doc:`pgr_dijkstraVia`.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. index::

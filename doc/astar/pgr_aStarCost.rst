@@ -19,8 +19,7 @@
 
 ``pgr_aStarCost`` - Total cost of the shortest path using the A* algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html
 
    Boost Graph Inside
 
@@ -67,9 +66,7 @@ using the A* algorithm.
   - `start_vid` ascending
   - `end_vid` ascending
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

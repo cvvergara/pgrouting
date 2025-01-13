@@ -19,8 +19,7 @@
 ``pgr_cuthillMckeeOrdering`` — Returns the reverse Cuthill-Mckee ordering of an undirected
 graphs
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html
+* `Boost <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html
 
    Boost Graph Inside
 
@@ -55,9 +54,7 @@ each step, the adjacent vertices are placed in the queue in order of increasing 
   - where :math:`|V|` is the number of vertices,
   - :math:`m` is the maximum degree of the vertices in the graph.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 ------------------------------------------------------------------------------
 
 .. index::

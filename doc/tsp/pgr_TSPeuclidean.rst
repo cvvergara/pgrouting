@@ -18,8 +18,7 @@
 
 * ``pgr_TSPeuclidean`` - Aproximation using *metric* algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/metric_tsp_approx.html
+* `Boost <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html
 
    Boost Graph Inside
 
@@ -73,9 +72,7 @@ Description
       2, 3.5, 1.0
       2, 3.6, 1.1
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

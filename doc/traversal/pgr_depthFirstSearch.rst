@@ -20,8 +20,7 @@
 ``pgr_depthFirstSearch`` — Returns a depth first search traversal of the graph.
 The graph can be directed or undirected.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/depth_first_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/depth_first_search.html
 
    Boost Graph Inside
 
@@ -61,9 +60,7 @@ continues until all the vertices reachable from the root vertex are visited.
 - The returned values are ordered in ascending order of `start_vid`.
 - Depth First Search Running time: :math:`O(E + V)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

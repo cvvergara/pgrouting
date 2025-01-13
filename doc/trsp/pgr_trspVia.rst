@@ -20,8 +20,7 @@
 
 ``pgr_trspVia`` Route that goes through a list of vertices with restrictions.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -54,9 +53,7 @@ The general algorithm is as follows:
   * Execute the **TRSP** algorithm with restrictions for the paths.
   * **NOTE** when this is done, ``U_turn_on_edge`` flag is ignored.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. index::

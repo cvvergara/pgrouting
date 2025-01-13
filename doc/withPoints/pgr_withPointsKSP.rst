@@ -24,8 +24,7 @@ pgr_withPointsKSP - Proposed
    :start-after: begin-warning
    :end-before: end-warning
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -62,9 +61,7 @@ Description
 Modifies the graph to include the points defined in the `Points SQL`_ and
 using Yen algorithm, finds the :math:`K` shortest paths.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

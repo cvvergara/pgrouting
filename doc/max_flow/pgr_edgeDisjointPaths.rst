@@ -20,8 +20,7 @@
 vertices.
 
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
+* `Boost <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
 
    Boost Graph Inside
 
@@ -58,9 +57,7 @@ The main characterics are:
   - The graph can be directed or undirected.
   - Uses :doc:`pgr_boykovKolmogorov` to calculate the paths.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

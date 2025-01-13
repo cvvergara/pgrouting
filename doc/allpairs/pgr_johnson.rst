@@ -19,8 +19,7 @@
 ``pgr_johnson`` - Returns the sum of the costs of the shortest path for each
 pair of nodes in the graph using Floyd-Warshall algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/johnson_all_pairs_shortest.html
+* `Boost <https://www.boost.org/libs/graph/doc/johnson_all_pairs_shortest.html
 
    Boost Graph Inside
 
@@ -46,9 +45,7 @@ It usees the Boost's implementation which runs in :math:`O(V E \log V)` time,
    :start-after: characteristics_start
    :end-before: characteristics_end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

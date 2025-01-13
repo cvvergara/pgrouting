@@ -18,8 +18,7 @@
 
 * ``pgr_TSP`` - Aproximation using *metric* algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/metric_tsp_approx.html
+* `Boost <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html
 
    Boost Graph Inside
 
@@ -108,9 +107,7 @@ Description
 
   - the missing values will be calculated with dijkstra algorithm.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

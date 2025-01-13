@@ -19,8 +19,7 @@
 
 ``pgr_bdAstarCostMatrix`` - Calculates the a cost matrix using :doc:`pgr_aStar`.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org//libs/graph/doc/astar_search.html
+* `Boost <https://www.boost.org//libs/graph/doc/astar_search.html
 
    Boost Graph Inside
 
@@ -56,9 +55,7 @@ Description
 
 * When the graph is **undirected** the cost matrix is symmetric
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -19,8 +19,7 @@
 ``pgr_floydWarshall`` - Returns the sum of the costs of the shortest path for
 each pair of nodes in the graph using Floyd-Warshall algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html
+* `Boost <https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html
 
    Boost Graph Inside
 
@@ -47,9 +46,7 @@ We use Boost's implementation which runs in :math:`\Theta(V^3)` time,
    :start-after: characteristics_start
    :end-before: characteristics_end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

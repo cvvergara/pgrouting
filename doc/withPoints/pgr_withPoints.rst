@@ -25,8 +25,7 @@ temporary vertices.
    :start-after: begin-warning
    :end-before: end-warning
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -73,9 +72,7 @@ Using Dijkstra algorithm, find the shortest path
 
 * Running time: :math:`O(|start\_vids|\times(V \log V + E))`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

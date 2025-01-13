@@ -19,8 +19,7 @@
 
 ``pgr_kruskal`` — Minimum spanning tree of a graph using Kruskal's algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
 
    Boost Graph Inside
 
@@ -45,9 +44,7 @@ graph using Kruskal's algorithm.
 
 - EMPTY SET is returned when there are no edges in the graph.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -18,8 +18,7 @@
 
 ``pgr_bellmanFord`` — Shortest path using Bellman-Ford algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html
+* `Boost <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html
 
    Boost Graph Inside
 
@@ -81,9 +80,7 @@ implementation can be used with a directed graph and an undirected graph.
 
   * Running time: :math:`O(| start\_vids | * ( V * E))`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -19,8 +19,7 @@
 ``pgr_bdDijkstraCost`` — Returns the shortest path's cost using Bidirectional
 Dijkstra algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -55,9 +54,7 @@ using the bidirectional Dijkstra Algorithm.
     :start-after: cost_traits_start
     :end-before: cost_traits_end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

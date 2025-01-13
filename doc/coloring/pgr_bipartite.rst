@@ -19,8 +19,7 @@
 ``pgr_bipartite`` — Disjoint sets of vertices such that no two vertices within
 the same set are adjacent.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/is_bipartite.html
+* `Boost <https://www.boost.org/libs/graph/doc/is_bipartite.html
 
    Boost Graph Inside
 
@@ -52,9 +51,7 @@ colored with the same color.
 - If graph is not bipartite then algorithm returns empty set.
 - Running time: :math:`O(V + E)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

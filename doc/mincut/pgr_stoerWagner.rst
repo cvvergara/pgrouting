@@ -18,8 +18,7 @@
 
 ``pgr_stoerWagner`` — The min-cut of graph using stoerWagner algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html
+* `Boost <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html
 
    Boost Graph Inside
 
@@ -70,9 +69,7 @@ weight on the cut determines whether it is a minimum cut.
 
 * Running time: :math:`O(V*E + V^2*log V)`.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

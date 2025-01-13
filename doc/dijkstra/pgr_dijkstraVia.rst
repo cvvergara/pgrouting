@@ -23,8 +23,7 @@
    :start-after: begin-warning
    :end-before: end-warning
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -44,9 +43,7 @@ shortest path between :math:`vertex_i` and :math:`vertex_{i+1}` for all :math:`i
 :Route: is a sequence of paths.
 :Path: is a section of the route.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. index::

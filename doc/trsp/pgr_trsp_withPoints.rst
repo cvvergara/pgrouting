@@ -21,8 +21,7 @@
 
 ``pgr_trsp_withPoints`` Routing Vertex/Point with restrictions.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -69,9 +68,7 @@ Characteristics:
 
 * Running time: :math:`O(|start\_vids|\times(V \log V + E))`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

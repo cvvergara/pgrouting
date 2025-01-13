@@ -21,8 +21,7 @@
 ``pgr_primBFS`` — Prim's algorithm for Minimum Spanning Tree with Depth First
 Search ordering.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
 
    Boost Graph Inside
 
@@ -53,9 +52,7 @@ of the Minimum Spanning Tree created using Prims's algorithm.
 - Returned tree nodes from a root vertex are on Breath First Search order
 - Breath First Search Running time: :math:`O(E + V)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

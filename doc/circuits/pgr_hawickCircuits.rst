@@ -18,8 +18,7 @@
 
 ``pgr_hawickCircuits`` — Returns the list of cirucits using hawick circuits algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/hawick_circuits.html
+* `Boost <https://www.boost.org/libs/graph/doc/hawick_circuits.html
 
 .. include:: experimental.rst
    :start-after: begin-warning
@@ -61,9 +60,7 @@ implemenent this variation.
   - :math:`|V|` is the number of vertices in the graph.
   - :math:`|c|` is the number of circuts in the graph.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

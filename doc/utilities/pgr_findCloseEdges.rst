@@ -18,8 +18,7 @@
 
 ``pgr_findCloseEdges`` - Finds the close edges to a point geometry.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
 
    Boost Graph Inside
 
@@ -43,9 +42,7 @@ point geometry.
   adjustments needed by the application.
 * ``EMTPY SET`` is returned on dryrun executions
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

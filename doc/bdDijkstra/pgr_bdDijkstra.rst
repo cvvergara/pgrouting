@@ -19,8 +19,7 @@
 ``pgr_bdDijkstra`` — Returns the shortest path using Bidirectional Dijkstra
 algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -64,9 +63,7 @@ Description
    :start-after: description start
    :end-before: description end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

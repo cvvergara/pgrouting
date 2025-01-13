@@ -19,8 +19,7 @@
 
 ``pgr_dijkstra`` — Shortest path using Dijkstra algorithm.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
 
    Boost Graph Inside
 
@@ -72,9 +71,7 @@ Description
     :start-after: dijkstra_details_start
     :end-before: dijkstra_details_end
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

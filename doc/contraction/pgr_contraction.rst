@@ -18,8 +18,7 @@
 ``pgr_contraction`` — Performs graph contraction and returns the contracted
 vertices and edges.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -66,9 +65,7 @@ The main Characteristics are:
   - column ``id`` ascending when type is ``v``
   - column ``id`` descending when type is ``e``
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

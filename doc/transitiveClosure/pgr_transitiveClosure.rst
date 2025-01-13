@@ -18,8 +18,7 @@
 
 ``pgr_transitiveClosure`` — Transitive closure graph of a directed graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/transitive_closure.html
+* `Boost <https://www.boost.org/libs/graph/doc/transitive_closure.html
 
    Boost Graph Inside
 
@@ -52,9 +51,7 @@ The main characteristics are:
 * The returned graph is compresed
 * Running time: :math:`O(|V||E|)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

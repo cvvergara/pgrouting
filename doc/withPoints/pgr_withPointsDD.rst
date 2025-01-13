@@ -24,8 +24,7 @@
    :start-after: begin-warning
    :end-before: end-warning
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
 
    Boost Graph Inside
 
@@ -73,9 +72,7 @@ the nodes and points that have costs less than or equal to the value
 ``**distance**`` from the starting point.
 The edges extracted will conform the corresponding spanning tree.
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

@@ -19,8 +19,7 @@
 
 ``pgr_makeConnected`` — Set of edges that will connect the graph.
 
-.. figure:: images/boost-inside.jpeg
-   :target: https://www.boost.org/libs/graph/doc/make_connected.html
+* `Boost <https://www.boost.org/libs/graph/doc/make_connected.html
 
    Boost Graph Inside
 
@@ -56,9 +55,7 @@ The main characteristics are:
 - The algorithm does not considers geometric topology in the calculations.
 - Running time: :math:`O(V + E)`
 
-|Boost| Boost Graph Inside
-
-Signatures
+|Boost| >Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \
