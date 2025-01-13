@@ -24,15 +24,15 @@
 
   * Standarizing output columns to |short-generic-result|
 
-    * ``pgr_bdAstar`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_bdAstar`` (`One to Many`_) added ``end_vid`` column.
-    * ``pgr_bdAstar`` (`Many to One`_) added ``start_vid`` column.
+    * pgr_bdAstar(`One to One`_) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_bdAstar(`One to Many`_) added ``end_vid`` column.
+    * pgr_bdAstar(`Many to One`_) added ``start_vid`` column.
 
 * Version 3.2.0
 
   * New proposed signature:
 
-    * ``pgr_bdAstar`` (`Combinations`_)
+    * pgr_bdAstar(`Combinations`_)
 
 * Version 3.0.0
 
@@ -42,17 +42,17 @@
 
   * New **Proposed** signatures:
 
-    * ``pgr_bdAstar`` (`One to Many`_)
-    * ``pgr_bdAstar`` (`Many to One`_)
-    * ``pgr_bdAstar`` (`Many to Many`_)
+    * pgr_bdAstar(`One to Many`_)
+    * pgr_bdAstar(`Many to One`_)
+    * pgr_bdAstar(`Many to Many`_)
 
-  * Signature change on ``pgr_bdAstar`` (`One to One`_)
+  * Signature change on ``pgr_bdAstar(`One to One`_)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** ``pgr_bdAstar`` (`One to One`_)
+  * **Official** pgr_bdAstar(`One to One`_)
 
 Description
 -------------------------------------------------------------------------------
@@ -66,10 +66,10 @@ Description
 * The results are equivalent to the union of the results of the `pgr_bdAStar(`
   `One to One`_ `)` on the:
 
-  * ``pgr_bdAstar`` (`One to Many`_)
-  * ``pgr_bdAstar`` (`Many to One`_)
-  * ``pgr_bdAstar`` (`Many to Many`_)
-  * ``pgr_bdAstar`` (`Combinations`_)
+  * pgr_bdAstar(`One to Many`_)
+  * pgr_bdAstar(`Many to One`_)
+  * pgr_bdAstar(`Many to Many`_)
+  * pgr_bdAstar(`Combinations`_)
 
 |Boost| Boost Graph Inside
 
@@ -86,7 +86,7 @@ Signatures
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_bdAstar(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -103,7 +103,7 @@ One to One
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vid**, **end vid**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -125,7 +125,7 @@ One to Many
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -147,7 +147,7 @@ Many to One
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -169,7 +169,7 @@ Many to Many
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vids**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -191,7 +191,7 @@ Combinations
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET

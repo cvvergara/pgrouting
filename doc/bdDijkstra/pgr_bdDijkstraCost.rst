@@ -25,7 +25,7 @@ Dijkstra algorithm.
 
   * New proposed signature:
 
-    * ``pgr_bdDijkstraCost`` (`Combinations`_)
+    * pgr_bdDijkstraCost(`Combinations`_)
 
 * Version 3.0.0
 

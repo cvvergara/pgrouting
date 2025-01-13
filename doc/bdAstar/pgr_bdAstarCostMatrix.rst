@@ -62,7 +62,7 @@ Signatures
    :class: signatures
 
    | pgr_bdAstarCostMatrix(`Edges SQL`_, **start vids**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET

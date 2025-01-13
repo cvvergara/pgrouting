@@ -32,7 +32,7 @@
 
   * New proposed signature:
 
-    * ``pgr_aStar`` (`Combinations`_)
+    * pgr_aStar(`Combinations`_)
 
 * Version 3.0.0
 
@@ -68,10 +68,10 @@ Description
 * The results are equivalent to the union of the results of the `pgr_aStar(`
   `One to One`_ `)` on the:
 
-  * ``pgr_aStar`` (`One to Many`_)
-  * ``pgr_aStar`` (`Many to One`_)
-  * ``pgr_aStar`` (`Many to Many`_)
-  * ``pgr_aStar`` (`Combinations`_)
+  * pgr_aStar(`One to Many`_)
+  * pgr_aStar(`Many to One`_)
+  * pgr_aStar(`Many to Many`_)
+  * pgr_aStar(`Combinations`_)
 
 |Boost| Boost Graph Inside
 
@@ -88,7 +88,7 @@ Signatures
    | pgr_aStar(`Edges SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_aStar(`Edges SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_aStar(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -105,7 +105,7 @@ One to One
    :class: signatures
 
    | pgr_aStar(`Edges SQL`_, **start vid**, **end vid**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -127,7 +127,7 @@ One to Many
    :class: signatures
 
    | pgr_aStar(`Edges SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -149,7 +149,7 @@ Many to One
    :class: signatures
 
    | pgr_aStar(`Edges SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -171,7 +171,7 @@ Many to Many
    :class: signatures
 
    | pgr_aStar(`Edges SQL`_, **start vids**, **end vids**, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -193,7 +193,7 @@ Combinations
    :class: signatures
 
    | pgr_aStar(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, heuristic, factor, epsilon]``
+   | **options:** [directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET

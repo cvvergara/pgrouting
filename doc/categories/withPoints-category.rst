@@ -347,9 +347,9 @@ _______________________________________________________________________________
 - It only affects the edge ``(16, 17)``, therefore the edge is removed.
 - Create two new edges:
 
-  - Edge ``(16, -2)`` with cost ``0.4`` (original cost * fraction == :math:`1 *
+  - Edge ``(16, -2)`` with cost ``0.4(original cost * fraction == :math:`1 *
     0.4`)
-  - Edge ``(-2, 17)`` with cost ``0.6`` (the remaing cost)
+  - Edge ``(-2, 17)`` with cost ``0.6(the remaing cost)
 
 - The total cost of the additional edges is equal to the original cost.
 - If more points are on the same edge, the process is repeated recursevly.
@@ -370,9 +370,9 @@ _______________________________________________________________________________
   - Work with the original edge ``(16, 17)`` as the fraction is a fraction of the
     original:
 
-    - Edge ``(16, -2)`` with cost ``0.4`` (original cost * fraction == :math:`1 *
+    - Edge ``(16, -2)`` with cost ``0.4(original cost * fraction == :math:`1 *
       0.4`)
-    - Edge ``(-2, 17)`` with cost ``0.6`` (the remaing cost)
+    - Edge ``(-2, 17)`` with cost ``0.6(the remaing cost)
     - If more points are on the same edge, the process is repeated recursevly.
 
   - Flip the Edges and add them to the graph:
@@ -397,9 +397,9 @@ _______________________________________________________________________________
   - Work with the original edge ``(16, 17)`` as the fraction is a fraction of the
     original:
 
-    - Edge ``(16, -2)`` with cost ``0.4`` (original cost * fraction == :math:`1 *
+    - Edge ``(16, -2)`` with cost ``0.4(original cost * fraction == :math:`1 *
       0.4`)
-    - Edge ``(-2, 17)`` with cost ``0.6`` (the remaing cost)
+    - Edge ``(-2, 17)`` with cost ``0.6(the remaing cost)
     - If more points are on the same edge, the process is repeated recursevly.
 
   - Flip the Edges and add all the edges to the graph:

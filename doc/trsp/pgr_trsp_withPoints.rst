@@ -79,7 +79,7 @@ Signatures
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, `Points SQL`_, [**options**])
-   | **options:** ``[directed, driving_side, details]``
+   | **options:** [directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -94,7 +94,7 @@ One to One
    :class: signatures
 
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vid**, [**options**])
-   | **options:** ``[directed, driving_side, details]``
+   | **options:** [directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -116,7 +116,7 @@ One to Many
    :class: signatures
 
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** ``[directed, driving_side, details]``
+   | **options:** [directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -137,7 +137,7 @@ Many to One
    :class: signatures
 
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** ``[directed, driving_side, details]``
+   | **options:** [directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -158,7 +158,7 @@ Many to Many
    :class: signatures
 
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
-   | **options:** ``[directed, driving_side, details]``
+   | **options:** [directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -180,7 +180,7 @@ Combinations
    :class: signatures
 
    | pgr_trsp_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Combinations SQL`_, `Points SQL`_, [**options**])
-   | **options:** ``[directed, driving_side, details]``
+   | **options:** [directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET

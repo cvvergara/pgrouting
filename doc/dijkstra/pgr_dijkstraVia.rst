@@ -54,7 +54,7 @@ One Via
    :class: signatures
 
    | pgr_dijkstraVia(`Edges SQL`_, **via vertices**, [**options**])
-   | **options:** ``[directed, strict, U_turn_on_edge]``
+   | **options:** [directed, strict, U_turn_on_edge]``
 
    | Returns set of |via-result|
    | OR EMPTY SET

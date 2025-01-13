@@ -109,10 +109,10 @@ columns are ignored when ``geom`` column appears.
 
 * Ignored columns:
 
-  * ``startpoint``
-  * ``endpoint``
-  * ``source``
-  * ``target``
+  * startpoint``
+  * endpoint``
+  * source``
+  * target``
 
 When vertex geometry is known
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -133,8 +133,8 @@ columns are ignored when ``startpoint`` and ``endpoint`` columns appears.
 
 * Ignored columns:
 
-  * ``source``
-  * ``target``
+  * source``
+  * target``
 
 When identifiers of vertices are known
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -172,28 +172,28 @@ Result columns
      - Array of identifiers of the edges that have the vertex ``id`` as *first
        end point*.
 
-       * ``NULL`` When the ``id`` is not part of the inner query
+       * NULL`` When the ``id`` is not part of the inner query
    * - ``out_edges``
      - ``BIGINT[]``
      - Array of identifiers of the edges that have the vertex ``id`` as *second
        end point*.
 
-       * ``NULL`` When the ``id`` is not part of the inner query
+       * NULL`` When the ``id`` is not part of the inner query
    * - ``x``
      - ``FLOAT``
      - X value of the point geometry
 
-       * ``NULL`` When no geometry is provided
+       * NULL`` When no geometry is provided
    * - ``y``
      - ``FLOAT``
      - X value of the point geometry
 
-       * ``NULL`` When no geometry is provided
+       * NULL`` When no geometry is provided
    * - ``geom``
      - ``POINT``
      - Geometry of the point
 
-       * ``NULL`` When no geometry is provided
+       * NULL`` When no geometry is provided
 
 Additional Examples
 -------------------------------------------------------------------------------

@@ -24,7 +24,7 @@ using Brandes Algorithm
 
   * New experimental function.
 
-    * ``pgr_betweennessCentrality``
+    * pgr_betweennessCentrality``
 
 Description
 -------------------------------------------------------------------------------

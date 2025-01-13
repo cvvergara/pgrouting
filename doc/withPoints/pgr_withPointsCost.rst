@@ -102,7 +102,7 @@ Signatures
    | pgr_withPointsCost(`Edges SQL`_, 'Points SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_withPointsCost(`Edges SQL`_, 'Points SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_withPointsCost(`Edges SQL`_, 'Points SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | **options:** [directed, driving_side]``
 
    | Returns set of |matrix-pid|
    | OR EMPTY SET
@@ -120,7 +120,7 @@ One to One
    :class: signatures
 
    | pgr_withPointsCost(`Edges SQL`_, 'Points SQL`_, **start vid**, **end vid**, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | **options:** [directed, driving_side]``
 
    | Returns set of |matrix-pid|
    | OR EMPTY SET
@@ -141,7 +141,7 @@ One to Many
    :class: signatures
 
    | pgr_withPointsCost(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | **options:** [directed, driving_side]``
 
    | Returns set of |matrix-pid|
    | OR EMPTY SET
@@ -163,7 +163,7 @@ Many to One
    :class: signatures
 
    | pgr_withPointsCost(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | **options:** [directed, driving_side]``
 
    | Returns set of |matrix-pid|
    | OR EMPTY SET
@@ -184,7 +184,7 @@ Many to Many
    :class: signatures
 
    | pgr_withPointsCost(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | **options:** [directed, driving_side]``
 
    | Returns set of |matrix-pid|
    | OR EMPTY SET
@@ -206,7 +206,7 @@ Combinations
    :class: signatures
 
    | pgr_withPointsCost(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | **options:** [directed, driving_side]``
 
    | Returns set of |matrix-pid|
    | OR EMPTY SET

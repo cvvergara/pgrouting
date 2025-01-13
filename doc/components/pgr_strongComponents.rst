@@ -25,8 +25,8 @@ using Tarjan's algorithm based on DFS.
 
   * Result columns change:
 
-    * ``n_seq`` is removed
-    * ``seq`` changed type to ``BIGINT``
+    * n_seq`` is removed
+    * seq`` changed type to ``BIGINT``
 
   * **Official** function
 

@@ -97,9 +97,9 @@ Starting on PostgreSQL 12::
 Optionally indexes on different columns can be created.
 The recomendation is to have
 
-* ``id`` indexed.
-* ``source`` and ``target`` columns indexed to speed up pgRouting queries.
-* ``geom`` indexed to speed up gemetry processes that might be needed in the
+* id`` indexed.
+* source`` and ``target`` columns indexed to speed up pgRouting queries.
+* geom`` indexed to speed up gemetry processes that might be needed in the
   front end.
 
 For this small example the indexes are skipped, except for ``id``

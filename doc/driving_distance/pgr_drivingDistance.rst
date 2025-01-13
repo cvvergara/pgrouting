@@ -24,11 +24,11 @@
 
 * Standarizing output columns to |result-spantree|
 
-  * ``pgr_drivingdistance`` (Single vertex)
+  * pgr_drivingdistance(Single vertex)
 
     * Added ``depth`` and ``start_vid`` result columns.
 
-  * ``pgr_drivingdistance`` (Multiple vertices)
+  * pgr_drivingdistance(Multiple vertices)
 
     * Result column name change: ``from_v`` to ``start_vid``.
     * Added ``depth`` and ``pred`` result columns.

@@ -31,16 +31,16 @@
 * Signature change: ``driving_side`` parameter changed from named optional to
   unnamed compulsory **driving side**.
 
-  * ``pgr_withPointsDD`` (`Single vertex`)
-  * ``pgr_withPointsDD`` (`Multiple vertices`)
+  * pgr_withPointsDD(`Single vertex`)
+  * pgr_withPointsDD(`Multiple vertices`)
 
 * Standarizing output columns to |result-spantree|
 
-  * ``pgr_withPointsDD`` (`Single vertex`)
+  * pgr_withPointsDD(`Single vertex`)
 
     * Added ``depth``, ``pred`` and ``start_vid`` column.
 
-  * ``pgr_withPointsDD`` (`Multiple vertices`)
+  * pgr_withPointsDD(`Multiple vertices`)
 
     * Added ``depth``, ``pred`` columns.
 
@@ -51,8 +51,8 @@
 
 * Deprecated signatures
 
-  * ``pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)``
-  * ``pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)``
+  * pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)``
+  * pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)``
 
 .. rubric:: Version 2.2.0
 
@@ -77,8 +77,8 @@ Signatures
 
    | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vid**, **distance**, **driving side**, [**options A**])
    | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vids**, **distance**, **driving side**, [**options B**])
-   | **options A:** ``[directed, details]``
-   | **options B:** ``[directed, details, equicost]``
+   | **options A:** [directed, details]``
+   | **options B:** [directed, details, equicost]``
 
    | Returns set of |result-spantree|
    | OR EMPTY SET
@@ -93,7 +93,7 @@ Single vertex
    :class: signatures
 
    | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vid**, **distance**, **driving side**, [**options**])
-   | **options:** ``[directed, details]``
+   | **options:** [directed, details]``
 
    | Returns set of |result-spantree|
    | OR EMPTY SET
@@ -115,7 +115,7 @@ Multiple vertices
    :class: signatures
 
    | pgr_withPointsDD(`Edges SQL`_, `Points SQL`_, **root vids**, **distance**, **driving side**, [**options**])
-   | **options:** ``[directed, details, equicost]``
+   | **options:** [directed, details, equicost]``
 
    | Returns set of |result-spantree|
    | OR EMPTY SET

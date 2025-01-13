@@ -35,19 +35,19 @@ algorithm.
 
   * New **Proposed** functions:
 
-    * ``pgr_bdDijkstra`` (`One to Many`_)
-    * ``pgr_bdDijkstra`` (`Many to One`_)
-    * ``pgr_bdDijkstra`` (`Many to Many`_)
+    * pgr_bdDijkstra(`One to Many`_)
+    * pgr_bdDijkstra(`Many to One`_)
+    * pgr_bdDijkstra(`Many to Many`_)
 
 * Version 2.4.0
 
-  * Signature change on ``pgr_bdDijsktra`` (`One to One`_)
+  * Signature change on ``pgr_bdDijsktra(`One to One`_)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** ``pgr_bdDijkstra`` (`One to One`_)
+  * **Official** pgr_bdDijkstra(`One to One`_)
 
 
 Description

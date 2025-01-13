@@ -69,9 +69,9 @@ parameters:
     - An index will be created, if it doesn't exists, to speed up the process to
       the following columns:
 
-      * ``the_geom``
-      * ``source``
-      * ``target``
+      * the_geom``
+      * source``
+      * target``
 
 The function returns:
 

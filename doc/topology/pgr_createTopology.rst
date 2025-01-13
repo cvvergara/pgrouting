@@ -44,7 +44,7 @@ Signatures
    :class: signatures
 
    | pgr_createTopology(edge_table, tolerance, [**options**])
-   | **options:** ``[the_geom, id, source, target, rows_where, clean]``
+   | **options:** [the_geom, id, source, target, rows_where, clean]``
 
    | RETURNS ``VARCHAR``
 
@@ -79,10 +79,10 @@ The topology creation function accepts the following parameters:
       - An index will be created, if it doesn't exists,
         to speed up the process to the following columns:
 
-        * ``id``
-        * ``the_geom``
-        * ``source``
-        * ``target``
+        * id``
+        * the_geom``
+        * source``
+        * target``
 
 The function returns:
 

@@ -37,7 +37,7 @@ The function returns:
    :class: signatures
 
    | pgr_analyzeGraph(**edge_table**, **tolerance**, [**options**])
-   | **options:** ``[the_geom, id, source, target, rows_where]``
+   | **options:** [the_geom, id, source, target, rows_where]``
 
    | RETURNS ``VARCHAR``
 

@@ -25,15 +25,15 @@
 
   * Standarizing output columns to |short-generic-result|
 
-    * ``pgr_dijkstra`` (`One to One`_) added ``start_vid`` and ``end_vid`` columns.
-    * ``pgr_dijkstra`` (`One to Many`_) added ``end_vid`` column.
-    * ``pgr_dijkstra`` (`Many to One`_) added ``start_vid`` column.
+    * pgr_dijkstra(`One to One`_) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_dijkstra(`One to Many`_) added ``end_vid`` column.
+    * pgr_dijkstra(`Many to One`_) added ``start_vid`` column.
 
 * Version 3.1.0
 
   * New **Proposed** functions:
 
-    * ``pgr_dijkstra`` (`Combinations`_)
+    * pgr_dijkstra(`Combinations`_)
 
 * Version 3.0.0
 
@@ -43,17 +43,17 @@
 
   * New proposed signatures:
 
-    * ``pgr_dijkstra`` (`One to Many`_)
-    * ``pgr_dijkstra`` (`Many to One`_)
-    * ``pgr_dijkstra`` (`Many to Many`_)
+    * pgr_dijkstra(`One to Many`_)
+    * pgr_dijkstra(`Many to One`_)
+    * pgr_dijkstra(`Many to Many`_)
 
 * Version 2.1.0
 
-  * Signature change on ``pgr_dijkstra`` (`One to One`_)
+  * Signature change on ``pgr_dijkstra(`One to One`_)
 
 * Version 2.0.0
 
-  * **Official** ``pgr_dijkstra`` (`One to One`_)
+  * **Official** pgr_dijkstra(`One to One`_)
 
 
 Description

@@ -66,7 +66,7 @@ Signatures
    | pgr_KSP(`Edges SQL`_, **start vids**, **end vid**, **K**, [**options**])
    | pgr_KSP(`Edges SQL`_, **start vids**, **end vids**, **K**, [**options**])
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
-   | **options:** ``[directed, heap_paths]``
+   | **options:** [directed, heap_paths]``
 
    | Returns set of |nksp-result|
    | OR EMPTY SET
@@ -81,7 +81,7 @@ One to One
    :class: signatures
 
    | pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**, [**options**])
-   | **options:** ``[directed, heap_paths]``
+   | **options:** [directed, heap_paths]``
 
    | Returns set of |nksp-result|
    | OR EMPTY SET
@@ -102,7 +102,7 @@ One to Many
    :class: signatures
 
    | pgr_KSP(`Edges SQL`_, **start vid**, **end vids**, **K**, [**options**])
-   | **options:** ``[directed, heap_paths]``
+   | **options:** [directed, heap_paths]``
 
    | Returns set of |nksp-result|
    | OR EMPTY SET
@@ -123,7 +123,7 @@ Many to One
    :class: signatures
 
    | pgr_KSP(`Edges SQL`_, **start vids**, **end vid**, **K**, [**options**])
-   | **options:** ``[directed, heap_paths]``
+   | **options:** [directed, heap_paths]``
 
    | Returns set of |nksp-result|
    | OR EMPTY SET
@@ -144,7 +144,7 @@ Many to Many
    :class: signatures
 
    | pgr_KSP(`Edges SQL`_, **start vids**, **end vids**, **K**, [**options**])
-   | **options:** ``[directed, heap_paths]``
+   | **options:** [directed, heap_paths]``
 
    | Returns set of |nksp-result|
    | OR EMPTY SET
@@ -165,7 +165,7 @@ Combinations
    :class: signatures
 
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
-   | **options:** ``[directed, heap_paths]``
+   | **options:** [directed, heap_paths]``
 
    | Returns set of |nksp-result|
    | OR EMPTY SET

@@ -78,7 +78,7 @@ The pgr_contraction function has the following signature:
 
    | pgr_contraction(`Edges SQL`_, **contraction order**, [**options**])
 
-   | **options:** ``[ max_cycles, forbidden_vertices, directed]``
+   | **options:** [ max_cycles, forbidden_vertices, directed]``
    | Returns set of |result-contract|
 
 :Example: Making a dead end and linear contraction in that order on an
@@ -103,7 +103,7 @@ Parameters
      - ``TEXT``
      - `Edges SQL`_ as described below.
    * - **contraction Order**
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
+     - ``ARRAY[`` **ANY-INTEGER** ]``
      - Ordered contraction operations.
 
        - 1 = Dead end contraction
@@ -129,7 +129,7 @@ Contraction optional parameters
      - Default
      - Description
    * - ``forbidden_vertices``
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
+     - ``ARRAY[`` **ANY-INTEGER** ]``
      - **Empty**
      - Identifiers of vertices forbidden for contraction.
    * - ``max_cycles``
@@ -167,10 +167,10 @@ The function returns a single row. The columns of the row are:
      - ``TEXT``
      - Type of the ``id``.
 
-       * ``v`` when the row is a vertex.
+       * v`` when the row is a vertex.
 
          * Column ``id`` has a positive value
-       * ``e`` when the row is an edge.
+       * e`` when the row is an edge.
 
          * Column ``id`` has a negative value
    * - ``id``

@@ -68,7 +68,7 @@ Signatures
 
    | pgr_depthFirstSearch(`Edges SQL`_, **root vid**, [**options**])
    | pgr_depthFirstSearch(`Edges SQL`_, **root vids**, [**options**])
-   | **options:** ``[directed, max_depth]``
+   | **options:** [directed, max_depth]``
 
    | Returns set of |result-bfs|
 
@@ -82,7 +82,7 @@ Single vertex
    :class: signatures
 
    | pgr_depthFirstSearch(`Edges SQL`_, **root vid**, [**options**])
-   | **options:** ``[directed, max_depth]``
+   | **options:** [directed, max_depth]``
 
    | Returns set of |result-bfs|
 
@@ -103,7 +103,7 @@ Multiple vertices
    :class: signatures
 
    | pgr_depthFirstSearch(`Edges SQL`_, **root vids**, [**options**])
-   | **options:** ``[directed, max_depth]``
+   | **options:** [directed, max_depth]``
 
    | Returns set of |result-bfs|
 

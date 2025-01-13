@@ -46,7 +46,7 @@ Signatures
    :class: signatures
 
    | pgr_turnRestrictedPath(`Edges SQL`_, `Restrictions SQL`_, **start vid**, **end vid**, **K**, [**options**])
-   | **options:** ``[directed, heap_paths, stop_on_first, strict]``
+   | **options:** [directed, heap_paths, stop_on_first, strict]``
 
    | Returns set of |ksp-result|
    | OR EMPTY SET

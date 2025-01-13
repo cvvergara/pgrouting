@@ -66,8 +66,8 @@ The main Characteristics are:
 
 * The returned values are ordered:
 
-  * ``start_vid`` ascending
-  * ``end_vid`` ascending
+  * start_vid`` ascending
+  * end_vid`` ascending
 
 .. cost_traits_end
 
