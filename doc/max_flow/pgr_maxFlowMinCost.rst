@@ -19,10 +19,6 @@
 ``pgr_maxFlowMinCost`` — Calculates the edges that minimizes the total cost of
 the maximum flow on a graph
 
-* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.2.0
@@ -231,7 +227,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`flow-family`
-* https://www.boost.org/libs/graph/doc/successive_shortest_path_nonnegative_weights.html
+* `Boost: push relabel max flow
+  <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>`__
 
 .. rubric:: Indices and tables
 

@@ -18,10 +18,6 @@
 
 ``pgr_bridges`` - Return the bridges of an undirected graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.0.0
@@ -108,6 +104,7 @@ See Also
 
 * https://en.wikipedia.org/wiki/Bridge_%28graph_theory%29
 * The queries use the :doc:`sampledata` network.
+* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html>__
 
 .. rubric:: Indices and tables
 

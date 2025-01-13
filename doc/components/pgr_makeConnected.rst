@@ -19,10 +19,6 @@
 
 ``pgr_makeConnected`` — Set of edges that will connect the graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/make_connected.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -116,7 +112,7 @@ Returns set of |result-component-make|
 See Also
 -------------------------------------------------------------------------------
 
-* https://www.boost.org/libs/graph/doc/make_connected.html
+* `Boost: make connected <https://www.boost.org/libs/graph/doc/make_connected.html>__
 * The queries use the :doc:`sampledata` network.
 
 .. rubric:: Indices and tables

@@ -23,10 +23,6 @@
    :start-after: begin-warning
    :end-before: end-warning
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 2.2.0
@@ -163,6 +159,8 @@ See Also
 * :doc:`via-category`.
 * :doc:`dijkstra-family`.
 * :doc:`sampledata` network.
+* `Boost: Dijkstra shortest paths
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 .. rubric:: Indices and tables

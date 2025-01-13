@@ -19,10 +19,6 @@
 ``pgr_strongComponents`` — Strongly connected components of a directed graph
 using Tarjan's algorithm based on DFS.
 
-* `Boost <https://www.boost.org/libs/graph/doc/strong_components.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.0.0
@@ -106,7 +102,7 @@ See Also
 
 * :doc:`components-family`
 * The queries use the :doc:`sampledata` network.
-* Boost: `Strong components
+* `Boost: Strong components
   <https://www.boost.org/libs/graph/doc/strong_components.html>`__
 * wikipedia: `Strongly connected component
   <https://en.wikipedia.org/wiki/Strongly_connected_component>`__

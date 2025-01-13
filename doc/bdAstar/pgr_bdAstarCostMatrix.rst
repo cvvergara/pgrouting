@@ -19,10 +19,6 @@
 
 ``pgr_bdAstarCostMatrix`` - Calculates the a cost matrix using :doc:`pgr_aStar`.
 
-* `Boost <https://www.boost.org//libs/graph/doc/astar_search.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.0.0
@@ -130,6 +126,7 @@ See Also
 * :doc:`costMatrix-category`
 * :doc:`TSP-family`
 * :doc:`sampledata`
+* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 
 .. rubric:: Indices and tables
 

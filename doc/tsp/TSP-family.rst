@@ -139,7 +139,7 @@ See Also
 
 .. rubric:: References
 
-* `Boost's metric appro's metric approximation
+* `Boost: metric TSP approx
   <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>`__
 * `University of Waterloo TSP <https://www.math.uwaterloo.ca/tsp/>`__
 * `Wikipedia: Traveling Salesman Problem

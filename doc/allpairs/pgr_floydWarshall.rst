@@ -19,10 +19,6 @@
 ``pgr_floydWarshall`` - Returns the sum of the costs of the shortest path for
 each pair of nodes in the graph using Floyd-Warshall algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 2.2.0

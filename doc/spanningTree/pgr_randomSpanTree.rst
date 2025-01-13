@@ -9,19 +9,21 @@
 
 |
 
+
 pgr_randomSpanTree - Experimental
 ===============================================================================
 
 ``pgr_randomSpanTree`` — Random spanning tree of a graph using the algorithm
 implemented by Boost.Graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html>__
+.. figure:: images/boost-inside.jpeg
+   :target: https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
 
    Boost Graph Inside
 
 .. include:: experimental.rst
-   :start-after: begin-warning
-   :end-before: end-warning
+   :start-after: begin-warn-expr
+   :end-before: end-warn-expr
 
 .. rubric:: Availability
 
@@ -37,7 +39,7 @@ The main characteristics are:
 
 * TBD
 
-|Boost| >Signatures
+Signatures
 -------------------------------------------------------------------------------
 
 * TBD

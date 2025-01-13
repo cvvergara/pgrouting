@@ -20,10 +20,6 @@
 
 ``pgr_trspVia`` Route that goes through a list of vertices with restrictions.
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. include:: proposed.rst
    :start-after: begin-warning
    :end-before: end-warning

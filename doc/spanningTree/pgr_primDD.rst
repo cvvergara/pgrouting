@@ -20,10 +20,6 @@
 
 ``pgr_primDD`` — Catchament nodes using Prim's algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 .. rubric:: Version 3.7.0
@@ -137,7 +133,7 @@ See Also
 * :doc:`spanningTree-family`
 * :doc:`prim-family`
 * :doc:`sampledata`
-* `Boost: Prim's algorithm documentation
+* `Boost: Prim's algorithm
   <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>`__
 * `Wikipedia: Prim's algorithm
   <https://en.wikipedia.org/wiki/Prim%27s_algorithm>`__

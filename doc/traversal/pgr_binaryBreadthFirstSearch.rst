@@ -23,10 +23,6 @@ graph.
 Any graph whose edge-weights belongs to the set {0,X}, where 'X' is any
 non-negative integer, is termed as a 'binary graph'.
 
-* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -262,6 +258,8 @@ Additional Examples
 See Also
 -------------------------------------------------------------------------------
 * :doc:`sampledata`
+* `Boost: Breadth First Search
+  <https://www.boost.org/libs/graph/doc/breadth_first_search.html>__
 * https://cp-algorithms.com/graph/01_bfs.html
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Specialized_variants
 

@@ -18,8 +18,6 @@
 
 ``pgr_hawickCircuits`` — Returns the list of cirucits using hawick circuits algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/hawick_circuits.html>__
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning

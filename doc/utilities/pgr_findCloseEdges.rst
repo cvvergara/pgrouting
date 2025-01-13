@@ -18,10 +18,6 @@
 
 ``pgr_findCloseEdges`` - Finds the close edges to a point geometry.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.4.0

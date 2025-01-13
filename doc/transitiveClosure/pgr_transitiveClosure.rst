@@ -18,10 +18,6 @@
 
 ``pgr_transitiveClosure`` — Transitive closure graph of a directed graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/transitive_closure.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -117,6 +113,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
+* `Boost: transitive closure <https://www.boost.org/libs/graph/doc/transitive_closure.html>`__
 * https://en.wikipedia.org/wiki/Transitive_closure
 
 .. rubric:: Indices and tables

@@ -20,10 +20,6 @@
 ``pgr_articulationPoints`` - Return the articulation points of an undirected
 graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.0.0
@@ -114,7 +110,7 @@ See Also
 
 * :doc:`components-family`
 * The queries use the :doc:`sampledata` network.
-* Boost: `Biconnected components & articulation points
+* `Boost: Biconnected components & articulation points
   <https://www.boost.org/libs/graph/doc/biconnected_components.html>`__
 * wikipedia: `Biconnected component
   <https://en.wikipedia.org/wiki/Biconnected_component>`__

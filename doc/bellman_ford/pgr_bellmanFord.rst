@@ -18,10 +18,6 @@
 
 ``pgr_bellmanFord`` — Shortest path using Bellman-Ford algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -270,8 +266,12 @@ Additional Examples
 See Also
 -------------------------------------------------------------------------------
 
-* https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 * :doc:`sampledata`
+* `Boost <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html>`__
+* https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
+
+   Boost Graph Inside
+
 
 .. rubric:: Indices and tables
 

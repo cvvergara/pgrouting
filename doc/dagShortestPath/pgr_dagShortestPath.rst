@@ -21,10 +21,6 @@
 acyclic graphs(DAG).
 In particular, the DAG shortest paths algorithm implemented by Boost.Graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dag_shortest_paths.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -264,6 +260,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
+* `Boost: DAG shortest paths
+  <https://www.boost.org/libs/graph/doc/dag_shortest_paths.html>__
 * https://en.wikipedia.org/wiki/Topological_sorting
 
 .. rubric:: Indices and tables

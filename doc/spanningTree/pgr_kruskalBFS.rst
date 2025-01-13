@@ -21,10 +21,6 @@
 ``pgr_kruskalBFS`` — Kruskal's algorithm for Minimum Spanning Tree with breadth
 First Search ordering.
 
-* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 :Version 3.7.0:

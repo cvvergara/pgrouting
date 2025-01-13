@@ -18,10 +18,6 @@
 
 ``pgr_aStar`` — Shortest path using the A* algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.6.0

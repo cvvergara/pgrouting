@@ -19,10 +19,6 @@
 ``pgr_edgeColoring`` — Returns the edge coloring of undirected and loop-free
 graphs
 
-* `Boost <https://www.boost.org/libs/graph/doc/edge_coloring.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -121,13 +117,9 @@ See Also
 
 * The queries use the :doc:`sampledata` network.
 
-.. see also start
-
-* `Boost: Edge Coloring Algorithm documentation
+* `Boost: Edge Coloring
   <https://www.boost.org/libs/graph/doc/edge_coloring.html>`__
 * `Wikipedia: Graph coloring <https://en.wikipedia.org/wiki/Graph_coloring>`__
-
-.. see also end
 
 .. rubric:: Indices and tables
 

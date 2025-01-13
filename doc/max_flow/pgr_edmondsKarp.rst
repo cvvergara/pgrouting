@@ -19,10 +19,6 @@
 ``pgr_edmondsKarp`` — Calculates the flow on the graph edges that maximizes the
 flow from the sources to the targets using Edmonds Karp Algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>__
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
@@ -228,7 +224,8 @@ See Also
   * :doc:`pgr_boykovKolmogorov`
   * :doc:`pgr_pushRelabel`
 
-* https://www.boost.org/libs/graph/doc/edmonds_karp_max_flow.html
+* `Boost: edmonds_karp_max_flow
+  <https://www.boost.org/libs/graph/doc/edmonds_karp_max_flow.html>`__
 * https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm
 
 .. rubric:: Indices and tables

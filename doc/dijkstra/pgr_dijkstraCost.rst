@@ -21,10 +21,6 @@
 ``pgr_dijkstraCost`` - Total cost of the shortest path using Dijkstra
 algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.1.0
@@ -248,6 +244,8 @@ See Also
 
 * :doc:`dijkstra-family`
 * :doc:`sampledata`
+* `Boost: Dijkstra shortest paths
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 .. rubric:: Indices and tables

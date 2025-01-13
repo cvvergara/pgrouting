@@ -18,10 +18,6 @@
 
 ``pgr_isPlanar`` — Returns a boolean depending upon the planarity of the graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/boyer_myrvold.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -123,6 +119,7 @@ See Also
 
 * :doc:`sampledata`
 * https://www.boost.org/libs/graph/doc/boyer_myrvold.html
+* `Boost: Boyer Myrvold <https://www.boost.org/libs/graph/doc/boyer_myrvold.html>__
 
 .. rubric:: Indices and tables
 

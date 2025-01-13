@@ -19,10 +19,6 @@
 ``pgr_bipartite`` — Disjoint sets of vertices such that no two vertices within
 the same set are adjacent.
 
-* `Boost <https://www.boost.org/libs/graph/doc/is_bipartite.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning

@@ -26,10 +26,6 @@ to the nearest vertex.
    :start-after: begin-warning
    :end-before: end-warning
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.3.0
@@ -285,7 +281,8 @@ See Also
 * :doc:`dijkstra-family`
 * :doc:`pgr_dijkstraNear`
 * :doc:`sampledata` network.
-* boost: https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost: Dijkstra shortest paths
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
 * Wikipedia: https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 
 .. rubric:: Indices and tables

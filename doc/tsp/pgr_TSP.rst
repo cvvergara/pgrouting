@@ -18,11 +18,6 @@
 
 * ``pgr_TSP`` - Aproximation using *metric* algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>__
-
-   Boost Graph Inside
-
-
 .. rubric:: Availability:
 
 * Version 3.2.1
@@ -235,7 +230,7 @@ See Also
 
 * :doc:`TSP-family`
 * :doc:`sampledata`
-* `Boost's metric appro's metric approximation
+* `Boost: metric TSP approx
   <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>`__
 * `Wikipedia: Traveling Salesman Problem
   <https://en.wikipedia.org/wiki/Traveling_salesman_problem>`__

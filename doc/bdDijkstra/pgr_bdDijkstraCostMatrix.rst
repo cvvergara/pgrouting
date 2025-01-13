@@ -20,11 +20,6 @@
 ``pgr_bdDijkstraCostMatrix`` - Calculates a cost matrix using
 :doc:`pgr_bdDijkstra`.
 
-
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.0.0

@@ -19,10 +19,6 @@
 ``pgr_lineGraph`` — Transforms the given graph into its corresponding edge-based
 graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
-
-   Boost Graph Inside
-
 .. include:: proposed.rst
    :start-after: begin-warning
    :end-before: end-warning

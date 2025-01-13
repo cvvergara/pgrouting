@@ -19,10 +19,6 @@
 ``pgr_bdDijkstra`` — Returns the shortest path using Bidirectional Dijkstra
 algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability:
 
 * Version 3.2.0
@@ -255,7 +251,6 @@ See Also
 
 * :doc:`bdDijkstra-family`
 * :doc:`sampledata`
-* https://www.cs.princeton.edu/courses/archive/spr06/cos423/Handouts/EPP%20shortest%20path%20algorithms.pdf
 * https://en.wikipedia.org/wiki/Bidirectional_search
 
 .. rubric:: Indices and tables

@@ -19,10 +19,6 @@
 
 ``pgr_dijkstra`` — Shortest path using Dijkstra algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.5.0
@@ -598,9 +594,11 @@ The following examples find the path for :math:`\{6\}\rightarrow\{10\}`
    :start-after: -- q154
    :end-before: -- q16
 
-See Also
+e Also
 -------------------------------------------------------------------------------
 
+* `Boost: Dijkstra shortest paths
+  <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
 * The queries use the :doc:`sampledata` network.
 

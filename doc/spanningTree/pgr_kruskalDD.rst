@@ -21,10 +21,6 @@
 
 ``pgr_kruskalDD`` — Catchament nodes using Kruskal's algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 :Version 3.7.0:

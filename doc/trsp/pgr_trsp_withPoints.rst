@@ -21,10 +21,6 @@
 
 ``pgr_trsp_withPoints`` Routing Vertex/Point with restrictions.
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. include:: proposed.rst
    :start-after: begin-warning
    :end-before: end-warning

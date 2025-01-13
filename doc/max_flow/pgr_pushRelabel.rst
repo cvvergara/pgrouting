@@ -19,10 +19,6 @@
 ``pgr_pushRelabel`` — Calculates the flow on the graph edges that maximizes the
 flow from the sources to the targets using Push Relabel Algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>__
-
-   Boost Graph Inside
-
 .. Rubric:: Availability
 
 * Version 3.2.0
@@ -228,7 +224,8 @@ See Also
   * :doc:`pgr_boykovKolmogorov`
   * :doc:`pgr_edmondsKarp`
 
-* https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
+* `Boost: push relabel max flow
+  <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>`__
 * https://en.wikipedia.org/wiki/Push%E2%80%93relabel_maximum_flow_algorithm
 
 .. rubric:: Indices and tables

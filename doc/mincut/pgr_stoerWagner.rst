@@ -18,10 +18,6 @@
 
 ``pgr_stoerWagner`` — The min-cut of graph using stoerWagner algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -136,6 +132,8 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
+* `Boost: stoer wagner min cut
+  <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html>__
 * https://en.wikipedia.org/wiki/Stoer%E2%80%93Wagner_algorithm
 
 .. rubric:: Indices and tables

@@ -20,10 +20,6 @@
 ``pgr_depthFirstSearch`` — Returns a depth first search traversal of the graph.
 The graph can be directed or undirected.
 
-* `Boost <https://www.boost.org/libs/graph/doc/depth_first_search.html>__
-
-   Boost Graph Inside
-
 .. include:: proposed.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -183,9 +179,9 @@ See Also
 
 * :doc:`DFS-category`
 * :doc:`sampledata`
-* `Boost: Depth First Search algorithm documentation
+* `Boost: Depth First Search
   <https://www.boost.org/libs/graph/doc/depth_first_search.html>`__
-* `Boost: Undirected DFS algorithm documentation
+* `Boost: Undirected DFS
   <https://www.boost.org/libs/graph/doc/undirected_dfs.html>`__
 * `Wikipedia: Depth First Search algorithm
   <https://en.wikipedia.org/wiki/Depth-first_search>`__

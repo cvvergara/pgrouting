@@ -20,10 +20,6 @@
 ``pgr_breadthFirstSearch`` — Returns the traversal order(s) using Breadth First
 Search algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html>__
-
-   Boost Graph Inside
-
 .. include:: experimental.rst
    :start-after: begin-warning
    :end-before: end-warning
@@ -177,7 +173,7 @@ See Also
 
 * :doc:`BFS-category`
 * :doc:`sampledata`
-* `Boost: Breadth First Search algorithm documentation
+* `Boost: Breadth First Search
   <https://www.boost.org/libs/graph/doc/breadth_first_search.html>`__
 * `Wikipedia: Breadth First Search algorithm
   <https://en.wikipedia.org/wiki/Breadth-first_search>`__

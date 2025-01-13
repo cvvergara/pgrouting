@@ -19,10 +19,6 @@
 
 ``pgr_aStarCost`` - Total cost of the shortest path using the A* algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.2.0
@@ -274,6 +270,7 @@ See Also
 * :doc:`aStar-family`
 * :doc:`cost-category`
 * :doc:`sampledata`
+* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>__
 
 .. rubric:: Indices and tables
 

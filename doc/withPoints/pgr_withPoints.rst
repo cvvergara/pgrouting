@@ -25,10 +25,6 @@ temporary vertices.
    :start-after: begin-warning
    :end-before: end-warning
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
-
-   Boost Graph Inside
-
 .. rubric:: Availability
 
 * Version 3.2.0
