@@ -27,7 +27,7 @@
 * Version 3.0.0
 
   * Replaces ``pgr_gsoc_vrppdtw``
-  * New **experimental** function
+  * New experimental function.
 
 
 Synopsis

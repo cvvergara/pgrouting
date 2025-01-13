@@ -29,7 +29,7 @@ vertices and edges.
 
 * Version 2.3.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description

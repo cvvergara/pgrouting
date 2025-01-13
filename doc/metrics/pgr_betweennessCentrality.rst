@@ -22,7 +22,7 @@ using Brandes Algorithm
 
 * Version 3.7.0
 
-  * New **experimental** function:
+  * New experimental function.
 
     * ``pgr_betweennessCentrality``
 

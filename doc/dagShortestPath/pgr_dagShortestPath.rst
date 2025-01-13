@@ -29,13 +29,13 @@ In particular, the DAG shortest paths algorithm implemented by Boost.Graph.
 
 * Version 3.2.0
 
-  * New **experimental** function:
+  * New experimental function.
 
     * pgr_dagShortestPath(Combinations)
 
 * Version 3.0.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description

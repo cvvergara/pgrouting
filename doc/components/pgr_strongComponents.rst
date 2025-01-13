@@ -32,7 +32,7 @@ using Tarjan's algorithm based on DFS.
 
 * Version 2.5.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description

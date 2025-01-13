@@ -32,7 +32,7 @@ a DFS-based approach.
 
 * Version 2.5.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description

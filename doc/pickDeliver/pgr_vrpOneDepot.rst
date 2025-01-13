@@ -26,7 +26,7 @@
 
 * Version 2.1.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 * **TBD**

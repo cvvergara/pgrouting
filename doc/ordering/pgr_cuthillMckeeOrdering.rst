@@ -27,7 +27,7 @@ graphs
 
 * Version 3.4.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description

@@ -26,7 +26,7 @@
 
 * Version 3.0.0
 
-  * New **experimental** function
+  * New experimental function.
 
 
 Description

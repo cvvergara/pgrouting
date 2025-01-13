@@ -31,7 +31,7 @@ graph, using greedy approach.
 
 * Version 3.2.0
 
-  * New **experimental** function.
+  * New experimental function.
 
 
 Description
