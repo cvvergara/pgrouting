@@ -25,7 +25,7 @@ flow from the sources to the targets using Push Relabel Algorithm.
 
   * New proposed signature
 
-    * pgr_pushRelabel(`Combinations`_)
+    * pgr_pushRelabel(Combinations)
 
 * Version 3.0.0
 

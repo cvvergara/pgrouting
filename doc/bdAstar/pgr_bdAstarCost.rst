@@ -25,7 +25,7 @@ A* algorithm.
 
   * New proposed signature:
 
-    * pgr_bdAstarCost(`Combinations`_)
+    * pgr_bdAstarCost(Combinations)
 
 * Version 3.0.0
 

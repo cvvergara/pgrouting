@@ -25,14 +25,14 @@
   * Standarizing output columns to |short-generic-result|
 
     * pgr_bdAstar(`One to One`_) added ``start_vid`` and ``end_vid`` columns.
-    * pgr_bdAstar(`One to Many`_) added ``end_vid`` column.
-    * pgr_bdAstar(`Many to One`_) added ``start_vid`` column.
+    * pgr_bdAstar(One to Many) added ``end_vid`` column.
+    * pgr_bdAstar(Many to One) added ``start_vid`` column.
 
 * Version 3.2.0
 
   * New proposed signature:
 
-    * pgr_bdAstar(`Combinations`_)
+    * pgr_bdAstar(Combinations)
 
 * Version 3.0.0
 
@@ -42,9 +42,9 @@
 
   * New **Proposed** signatures:
 
-    * pgr_bdAstar(`One to Many`_)
-    * pgr_bdAstar(`Many to One`_)
-    * pgr_bdAstar(`Many to Many`_)
+    * pgr_bdAstar(One to Many)
+    * pgr_bdAstar(Many to One)
+    * pgr_bdAstar(Many to Many)
 
   * Signature change on ``pgr_bdAstar(`One to One`_)
 
@@ -66,10 +66,10 @@ Description
 * The results are equivalent to the union of the results of the `pgr_bdAStar(`
   `One to One`_ `)` on the:
 
-  * pgr_bdAstar(`One to Many`_)
-  * pgr_bdAstar(`Many to One`_)
-  * pgr_bdAstar(`Many to Many`_)
-  * pgr_bdAstar(`Combinations`_)
+  * pgr_bdAstar(One to Many)
+  * pgr_bdAstar(Many to One)
+  * pgr_bdAstar(Many to Many)
+  * pgr_bdAstar(Combinations)
 
 |Boost| Boost Graph Inside
 

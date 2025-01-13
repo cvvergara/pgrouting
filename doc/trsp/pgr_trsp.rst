@@ -31,10 +31,10 @@
   * New proposed signatures
 
     * pgr_trsp(`One to One`_)
-    * pgr_trsp(`One to Many`_)
-    * pgr_trsp(`Many to One`_)
-    * pgr_trsp(`Many to Many`_)
-    * pgr_trsp(`Combinations`_)
+    * pgr_trsp(One to Many)
+    * pgr_trsp(Many to One)
+    * pgr_trsp(Many to Many)
+    * pgr_trsp(Combinations)
 
   * Deprecated signatures
 

@@ -25,7 +25,7 @@ algorithm.
 
   * New proposed signature:
 
-    * pgr_bdDijkstra(`Combinations`_)
+    * pgr_bdDijkstra(Combinations)
 
 * Version 3.0.0
 
@@ -35,9 +35,9 @@ algorithm.
 
   * New **Proposed** functions:
 
-    * pgr_bdDijkstra(`One to Many`_)
-    * pgr_bdDijkstra(`Many to One`_)
-    * pgr_bdDijkstra(`Many to Many`_)
+    * pgr_bdDijkstra(One to Many)
+    * pgr_bdDijkstra(Many to One)
+    * pgr_bdDijkstra(Many to Many)
 
 * Version 2.4.0
 
