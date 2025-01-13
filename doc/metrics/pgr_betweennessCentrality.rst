@@ -18,7 +18,7 @@
 ``pgr_betweennessCentrality`` - Calculates the relative betweeness centrality
 using Brandes Algorithm
 
-* `Boost <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html
+* `Boost <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html>__
 
    Boost Graph Inside
 

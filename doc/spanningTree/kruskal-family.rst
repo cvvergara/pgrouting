@@ -25,7 +25,7 @@ Kruskal - Family of functions
 
 .. official-end
 
-* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html>__
 
    >.. toctree::
     :hidden:

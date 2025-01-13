@@ -19,7 +19,7 @@
 ``pgr_strongComponents`` — Strongly connected components of a directed graph
 using Tarjan's algorithm based on DFS.
 
-* `Boost <https://www.boost.org/libs/graph/doc/strong_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/strong_components.html>__
 
    Boost Graph Inside
 

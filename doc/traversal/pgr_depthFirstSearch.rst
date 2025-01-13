@@ -20,7 +20,7 @@
 ``pgr_depthFirstSearch`` — Returns a depth first search traversal of the graph.
 The graph can be directed or undirected.
 
-* `Boost <https://www.boost.org/libs/graph/doc/depth_first_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/depth_first_search.html>__
 
    Boost Graph Inside
 

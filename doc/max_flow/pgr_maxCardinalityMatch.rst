@@ -19,7 +19,7 @@
 ``pgr_maxCardinalityMatch`` — Calculates a maximum cardinality matching in a
 graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/maximum_matching.html
+* `Boost <https://www.boost.org/libs/graph/doc/maximum_matching.html>__
 
    Boost Graph Inside
 

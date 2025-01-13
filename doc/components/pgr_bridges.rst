@@ -18,7 +18,7 @@
 
 ``pgr_bridges`` - Return the bridges of an undirected graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html>__
 
    Boost Graph Inside
 

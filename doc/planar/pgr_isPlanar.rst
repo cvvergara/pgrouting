@@ -18,7 +18,7 @@
 
 ``pgr_isPlanar`` — Returns a boolean depending upon the planarity of the graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/boyer_myrvold.html
+* `Boost <https://www.boost.org/libs/graph/doc/boyer_myrvold.html>__
 
    Boost Graph Inside
 

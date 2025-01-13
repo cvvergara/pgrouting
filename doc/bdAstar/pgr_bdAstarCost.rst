@@ -19,7 +19,7 @@
 ``pgr_bdAstarCost`` - Total cost of the shortest path using the bidirectional
 A* algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>__
 
    Boost Graph Inside
 

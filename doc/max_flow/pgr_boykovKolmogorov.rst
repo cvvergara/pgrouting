@@ -19,7 +19,7 @@
 ``pgr_boykovKolmogorov`` — Calculates the flow on the graph edges that maximizes
 the flow from the sources to the targets using Boykov Kolmogorov algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
+* `Boost <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>__
 
    Boost Graph Inside
 

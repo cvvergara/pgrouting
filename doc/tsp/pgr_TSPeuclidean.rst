@@ -18,7 +18,7 @@
 
 * ``pgr_TSPeuclidean`` - Aproximation using *metric* algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html
+* `Boost <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>__
 
    Boost Graph Inside
 

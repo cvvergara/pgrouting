@@ -20,7 +20,7 @@
 ``pgr_breadthFirstSearch`` — Returns the traversal order(s) using Breadth First
 Search algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html>__
 
    Boost Graph Inside
 

@@ -19,7 +19,7 @@
 ``pgr_cuthillMckeeOrdering`` — Returns the reverse Cuthill-Mckee ordering of an undirected
 graphs
 
-* `Boost <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html
+* `Boost <https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html>__
 
    Boost Graph Inside
 

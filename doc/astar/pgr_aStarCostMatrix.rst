@@ -20,7 +20,7 @@
 
 ``pgr_aStarCostMatrix`` - Calculates the a cost matrix using :doc:`pgr_aStar`.
 
-* `Boost <https://www.boost.org//libs/graph/doc/astar_search.html
+* `Boost <https://www.boost.org//libs/graph/doc/astar_search.html>__
 
    Boost Graph Inside
 

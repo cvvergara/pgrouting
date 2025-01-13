@@ -19,7 +19,7 @@
 ``pgr_connectedComponents`` — Connected components of an undirected graph using
 a DFS-based approach.
 
-* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/connected_components.html>__
 
    Boost Graph Inside
 

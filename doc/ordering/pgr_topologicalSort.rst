@@ -19,7 +19,7 @@
 ``pgr_topologicalSort`` — Linear ordering of the vertices for directed acyclic
 graphs (DAG).
 
-* `Boost <https://www.boost.org/libs/graph/doc/topological_sort.html
+* `Boost <https://www.boost.org/libs/graph/doc/topological_sort.html>__
 
    Boost Graph Inside
 

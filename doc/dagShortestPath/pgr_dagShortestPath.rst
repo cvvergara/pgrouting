@@ -21,7 +21,7 @@
 acyclic graphs(DAG).
 In particular, the DAG shortest paths algorithm implemented by Boost.Graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dag_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dag_shortest_paths.html>__
 
    Boost Graph Inside
 

@@ -23,7 +23,7 @@ graph.
 Any graph whose edge-weights belongs to the set {0,X}, where 'X' is any
 non-negative integer, is termed as a 'binary graph'.
 
-* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html
+* `Boost <https://www.boost.org/libs/graph/doc/breadth_first_search.html>__
 
    Boost Graph Inside
 

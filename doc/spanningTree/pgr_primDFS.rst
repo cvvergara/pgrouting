@@ -21,7 +21,7 @@
 ``pgr_primDFS`` — Prim algorithm for Minimum Spanning Tree with Depth First
 Search ordering.
 
-* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>__
 
    Boost Graph Inside
 

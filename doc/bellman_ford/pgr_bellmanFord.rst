@@ -18,7 +18,7 @@
 
 ``pgr_bellmanFord`` — Shortest path using Bellman-Ford algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html
+* `Boost <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html>__
 
    Boost Graph Inside
 

@@ -18,7 +18,7 @@
 
 ``pgr_transitiveClosure`` — Transitive closure graph of a directed graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/transitive_closure.html
+* `Boost <https://www.boost.org/libs/graph/doc/transitive_closure.html>__
 
    Boost Graph Inside
 

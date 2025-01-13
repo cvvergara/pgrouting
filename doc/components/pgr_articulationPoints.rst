@@ -20,7 +20,7 @@
 ``pgr_articulationPoints`` - Return the articulation points of an undirected
 graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html>__
 
    Boost Graph Inside
 

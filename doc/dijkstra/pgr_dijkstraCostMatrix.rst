@@ -19,7 +19,7 @@
 
 ``pgr_dijkstraCostMatrix`` - Calculates a cost matrix using :doc:`pgr_dijkstra`.
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
 
    Boost Graph Inside
 

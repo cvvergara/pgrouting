@@ -20,7 +20,7 @@
 ``pgr_maxFlowMinCost_Cost`` — Calculates the minimum total cost of the maximum
 flow on a graph
 
-* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
+* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>__
 
    Boost Graph Inside
 

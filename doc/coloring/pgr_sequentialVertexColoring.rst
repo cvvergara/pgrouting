@@ -19,7 +19,7 @@
 ``pgr_sequentialVertexColoring`` — Returns the vertex coloring of an undirected
 graph, using greedy approach.
 
-* `Boost <https://www.boost.org/libs/graph/doc/sequential_vertex_coloring.html
+* `Boost <https://www.boost.org/libs/graph/doc/sequential_vertex_coloring.html>__
 
    Boost Graph Inside
 

@@ -19,7 +19,7 @@
 ``pgr_edgeColoring`` — Returns the edge coloring of undirected and loop-free
 graphs
 
-* `Boost <https://www.boost.org/libs/graph/doc/edge_coloring.html
+* `Boost <https://www.boost.org/libs/graph/doc/edge_coloring.html>__
 
    Boost Graph Inside
 

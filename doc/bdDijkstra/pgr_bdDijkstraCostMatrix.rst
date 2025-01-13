@@ -21,7 +21,7 @@
 :doc:`pgr_bdDijkstra`.
 
 
-* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html
+* `Boost <https://www.boost.org/libs/graph/doc/table_of_contents.html>__
 
    Boost Graph Inside
 

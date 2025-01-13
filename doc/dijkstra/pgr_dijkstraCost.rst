@@ -21,7 +21,7 @@
 ``pgr_dijkstraCost`` - Total cost of the shortest path using Dijkstra
 algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html
+* `Boost <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>__
 
    Boost Graph Inside
 

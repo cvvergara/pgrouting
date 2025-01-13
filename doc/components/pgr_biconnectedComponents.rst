@@ -19,7 +19,7 @@
 
 ``pgr_biconnectedComponents`` — Biconnected components of an undirected graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html
+* `Boost <https://www.boost.org/libs/graph/doc/biconnected_components.html>__
 
    Boost Graph Inside
 

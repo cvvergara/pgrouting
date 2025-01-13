@@ -19,7 +19,7 @@
 
 ``pgr_makeConnected`` — Set of edges that will connect the graph.
 
-* `Boost <https://www.boost.org/libs/graph/doc/make_connected.html
+* `Boost <https://www.boost.org/libs/graph/doc/make_connected.html>__
 
    Boost Graph Inside
 

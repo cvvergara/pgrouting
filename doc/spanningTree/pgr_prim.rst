@@ -19,7 +19,7 @@
 
 ``pgr_prim`` — Minimum spanning forest of a graph using Prim's algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/prim_minimum_spanning_tree.html>__
 
    Boost Graph Inside
 

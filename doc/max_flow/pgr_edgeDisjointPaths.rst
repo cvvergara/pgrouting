@@ -20,7 +20,7 @@
 vertices.
 
 
-* `Boost <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html
+* `Boost <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>__
 
    Boost Graph Inside
 

@@ -19,7 +19,7 @@
 ``pgr_maxFlow`` — Calculates the maximum flow in a directed graph from the
 source(s) to the targets(s) using the Push Relabel algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html
+* `Boost <https://www.boost.org/libs/graph/doc/push_relabel_max_flow.html>__
 
    Boost Graph Inside
 

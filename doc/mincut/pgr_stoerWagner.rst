@@ -18,7 +18,7 @@
 
 ``pgr_stoerWagner`` — The min-cut of graph using stoerWagner algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html
+* `Boost <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html>__
 
    Boost Graph Inside
 

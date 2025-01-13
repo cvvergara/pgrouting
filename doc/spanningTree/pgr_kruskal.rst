@@ -19,7 +19,7 @@
 
 ``pgr_kruskal`` — Minimum spanning tree of a graph using Kruskal's algorithm.
 
-* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html
+* `Boost <https://www.boost.org/libs/graph/doc/kruskal_min_spanning_tree.html>__
 
    Boost Graph Inside
 
