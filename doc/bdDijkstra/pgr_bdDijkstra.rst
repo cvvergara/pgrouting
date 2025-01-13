@@ -29,11 +29,11 @@ algorithm.
 
 * Version 3.0.0
 
-  * **Official** function
+  * **Official** function.
 
 * Version 2.5.0
 
-  * New **Proposed** functions:
+  * New Proposed signatures:
 
     * pgr_bdDijkstra(One to Many)
     * pgr_bdDijkstra(Many to One)
@@ -41,7 +41,7 @@ algorithm.
 
 * Version 2.4.0
 
-  * Signature change on ``pgr_bdDijsktra(`One to One`_)
+  * Signature change on pgr_bdDijsktra(One to One)
 
     * Old signature no longer supported
 

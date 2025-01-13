@@ -27,7 +27,7 @@ graph.
 
 * Version 3.7.0
 
-  * Function promoted to **proposed**.
+  * Function promoted to proposed.
   * Works for directed and undirected graphs.
 
 * Version 2.5.0

@@ -27,7 +27,7 @@ graph, using greedy approach.
 
 * Version 3.3.0
 
-  * Function promoted to **proposed**.
+  * Function promoted to proposed.
 
 * Version 3.2.0
 
