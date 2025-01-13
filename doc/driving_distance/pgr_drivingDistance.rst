@@ -50,7 +50,9 @@ Using the Dijkstra algorithm, extracts all the nodes that have costs less than
 or equal to the value ``distance``.
 The edges extracted will conform to the corresponding spaning tree.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

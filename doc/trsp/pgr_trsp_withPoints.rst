@@ -64,7 +64,9 @@ Characteristics:
 
 * Running time: :math:`O(|start\_vids|\times(V \log V + E))`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

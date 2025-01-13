@@ -50,7 +50,9 @@ Description
 
 * Running time: :math:`O( V * E ^ 2)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

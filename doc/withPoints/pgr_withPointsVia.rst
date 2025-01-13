@@ -51,7 +51,9 @@ The general algorithm is as follows:
 
 * Execute a :doc:`pgr_dijkstraVia`.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. index::

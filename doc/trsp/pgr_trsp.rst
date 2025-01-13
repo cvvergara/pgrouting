@@ -72,7 +72,9 @@ The general algorithm is as follows:
 
   * Execute the **TRSP** algorithm with restrictions.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Proposed

@@ -50,7 +50,9 @@ using the bidirectional Dijkstra Algorithm.
     :start-after: cost_traits_start
     :end-before: cost_traits_end
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

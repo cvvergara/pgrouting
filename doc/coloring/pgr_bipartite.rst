@@ -47,7 +47,9 @@ colored with the same color.
 - If graph is not bipartite then algorithm returns empty set.
 - Running time: :math:`O(V + E)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

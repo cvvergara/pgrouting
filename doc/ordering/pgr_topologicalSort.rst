@@ -48,7 +48,9 @@ The main characteristics are:
 
 * Running time: :math:`O(V + E)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

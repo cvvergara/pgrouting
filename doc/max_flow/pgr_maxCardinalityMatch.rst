@@ -70,7 +70,9 @@ The main characteristics are:
 
 .. _Ackermann function: https://en.wikipedia.org/wiki/Ackermann_function
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. index::

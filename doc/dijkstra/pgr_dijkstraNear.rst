@@ -73,7 +73,9 @@ Characteristics
 
 .. dijkstraNear characteristics end
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

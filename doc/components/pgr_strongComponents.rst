@@ -52,7 +52,9 @@ all reachable from each other.
 
 - Running time: :math:`O(V + E)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

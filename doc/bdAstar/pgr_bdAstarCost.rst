@@ -62,7 +62,9 @@ using the bidirectional A* algorithm.
   - `start_vid` ascending
   - `end_vid` ascending
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -57,7 +57,9 @@ only be contained in a single biconnected component.
 
 - Running time: :math:`O(V + E)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. admonition:: \ \

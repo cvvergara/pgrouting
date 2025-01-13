@@ -102,7 +102,9 @@ Description
 
   - the missing values will be calculated with dijkstra algorithm.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

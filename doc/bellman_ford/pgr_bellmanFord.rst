@@ -76,7 +76,9 @@ implementation can be used with a directed graph and an undirected graph.
 
   * Running time: :math:`O(| start\_vids | * ( V * E))`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

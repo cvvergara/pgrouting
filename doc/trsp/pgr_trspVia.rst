@@ -49,7 +49,9 @@ The general algorithm is as follows:
   * Execute the **TRSP** algorithm with restrictions for the paths.
   * **NOTE** when this is done, ``U_turn_on_edge`` flag is ignored.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. index::

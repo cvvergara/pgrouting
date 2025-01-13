@@ -57,7 +57,9 @@ Description
    :start-after: begin-warning
    :end-before: end-warning
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

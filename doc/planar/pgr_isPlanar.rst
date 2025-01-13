@@ -47,7 +47,9 @@ The main characteristics are:
 * The algorithm does not considers traversal costs in the calculations.
 * Running time: :math:`O(|V|)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

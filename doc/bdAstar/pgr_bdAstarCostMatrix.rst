@@ -51,7 +51,9 @@ Description
 
 * When the graph is **undirected** the cost matrix is symmetric
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

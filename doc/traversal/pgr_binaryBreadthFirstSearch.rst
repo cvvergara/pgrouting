@@ -76,7 +76,9 @@ edge belongs to the set {0,X}, where 'X' is any non-negative real integer.
 
 * Running time: :math:`O(| start\_vids | * |E|)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -67,7 +67,9 @@ Description
     :start-after: dijkstra_details_start
     :end-before: dijkstra_details_end
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

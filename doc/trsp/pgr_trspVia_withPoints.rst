@@ -61,7 +61,9 @@ The general algorithm is as follows:
 
 .. Note:: Do not use negative values on identifiers of the inner queries.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. index::

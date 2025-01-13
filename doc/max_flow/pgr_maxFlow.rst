@@ -52,7 +52,9 @@ Description
 
 * Running time: :math:`O( V ^ 3)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -56,7 +56,9 @@ continues until all the vertices reachable from the root vertex are visited.
 - The returned values are ordered in ascending order of `start_vid`.
 - Depth First Search Running time: :math:`O(E + V)`
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

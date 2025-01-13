@@ -38,7 +38,9 @@ point geometry.
   adjustments needed by the application.
 * ``EMTPY SET`` is returned on dryrun executions
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

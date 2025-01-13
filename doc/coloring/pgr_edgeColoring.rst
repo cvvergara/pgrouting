@@ -68,7 +68,9 @@ no two adjacent edges have the same color.
     - where :math:`|E|` is the number of edges in the graph,
     - :math:`|V|` is the number of vertices in the graph.
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 ------------------------------------------------------------------------------
 
 .. admonition:: \ \

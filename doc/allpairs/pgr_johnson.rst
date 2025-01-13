@@ -41,7 +41,9 @@ It usees the Boost's implementation which runs in :math:`O(V E \log V)` time,
    :start-after: characteristics_start
    :end-before: characteristics_end
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

@@ -73,7 +73,9 @@ Description
   * ``pgr_aStar`` (`Many to Many`_)
   * ``pgr_aStar`` (`Combinations`_)
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary

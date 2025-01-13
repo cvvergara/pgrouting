@@ -61,7 +61,9 @@ The main Characteristics are:
   - column ``id`` ascending when type is ``v``
   - column ``id`` descending when type is ``e``
 
-|Boost| >Signatures
+|Boost| Boost Graph Inside
+
+Signatures
 -------------------------------------------------------------------------------
 
 .. rubric:: Summary
