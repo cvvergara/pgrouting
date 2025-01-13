@@ -33,7 +33,7 @@ A* algorithm.
 
 * Version 2.4.0
 
-  * New **proposed** function
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------

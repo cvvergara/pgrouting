@@ -56,7 +56,7 @@
 
 .. rubric:: Version 2.2.0
 
-* New **proposed** function
+* New proposed function.
 
 
 Description

@@ -28,7 +28,7 @@
 
 * Version 2.5.0
 
-  * New **proposed** function
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------

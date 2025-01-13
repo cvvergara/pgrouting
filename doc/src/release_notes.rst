@@ -412,7 +412,7 @@ milestone for 3.4.0
 * `#1891 <https://github.com/pgRouting/pgrouting/issues/1891>`__:
   pgr_ksp doesn't give all correct shortest path
 
-.. rubric:: New proposed functions
+.. rubric:: New proposed function.
 
 * With points
 
@@ -714,7 +714,7 @@ on Github.
 
 * pgr_sequentialVertexColoring
 
-.. rubric:: New proposed functions
+.. rubric:: New proposed function.
 
 * Astar
 
@@ -834,7 +834,7 @@ milestone for 3.1.0
 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.1.0%22>`_
 on Github.
 
-.. rubric:: New proposed functions
+.. rubric:: New proposed function.
 
 * pgr_dijkstra(combinations)
 * pgr_dijkstraCost(combinations)

@@ -29,7 +29,7 @@ points.
 
 * Version 3.4.0
 
-  * New **proposed** function ``pgr_withPointsVia(`One Via`_)
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------

@@ -30,13 +30,13 @@ given.
 
 * Version 3.2.0
 
-  * New **proposed** function:
+  * New proposed signature:
 
     * pgr_withPointsCost(Combinations)
 
 * Version 2.2.0
 
-  * New **proposed** function
+  * New proposed function.
 
 
 Description

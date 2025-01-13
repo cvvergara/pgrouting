@@ -29,13 +29,13 @@ temporary vertices.
 
 * Version 3.2.0
 
-  * New **proposed** function:
+  * New proposed function.
 
     * pgr_withPoints(Combinations)
 
 * Version 2.2.0
 
-  * New **proposed** function
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
