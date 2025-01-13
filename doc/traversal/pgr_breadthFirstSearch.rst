@@ -28,10 +28,7 @@ Search algorithm.
 
 * Version 3.0.0
 
-  * New experimental signature:
-
-    * ``pgr_breadthFirstSearch`` (`Single Vertex`_)
-    * ``pgr_breadthFirstSearch`` (`Multiple Vertices`_)
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------

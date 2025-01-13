@@ -38,7 +38,7 @@ flow from the sources to the targets using Push Relabel Algorithm.
 
 * Version 2.3.0
 
-  * New **Experimental** function
+  * New experimental function.
 
 
 Description

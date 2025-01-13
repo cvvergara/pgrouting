@@ -28,16 +28,11 @@
 
   * New experimental signature:
 
-    * ``pgr_bellmanFord`` (`Combinations`_)
+    * pgr_bellmanFord(Combinations)
 
 * Version 3.0.0
 
-  * New experimental signatures:
-
-    * ``pgr_bellmanFord`` (`One to One`_)
-    * ``pgr_bellmanFord`` (`One to Many`_)
-    * ``pgr_bellmanFord`` (`Many to One`_)
-    * ``pgr_bellmanFord`` (`Many to Many`_)
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------

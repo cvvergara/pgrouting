@@ -33,16 +33,11 @@ non-negative integer, is termed as a 'binary graph'.
 
   * New experimental signature:
 
-    * pgr_binaryBreadthFirstSearch(`Combinations`_)
+    * pgr_binaryBreadthFirstSearch(Combinations)
 
 * Version 3.0.0
 
-  * New experimental signatures:
-
-    * pgr_binaryBreadthFirstSearch(`One to One`_)
-    * pgr_binaryBreadthFirstSearch(`One to Many`_)
-    * pgr_binaryBreadthFirstSearch(`Many to One`_)
-    * pgr_binaryBreadthFirstSearch(`Many to Many`_)
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------

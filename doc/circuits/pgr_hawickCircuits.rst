@@ -26,10 +26,7 @@
 
 * Version 3.4.0
 
-  * New experimental signature:
-
-    * ``pgr_hawickCircuits``
-
+  * New experimental function.
 
 Description
 -------------------------------------------------------------------------------
