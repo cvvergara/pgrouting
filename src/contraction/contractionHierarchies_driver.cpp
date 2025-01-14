@@ -50,21 +50,6 @@ namespace {
   @result The vids Identifiers with at least one contracted vertex
 */
 template <typename G>
-pgrouting::Identifiers<int64_t> get_modified_vertices(const G& graph) {
-    pgrouting::Identifiers<int64_t> vids;
-    for (auto v : boost::make_iterator_range(boost::vertices(graph.graph))) {
-        if (graph[v].has_contracted_vertices()) {
-            vids += graph[v].id;
-        }
-    }
-    return vids;
-}
-
-/*! @brief vertices with at least one contracted vertex
-
-  @result The vids Identifiers with at least one contracted vertex
-*/
-template <typename G>
 std::vector<typename G::E> get_shortcuts(const G& graph) {
     using E = typename G::E;
     pgrouting::Identifiers<E> eids;
@@ -123,7 +108,7 @@ void get_postgres_result(
         contracted_rt **return_tuples,
         size_t *count) {
     using pgrouting::pgr_alloc;
-    auto modified_vertices(get_modified_vertices(graph));
+    auto modified_vertices(graph.get_modified_vertices());
     auto shortcut_edges(get_shortcuts(graph));
 
     (*count) = modified_vertices.size() + shortcut_edges.size();

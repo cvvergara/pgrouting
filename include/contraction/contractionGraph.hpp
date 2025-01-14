@@ -84,6 +84,21 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
      }
 
 
+    /*! @brief vertices with at least one contracted vertex
+        @result The vids Identifiers with at least one contracted vertex
+    */
+    Identifiers<int64_t> get_modified_vertices() {
+        Identifiers<int64_t> vids;
+        for (const auto &v : boost::make_iterator_range(
+                boost::vertices(this->graph))) {
+            if ((this->graph[v]).has_contracted_vertices()) {
+                vids += (this->graph[v]).id;
+            }
+        }
+        return vids;
+    }
+
+
     /*! @brief get the edge with minimum cost between two vertices
         @param [in] u vertex_descriptor of source vertex
         @param [in] v vertex_descriptor of target vertex
