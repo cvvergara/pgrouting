@@ -84,45 +84,52 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
      }
 
 
-     /*! @brief get the edge with minimum cost between two vertices
-       @param [in] u vertex_descriptor of source vertex
-       @param [in] v vertex_descriptor of target vertex
-       @return E: The edge descriptor of the edge with minimum cost
-       */
-     std::tuple<double, Identifiers<int64_t>, bool>
-     get_min_cost_edge(V u, V v) {
-         E min_edge;
-         Identifiers<int64_t> contracted_vertices;
-         double min_cost = (std::numeric_limits<double>::max)();
-         bool found = false;
+    /*! @brief get the edge with minimum cost between two vertices
+        @param [in] u vertex_descriptor of source vertex
+        @param [in] v vertex_descriptor of target vertex
+        @return E: The edge descriptor of the edge with minimum cost
+    */
+    std::tuple<CH_edge, bool> get_min_cost_edge(V u, V v) {
+        Identifiers<int64_t> contracted_vertices;
+        double min_cost = (std::numeric_limits<double>::max)();
+        bool found = false;
+        CH_edge edge;
 
-         if (this->is_directed()) {
-             BGL_FORALL_OUTEDGES_T(u, e, this->graph, G) {
-                 if (this->target(e) == v) {
-                     contracted_vertices += this->graph[e].contracted_vertices();
-                     if (this->graph[e].cost < min_cost) {
-                         min_cost = this->graph[e].cost;
-                         min_edge = e;
-                         found = true;
-                     }
-                 }
-             }
-             return std::make_tuple(min_cost, contracted_vertices, found);
-         }
+        if (this->is_directed()) {
+            for (const auto &e : boost::make_iterator_range(
+                    out_edges(u, this->graph))) {
+                if (target(e, this->graph) == v) {
+                    contracted_vertices +=
+                        (this->graph[e]).contracted_vertices();
+                    if ((this->graph[e]).cost < min_cost) {
+                        min_cost = (this->graph[e]).cost;
+                        found = true;
+                        edge = this->graph[e];
+                    }
+                }
+            }
+            // To follow the principles presented
+            // for linear contraction in "issue_1002.pg" test 3
+            edge.set_contracted_vertices(contracted_vertices);
 
-         pgassert(this->is_undirected());
-         BGL_FORALL_OUTEDGES_T(u, e, this->graph, G) {
-             if (this->adjacent(u, e) == v) {
-                 contracted_vertices += this->graph[e].contracted_vertices();
-                 if (this->graph[e].cost < min_cost) {
-                     min_cost = this->graph[e].cost;
-                     min_edge = e;
-                     found = true;
-                 }
-             }
-         }
-         return std::make_tuple(min_cost, contracted_vertices, found);
-     }
+            return std::make_tuple(edge, found);
+        }
+
+        pgassert(this->is_undirected());
+        for (const auto &e : boost::make_iterator_range(
+                out_edges(u, this->graph))) {
+            if (this->adjacent(u, e) == v) {
+                contracted_vertices +=
+                    (this->graph[e]).contracted_vertices();
+                if ((this->graph[e]).cost < min_cost) {
+                    min_cost = (this->graph[e]).cost;
+                    found = true;
+                    edge = this->graph[e];
+                }
+            }
+        }
+        return std::make_tuple(edge, found);
+    }
 
 
      /*! @brief print the graph with contracted vertices of

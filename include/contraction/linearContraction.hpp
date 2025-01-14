@@ -54,6 +54,7 @@ class Pgr_linear {
      typedef typename G::V V;
      typedef typename G::V_i V_i;
      typedef typename G::B_G B_G;
+     typedef typename G::E E;
 
 
  public:
@@ -119,15 +120,24 @@ class Pgr_linear {
          pgassert(v != w);
          pgassert(u != w);
 
+         E e, f;
+         bool found_e, found_f;
+
          if (graph.is_directed()) {
              /*
               *  u --> v --> w
               */
-             graph.process_shortcut(u, v, w);
+            boost::tie(e, found_e) = boost::edge(u, v, graph.graph);
+            boost::tie(f, found_f) = boost::edge(v, w, graph.graph);
+            if (found_e && found_f)
+                graph.process_shortcut(u, v, w);
              /*
               *  w --> v --> u
               */
-             graph.process_shortcut(w, v, u);
+             boost::tie(e, found_e) = boost::edge(w, v, graph.graph);
+             boost::tie(f, found_f) = boost::edge(v, u, graph.graph);
+             if (found_e && found_f)
+                graph.process_shortcut(w, v, u);
 
          } else {
              pgassert(graph.is_undirected());
