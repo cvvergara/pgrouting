@@ -43,7 +43,7 @@ The main Characteristics are:
 * Process works for directed and undirected graphs.
 * Ordering is:
 
-  * first by ``start_vid(if exists)
+  * first by ``start_vid`` (if exists)
   * then by ``end_vid``
 
 * Values are returned when there is a path.
@@ -52,12 +52,12 @@ The main Characteristics are:
   * If there is no path from :math:`v` to :math:`u`:
 
     * no corresponding row is returned
-    * agg_cost`` from :math:`v` to :math:`u` is :math:`\infty`
+    * ``agg_cost`` from :math:`v` to :math:`u` is :math:`\infty`
 
   * There is no path when :math:`v = u` therefore
 
     * no corresponding row is returned
-    * agg_cost`` from `v` to `u` is :math:`0`
+    * ``agg_cost`` from `v` to `u` is :math:`0`
 
 * When :math:`(x,y)` coordinates for the same vertex identifier differ:
 

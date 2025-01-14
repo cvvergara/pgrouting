@@ -80,7 +80,7 @@ Signature
    :class: signatures
 
    | pgr_pickDeliverEuclidean(`Orders SQL`_, `Vehicles SQL`_, [**options**])
-   | **options:** [factor, max_cycles, initial_sol]``
+   | **options:** ``[factor, max_cycles, initial_sol]``
 
    | Returns set of |result-pickdrop|
 

@@ -226,7 +226,7 @@ See Also
   * :doc:`pgr_edmondsKarp`
   * :doc:`pgr_pushRelabel`
 
-* `Boost: boykov kolmogorov max flow
+* `Boost: Boykov Kolmogorov max flow
   <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>`__
 
 .. rubric:: Indices and tables

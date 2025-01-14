@@ -77,7 +77,7 @@ Signatures
    | pgr_aStarCost(`Edges SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_aStarCost(`Edges SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_aStarCost(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -92,7 +92,7 @@ One to One
    :class: signatures
 
    | pgr_aStarCost(`Edges SQL`_, **start vid**, **end vid**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -114,7 +114,7 @@ One to Many
    :class: signatures
 
    | pgr_aStarCost(`Edges SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -136,7 +136,7 @@ Many to One
    :class: signatures
 
    | pgr_aStarCost(`Edges SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -158,7 +158,7 @@ Many to Many
    :class: signatures
 
    | pgr_aStarCost(`Edges SQL`_, **start vids**, **end vids**, [options])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -180,7 +180,7 @@ Combinations
    :class: signatures
 
    | pgr_aStarCost(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET

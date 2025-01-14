@@ -36,8 +36,6 @@ Description
 
 * TBD
 
-|Boost| Boost Graph Inside
-
 Signatures
 -------------------------------------------------------------------------------
 

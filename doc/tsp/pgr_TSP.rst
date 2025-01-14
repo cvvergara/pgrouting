@@ -180,7 +180,7 @@ Additional Examples
 Start from vertex :math:`1`
 ...............................................................................
 
-* **Line 6** start_vid => 1``
+* **Line 6** ``start_vid => 1``
 
 .. literalinclude:: TSP.queries
    :start-after: -- q2
@@ -202,7 +202,7 @@ To generate an asymmetric matrix:
     because:
 
     * Triangle inequality might not be satisfied.
-    * start_id != 0 AND end_id != 0``
+    * ``start_id != 0 AND end_id != 0``
 
 .. literalinclude:: TSP.queries
    :start-after: -- q3

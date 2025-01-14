@@ -83,7 +83,7 @@ Signatures
    | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_withPoints(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** [directed, driving_side, details])``
+   | **options:** ``[directed, driving_side, details])``
 
    | Returns set of |old-pid-result|
    | OR EMTPY SET

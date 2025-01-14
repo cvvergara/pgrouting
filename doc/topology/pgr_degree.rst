@@ -9,7 +9,7 @@
 
 .. index::
    single: Topology Family ; pgr_degree - Proposed
-   single: degree - Proposed
+   single: degree - Proposed on v3.4
 
 |
 

@@ -99,9 +99,9 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`pgr_johnson`
+* :doc:`sampledata`
 * Boost `floyd-Warshall
   <https://www.boost.org/libs/graph/doc/floyd_warshall_shortest.html>`_
-* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

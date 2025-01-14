@@ -9,6 +9,7 @@
 
 |
 
+
 pgRouting Concepts
 ===============================================================================
 
@@ -88,7 +89,7 @@ Where:
 
        * When negative the edge (``source``, ``target``) do not exist on the
          graph.
-       * cost`` must exist in the query.
+       * ``cost`` must exist in the query.
    * - ``reverse_cost``
      - Weight of the edge (``target``, ``source``)
 
@@ -565,9 +566,9 @@ Update costs based on codes
 
 Other datasets, can have a column with values like
 
-* FT`` vehicle flow on the direction of the geometry
-* TF`` vehicle flow opposite of the direction of the geometry
-* B`` vehicle flow on both directions
+* ``FT`` vehicle flow on the direction of the geometry
+* ``TF`` vehicle flow opposite of the direction of the geometry
+* ``B`` vehicle flow on both directions
 
 Preparing a code column for the example:
 
@@ -895,7 +896,7 @@ Where:
 * `Inner queries`_: Are compulsory parameters that are ``TEXT`` strings
   containing SQL queries.
 * **parameters**: Additional compulsory parameters needed by the function.
-* Optional parameters``: Are non compulsory **named** parameters that have a
+* ``Optional parameters``: Are non compulsory **named** parameters that have a
   default value when omitted.
 
 The compulsory parameters are positional parameters, the optional parameters are
@@ -930,7 +931,7 @@ For example, for this :doc:`pgr_dijkstra` signature:
   * It has no name, so **end vid** gives an idea of what the third
     parameter's value should contain
 
-* directed``
+* ``directed``
 
   * Is the fourth parameter.
   * It is optional.

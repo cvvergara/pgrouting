@@ -62,7 +62,7 @@ Signatures
    :class: signatures
 
    | pgr_bdAstarCostMatrix(`Edges SQL`_, **start vids**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -128,7 +128,7 @@ See Also
 * :doc:`costMatrix-category`
 * :doc:`TSP-family`
 * :doc:`sampledata`
-* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>`__
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 
 .. rubric:: Indices and tables
 

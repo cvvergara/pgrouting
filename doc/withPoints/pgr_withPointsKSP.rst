@@ -33,7 +33,7 @@ pgr_withPointsKSP - Proposed
     unnamed compulsory **driving side**.
   * Added ``start_vid`` and ``end_vid`` result columns.
 
-* New overload functions
+* New proposed signatures
 
   * pgr_withPointsKSP(One to Many)
   * pgr_withPointsKSP(Many to One)
@@ -68,7 +68,7 @@ Signatures
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, **K**, **driving_side**, [**options**])
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, **K**, **driving_side**, [**options**])
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, **K**, **driving_side**, [**options**])
-   | **options:** [directed, heap_paths, details]``
+   | **options:** ``[directed, heap_paths, details]``
 
    | Returns set of |ksp-result|
    | OR EMPTY SET
@@ -83,7 +83,7 @@ One to One
    :class: signatures
 
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, **K**, **driving_side**, [**options**])
-   | **options:** [directed, heap_paths, details]``
+   | **options:** ``[directed, heap_paths, details]``
 
    | Returns set of |nksp-result|
    | OR EMTPY SET
@@ -109,7 +109,7 @@ One to Many
    :class: signatures
 
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, **K**, **driving_side**, [**options**])
-   | **options:** [directed, heap_paths, details]``
+   | **options:** ``[directed, heap_paths, details]``
 
    | Returns set of |ksp-result|
    | OR EMTPY SET
@@ -131,7 +131,7 @@ Many to One
    :class: signatures
 
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, **K**, **driving_side**, [**options**])
-   | **options:** [directed, heap_paths, details]``
+   | **options:** ``[directed, heap_paths, details]``
 
    | Returns set of |ksp-result|
    | OR EMTPY SET
@@ -153,7 +153,7 @@ Many to Many
    :class: signatures
 
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, **K**, **driving_side**, [**options**])
-   | **options:** [directed, heap_paths, details]``
+   | **options:** ``[directed, heap_paths, details]``
 
    | Returns set of |nksp-result|
    | OR EMTPY SET
@@ -175,7 +175,7 @@ Combinations
    :class: signatures
 
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, **K**, **driving_side**, [**options**])
-   | **options:** [directed, heap_paths, details]``
+   | **options:** ``[directed, heap_paths, details]``
 
    | Returns set of |ksp-result|
    | OR EMTPY SET
@@ -329,8 +329,6 @@ point :math:`2` with heap paths and details.
 .. literalinclude:: withPointsKSP.queries
    :start-after: --q8
    :end-before: --q9
-
-:doc:`sampledata`
 
 See Also
 -------------------------------------------------------------------------------

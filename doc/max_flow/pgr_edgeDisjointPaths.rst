@@ -237,9 +237,6 @@ See Also
 * `Boost: Boykov Kolmogorov max flow
   <https://www.boost.org/libs/graph/doc/boykov_kolmogorov_max_flow.html>`__
 
-   Boost Graph Inside
-
-
 .. rubric:: Indices and tables
 
 * :ref:`genindex`

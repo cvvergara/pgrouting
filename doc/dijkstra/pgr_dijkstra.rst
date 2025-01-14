@@ -262,7 +262,7 @@ Additional Examples
     :end-before: -- q9
 
 
-The examples of this section are based on the :doc:`sampledata`
+The examples of this section are based on the :doc:`sampledata` network.
 
 .. contents::
    :local:
@@ -599,10 +599,10 @@ The following examples find the path for :math:`\{6\}\rightarrow\{10\}`
 e Also
 -------------------------------------------------------------------------------
 
+* :doc:`sampledata`
 * `Boost: Dijkstra shortest paths
   <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__
 * https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm
-* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

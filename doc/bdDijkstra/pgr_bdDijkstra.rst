@@ -47,7 +47,7 @@ algorithm.
 
 * Version 2.0.0
 
-  * **Official** pgr_bdDijkstra(`One to One`_)
+  * **Official** pgr_bdDijkstra(One to One)
 
 
 Description

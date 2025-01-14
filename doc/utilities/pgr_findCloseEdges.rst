@@ -9,7 +9,7 @@
 
 .. index::
    single: Utilities ; pgr_findCloseEdges - Proposed
-   single: findCloseEdges - Proposed
+   single: findCloseEdges
 
 |
 
@@ -22,10 +22,7 @@
 
 * Version 3.4.0
 
-  * New proposed signatures:
-
-    * pgr_findCloseEdges(`One point`_)
-    * pgr_findCloseEdges(`Many points`_)
+  * New proposed function.
 
 Description
 -------------------------------------------------------------------------------
@@ -84,7 +81,7 @@ One point
 * Returns
 
   * values on ``edge_id``, ``fraction``, ``side`` columns.
-  * NULL`` on ``distance``, ``geom``, ``edge`` columns.
+  * ``NULL`` on ``distance``, ``geom``, ``edge`` columns.
 
 .. literalinclude:: findCloseEdges.queries
    :start-after: -- q1
@@ -100,7 +97,7 @@ Many points
    :class: signatures
 
    | pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**, [**options**])
-   | **options:** [cap, partial, dryrun]``
+   | **options:** ``[cap, partial, dryrun]``
 
    | Returns set of |result-find|
    | OR EMPTY SET
@@ -229,7 +226,7 @@ Returns set of |result-find|
      - ``FLOAT``
      - Distance from point to edge.
 
-       * NULL`` when ``cap = 1`` on the `One point`_ signature
+       * ``NULL`` when ``cap = 1`` on the `One point`_ signature
    * - ``geom``
      - ``geometry``
      - ``POINT`` geometry
@@ -350,7 +347,7 @@ One point examples
 At most two answers
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-* cap => 2``
+* ``cap => 2``
 
   * Maximum two row answer.
 * Default: ``partial => true``
@@ -366,26 +363,26 @@ At most two answers
 
 .. rubric:: Understanding the result
 
-* NULL`` on ``geom``, ``edge``
-* edge_id`` identifier of the edge close to the **original point**
+* ``NULL`` on ``geom``, ``edge``
+* ``edge_id`` identifier of the edge close to the **original point**
 
   * Two edges are withing :math:`0.5` distance units from the **original
     point**: :math:`{5, 8}`
 * For edge :math:`5`:
 
-  * fraction``: The closest point from the **original point** is at the
+  * ``fraction``: The closest point from the **original point** is at the
     :math:`0.8` fraction of the edge :math:`5`.
-  * side``: The **original point** is located to the left side of edge
+  * ``side``: The **original point** is located to the left side of edge
     :math:`5`.
-  * distance``: The **original point** is located :math:`0.1` length units
+  * ``distance``: The **original point** is located :math:`0.1` length units
     from edge :math:`5`.
 * For edge :math:`8`:
 
-  * fraction``: The closest point from the **original point** is at the
+  * ``fraction``: The closest point from the **original point** is at the
     :math:`0.89..` fraction of the edge :math:`8`.
-  * side``: The **original point** is located to the right side of edge
+  * ``side``: The **original point** is located to the right side of edge
     :math:`8`.
-  * distance``: The **original point** is located :math:`0.19..` length units
+  * ``distance``: The **original point** is located :math:`0.19..` length units
     from edge :math:`8`.
 
 One answer, all columns
@@ -394,7 +391,7 @@ One answer, all columns
 * Default: ``cap => 1``
 
   * Maximum one row answer.
-* partial => false``
+* ``partial => false``
 
   * Calculate all columns
 * Default: ``dryrun => false``
@@ -407,30 +404,30 @@ One answer, all columns
 
 .. rubric:: Understanding the result
 
-* edge_id`` identifier of the edge **closest** to the **original point**
+* ``edge_id`` identifier of the edge **closest** to the **original point**
 
   * From all edges within :math:`0.5` distance units from the **original
     point**: :math:`{5}` is the closest one.
 * For edge :math:`5`:
 
-  * fraction``: The closest point from the **original point** is at the
+  * ``fraction``: The closest point from the **original point** is at the
     :math:`0.8` fraction of the edge :math:`5`.
-  * side``: The **original point** is located to the left side of edge
+  * ``side``: The **original point** is located to the left side of edge
     :math:`5`.
-  * distance``: The **original point** is located :math:`0.1` length units
+  * ``distance``: The **original point** is located :math:`0.1` length units
     from edge :math:`5`.
-  * geom``: Contains the geometry of the closest point on edge :math:`5` from
+  * ``geom``: Contains the geometry of the closest point on edge :math:`5` from
     the **original point**.
-  * edge``: Contains the ``LINESTRING`` geometry of the **original point** to
+  * ``edge``: Contains the ``LINESTRING`` geometry of the **original point** to
     the closest point on on edge :math:`5` ``geom``
 
 At most two answers with all columns
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-* cap => 2``
+* ``cap => 2``
 
   * Maximum two row answer.
-* partial => false``
+* ``partial => false``
 
   * Calculate all columns
 * Default: ``dryrun => false``
@@ -443,33 +440,33 @@ At most two answers with all columns
 
 .. rubric:: Understanding the result:
 
-* edge_id`` identifier of the edge close to the **original point**
+* ``edge_id`` identifier of the edge close to the **original point**
 
   * Two edges are withing :math:`0.5` distance units from the **original
     point**: :math:`{5, 8}`
 * For edge :math:`5`:
 
-  * fraction``: The closest point from the **original point** is at the
+  * ``fraction``: The closest point from the **original point** is at the
     :math:`0.8` fraction of the edge :math:`5`.
-  * side``: The **original point** is located to the left side of edge
+  * ``side``: The **original point** is located to the left side of edge
     :math:`5`.
-  * distance``: The **original point** is located :math:`0.1` length units
+  * ``distance``: The **original point** is located :math:`0.1` length units
     from edge :math:`5`.
-  * geom``: Contains the geometry of the closest point on edge :math:`5` from
+  * ``geom``: Contains the geometry of the closest point on edge :math:`5` from
     the **original point**.
-  * edge``: Contains the ``LINESTRING`` geometry of the **original point** to
+  * ``edge``: Contains the ``LINESTRING`` geometry of the **original point** to
     the closest point on on edge :math:`5` ``geom``
 * For edge :math:`8`:
 
-  * fraction``: The closest point from the **original point** is at the
+  * ``fraction``: The closest point from the **original point** is at the
     :math:`0.89..` fraction of the edge :math:`8`.
-  * side``: The **original point** is located to the right side of edge
+  * ``side``: The **original point** is located to the right side of edge
     :math:`8`.
-  * distance``: The **original point** is located :math:`0.19..` length units
+  * ``distance``: The **original point** is located :math:`0.19..` length units
     from edge :math:`8`.
-  * geom``: Contains the geometry of the closest point on edge :math:`8` from
+  * ``geom``: Contains the geometry of the closest point on edge :math:`8` from
     the **original point**.
-  * edge``: Contains the ``LINESTRING`` geometry of the **original point** to
+  * ``edge``: Contains the ``LINESTRING`` geometry of the **original point** to
     the closest point on on edge :math:`8` ``geom``
 
 One point dry run execution
@@ -478,17 +475,17 @@ One point dry run execution
 * Returns ``EMPTY SET``.
 
 
-* partial => true``
+* ``partial => true``
 
   * Is ignored
   * Because it is a **dry run** excecution, the code for all calculations are
     shown on the PostgreSQL ``NOTICE``.
-* dryrun => true``
+* ``dryrun => true``
 
   * Do not process query
   * Generate a PostgreSQL ``NOTICE`` with the code used to calculate all columns
 
-    * cap`` and **original point** are used in the code
+    * ``cap`` and **original point** are used in the code
 
 .. literalinclude:: findCloseEdges.queries
    :start-after: -- o5
@@ -500,7 +497,7 @@ Many points examples
 At most two answers per point
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-* cap => 2``
+* ``cap => 2``
 
   * Maximum two row answer.
 * Default: ``partial => true``
@@ -516,8 +513,8 @@ At most two answers per point
 
 .. rubric:: Understanding the result
 
-* NULL`` on ``edge``
-* edge_id`` identifier of the edge close to a **original point** (``geom``)
+* ``NULL`` on ``edge``
+* ``edge_id`` identifier of the edge close to a **original point** (``geom``)
 
   * Two edges at most withing :math:`0.5` distance units from each of the
     **original points**:
@@ -530,19 +527,19 @@ At most two answers per point
     distance to ``POINT(2.9 1.8)``.
   * For edge :math:`5`:
 
-    * fraction``: The closest point from the **original point** is at the
+    * ``fraction``: The closest point from the **original point** is at the
       :math:`0.8` fraction of the edge :math:`5`.
-    * side``: The **original point** is located to the left side of edge
+    * ``side``: The **original point** is located to the left side of edge
       :math:`5`.
-    * distance``: The **original point** is located :math:`0.1` length units
+    * ``distance``: The **original point** is located :math:`0.1` length units
       from edge :math:`5`.
   * For edge :math:`8`:
 
-    * fraction``: The closest point from the **original point** is at the
+    * ``fraction``: The closest point from the **original point** is at the
       :math:`0.89..` fraction of the edge :math:`8`.
-    * side``: The **original point** is located to the right side of edge
+    * ``side``: The **original point** is located to the right side of edge
       :math:`8`.
-    * distance``: The **original point** is located :math:`0.19..` length
+    * ``distance``: The **original point** is located :math:`0.19..` length
       units from edge :math:`8`.
 
 One answer per point, all columns
@@ -551,7 +548,7 @@ One answer per point, all columns
 * Default: ``cap => 1``
 
   * Maximum one row answer.
-* partial => false``
+* ``partial => false``
 
   * Calculate all columns
 * Default: ``dryrun => false``
@@ -564,21 +561,21 @@ One answer per point, all columns
 
 .. rubric:: Understanding the result
 
-* edge_id`` identifier of the edge **closest** to the **original point**
+* ``edge_id`` identifier of the edge **closest** to the **original point**
 
   * From all edges within :math:`0.5` distance units from the **original
     point**: :math:`{5}` is the closest one.
-* For the **original point** POINT(2.9 1.8)``
+* For the **original point** ``POINT(2.9 1.8)``
 
   * Edge :math:`5` is the closest edge to the **original point**
-  * fraction``: The closest point from the **original point** is at the
+  * ``fraction``: The closest point from the **original point** is at the
     :math:`0.8` fraction of the edge :math:`5`.
-  * side``: The **original point** is located to the left side of edge
+  * ``side``: The **original point** is located to the left side of edge
     :math:`5`.
-  * distance``: The **original point** is located :math:`0.1` length units
+  * ``distance``: The **original point** is located :math:`0.1` length units
     from edge :math:`5`.
-  * geom``: Contains the geometry of the **original point** ``POINT(2.9 1.8)``
-  * edge``: Contains the ``LINESTRING`` geometry of the **original point**
+  * ``geom``: Contains the geometry of the **original point** ``POINT(2.9 1.8)``
+  * ``edge``: Contains the ``LINESTRING`` geometry of the **original point**
     (``geom``) to the closest point on on edge.
 
 Many points dry run execution
@@ -587,17 +584,17 @@ Many points dry run execution
 * Returns ``EMPTY SET``.
 
 
-* partial => true``
+* ``partial => true``
 
   * Is ignored
   * Because it is a **dry run** excecution, the code for all calculations are
     shown on the PostgreSQL ``NOTICE``.
-* dryrun => true``
+* ``dryrun => true``
 
   * Do not process query
   * Generate a PostgreSQL ``NOTICE`` with the code used to calculate all columns
 
-    * cap`` and **original point** are used in the code
+    * ``cap`` and **original point** are used in the code
 
 .. literalinclude:: findCloseEdges.queries
    :start-after: -- m4

@@ -69,9 +69,9 @@ parameters:
     - An index will be created, if it doesn't exists, to speed up the process to
       the following columns:
 
-      * the_geom``
-      * source``
-      * target``
+      * ``the_geom``
+      * ``source``
+      * ``target``
 
 The function returns:
 
@@ -276,11 +276,10 @@ values for the column names do not match the column names of the table.
    :start-after: --q17
    :end-before: --q17.1
 
-The example uses the :doc:`sampledata`
-
 See Also
 -------------------------------------------------------------------------------
 
+* :doc:`sampledata`
 * :doc:`topology-functions` for an overview of a topology for routing
   algorithms.
 * :doc:`pgr_createTopology` <pgr_create_topology>` to create a topology based on

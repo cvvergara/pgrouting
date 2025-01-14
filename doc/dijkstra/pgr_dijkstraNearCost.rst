@@ -64,8 +64,8 @@ Signatures
    | pgr_dijkstraNearCost(`Edges SQL`_, **start vids**, **end vid**, [**options A**])
    | pgr_dijkstraNearCost(`Edges SQL`_, **start vids**, **end vids**, [**options B**])
    | pgr_dijkstraNearCost(`Edges SQL`_, `Combinations SQL`_, [**options B**])
-   | **options A:** [directed, cap]``
-   | **options B:** [directed, cap, global]``
+   | **options A:** ``[directed, cap]``
+   | **options B:** ``[directed, cap, global]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -80,7 +80,7 @@ One to Many
    :class: signatures
 
    | pgr_dijkstraNearCost(`Edges SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** [directed, cap]``
+   | **options:** ``[directed, cap]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -113,7 +113,7 @@ Many to One
    :class: signatures
 
    | pgr_dijkstraNearCost(`Edges SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** [directed, cap]``
+   | **options:** ``[directed, cap]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -144,7 +144,7 @@ Many to Many
    :class: signatures
 
    | pgr_dijkstraNearCost(`Edges SQL`_, **start vids**, **end vids**, [**options**])
-   | **options:** [directed, cap, global]``
+   | **options:** ``[directed, cap, global]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -180,7 +180,7 @@ Combinations
    :class: signatures
 
    | pgr_dijkstraNearCost(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** [directed, cap, global]``
+   | **options:** ``[directed, cap, global]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET

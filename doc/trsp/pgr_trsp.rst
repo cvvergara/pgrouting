@@ -30,7 +30,7 @@
 
   * New proposed signatures
 
-    * pgr_trsp(`One to One`_)
+    * pgr_trsp(One to One)
     * pgr_trsp(One to Many)
     * pgr_trsp(Many to One)
     * pgr_trsp(Many to Many)

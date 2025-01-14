@@ -37,7 +37,7 @@ The function returns:
    :class: signatures
 
    | pgr_analyzeGraph(**edge_table**, **tolerance**, [**options**])
-   | **options:** [the_geom, id, source, target, rows_where]``
+   | **options:** ``[the_geom, id, source, target, rows_where]``
 
    | RETURNS ``VARCHAR``
 
@@ -278,12 +278,10 @@ Additional Examples
    :start-after: -- q28
    :end-before: -- q28.1
 
-The examples use the :doc:`sampledata`
-
-
 See Also
 -------------------------------------------------------------------------------
 
+* :doc:`sampledata`
 * :doc:`topology-functions`
 * :doc:`pgr_analyzeOneWay`
 * :doc:`pgr_createVerticesTable`

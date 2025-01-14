@@ -29,16 +29,16 @@ Migration of functions
    :local:
 
 
-Migration of ``pgr_aStar``
+Migration of pgr_aStar``
 -------------------------------------------------------------------------------
 
 Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
 
 Signatures to be migrated:
 
-* pgr_aStar(`One to One`)
-* pgr_aStar(`One to Many`)
-* pgr_aStar(`Many to One`)
+* pgr_aStar(One to One)
+* pgr_aStar(One to Many)
+* pgr_aStar(Many to One)
 
 :Before Migration:
 
@@ -47,15 +47,15 @@ Signatures to be migrated:
   * Depending on the overload used, the columns ``start_vid`` and ``end_vid``
     might be missing:
 
-    * pgr_aStar(`One to One`) does not have ``start_vid`` and ``end_vid``.
-    * pgr_aStar(`One to Many`) does not have ``start_vid``.
-    * pgr_aStar(`Many to One`) does not have ``end_vid``.
+    * pgr_aStar(One to One) does not have ``start_vid`` and ``end_vid``.
+    * pgr_aStar(One to Many) does not have ``start_vid``.
+    * pgr_aStar(Many to One) does not have ``end_vid``.
 
 :Migration:
 
 * Be aware of the existence of the additional columns.
 
-* In ``pgr_aStar(`One to One`)
+* In pgr_aStar(One to One)
 
   * start_vid`` contains the **start vid** parameter value.
   * end_vid`` contains the **end vid** parameter value.
@@ -64,17 +64,17 @@ Signatures to be migrated:
    :start-after: --astar1
    :end-before: --astar2
 
-* In ``pgr_aStar(`One to Many`)
+* In pgr_aStar(One to Many)
 
-  * start_vid`` contains the **start vid** parameter value.
+  * ``start_vid`` contains the **start vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --astar2
    :end-before: --astar3
 
-* In ``pgr_aStar(`Many to One`)
+* In pgr_aStar(Many to One)
 
-  * end_vid`` contains the **end vid** parameter value.
+  * ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --astar3
@@ -105,9 +105,9 @@ Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
 
 Signatures to be migrated:
 
-* pgr_bdAstar(`One to One`)
-* pgr_bdAstar(`One to Many`)
-* pgr_bdAstar(`Many to One`)
+* pgr_bdAstar(One to One)
+* pgr_bdAstar(One to Many)
+* pgr_bdAstar(Many to One)
 
 :Before Migration:
 
@@ -116,34 +116,34 @@ Signatures to be migrated:
   * Depending on the overload used, the columns ``start_vid`` and ``end_vid``
     might be missing:
 
-    * pgr_bdAstar(`One to One`) does not have ``start_vid`` and ``end_vid``.
-    * pgr_bdAstar(`One to Many`) does not have ``start_vid``.
-    * pgr_bdAstar(`Many to One`) does not have ``end_vid``.
+    * pgr_bdAstar(One to One) does not have ``start_vid`` and ``end_vid``.
+    * pgr_bdAstar(One to Many) does not have ``start_vid``.
+    * pgr_bdAstar(Many to One) does not have ``end_vid``.
 
 :Migration:
 
 * Be aware of the existence of the additional columns.
 
-* In ``pgr_bdAstar(`One to One`)
+* In pgr_bdAstar(One to One)
 
-  * start_vid`` contains the **start vid** parameter value.
-  * end_vid`` contains the **end vid** parameter value.
+  * ``start_vid`` contains the **start vid** parameter value.
+  * ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --bdastar1
    :end-before: --bdastar2
 
-* In ``pgr_bdAstar(`One to Many`)
+* In pgr_bdAstar(One to Many)
 
-  * start_vid`` contains the **start vid** parameter value.
+  * ``start_vid`` contains the **start vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --bdastar2
    :end-before: --bdastar3
 
-* In ``pgr_bdAstar(`Many to One`)
+* In pgr_bdAstar(Many to One)
 
-  * end_vid`` contains the **end vid** parameter value.
+  * ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --bdastar3
@@ -173,9 +173,9 @@ Starting from `v3.5.0 <https://docs.pgrouting.org/3.5/en/migration.html>`__
 
 Signatures to be migrated:
 
-* pgr_dijkstra(`One to One`)
-* pgr_dijkstra(`One to Many`)
-* pgr_dijkstra(`Many to One`)
+* pgr_dijkstra(One to One)
+* pgr_dijkstra(One to Many)
+* pgr_dijkstra(Many to One)
 
 :Before Migration:
 
@@ -184,35 +184,35 @@ Signatures to be migrated:
   * Depending on the overload used, the columns ``start_vid`` and ``end_vid``
     might be missing:
 
-    * pgr_dijkstra(`One to One`) does not have ``start_vid`` and
+    * pgr_dijkstra(One to One) does not have ``start_vid`` and
       ``end_vid``.
-    * pgr_dijkstra(`One to Many`) does not have ``start_vid``.
-    * pgr_dijkstra(`Many to One`) does not have ``end_vid``.
+    * pgr_dijkstra(One to Many) does not have ``start_vid``.
+    * pgr_dijkstra(Many to One) does not have ``end_vid``.
 
 :Migration:
 
 * Be aware of the existence of the additional columns.
 
-* In ``pgr_dijkstra(`One to One`)
+* In pgr_dijkstra(One to One)
 
-  * start_vid`` contains the **start vid** parameter value.
-  * end_vid`` contains the **end vid** parameter value.
+  * ``start_vid`` contains the **start vid** parameter value.
+  * ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --dijkstra1
    :end-before: --dijkstra2
 
-* In ``pgr_dijkstra(`One to Many`)
+* In pgr_dijkstra(One to Many)
 
-  * start_vid`` contains the **start vid** parameter value.
+  * ``start_vid`` contains the **start vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --dijkstra2
    :end-before: --dijkstra3
 
-* In ``pgr_dijkstra(`Many to One`)
+* In pgr_dijkstra(Many to One)
 
-  * end_vid`` contains the **end vid** parameter value.
+  * ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --dijkstra3
@@ -263,16 +263,16 @@ Output columns were |result-dij-dd|
 
 * Be aware of the existence and name change of the result columns.
 
-``pgr_drivingdistance(Single vertex)
+``pgr_drivingdistance`` (Single vertex)
 ...............................................................................
 
 Using `this
 <https://docs.pgrouting.org/3.5/en/pgr_drivingDistance.html#single-vertex>`__
 example.
 
-* start_vid`` contains the **start vid** parameter value.
-* depth`` contains the depth of the ``node``.
-* pred`` contains the predecessor of the ``node``.
+* ``start_vid`` contains the **start vid** parameter value.
+* ``depth`` contains the depth of the ``node``.
+* ``pred`` contains the predecessor of the ``node``.
 
   .. literalinclude:: migration.queries
      :start-after: --drivingdistance1
@@ -284,7 +284,7 @@ If needed filter out the added columns, for example, to return the original colu
    :start-after: --drivingdistance2
    :end-before: --drivingdistance3
 
-``pgr_drivingdistance(Multiple vertices)
+``pgr_drivingdistance`` (Multiple vertices)
 ...............................................................................
 
 Using `this
@@ -292,8 +292,8 @@ Using `this
 example.
 
 * The ``from_v`` result column name changes to ``start_vid``.
-* depth`` contains the depth of the ``node``.
-* pred`` contains the predecessor of the ``node``.
+* ``depth`` contains the depth of the ``node``.
+* ``pred`` contains the predecessor of the ``node``.
 
   .. literalinclude:: migration.queries
      :start-after: --drivingdistance3
@@ -316,17 +316,17 @@ Starting from `v3.7.0 <https://docs.pgrouting.org/3.7/en/migration.html>`__
 :from: |result-bfs|
 :to: |result-spantree|
 
-* pgr_kruskalDD``
+* ``pgr_kruskalDD``
 
   * Single vertex
   * Multiple vertices
 
-* pgr_kruskalDFS``
+* ``pgr_kruskalDFS``
 
   * Single vertex
   * Multiple vertices
 
-* pgr_kruskalBFS``
+* ``pgr_kruskalBFS``
 
   * Single vertex
   * Multiple vertices
@@ -348,7 +348,7 @@ Output columns were |result-bfs|
 Kruskal single vertex
 ...............................................................................
 
-Using ``pgr_KruskalDD`` as example.
+Using pgr_KruskalDD`` as example.
 Migration is similar to al the affected functions.
 
 Comparing with `this
@@ -415,15 +415,15 @@ Signatures to be migrated:
 
 * Be aware of the existence of the additional columns.
 
-``pgr_KSP(One to One)
+``pgr_KSP`` (One to One)
 ...............................................................................
 
 Using
 `this <https://docs.pgrouting.org/3.5/en/pgr_KSP.html#signatures>`__
 example.
 
-* start_vid`` contains the **start vid** parameter value.
-* end_vid`` contains the **end vid** parameter value.
+* ``start_vid`` contains the **start vid** parameter value.
+* ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --ksp1
@@ -488,7 +488,7 @@ Migration is needed, because:
    :start-after: --maxcard2
    :end-before: --maxcard3
 
-Migration of ``pgr_primDD`` / ``pgr_primBFS`` / ``pgr_primDFS``
+Migration of pgr_primDD`` / ``pgr_primBFS`` / ``pgr_primDFS``
 -------------------------------------------------------------------------------
 
 Starting from `v3.7.0 <https://docs.pgrouting.org/3.7/en/migration.html>`__
@@ -498,17 +498,17 @@ being standardized.
 :from: |result-bfs|
 :to: |result-spantree|
 
-* pgr_primDD``
+* ``pgr_primDD``
 
   * Single vertex
   * Multiple vertices
 
-* pgr_primDFS``
+* ``pgr_primDFS``
 
   * Single vertex
   * Multiple vertices
 
-* pgr_primBFS``
+* ``pgr_primBFS``
 
   * Single vertex
   * Multiple vertices
@@ -552,7 +552,7 @@ columns
 Prim multiple vertices
 ...............................................................................
 
-Using ``pgr_primDD`` as example.
+Using pgr_primDD`` as example.
 Migration is similar to al the affected functions.
 
 Comparing with `this
@@ -586,22 +586,22 @@ And ``driving_side`` parameter changed from named optional to unnamed compulsory
 
 Signatures to be migrated:
 
-* pgr_withPointsDD(Single vertex)
-* pgr_withPointsDD(Multiple vertices)
+* ``pgr_withPointsDD`` (Single vertex)
+* ``pgr_withPointsDD`` (Multiple vertices)
 
 :Before Migration:
 
-* pgr_withPointsDD(Single vertex)
+* ``pgr_withPointsDD`` (Single vertex)
 
   * Output columns were |result-1-1-no-seq|
   * Does not have ``start_vid``, ``pred`` and ``depth`` result columns.
-  * driving_side`` parameter was named optional now it is compulsory unnamed.
+  * ``driving_side`` parameter was named optional now it is compulsory unnamed.
 
-* pgr_withPointsDD(`Multiple vertices`)
+* ``pgr_withPointsDD`` (Multiple vertices)
 
   * Output columns were |result-m-1-no-seq|
   * Does not have ``depth`` and ``pred`` result columns.
-  * driving_side`` parameter was named optional now it is compulsory unnamed.
+  * ``driving_side`` parameter was named optional now it is compulsory unnamed.
 
 .. rubric:: Driving side was optional
 
@@ -656,7 +656,7 @@ Also ``l`` could be used as **driving side**
   * In undirected graph: valid values are [``b``, ``B``]
   * Using an invalid value throws an ``ERROR``.
 
-``pgr_withPointsDD(Single vertex)
+``pgr_withPointsDD`` (Single vertex)
 ...............................................................................
 
 Using
@@ -664,10 +664,10 @@ Using
 example.
 
 * |result-spantree|
-* start_vid`` contains the **start vid** parameter value.
-* depth`` contains the **depth** from the ``start_vid`` vertex to the
+* ``start_vid`` contains the **start vid** parameter value.
+* ``depth`` contains the **depth** from the ``start_vid`` vertex to the
   ``node``.
-* pred`` contains the predecessor of the ``node``.
+* ``pred`` contains the predecessor of the ``node``.
 
 
 To migrate, use an unnamed valid value for **driving side** after the
@@ -687,7 +687,7 @@ To get results from previous versions:
    :start-after: --withpointsdd5
    :end-before: --withpointsdd6
 
-``pgr_withPointsDD(Multiple vertices)
+``pgr_withPointsDD`` (Multiple vertices)
 ...............................................................................
 
 Using
@@ -695,9 +695,9 @@ Using
 example.
 
 * |result-spantree|
-* depth`` contains the **depth** from the ``start_vid`` vertex to the
+* ``depth`` contains the **depth** from the ``start_vid`` vertex to the
   ``node``.
-* pred`` contains the predecessor of the ``node``.
+* ``pred`` contains the predecessor of the ``node``.
 
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd6
@@ -727,7 +727,7 @@ And ``driving side`` parameter changed from named optional to unnamed compulsory
 
 Signatures to be migrated:
 
-* pgr_withPointsKSP(`One to One`)
+* pgr_withPointsKSP(One to One)
 
 :Before Migration:
 
@@ -748,15 +748,15 @@ Signatures to be migrated:
   * In undirected graph: valid values are [``b``, ``B``]
   * Using an invalid value throws an ``ERROR``.
 
-``pgr_withPointsKSP(`One to One`)
+``pgr_withPointsKSP`` (One to One)
 ...............................................................................
 
 Using
 `this <https://docs.pgrouting.org/3.5/en/pgr_withPointsKSP.html#signatures>`__
 example.
 
-* start_vid`` contains the **start vid** parameter value.
-* end_vid`` contains the **end vid** parameter value.
+* ``start_vid`` contains the **start vid** parameter value.
+* ``end_vid`` contains the **end vid** parameter value.
 
 .. literalinclude:: migration.queries
    :start-after: --withPointsKSP1
@@ -788,18 +788,18 @@ Old restrictions structure
 On the deprecated signatures:
 
 * Column ``rid`` is ignored
-* via_path``
+* ``via_path``
 
   * Must be in reverse order.
   * Is of type ``TEXT``.
   * When more than one via edge must be separated with ``,``.
 
-* target_id``
+* ``target_id``
 
   * Is the last edge of the forbidden path.
   * Is of type ``INTEGER``.
 
-* to_cost``
+* ``to_cost``
 
   * Is of type ``FLOAT``.
 
@@ -872,7 +872,7 @@ To transform the old restrictions table to the new restrictions structure,
 * For this migration pgRouting supplies an auxiliary function for reversal of an
   array ``_pgr_array_reverse`` needed for the migration.
 
-  * _pgr_array_reverse``:
+  * ``_pgr_array_reverse``:
 
     * Was created temporally for this migration
     * Is not documented.
@@ -889,7 +889,7 @@ The migrated table contents:
    :end-before: --rest5
 
 
-Migration of ``pgr_trsp(Vertices)
+Migration of ``pgr_trsp`` (Vertices)
 -------------------------------------------------------------------------------
 
 :doc:`pgr_trsp` signatures have changed and many issues have been fixed in the
@@ -909,7 +909,7 @@ Signature to be migrated:
 
 * The integral type of the ``Edges SQL`` can only be ``INTEGER``.
 * The floating point type of the ``Edges SQL`` can only be ``FLOAT``.
-* directed`` flag is compulsory.
+* ``directed`` flag is compulsory.
 
   * Does not have a default value.
 
@@ -927,7 +927,7 @@ Migrate by using:
 * :doc:`pgr_trsp` (One to One) when there are restrictions.
 
 
-Migrating ``pgr_trsp(Vertices) using ``pgr_dijkstra``
+Migrating ``pgr_trsp`` (Vertices) using ``pgr_dijkstra``
 ...............................................................................
 
 The following query does not have restrictions.
@@ -954,7 +954,7 @@ Use :doc:`pgr_dijkstra` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -968,11 +968,11 @@ function been migrated then:
    :start-after: --verticesv3
    :end-before: --verticesv4
 
-* id1`` is the node
-* id2`` is the edge
+* ``id1`` is the node
+* ``id2`` is the edge
 
 
-Migrating ``pgr_trsp(Vertices) using ``pgr_trsp``
+Migrating ``pgr_trsp`` (Vertices) using ``pgr_trsp``
 ...............................................................................
 
 The following query has restrictions.
@@ -1006,7 +1006,7 @@ Use :doc:`pgr_trsp` (One to One) instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1020,10 +1020,10 @@ function been migrated then:
    :start-after: --verticesv6
    :end-before: --verticesv7
 
-* id1`` is the node
-* id2`` is the edge
+* ``id1`` is the node
+* ``id2`` is the edge
 
-Migration of ``pgr_trsp(Edges)
+Migration of pgr_trsp(Edges)
 -------------------------------------------------------------------------------
 
 Signature to be migrated:
@@ -1038,7 +1038,7 @@ Signature to be migrated:
 
 * The integral types of the ``sql`` can only be ``INTEGER``.
 * The floating point type of the ``sql`` can only be ``FLOAT``.
-* directed`` flag is compulsory.
+* ``directed`` flag is compulsory.
 
   * Does not have a default value.
 
@@ -1060,7 +1060,7 @@ Migrate by using:
 * :doc:`pgr_withPoints` when there are no restrictions,
 * :doc:`pgr_trsp_withPoints` (One to One) when there are restrictions.
 
-Migrating ``pgr_trsp(Edges) using ``pgr_withPoints``
+Migrating ``pgr_trsp`` (Edges) using ``pgr_withPoints``
 ...............................................................................
 
 The following query does not have restrictions.
@@ -1087,7 +1087,7 @@ Use :doc:`pgr_withPoints` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1102,11 +1102,11 @@ values of the function been migrated then:
    :start-after: --edgesv3
    :end-before: --edgesv4
 
-* id1`` is the node
-* id2`` is the edge
+* ``id1`` is the node
+* ``id2`` is the edge
 
 
-Migrating ``pgr_trsp(Edges) using ``pgr_trsp_withPoints``
+Migrating ``pgr_trsp`` (Edges) using ``pgr_trsp_withPoints``
 ...............................................................................
 
 The following query has restrictions.
@@ -1141,7 +1141,7 @@ Use :doc:`pgr_trsp_withPoints` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1156,8 +1156,8 @@ values of the function been migrated then:
    :start-after: --edgesv6
    :end-before: --edgesv7
 
-* id1`` is the node
-* id2`` is the edge
+* ``id1`` is the node
+* ``id2`` is the edge
 
 Migration of ``pgr_trspViaVertices``
 -------------------------------------------------------------------------------
@@ -1174,7 +1174,7 @@ Signature to be migrated:
 
 * The integral types of the ``Edges SQL`` can only be ``INTEGER``.
 * The floating point type of the ``Edges SQL`` can only be ``FLOAT``.
-* directed`` flag is compulsory.
+* ``directed`` flag is compulsory.
 
   * Does not have a default value.
 
@@ -1217,7 +1217,7 @@ Use :doc:`pgr_dijkstraVia` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1232,9 +1232,9 @@ function been migrated then:
    :start-after: --viav3
    :end-before: --viav4
 
-* id1`` is the path identifier
-* id2`` is the node
-* id3`` is the edge
+* ``id1`` is the path identifier
+* ``id2`` is the node
+* ``id3`` is the edge
 
 
 Migrating ``pgr_trspViaVertices`` using ``pgr_trspVia``
@@ -1271,7 +1271,7 @@ Use :doc:`pgr_trspVia` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1286,9 +1286,9 @@ function been migrated then:
    :start-after: --viav6
    :end-before: --viav7
 
-* id1`` is the path identifier
-* id2`` is the node
-* id3`` is the edge
+* ``id1`` is the path identifier
+* ``id2`` is the node
+* ``id3`` is the edge
 
 Migration of ``pgr_trspViaEdges``
 -------------------------------------------------------------------------------
@@ -1305,7 +1305,7 @@ Signature to be migrated:
 
 * The integral types of the ``Edges SQL`` can only be ``INTEGER``.
 * The floating point type of the ``Edges SQL`` can only be ``FLOAT``.
-* directed`` flag is compulsory.
+* ``directed`` flag is compulsory.
 
   * Does not have a default value.
 
@@ -1356,7 +1356,7 @@ Use :doc:`pgr_withPointsVia` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1371,9 +1371,9 @@ values of the function been migrated then:
    :start-after: --edgesvia3
    :end-before: --edgesvia4
 
-* id1`` is the path identifier
-* id2`` is the node
-* id3`` is the edge
+* ``id1`` is the path identifier
+* ``id2`` is the node
+* ``id3`` is the edge
 
 Migrating ``pgr_trspViaEdges`` using ``pgr_trspVia_withPoints``
 ...............................................................................
@@ -1410,7 +1410,7 @@ Use :doc:`pgr_trspVia_withPoints` instead.
     SQL.
   * Accepts ``ANY-INTEGER`` on integral types
   * Accepts ``ANY-NUMERICAL`` on floating point types
-  * directed`` flag has a default value of ``true``.
+  * ``directed`` flag has a default value of ``true``.
 
     * Use the same value that on the original query.
     * In this example it is ``true`` which is the default value.
@@ -1425,9 +1425,9 @@ values of the function been migrated then:
    :start-after: --edgesvia6
    :end-before: --edgesvia7
 
-* id1`` is the path identifier
-* id2`` is the node
-* id3`` is the edge
+* ``id1`` is the path identifier
+* ``id2`` is the node
+* ``id3`` is the edge
 
 
 See Also

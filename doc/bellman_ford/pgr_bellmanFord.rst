@@ -111,7 +111,7 @@ One to One
    :end-before: -- q3
 
 .. index::
-   single: bellmanFord - Experimental; One to Many - Experimental on v3.0
+   single: bellmanFord - Experimental ; One to Many - Experimental on v3.0
 
 One to Many
 ...............................................................................
@@ -132,7 +132,7 @@ One to Many
    :end-before: -- q4
 
 .. index::
-   single: bellmanFord - Experimental; Many to One - Experimental on v3.0
+   single: bellmanFord - Experimental ; Many to One - Experimental on v3.0
 
 Many to One
 ...............................................................................
@@ -264,7 +264,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
-* `Boost <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html>`__
+* `Boost: Belman Ford <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html>`__
 * https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm
 
    Boost Graph Inside

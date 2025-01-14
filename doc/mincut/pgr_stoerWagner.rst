@@ -134,7 +134,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
-* `Boost: stoer wagner min cut
+* `Boost: Stoer Wagner min cut
   <https://www.boost.org/libs/graph/doc/stoer_wagner_min_cut.html>`__
 * https://en.wikipedia.org/wiki/Stoer%E2%80%93Wagner_algorithm
 

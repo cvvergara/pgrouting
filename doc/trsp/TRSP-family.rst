@@ -95,7 +95,7 @@ Parameters
      - ``TEXT``
      - `Restrictions SQL`_ query as described.
    * - **via vertices**
-     - ``ARRAY[`` **ANY-INTEGER** ]``
+     - ``ARRAY[`` **ANY-INTEGER** ``]``
      - Array of ordered vertices identifiers that are going to be visited.
 
 Where:

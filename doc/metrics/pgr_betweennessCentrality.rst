@@ -9,6 +9,7 @@
 
 .. index::
    single: Metrics Family ; pgr_betweennessCentrality - Experimental
+   single: betweennessCentrality - Experimental on v3.7
 
 |
 
@@ -51,9 +52,6 @@ This implementation work for both directed and undirected graphs.
 
 Signatures
 -------------------------------------------------------------------------------
-
-.. index::
-   single: betweennessCentrality - Experimental on v3.7
 
 .. rubric:: Summary
 
@@ -140,9 +138,9 @@ Result columns
 See Also
 -------------------------------------------------------------------------------
 
+* :doc:`sampledata`
 * `Boost: betweenness centrality
   <https://www.boost.org/doc/libs/1_84_0/libs/graph/doc/betweenness_centrality.html>`_
-* :doc:`sampledata`
 
 .. rubric:: Indices and tables
 

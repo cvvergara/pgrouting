@@ -24,7 +24,7 @@
 
   * Standarizing output columns to |short-generic-result|
 
-    * pgr_bdAstar(`One to One`_) added ``start_vid`` and ``end_vid`` columns.
+    * pgr_bdAstar(One to One) added ``start_vid`` and ``end_vid`` columns.
     * pgr_bdAstar(One to Many) added ``end_vid`` column.
     * pgr_bdAstar(Many to One) added ``start_vid`` column.
 
@@ -46,13 +46,13 @@
     * pgr_bdAstar(Many to One)
     * pgr_bdAstar(Many to Many)
 
-  * Signature change on ``pgr_bdAstar(`One to One`_)
+  * Signature change on pgr_bdAstar(One to One)
 
     * Old signature no longer supported
 
 * Version 2.0.0
 
-  * **Official** pgr_bdAstar(`One to One`_)
+  * **Official** pgr_bdAstar(One to One)
 
 Description
 -------------------------------------------------------------------------------
@@ -63,8 +63,8 @@ Description
    :start-after: astar general info start
    :end-before: astar general info end
 
-* The results are equivalent to the union of the results of the `pgr_bdAStar(`
-  `One to One`_ `)` on the:
+* The results are equivalent to the union of the results of the
+  pgr_bdAStar(One to One) on the:
 
   * pgr_bdAstar(One to Many)
   * pgr_bdAstar(Many to One)
@@ -86,7 +86,7 @@ Signatures
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vid**, [**options**])
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_bdAstar(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -125,7 +125,7 @@ One to Many
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vid**, **end vids**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -147,7 +147,7 @@ Many to One
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vid**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -169,7 +169,7 @@ Many to Many
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, **start vids**, **end vids**, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -191,7 +191,7 @@ Combinations
    :class: signatures
 
    | pgr_bdAstar(`Edges SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** [directed, heuristic, factor, epsilon]``
+   | **options:** ``[directed, heuristic, factor, epsilon]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -283,7 +283,7 @@ See Also
 * :doc:`aStar-family`
 * :doc:`bdAstar-family`
 * :doc:`sampledata`
-* `Boost <https://www.boost.org/libs/graph/doc/astar_search.html>`__
+* `Boost: A* search <https://www.boost.org/libs/graph/doc/astar_search.html>`__
 * https://en.wikipedia.org/wiki/A*_search_algorithm
 
 .. rubric:: Indices and tables

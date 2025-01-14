@@ -695,7 +695,7 @@ the matrix values or the euclidean values.
 
 * When the values are already in the desired time units
 
-  * factor`` should be **1**
+  * ``factor`` should be **1**
   * When ``factor`` > 1 the travel times are faster
   * When ``factor`` < 1 the travel times are slower
 

@@ -97,7 +97,6 @@ Function Families
 
 :doc:`pgr_trsp` - Turn Restriction Shortest Path (TRSP)
 
-|
 
 Functions by categories
 ===============================================================================

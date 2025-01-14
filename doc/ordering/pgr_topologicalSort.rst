@@ -125,7 +125,7 @@ See Also
 -------------------------------------------------------------------------------
 
 * :doc:`sampledata`
-* `Boost: topological_sort
+* `Boost: topological sort
   <https://www.boost.org/libs/graph/doc/topological_sort.html>`__
 * https://en.wikipedia.org/wiki/Topological_sorting
 
