@@ -5,10 +5,11 @@ Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
+Function's developers:
 Copyright (c) 2016 Rohith Reddy
 Mail:
-
+Copyright (c) Aurélie Bousquet - 2024
+Mail: aurelie.bousquet at oslandia.com
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -47,10 +48,13 @@ class CH_edge {
          id(eid), source(source),
          target(target), cost(cost) {}
 
+     void set_contracted_vertices(Identifiers<int64_t>&);
+
      void cp_members(const CH_edge &other);
 
      void add_contracted_vertex(CH_vertex& v);
      void add_contracted_edge_vertices(CH_edge& e);
+     void add_contracted_vertices(Identifiers<int64_t>&);
 
      bool has_contracted_vertices() const;
 
