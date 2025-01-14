@@ -109,7 +109,7 @@ void get_postgres_result(
         size_t *count) {
     using pgrouting::pgr_alloc;
     auto modified_vertices(graph.get_modified_vertices());
-    auto shortcut_edges(get_shortcuts(graph));
+    auto shortcut_edges(graph.get_shortcuts());
 
     (*count) = modified_vertices.size() + shortcut_edges.size();
     (*return_tuples) = pgr_alloc((*count), (*return_tuples));
