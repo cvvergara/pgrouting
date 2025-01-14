@@ -255,6 +255,44 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
          }
          return false;
      }
+
+    /**
+     *
+     * u ----e1{v1}----> v ----e2{v2}----> w
+     *
+     * e1: min cost edge from u to v
+     * e2: min cost edge from v to w
+     *
+     * result:
+     * u ---{v+v1+v2}---> w
+     *
+     */
+    void process_shortcut(V u, V v, V w) {
+        auto e1 = get_min_cost_edge(u, v);
+        auto e2 = get_min_cost_edge(v, w);
+
+        if (std::get<1>(e1) && std::get<1>(e2)) {
+            auto contracted_vertices =
+                std::get<0>(e1).contracted_vertices() +
+                std::get<0>(e2).contracted_vertices();
+            double cost =
+                std::get<0>(e1).cost +
+                std::get<0>(e2).cost;
+
+            const auto& vertex_data = this->graph[v];
+            contracted_vertices += vertex_data.id;
+            contracted_vertices += vertex_data.contracted_vertices();
+
+            // Create shortcut
+            CH_edge shortcut(
+                get_next_id(),
+                (this->graph[u]).id,
+                (this->graph[w]).id,
+                cost);
+            shortcut.set_contracted_vertices(contracted_vertices);
+            add_shortcut(shortcut, u, w);
+        }
+    }
 };
 
 }  // namespace graph
