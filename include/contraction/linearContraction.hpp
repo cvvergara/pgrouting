@@ -62,22 +62,10 @@ class Pgr_linear {
          doContraction(graph, forbidden_vertices);
      }
 
-     Pgr_linear():last_edge_id(0) {}
-
- private:
-     int64_t get_next_id() {
-         return --last_edge_id;
-     }
-
-
- public:
-     void setForbiddenVertices(
-             Identifiers<V> forbidden_vertices) {
-         m_forbiddenVertices = forbidden_vertices;
-     }
+     Pgr_linear() = default;
 
      bool is_contractible(G &graph, V v) {
-         return graph.is_linear(v) && !m_forbiddenVertices.has(v);
+         return graph.is_linear(v) && !graph.getForbiddenVertices().has(v);
      }
 
      void calculateVertices(G &graph) {
@@ -165,9 +153,6 @@ class Pgr_linear {
 
  private:
      Identifiers<V> m_linearVertices;
-     Identifiers<V> m_forbiddenVertices;
-
-     int64_t last_edge_id;
 };
 
 }  // namespace contraction

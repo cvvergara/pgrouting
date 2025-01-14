@@ -53,15 +53,9 @@ class Pgr_deadend {
  public:
     Pgr_deadend() = default;
 
-    void setForbiddenVertices(
-            Identifiers<V> forbidden_vertices) {
-        forbiddenVertices = forbidden_vertices;
-    }
-
-
     void calculateVertices(G &graph) {
         for (const auto v : boost::make_iterator_range(vertices(graph.graph))) {
-            if (is_dead_end(graph, v) && !forbiddenVertices.has(v)) {
+            if (is_dead_end(graph, v) && !graph.getForbiddenVertices().has(v)) {
                 deadendVertices += v;
             }
         }
@@ -109,7 +103,7 @@ class Pgr_deadend {
             CHECK_FOR_INTERRUPTS();
 
             for (const auto u : local) {
-                if (is_dead_end(graph, u) && !forbiddenVertices.has(u)) {
+                if (is_dead_end(graph, u) && !graph.getForbiddenVertices.has(u)) {
                     deadendVertices += u;
                 } else {
                     deadendVertices -= u;
@@ -120,7 +114,6 @@ class Pgr_deadend {
 
  private:
     Identifiers<V> deadendVertices;
-    Identifiers<V> forbiddenVertices;
 };
 
 }  // namespace contraction

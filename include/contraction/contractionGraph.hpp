@@ -49,7 +49,8 @@ namespace pgrouting {
 namespace graph {
 
 template <class G, bool t_directed>
-class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_directed> {
+class Pgr_contractionGraph :
+    public Pgr_base_graph<G, CH_vertex, CH_edge, t_directed> {
  public:
      typedef typename boost::graph_traits < G >::vertex_descriptor V;
      typedef typename boost::graph_traits < G >::edge_descriptor E;
@@ -59,9 +60,35 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
      /*!
        Prepares the _graph_ to be of type *directed*
        */
-     explicit Pgr_contractionGraph()
-         : Pgr_base_graph<G, CH_vertex, CH_edge, t_directed>() {
-         }
+     explicit Pgr_contractionGraph<G, t_directed>()
+            : Pgr_base_graph<G, CH_vertex, CH_edge, t_directed>() {
+        min_edge_id = 0;
+    }
+
+    /*!
+        @brief Accessor to the next negative vertex id (to be created)
+        @return int64_t: id of the next vertex to be created
+    */
+    int64_t get_next_id() {
+        return --min_edge_id;
+    }
+
+    /*!
+        @brief Accessor to the vertices on which contraction is forbidden
+        @param [in] Identifiers<V>: The set of forbidden vertex descriptors
+    */
+    void setForbiddenVertices(
+            Identifiers<V> m_forbidden_vertices) {
+        forbiddenVertices = m_forbidden_vertices;
+    }
+
+    /*!
+        @brief Accessor of the vertices on which contraction is forbidden
+        @return Identifiers<V>: The set of forbidden vertex descriptors
+    */
+    Identifiers<V> getForbiddenVertices() {
+        return forbiddenVertices;
+    }
 
     /*!
         @brief get the vertex descriptors of adjacent vertices of *v*
@@ -118,7 +145,7 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
         }
         return vids;
     }
-    
+
     /*! @brief get the edge with minimum cost between two vertices
         @param [in] u vertex_descriptor of source vertex
         @param [in] v vertex_descriptor of target vertex
@@ -339,6 +366,10 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
             add_shortcut(shortcut, u, w);
         }
     }
+
+ private:
+    int64_t min_edge_id;
+    Identifiers<V> forbiddenVertices;
 };
 
 }  // namespace graph
