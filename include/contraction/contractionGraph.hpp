@@ -63,25 +63,24 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
          : Pgr_base_graph<G, CH_vertex, CH_edge, t_directed>() {
          }
 
-     /*! @brief get the vertex descriptors of adjacent vertices of *v*
-       @param [in] v vertex_descriptor
-       @return Identifiers<V>: The set of vertex descriptors adjacent to the given vertex *v*
-       */
-     Identifiers<V> find_adjacent_vertices(V v) const {
-         EO_i out, out_end;
-         EI_i in, in_end;
-         Identifiers<V> adjacent_vertices;
+    /*!
+        @brief get the vertex descriptors of adjacent vertices of *v*
+        @param [in] v vertex_descriptor
+        @return Identifiers<V>: The set of vertex descriptors adjacent to the given vertex *v*
+    */
+    Identifiers<V> find_adjacent_vertices(V v) const {
+        Identifiers<V> adjacent_vertices;
 
-         for (boost::tie(out, out_end) = out_edges(v, this->graph);
-                 out != out_end; ++out) {
-             adjacent_vertices += this->adjacent(v, *out);
-         }
-         for (boost::tie(in, in_end) = in_edges(v, this->graph);
-                 in != in_end; ++in) {
-             adjacent_vertices += this->adjacent(v, *in);
-         }
-         return adjacent_vertices;
-     }
+        for (const auto &e : boost::make_iterator_range(
+                out_edges(v, this->graph)))
+            adjacent_vertices += this->adjacent(v, e);
+
+        for (const auto &e : boost::make_iterator_range(
+                in_edges(v, this->graph)))
+            adjacent_vertices += this->adjacent(v, e);
+
+        return adjacent_vertices;
+    }
 
     /*! @brief vertices with at least one contracted vertex
         @result The vids Identifiers with at least one contracted vertex
