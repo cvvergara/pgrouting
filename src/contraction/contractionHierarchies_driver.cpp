@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "cpp_common/pgdata_getters.hpp"
 #include "contraction/ch_graphs.hpp"
+#include "contraction/contractionHierarchies.hpp"
 
 #include "c_types/contracted_rt.h"
 #include "cpp_common/identifiers.hpp"
@@ -81,6 +82,22 @@ std::vector<typename G::E> get_shortcuts(const G& graph) {
     return o_eids;
 }
 
+template <typename G>
+void perform(
+        G &graph,
+        const std::vector< int64_t > &forbidden_vertices,
+        std::ostringstream &log,
+        std::ostringstream &err) {
+    graph.set_forbidden_vertices(forbidden_vertices);
+    Pgr_contractionsHierarchy<G> hierarchyContractor;
+    try {
+        hierarchyContractor.do_contraction(graph, log, err);
+    }
+    catch ( ... ) {
+        err << "Contractions hierarchy failed" << std::endl;
+        throw;
+    }
+}
 
 template <typename G>
 void process_contraction(
@@ -90,18 +107,14 @@ void process_contraction(
     graph.insert_edges(edges);
     pgrouting::Identifiers<typename G::V> forbid_vertices;
     for (const auto &vertex : forbidden_vertices) {
-        if (graph.has_vertex(vertex)) {
-            forbid_vertices += graph.get_V(vertex);
-        }
+        if (graph.has_vertex(vertex))
+            forbid_vertices += graph.get_V(vertex); 
     }
 
     /*
      * Function call to get the contracted graph.
      */
-    using Contract = pgrouting::contraction::Pgr_contract<G>;
-    Contract result(
-            graph,
-            forbid_vertices);
+    perform(graph, forbid_vertices);
 }
 
 template <typename G>
@@ -186,7 +199,6 @@ pgr_do_contractionHierarchies(
     char *hint = nullptr;
 
     try {
-        pgassert(max_cycles != 0);
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
@@ -203,16 +215,6 @@ pgr_do_contractionHierarchies(
         hint = nullptr;
 
         auto forbid = get_intArray(forbidden, true);
-        auto ordering = get_intArray(order, false);
-
-        for (const auto kind : ordering) {
-            if (!pgrouting::contraction::is_valid_contraction(static_cast<int>(kind))) {
-                *err_msg = pgr_msg("Invalid contraction type found");
-                log << "Contraction type " << kind << " not valid";
-                *log_msg = pgr_msg(log.str().c_str());
-                return;
-            }
-        }
 
         if (directed) {
             using DirectedGraph = pgrouting::graph::CHDirectedGraph;
