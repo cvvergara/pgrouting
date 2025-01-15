@@ -16,11 +16,7 @@ withPoints - Category
 
 When points are added to the graph.
 
-.. include:: proposed.rst
-   :start-after: warning-begin
-   :end-before: end-warning
-
-.. proposed start
+.. official-start
 
 - :doc:`withPoints-family` - Functions based on Dijkstra algorithm.
 - From the :doc:`TRSP-family`:
@@ -28,7 +24,7 @@ When points are added to the graph.
   - :doc:`pgr_trsp_withPoints` - Vertex/Point routing with restrictions.
   - :doc:`pgr_trspVia_withPoints` - Via Vertex/point routing with restrictions.
 
-.. proposed end
+.. official-end
 
 Introduction
 -------------------------------------------------------------------------------
