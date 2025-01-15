@@ -29,11 +29,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
----------------
--- pgr_dijkstra
----------------
-
--- ONE to ONE
 --v2.6
 CREATE FUNCTION pgr_dijkstra(
     TEXT,   -- edges_sql (required)
@@ -53,13 +48,12 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], $4, false, true);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], $4, false, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- ONE to MANY
 --v2.6
 CREATE FUNCTION pgr_dijkstra(
     TEXT,     -- edges_sql (required)
@@ -79,13 +73,12 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, false, true);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, false, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- MANY to ONE
 --v2.6
 CREATE FUNCTION pgr_dijkstra(
     TEXT,     -- edges_sql (required)
@@ -105,13 +98,12 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, false, false);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, false, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- MANY to MANY
 --v2.6
 CREATE FUNCTION pgr_dijkstra(
     TEXT,     -- edges_sql (required)
@@ -131,13 +123,12 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], $4, false, true);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], $4, false, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- Combinations SQL signature
 --v3.1
 CREATE FUNCTION pgr_dijkstra(
     TEXT,     -- edges_sql (required)
@@ -156,7 +147,7 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), _pgr_get_statement($2), $3, false, true);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), _pgr_get_statement($2), $3, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100

@@ -24,11 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
------------------------------
--- dijkstraCostMatrix
------------------------------
-
-
 --v2.6
 CREATE FUNCTION pgr_dijkstraCostMatrix(
     TEXT,     -- edges_sql (required)
@@ -42,7 +37,7 @@ CREATE FUNCTION pgr_dijkstraCostMatrix(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT a.start_vid, a.end_vid, a.agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), $2, $2, $3, TRUE) a;
+    FROM _pgr_dijkstra(_pgr_get_statement($1), $2, $2, directed, true, true, 0, true) a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

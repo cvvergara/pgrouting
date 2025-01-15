@@ -87,7 +87,7 @@ my $new_version = shift @ARGV || die "Missing: new version to convert";
 my $old_version = shift @ARGV || die "Missing: old version to convert";
 my $signature_dir = shift @ARGV || die "Missing: signature directory";
 my $output_directory = shift @ARGV || die "Missing: output directory";
-my $DEBUG = shift @ARGV;
+my $DEBUG = 1;
 
 
 print "DEBUG is on\n" if $DEBUG;
@@ -105,6 +105,9 @@ die "ERROR: This script does not upgrade from $old_version to $new_version $new_
 
 my ($new_minor) = $new_version  =~ $minor_format;
 my ($old_minor) = $old_version  =~ $minor_format;
+my ($old_v) = $old_minor + 0;
+
+
 
 my $curr_signature_file_name = "$signature_dir/pgrouting--$new_minor.sig";
 my $old_signature_file_name = "$signature_dir/pgrouting--$old_minor.sig";
@@ -194,6 +197,10 @@ sub generate_upgrade_script {
     my @types2remove = ();
     my @commands = ();
 
+    print "old_mayor $old_mayor\n" if $DEBUG;
+    print "old_minor $old_minor\n" if $DEBUG;
+    print "old_v $old_v\n" if $DEBUG;
+
     #------------------------------------
     # analyze function signatures
     #------------------------------------
@@ -222,19 +229,20 @@ sub generate_upgrade_script {
         }
 
         # updating to 3.4+
-        if ($old_mayor == 2 or ($old_mayor == 3 and $old_minor < 4)) {
+        if ($old_mayor == 2 or $old_v < 3.4 ) {
+            print "drop pgr_maxcardinalitymatch \n" if $DEBUG;
             push @commands, drop_special_case_function("pgr_maxcardinalitymatch(text,boolean)");
         }
 
         # updating to 3.5+
-        if ($old_mayor == 2 or ($old_mayor == 3 && $old_minor < 5)) {
+        if ($old_mayor == 2 or $old_v < 3.5) {
             push @commands, drop_special_case_function("pgr_dijkstra(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,anyarray,boolean)");
             push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,bigint,boolean)");
         }
 
         # updating to 3.6+
-        if ($old_mayor == 2 or ($old_mayor == 3 && $old_minor < 6)) {
+        if ($old_mayor == 2 or $old_v < 3.6) {
             push @commands, drop_special_case_function("pgr_withpointsksp(text, text, bigint, bigint, integer, boolean, boolean, char, boolean)");
             push @commands, drop_special_case_function("pgr_astar(text,anyarray,bigint,boolean,integer,double precision,double precision)");
             push @commands, drop_special_case_function("pgr_astar(text,bigint,anyarray,boolean,integer,double precision,double precision)");
@@ -250,7 +258,7 @@ sub generate_upgrade_script {
         }
 
         # updating to 3.7+
-        if ($old_mayor == 2 or ($old_mayor == 3 && $old_minor < 7)) {
+        if ($old_mayor == 3 and $old_v < 3.7) {
             push @commands, drop_special_case_function("pgr_primbfs(text,anyarray,bigint)");
             push @commands, drop_special_case_function("pgr_primbfs(text,bigint,bigint)");
             push @commands, drop_special_case_function("pgr_primdfs(text,anyarray,bigint)");
@@ -377,7 +385,7 @@ sub drop_special_case_function {
 
     push @commands,  "-- $old_version  **WARN: DROP $function (something changed for $new_version)\n" if $DEBUG;
     push @commands, "ALTER EXTENSION pgrouting DROP FUNCTION $function;\n";
-    push @commands, "DROP FUNCTION IF EXISTS $function;\n";
+    push @commands, "DROP FUNCTION IF EXISTS $function;\n\n";
     return @commands;
 }
 
@@ -626,6 +634,7 @@ sub allpairs {
 
 sub components {
     my @commands = ();
+=pod
     if ("$old_version" eq "3.0.0") {
         push @commands, update_proallargtypes(
             '_pgr_strongcomponents',
@@ -644,6 +653,7 @@ sub components {
             '25,23,20,20',
             '25,20,20,20');
     }
+=cut
 
     if ($old_mayor == 2) {
         push @commands, drop_special_case_function("pgr_connectedcomponents(text)");

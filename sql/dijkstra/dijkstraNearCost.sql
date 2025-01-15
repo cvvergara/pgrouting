@@ -24,11 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---------------------
--- pgr_dijkstraNearCost
---------------------
-
--- ONE to MANY
 --v3.2
 CREATE FUNCTION pgr_dijkstraNearCost(
     TEXT,     -- edges_sql (required)
