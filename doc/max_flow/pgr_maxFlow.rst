@@ -147,7 +147,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: maxFlow ; Combinations - Proposed on v3.2
+    single: maxFlow ; Combinations
 
 Combinations
 ...............................................................................
