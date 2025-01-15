@@ -6,8 +6,8 @@ Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2016 Rohith Reddy
-Mail:
+Copyright (c) Aurélie Bousquet - 2024
+Mail: aurelie.bousquet at oslandia.com
 
 ------
 
@@ -41,7 +41,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 #include "c_types/contracted_rt.h"
-#include "drivers/contraction/contractGraph_driver.h"
+#include "drivers/contraction/contractionHierarchies_driver.h"
 
 PGDLLEXPORT Datum _pgr_contraction(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_contraction);
@@ -50,17 +50,10 @@ PG_FUNCTION_INFO_V1(_pgr_contraction);
 static
 void
 process(char* edges_sql,
-        ArrayType* order,
-        int num_cycles,
         ArrayType* forbidden,
-
         bool directed,
         contracted_rt **result_tuples,
         size_t *result_count) {
-    /*
-     * nothing to do
-     */
-    if (num_cycles < 1) return;
 
     pgr_SPI_connect();
     char* log_msg = NULL;
@@ -68,13 +61,12 @@ process(char* edges_sql,
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    pgr_do_contractGraph(
+    pgr_do_contractionHierarchies(
             edges_sql,
             forbidden,
-            order,
-            num_cycles,
             directed,
-            result_tuples, result_count,
+            result_tuples,
+            result_count,
             &log_msg,
             &notice_msg,
             &err_msg);
@@ -107,9 +99,7 @@ _pgr_contraction(PG_FUNCTION_ARGS) {
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_ARRAYTYPE_P(1),
-                PG_GETARG_INT32(2),
-                PG_GETARG_ARRAYTYPE_P(3),
-                PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(2),
                 &result_tuples,
                 &result_count);
 

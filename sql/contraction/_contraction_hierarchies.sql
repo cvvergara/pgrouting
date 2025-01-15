@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: _contraction.sql
+File: _contraction_hierarchies.sql
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2016 Rohith Reddy
-Mail:
+Copyright (c) Aurélie Bousquet - 2024
+Mail: aurelie.bousquet at oslandia.com
 
 ------
 
@@ -27,17 +27,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---------------------
---------------------
--- contraction
---------------------
---------------------
+----------------------------
+----------------------------
+-- contraction_hierarchies
+----------------------------
+----------------------------
 
 --v3.0
-CREATE FUNCTION _pgr_contraction(
+CREATE FUNCTION _pgr_contraction_hierarchies(
     edges_sql TEXT,
-    contraction_order BIGINT[],
-    max_cycles INTEGER DEFAULT 1,
     forbidden_vertices BIGINT[] DEFAULT ARRAY[]::BIGINT[],
     directed BOOLEAN DEFAULT true,
 
@@ -53,5 +51,5 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_contraction(TEXT, BIGINT[], INTEGER, BIGINT[], BOOLEAN)
+COMMENT ON FUNCTION _pgr_contraction_hierarchies(TEXT, BIGINT[], BOOLEAN)
 IS 'pgRouting internal function';

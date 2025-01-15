@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: contractGraph_driver.cpp
+File: contractionHierarchies_driver.cpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2016 Rohith Reddy
-Mail:
+Copyright (c) Aurélie Bousquet - 2024
+Mail: aurelie.bousquet at oslandia.com
 
 ------
 
@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/contraction/contractGraph_driver.h"
+#include "drivers/contraction/contractionHierarchies_driver.h"
 
 #include <string>
 #include <sstream>
@@ -37,7 +37,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "cpp_common/pgdata_getters.hpp"
 #include "contraction/ch_graphs.hpp"
-#include "contraction/contract.hpp"
 
 #include "c_types/contracted_rt.h"
 #include "cpp_common/identifiers.hpp"
@@ -87,9 +86,7 @@ template <typename G>
 void process_contraction(
         G &graph,
         const std::vector< Edge_t > &edges,
-        const std::vector< int64_t > &forbidden_vertices,
-        const std::vector< int64_t > &contraction_order,
-        int64_t max_cycles) {
+        const std::vector< int64_t > &forbidden_vertices) {
     graph.insert_edges(edges);
     pgrouting::Identifiers<typename G::V> forbid_vertices;
     for (const auto &vertex : forbidden_vertices) {
@@ -104,9 +101,7 @@ void process_contraction(
     using Contract = pgrouting::contraction::Pgr_contract<G>;
     Contract result(
             graph,
-            forbid_vertices,
-            contraction_order,
-            max_cycles);
+            forbid_vertices);
 }
 
 template <typename G>
@@ -170,13 +165,9 @@ void get_postgres_result(
 
 
 void
-pgr_do_contractGraph(
+pgr_do_contractionHierarchies(
         char *edges_sql,
-
         ArrayType* forbidden,
-        ArrayType* order,
-
-        int64_t max_cycles,
         bool directed,
         contracted_rt **return_tuples,
         size_t *return_count,
@@ -223,14 +214,11 @@ pgr_do_contractGraph(
             }
         }
 
-
-
         if (directed) {
             using DirectedGraph = pgrouting::graph::CHDirectedGraph;
             DirectedGraph digraph;
 
-            process_contraction(digraph, edges, forbid, ordering,
-                    max_cycles);
+            process_contraction(digraph, edges, forbid);
 
             get_postgres_result(
                     digraph,
@@ -239,8 +227,7 @@ pgr_do_contractGraph(
         } else {
             using UndirectedGraph = pgrouting::graph::CHUndirectedGraph;
             UndirectedGraph undigraph;
-            process_contraction(undigraph, edges, forbid, ordering,
-                    max_cycles);
+            process_contraction(undigraph, edges, forbid);
 
             get_postgres_result(
                     undigraph,

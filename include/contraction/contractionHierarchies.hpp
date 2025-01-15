@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: linearContraction.hpp
+File: contractionhierarchies.hpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2016 Rohith Reddy
-Mail:
+Copyright (c) Aurélie Bousquet - 2024
+Mail: aurelie.bousquet at oslandia.com
 
 ------
 
@@ -27,8 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_CONTRACTION_LINEARCONTRACTION_HPP_
-#define INCLUDE_CONTRACTION_LINEARCONTRACTION_HPP_
+#ifndef INCLUDE_CONTRACTION_CONTRACTIONHIERARCHIES_HPP_
+#define INCLUDE_CONTRACTION_CONTRACTIONHIERARCHIES_HPP_
 #pragma once
 
 
@@ -48,7 +48,7 @@ namespace pgrouting {
 namespace contraction {
 
 template < class G >
-class Pgr_linear {
+class Pgr_contractionsHierarchy : public Pgr_messages {
  private:
      typedef typename G::V V;
      typedef typename G::V_i V_i;
@@ -198,4 +198,4 @@ class Pgr_linear {
 }  // namespace contraction
 }  // namespace pgrouting
 
-#endif  // INCLUDE_CONTRACTION_LINEARCONTRACTION_HPP_
+#endif  // INCLUDE_CONTRACTION_CONTRACTIONHIERARCHIES_HPP_
