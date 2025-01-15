@@ -54,10 +54,10 @@ template <class G, bool t_directed>
 class Pgr_contractionGraph :
     public Pgr_base_graph<G, CH_vertex, CH_edge, t_directed> {
  public:
-     typedef typename boost::graph_traits < G >::vertex_descriptor V;
-     typedef typename boost::graph_traits < G >::edge_descriptor E;
-     typedef typename boost::graph_traits < G >::out_edge_iterator EO_i;
-     typedef typename boost::graph_traits < G >::in_edge_iterator EI_i;
+    using V = typename boost::graph_traits<G>::vertex_descriptor;
+    using E = typename boost::graph_traits<G>::edge_descriptor;
+    using EO_i = typename boost::graph_traits<G>::out_edge_iterator;
+    using EI_i = typename boost::graph_traits<G>::in_edge_iterator;
 
      /*!
        Prepares the _graph_ to be of type *directed*
