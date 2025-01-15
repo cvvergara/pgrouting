@@ -21,11 +21,11 @@
 ``pgr_withPointsVia`` - Route that goes through a list of vertices and/or
 points.
 
-.. include:: proposed.rst
-   :start-after: warning-begin
-   :end-before: end-warning
-
 .. rubric:: Availability
+
+* Version 4.0.0
+
+  * **Official** function.
 
 * Version 3.4.0
 
@@ -57,7 +57,7 @@ Signatures
 -------------------------------------------------------------------------------
 
 .. index::
-    single: withPointsVia ; One Via - Proposed on v3.4
+    single: withPointsVia ; One Via
 
 One Via
 ...............................................................................
