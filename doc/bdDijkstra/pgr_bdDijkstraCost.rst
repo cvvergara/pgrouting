@@ -33,7 +33,7 @@ Dijkstra algorithm.
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to officia.
 
 * Version 2.5.0
 
