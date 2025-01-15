@@ -23,7 +23,7 @@ algorithm.
 
 * Version 4.0.0
 
-  * Combinations signature is **Official**.
+  * Combinations signature promoted to official.
 
 * Version 3.2.0
 
