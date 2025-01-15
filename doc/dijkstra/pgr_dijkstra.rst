@@ -175,7 +175,7 @@ Many to Many
    :end-before: -- q51
 
 .. index::
-    single: dijkstra ; Combinations - Proposed on v3.1
+    single: dijkstra ; Combinations
 
 Combinations
 ...............................................................................
