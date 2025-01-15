@@ -58,6 +58,9 @@ class Pgr_contractionGraph :
     using E = typename boost::graph_traits<G>::edge_descriptor;
     using EO_i = typename boost::graph_traits<G>::out_edge_iterator;
     using EI_i = typename boost::graph_traits<G>::in_edge_iterator;
+    using E_i = typename boost::graph_traits < G >::edge_iterator;
+    using V_p = typename std::pair< double, V >;
+    using PQ = typename std::priority_queue< V_p, std::vector<V_p>, std::greater<V_p> >;
 
      /*!
        Prepares the _graph_ to be of type *directed*
@@ -93,6 +96,35 @@ class Pgr_contractionGraph :
     }
 
     /*!
+        @brief defines the metric and hierarchy at the level of the nodes, from a given priority queue
+        @param [in] PQ priority_queue
+        @return void
+    */
+    void set_vertices_metric_and_hierarchy(
+        PQ priority_queue,
+        std::ostringstream &log
+    ) {
+        int64_t i = 0;
+        while (!priority_queue.empty()) {
+            i++;
+            std::pair< double, V > ordered_vertex = priority_queue.top();
+            priority_queue.pop();
+
+            (this->graph[ordered_vertex.second]).metric = ordered_vertex.first;
+            (this->graph[ordered_vertex.second]).vertex_order = i;
+
+            log << "(" << ordered_vertex.first << ", "
+                << (this->graph[ordered_vertex.second]).id
+                << ")" << std::endl;
+            log << " metric = "
+                << (this->graph[ordered_vertex.second]).metric
+                << " order = "
+                << (this->graph[ordered_vertex.second]).vertex_order
+                << std::endl;
+        }
+    }
+
+    /*!
         @brief get the vertex descriptors of adjacent vertices of *v*
         @param [in] v vertex_descriptor
         @return Identifiers<V>: The set of vertex descriptors adjacent to the given vertex *v*
@@ -107,6 +139,34 @@ class Pgr_contractionGraph :
         for (const auto &e : boost::make_iterator_range(
                 in_edges(v, this->graph)))
             adjacent_vertices += this->adjacent(v, e);
+
+        return adjacent_vertices;
+    }
+
+    /*!
+        @brief get the vertex descriptors of adjacent vertices of *v*
+        @param [in] v vertex_descriptor
+        @return Identifiers<V>: The set of out vertex descriptors adjacent to the given vertex *v*
+    */
+    Identifiers<V> find_adjacent_out_vertices(V v) const {
+        Identifiers<V> adjacent_vertices;
+
+        for (const auto &out : boost::make_iterator_range(out_edges(v, this->graph)))
+            adjacent_vertices += this->adjacent(v, out);
+
+        return adjacent_vertices;
+    }
+
+    /*!
+        @brief get the vertex descriptors of adjacent vertices of *v*
+        @param [in] v vertex_descriptor
+        @return Identifiers<V>: The set of in vertex descriptors adjacent to the given vertex *v*
+    */
+    Identifiers<V> find_adjacent_in_vertices(V v) const {
+        Identifiers<V> adjacent_vertices;
+
+        for (const auto &in : boost::make_iterator_range(in_edges(v, this->graph)))
+            adjacent_vertices += this->adjacent(v, in);
 
         return adjacent_vertices;
     }
@@ -139,9 +199,10 @@ class Pgr_contractionGraph :
     */
     Identifiers<int64_t> get_modified_vertices() {
         Identifiers<int64_t> vids;
-        for (const auto &v : boost::make_iterator_range(
-                boost::vertices(this->graph))) {
-            if ((this->graph[v]).has_contracted_vertices()) {
+        for (const auto &v :
+                boost::make_iterator_range(boost::vertices(this->graph))) {
+            if ((this->graph[v].vertex_order > 0)
+            || ((this->graph[v]).has_contracted_vertices())) {
                 vids += (this->graph[v]).id;
             }
         }
@@ -332,40 +393,62 @@ class Pgr_contractionGraph :
      }
 
     /**
+     @brief builds the shortcut information and adds it during contraction
+     or afterwards to copy them to the source graph
+     @param [in] u origin node of the shortcut
+     @param [in] v shortcuted node
+     @param [in] w destination node of the shortcut
+     @return CH_edge: object containing the shortcut edge
      *
      * u ----e1{v1}----> v ----e2{v2}----> w
      *
      * e1: min cost edge from u to v
      * e2: min cost edge from v to w
+     * 
      *
      * result:
      * u ---{v+v1+v2}---> w
      *
      */
-    void process_shortcut(V u, V v, V w) {
+    CH_edge process_shortcut(V u, V v, V w) {
         auto e1 = get_min_cost_edge(u, v);
         auto e2 = get_min_cost_edge(v, w);
 
-        if (std::get<1>(e1) && std::get<1>(e2)) {
-            auto contracted_vertices =
-                std::get<0>(e1).contracted_vertices() +
-                std::get<0>(e2).contracted_vertices();
-            double cost =
-                std::get<0>(e1).cost +
-                std::get<0>(e2).cost;
+        double cost = std::numeric_limits<double>::max();
+        if (std::get<1>(e1) && std::get<1>(e2))
+            cost = std::get<0>(e1).cost + std::get<0>(e2).cost;
 
-            const auto& vertex_data = this->graph[v];
-            contracted_vertices += vertex_data.id;
-            contracted_vertices += vertex_data.contracted_vertices();
+        // Create shortcut
+        CH_edge shortcut(
+            get_next_id(),
+            (this->graph[u]).id,
+            (this->graph[w]).id,
+            cost);
+        shortcut.add_contracted_vertex(this->graph[v]);
+        shortcut.add_contracted_vertices_from_edge(std::get<0>(e1));
+        shortcut.add_contracted_vertices_from_edge(std::get<0>(e2));
 
-            // Create shortcut
-            CH_edge shortcut(
-                get_next_id(),
-                (this->graph[u]).id,
-                (this->graph[w]).id,
-                cost);
-            shortcut.set_contracted_vertices(contracted_vertices);
-            add_shortcut(shortcut, u, w);
+        // Add shortcut in the current graph (to go on the process)
+        add_shortcut(shortcut, u, w);
+
+        return shortcut;
+    }
+
+    /*!
+        @brief copies shortcuts and modified vertices from another graph
+        @result void
+    */
+    void copy_shortcuts(
+        std::vector<pgrouting::CH_edge> &shortcuts,
+        std::ostringstream &log
+    ) {
+        for (auto it = shortcuts.begin(); it != shortcuts.end(); it++)
+        {
+            V u, v;
+            u = this->vertices_map[it->source];
+            v = this->vertices_map[it->target];
+            log << "Shortcut " << it->id << "(" << it->source << ", " << it->target << ")" << std::endl;
+            add_shortcut(*it, u, v);
         }
     }
 

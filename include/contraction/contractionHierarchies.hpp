@@ -59,17 +59,16 @@ namespace contraction {
 template < class G >
 class Pgr_contractionsHierarchy : public Pgr_messages {
  private:
-     using V = typename G::V;
-     using E = typename G::E;
-     using V_i = typename G::V_i;
-     using E_i = typename G::E_i;
-     using B_G = typename G::B_G;
-     using PQ = typename G::PQ;
-
-     PQ priority_queue;
+    using V = typename G::V;
+    using E = typename G::E;
+    using V_i = typename G::V_i;
+    using E_i = typename G::E_i;
+    using B_G = typename G::B_G;
+    using PQ = typename G::PQ;
+    PQ priority_queue;
 
  public:
-     double compute_pmax(
+    double compute_pmax(
         G &graph,
         V u,
         V v,
