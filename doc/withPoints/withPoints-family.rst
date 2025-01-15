@@ -14,13 +14,9 @@
 withPoints - Family of functions
 ===============================================================================
 
-When points are also given as input:
+When points are also given as input.
 
-.. include:: proposed.rst
-   :start-after: warning-begin
-   :end-before: end-warning
-
-.. proposed-start
+.. official-start
 
 - :doc:`pgr_withPoints` - Route from/to points anywhere on the graph.
 - :doc:`pgr_withPointsCost` - Costs of the shortest paths.
@@ -29,7 +25,7 @@ When points are also given as input:
 - :doc:`pgr_withPointsDD` - Driving distance.
 - :doc:`pgr_withPointsVia` - Via routing
 
-.. proposed-end
+.. official-end
 
 .. toctree::
     :hidden:
