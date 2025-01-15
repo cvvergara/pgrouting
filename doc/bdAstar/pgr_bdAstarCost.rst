@@ -23,7 +23,7 @@ A* algorithm.
 
 * Version 4.0.0
 
-  * Combinations signature is **Official**.
+  * Combinations signature promoted to official.
 
 * Version 3.2.0
 
@@ -33,7 +33,7 @@ A* algorithm.
 
 * Version 3.0.0
 
-  * **Official** function
+  * Function promoted to official.
 
 * Version 2.4.0
 
