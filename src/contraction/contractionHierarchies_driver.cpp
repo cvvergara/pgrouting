@@ -39,7 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "contraction/ch_graphs.hpp"
 #include "contraction/contractionHierarchies.hpp"
 
-#include "c_types/contracted_rt.h"
+#include "c_types/contraction_hierarchies_rt.h"
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/alloc.hpp"
 
@@ -105,7 +105,7 @@ void process_contraction(
 template <typename G>
 void get_postgres_result(
         G &graph,
-        contracted_rt **return_tuples,
+        contraction_hierarchies_rt **return_tuples,
         size_t *count) {
     using pgrouting::pgr_alloc;
     auto modified_vertices(graph.get_modified_vertices());
@@ -167,7 +167,7 @@ pgr_do_contractionHierarchies(
         char *edges_sql,
         ArrayType* forbidden,
         bool directed,
-        contracted_rt **return_tuples,
+        contraction_hierarchies_rt **return_tuples,
         size_t *return_count,
         char **log_msg,
         char **notice_msg,

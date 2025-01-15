@@ -45,6 +45,8 @@ struct contraction_hierarchies_rt {
     double cost;
     int64_t *contracted_vertices;
     int contracted_vertices_size;
+    int64_t vertex_order;
+    int64_t metric;
 };
 
 #endif  // INCLUDE_C_TYPES_CONTRACTED_RT_H_

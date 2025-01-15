@@ -45,11 +45,11 @@ extern "C" {
 #ifdef __cplusplus
 #   include <cstdint>
 #   include <cstddef>
-using contracted_rt = struct contracted_rt;
+using contraction_hierarchies_rt = struct contraction_hierarchies_rt;
 #else
 #   include <stdint.h>
 #   include <stddef.h>
-typedef struct contracted_rt contracted_rt;
+typedef struct contraction_hierarchies_rt contraction_hierarchies_rt;
 #endif
 
 
@@ -61,12 +61,11 @@ void pgr_do_contractionHierarchies(
         char*,
         ArrayType*,
         bool,
-        contracted_rt**,
+        contraction_hierarchies_rt**,
         size_t*,
         char**,
         char**,
         char**);
-
 #ifdef __cplusplus
 }
 #endif
