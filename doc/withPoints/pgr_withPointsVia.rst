@@ -15,7 +15,7 @@
 
 |
 
-``pgr_withPointsVia`` - Proposed
+``pgr_withPointsVia``
 ===============================================================================
 
 ``pgr_withPointsVia`` - Route that goes through a list of vertices and/or
