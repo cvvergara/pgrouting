@@ -23,20 +23,9 @@ Cost - Category
 * :doc:`pgr_dijkstraCost`
 * :doc:`pgr_bdDijkstraCost`
 * :doc:`pgr_dijkstraNearCost`
-
-.. official-end
-
-.. rubric:: Proposed
-
-.. include:: proposed.rst
-    :start-after: warning-begin
-    :end-before: end-warning
-
-.. proposed-start
-
 * :doc:`pgr_withPointsCost`
 
-.. proposed-end
+.. official-end
 
 
 General Information
