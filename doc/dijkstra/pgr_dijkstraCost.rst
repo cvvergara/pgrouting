@@ -155,7 +155,7 @@ Many to Many
     :end-before: -- q51
 
 .. index::
-    single: dijkstraCost ; Combinations - Proposed on v3.1
+    single: dijkstraCost ; Combinations
 
 Combinations
 ...............................................................................
