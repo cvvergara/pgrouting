@@ -150,7 +150,7 @@ Many to Many
    :end-before: -- q5
 
 .. index::
-    single: boykovKolmogorov ; Combinations - Proposed on v3.2
+    single: boykovKolmogorov ; Combinations
 
 Combinations
 ...............................................................................
