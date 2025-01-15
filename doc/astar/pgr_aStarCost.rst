@@ -23,7 +23,7 @@
 
 * Version 4.0.0
 
-  * Combinations signature is **Official**.
+  * Combinations signature promoted to official.
 
 * Version 3.2.0
 
@@ -33,7 +33,7 @@
 
 * Version 3.0.0
 
-  * Function promoted to **official**.
+  * Function promoted to official.
 
 * Version 2.4.0
 
