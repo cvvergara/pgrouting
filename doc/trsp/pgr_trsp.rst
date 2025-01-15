@@ -20,15 +20,15 @@
 
 ``pgr_trsp`` - routing vertices with restrictions.
 
-.. include:: proposed.rst
-   :start-after: warning-begin
-   :end-before: end-warning
-
 .. rubric:: Availability
+
+* Version 4.0.0
+
+  * **Official** function.
 
 * Version 3.4.0
 
-  * New proposed signatures
+  * New proposed signatures:
 
     * pgr_trsp(One to One)
     * pgr_trsp(One to Many)
