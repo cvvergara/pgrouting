@@ -20,9 +20,9 @@ pgr_withPointsKSP - Proposed
 
 ``pgr_withPointsKSP`` — Yen's algorithm for K shortest paths using Dijkstra.
 
-.. include:: proposed.rst
-   :start-after: warning-begin
-   :end-before: end-warning
+.. rubric:: Version 4.0.0
+
+* **Official** function.
 
 .. rubric:: Version 3.6.0
 
