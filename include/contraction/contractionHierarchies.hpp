@@ -263,7 +263,7 @@ class Pgr_contractionsHierarchy : public Pgr_messages {
         PQ minPQ;
         for (const auto &v :
             boost::make_iterator_range(boost::vertices(graph.graph))) {
-            if (!(graph.get_forbidden_vertices()).has(v)) {
+            if (!(graph.getForbiddenVertices()).has(v)) {
                 minPQ.push(
                     std::make_pair(
                         process_vertex_contraction(
