@@ -73,8 +73,16 @@ void perform(
         const std::vector< int64_t > &forbidden_vertices,
         std::ostringstream &log,
         std::ostringstream &err) {
-    graph.set_forbidden_vertices(forbidden_vertices);
-    Pgr_contractionsHierarchy<G> hierarchyContractor;
+    pgrouting::Identifiers<typename G::V> forbid_vertices;
+    for (const auto &vertex : forbidden_vertices) {
+        if (graph.has_vertex(vertex)) {
+            forbid_vertices += graph.get_V(vertex);
+        }
+    }
+
+    graph.setForbiddenVertices(forbid_vertices);
+    pgrouting::contraction::Pgr_contractionsHierarchy<G> hierarchyContractor;
+
     try {
         hierarchyContractor.do_contraction(graph, log, err);
     }
@@ -88,18 +96,15 @@ template <typename G>
 void process_contraction(
         G &graph,
         const std::vector< Edge_t > &edges,
-        const std::vector< int64_t > &forbidden_vertices) {
+        const std::vector< int64_t > &forbidden_vertices,
+        std::ostringstream &log,
+        std::ostringstream &err) {
     graph.insert_edges(edges);
-    pgrouting::Identifiers<typename G::V> forbid_vertices;
-    for (const auto &vertex : forbidden_vertices) {
-        if (graph.has_vertex(vertex))
-            forbid_vertices += graph.get_V(vertex); 
-    }
 
     /*
      * Function call to get the contracted graph.
      */
-    perform(graph, forbid_vertices);
+    perform(graph, forbidden_vertices, log, err);
 }
 
 template <typename G>
@@ -207,7 +212,7 @@ pgr_do_contractionHierarchies(
             using DirectedGraph = pgrouting::graph::CHDirectedGraph;
             DirectedGraph digraph;
 
-            process_contraction(digraph, edges, forbid);
+            process_contraction(digraph, edges, forbid, log, err);
 
             get_postgres_result(
                     digraph,
@@ -216,7 +221,7 @@ pgr_do_contractionHierarchies(
         } else {
             using UndirectedGraph = pgrouting::graph::CHUndirectedGraph;
             UndirectedGraph undigraph;
-            process_contraction(undigraph, edges, forbid);
+            process_contraction(undigraph, edges, forbid, log, err);
 
             get_postgres_result(
                     undigraph,
