@@ -33,7 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace pgrouting {
 
-void CH_edge::set_contracted_vertices(Identifiers<int64_t>& contracted_vertices_ids) {
+void CH_edge::set_contracted_vertices(
+    Identifiers<int64_t>& contracted_vertices_ids) {
     m_contracted_vertices = contracted_vertices_ids;
 }
 

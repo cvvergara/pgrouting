@@ -99,11 +99,13 @@ class Pgr_deadend {
             graph[v].contracted_vertices().clear();
             boost::clear_vertex(v, graph.graph);
 
-            /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+            /* abort in case of an interruption occurs
+            (e.g. the query is being cancelled) */
             CHECK_FOR_INTERRUPTS();
 
             for (const auto u : local) {
-                if (is_dead_end(graph, u) && !graph.getForbiddenVertices.has(u)) {
+                if (is_dead_end(graph, u)
+                    && !graph.getForbiddenVertices().has(u)) {
                     deadendVertices += u;
                 } else {
                     deadendVertices -= u;
