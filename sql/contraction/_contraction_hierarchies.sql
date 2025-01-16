@@ -33,11 +33,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ----------------------------
 ----------------------------
 
---v3.0
+--v4.0
 CREATE FUNCTION _pgr_contraction_hierarchies(
     edges_sql TEXT,
-    forbidden_vertices BIGINT[] DEFAULT ARRAY[]::BIGINT[],
-    directed BOOLEAN DEFAULT true,
+    forbidden_vertices BIGINT[],
+    directed BOOLEAN,
 
     OUT type TEXT,
     OUT id BIGINT,

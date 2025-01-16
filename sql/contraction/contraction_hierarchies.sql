@@ -38,7 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --------------------------------
 
 
---v3.0
+--v4.0
 CREATE FUNCTION pgr_contraction_hierarchies(
     TEXT,     -- edges_sql (required)
     forbidden_vertices BIGINT[] DEFAULT ARRAY[]::BIGINT[],
