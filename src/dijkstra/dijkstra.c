@@ -126,15 +126,6 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         if (PG_NARGS() == 7) {
-                    ereport(ERROR, (
-            errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-            errmsg("A stored procedure tried to use deprecated C internal function '%s'",
-                   __func__),
-            errdetail("Library function '%s' was deprecated in pgRouting %s", \
-                      __func__, "3.2"),
-            errhint("Consider upgrade pgRouting")));
-        PG_RETURN_POINTER(NULL);
-
             /* kept for backwards compatibility
              * TODO remove on 4.0.0 */
             process(

@@ -24,6 +24,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+--------------------
+-- pgr_dijkstraNear
+--------------------
+
+-- ONE to MANY
 --v3.2
 CREATE FUNCTION pgr_dijkstraNear(
     TEXT,     -- edges_sql (required)
@@ -44,7 +49,7 @@ CREATE FUNCTION pgr_dijkstraNear(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed, false, true, cap, true);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed, false, true, cap);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -71,7 +76,7 @@ CREATE FUNCTION pgr_dijkstraNear(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed, false, false, cap, true);
+    FROM _pgr_dijkstra(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed, false, false, cap);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
