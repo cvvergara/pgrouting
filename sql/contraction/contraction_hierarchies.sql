@@ -49,11 +49,13 @@ CREATE FUNCTION pgr_contraction_hierarchies(
     OUT contracted_vertices BIGINT[],
     OUT source BIGINT,
     OUT target BIGINT,
-    OUT cost FLOAT)
+    OUT cost FLOAT,
+    OUT metric BIGINT,
+    OUT vertex_order BIGINT)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT type, id, contracted_vertices, source, target, cost
-    FROM _pgr_contraction(_pgr_get_statement($1), $2::BIGINT[],  $3, $4, $5);
+    SELECT type, id, contracted_vertices, source, target, cost, metric, vertex_order
+    FROM _pgr_contraction_hierarchies(_pgr_get_statement($1), $2::BIGINT[],  $3);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
@@ -63,9 +65,7 @@ COMMENT ON FUNCTION pgr_contraction_hierarchies(TEXT, BIGINT[], BOOLEAN)
 IS 'pgr_contraction
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - ARRAY [Contraction order]
 - Optional Parameters
-    - max_cycles := 1
     - forbidden_vertices := ARRAY[]::BIGINT[]
     - directed := true
 - Documentation:

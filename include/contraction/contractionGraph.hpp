@@ -97,6 +97,24 @@ class Pgr_contractionGraph :
     }
 
     /*!
+        @brief for C calls: to get the metric of a node, directly from the graph
+        @param [in] v vertex_descriptor
+        @return int64_t: the value of the metric for node v
+    */
+    double get_vertex_metric(int64_t vertex_id) {
+        return (this->graph[this->vertices_map[vertex_id]]).metric;
+    }
+
+    /*!
+        @brief for C calls: to get the order of a node, directly from the graph
+        @param [in] v vertex_descriptor
+        @return int64_t: the order of node v
+    */
+    int64_t get_vertex_order(int64_t vertex_id) {
+        return (this->graph[this->vertices_map[vertex_id]]).vertex_order;
+    }
+
+    /*!
         @brief defines the metric and hierarchy at the level of the nodes, from a given priority queue
         @param [in] PQ priority_queue
         @return void

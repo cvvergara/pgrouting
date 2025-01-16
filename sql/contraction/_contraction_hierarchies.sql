@@ -44,7 +44,9 @@ CREATE FUNCTION _pgr_contraction_hierarchies(
     OUT contracted_vertices BIGINT[],
     OUT source BIGINT,
     OUT target BIGINT,
-    OUT cost FLOAT)
+    OUT cost FLOAT,
+    OUT metric BIGINT,
+    OUT vertex_order BIGINT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;

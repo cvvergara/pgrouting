@@ -119,6 +119,8 @@ void get_postgres_result(
         auto v = graph.get_V(id);
         int64_t* contracted_vertices = NULL;
         auto vids = graph[v].contracted_vertices();
+        int64_t o = graph.get_vertex_order(id);
+        int64_t m = graph.get_vertex_metric(id);
 
         contracted_vertices = pgr_alloc(vids.size(), contracted_vertices);
 
@@ -131,7 +133,8 @@ void get_postgres_result(
             const_cast<char*>("v"),
             -1, -1, -1.00,
             contracted_vertices,
-            count};
+            count,
+            o, m};
 
         ++sequence;
     }
@@ -140,7 +143,6 @@ void get_postgres_result(
     for (auto e : shortcut_edges) {
         auto edge = graph[e];
         int64_t* contracted_vertices = NULL;
-
         const auto vids(edge.contracted_vertices());
         pgassert(!vids.empty());
 
@@ -153,7 +155,7 @@ void get_postgres_result(
             --eid,
             const_cast<char*>("e"),
             edge.source, edge.target, edge.cost,
-            contracted_vertices, count};
+            contracted_vertices, count, -1, -1};
         ++sequence;
     }
 }
