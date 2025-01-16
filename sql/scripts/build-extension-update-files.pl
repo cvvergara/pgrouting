@@ -49,13 +49,11 @@ use vars qw/*name *dir *prune/;
 *dir    = *File::Find::dir;
 *prune  = *File::Find::prune;
 
-my $version_2_0 = qr/(2.0.[\d+])/;
-my $version_2_1 = qr/(2.1.[\d+])/;
-my $version_2_2 = qr/(2.2.[\d+])/;
-my $version_2_3 = qr/(2.3.[\d+])/;
-my $version_2_4 = qr/(2.4.[\d+])/;
-my $version_2_5 = qr/(2.5.[\d+])/;
-my $version_2_6 = qr/(2.6.[\d+])/;
+=pod
+Cant update from version 2.x because it use an old version of CGAL
+We can no longer build those versions on CI
+=cut
+
 my $version_3_0 = qr/(3.0.[\d+])/;
 my $version_3_1 = qr/(3.1.[\d+])/;
 my $version_3_2 = qr/(3.2.[\d+])/;
@@ -67,8 +65,9 @@ my $version_3_7 = qr/(3.7.[\d+])/;
 my $version_4_0 = qr/(4.0.[\d+])/;
 # add minor here
 
-my $version_2 = qr/(2.[\d+].[\d+])/;
 my $version_3 = qr/(3.[\d+].[\d+])/;
+my $version_4 = qr/(4.[\d+].[\d+])/;
+
 my $version_format = qr/([\d+].[\d+].[\d+])/;
 my $minor_format   = qr/([\d+].[\d+]).[\d+]/;
 my $mayor_format   = qr/([\d+]).[\d+].[\d+]/;
@@ -91,12 +90,12 @@ my $DEBUG = 1;
 
 
 print "DEBUG is on\n" if $DEBUG;
-print "build-extension-update-file $new_version $old_version $signature_dir $output_directory $DEBUG\n" if $DEBUG;
+print "build-extension-update-file $old_version to $new_version\n" if $DEBUG;
 
 die "ERROR: Wrong format for new version expected n.n.n got '$new_version'" unless $new_version =~ $version_format;
 die "ERROR: Wrong format for old version expected n.n.n got '$old_version'" unless $old_version =~ $version_format;
 die "ERROR: '$new_version' must be greater than '$old_version'" unless version->parse($new_version) > version->parse($old_version);
-die "ERROR: Can not update from '$old_version' must be at least '2.6.0'" if version->parse($old_version) < version->parse("2.6.0");
+die "ERROR: Can not update from '$old_version' must be at least '3.0.0'" if version->parse($old_version) < version->parse("3.0.0");
 
 my ($new_mayor) = $new_version  =~ $mayor_format;
 my ($old_mayor) = $old_version  =~ $mayor_format;
@@ -214,6 +213,7 @@ sub generate_upgrade_script {
     my %function_map = map { $_ => 1 } @{$new_signatures};
 
     if ($new_minor != $old_minor) {
+
         for my $old_function (sort @{$old_signatures}) {
             # Skip signatures from the old version that exist in the new version
             next if $function_map{$old_function};
@@ -229,20 +229,20 @@ sub generate_upgrade_script {
         }
 
         # updating to 3.4+
-        if ($old_mayor == 2 or $old_v < 3.4 ) {
+        if ($old_v < 3.4 ) {
             print "drop pgr_maxcardinalitymatch \n" if $DEBUG;
             push @commands, drop_special_case_function("pgr_maxcardinalitymatch(text,boolean)");
         }
 
         # updating to 3.5+
-        if ($old_mayor == 2 or $old_v < 3.5) {
+        if ($old_v < 3.5) {
             push @commands, drop_special_case_function("pgr_dijkstra(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,anyarray,boolean)");
             push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,bigint,boolean)");
         }
 
         # updating to 3.6+
-        if ($old_mayor == 2 or $old_v < 3.6) {
+        if ($old_v < 3.6) {
             push @commands, drop_special_case_function("pgr_withpointsksp(text, text, bigint, bigint, integer, boolean, boolean, char, boolean)");
             push @commands, drop_special_case_function("pgr_astar(text,anyarray,bigint,boolean,integer,double precision,double precision)");
             push @commands, drop_special_case_function("pgr_astar(text,bigint,anyarray,boolean,integer,double precision,double precision)");
@@ -283,9 +283,6 @@ sub generate_upgrade_script {
     # Special cases
     #------------------------------------
 
-    if ($old_mayor == 2) {
-        push @commands, update_from_version_2();
-    }
     if ("$old_version" eq "3.0.0") {
         push @commands, update_from_version_3_0_0();
     }
@@ -460,76 +457,11 @@ code beyond this point is v2.6 specific
 *****************************************************************
 =cut
 
-sub update_from_version_2 {
-    my @commands = ();
-    push @commands, "
----------------------------------------------
--- Updating from version 2.6
----------------------------------------------
-" if $DEBUG;
-    push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult;  DROP TYPE pgr_costresult CASCADE;\n";
-    push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult3; DROP TYPE pgr_costresult3 CASCADE;\n";
-    push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_geomresult;  DROP TYPE pgr_geomresult CASCADE;\n";
-    push @commands, dijkstra();
-    push @commands, allpairs();
-    push @commands, astar();
-    push @commands, withpoints();
-    push @commands, drivingDistance();
-    push @commands, ksp();
-    push @commands, bddijkstra();
-    push @commands, bdastar();
-    push @commands, flow();
-    push @commands, tsp();
-    push @commands, components();
-    push @commands, vrp();
-    push @commands, topology();
-    push @commands, version();
-    return @commands;
-}
-
 sub version {
     my @commands = ();
     push @commands, drop_special_case_function("pgr_version()");
     return @commands;
 }
-
-sub bddijkstra {
-    my @commands = ();
-
-    push @commands, drop_special_case_function("_pgr_bddijkstra(text,anyarray,anyarray,boolean,boolean)");
-    push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,anyarray,boolean)");
-
-    push @commands, update_pg_proc(
-        'pgr_bddijkstra',
-        'edges_sql,start_vid,end_vid,directed,seq,path_seq,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,node,edge,cost,agg_cost');
-    push @commands, update_pg_proc(
-        'pgr_bddijkstra',
-        'edges_sql,start_vid,end_vids,directed,seq,path_seq,end_vid,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,node,end_vid,edge,cost,agg_cost');
-    push @commands, update_pg_proc(
-        'pgr_bddijkstra',
-        'edges_sql,start_vids,end_vid,directed,seq,path_seq,start_vid,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,start_vid,node,edge,cost,agg_cost');
-    push @commands, update_pg_proc(
-        'pgr_bddijkstra',
-        'edges_sql,start_vids,end_vids,directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost');
-
-    # pgr_BDdijkstraCost
-    push @commands, update_pg_proc_short(
-        'pgr_bddijkstracost',
-        '"","","",directed,start_vid,end_vid,agg_cost');
-
-    # pgr_BDdijkstraCostMatrix
-    push @commands, update_pg_proc(
-        'pgr_bddijkstracostmatrix',
-        'edges_sql,vids,directed,start_vid,end_vid,agg_cost',
-        '"","",directed,start_vid,end_vid,agg_cost');
-
-    return @commands;
-}
-
 
 sub withpoints {
     my @commands = ();
@@ -634,7 +566,6 @@ sub allpairs {
 
 sub components {
     my @commands = ();
-=pod
     if ("$old_version" eq "3.0.0") {
         push @commands, update_proallargtypes(
             '_pgr_strongcomponents',
@@ -653,15 +584,7 @@ sub components {
             '25,23,20,20',
             '25,20,20,20');
     }
-=cut
 
-    if ($old_mayor == 2) {
-        push @commands, drop_special_case_function("pgr_connectedcomponents(text)");
-        push @commands, drop_special_case_function("pgr_strongcomponents(text)");
-        push @commands, drop_special_case_function("pgr_biconnectedcomponents(text)");
-        push @commands, drop_special_case_function("pgr_articulationpoints(text)");
-        push @commands, drop_special_case_function("pgr_bridges(text)");
-    }
 
     return @commands;
 }
