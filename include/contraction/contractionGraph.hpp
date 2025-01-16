@@ -182,9 +182,9 @@ class Pgr_contractionGraph :
         for (const auto &e : boost::make_iterator_range(edges(this->graph))) {
             if (this->graph[e].id < 0) {
                 eids.push_back(e);
-                pgassert(!(this->graph[e]).get_contracted_vertices().empty());
+                pgassert(!(this->graph[e]).contracted_vertices().empty());
             } else {
-                pgassert((this->graph[e]).get_contracted_vertices().empty());
+                pgassert((this->graph[e]).contracted_vertices().empty());
             }
         }
         std::sort(
@@ -430,8 +430,8 @@ class Pgr_contractionGraph :
             (this->graph[w]).id,
             cost);
         shortcut.add_contracted_vertex(this->graph[v]);
-        shortcut.add_contracted_vertices_from_edge(std::get<0>(e1));
-        shortcut.add_contracted_vertices_from_edge(std::get<0>(e2));
+        shortcut.add_contracted_edge_vertices(std::get<0>(e1));
+        shortcut.add_contracted_edge_vertices(std::get<0>(e2));
 
         // Add shortcut in the current graph (to go on the process)
         add_shortcut(shortcut, u, w);
