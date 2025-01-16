@@ -93,10 +93,10 @@ class Pgr_deadend {
                  *
                  * u{v1 + v + v2 + v3}     v{}
                  */
-                auto v2(graph.get_min_cost_edge(u, v));
-                graph[u].contracted_vertices() += std::get<1>(v2);
-                graph[u].contracted_vertices() += graph[v].id;
-                graph[u].contracted_vertices() += graph[v].contracted_vertices();
+                const auto& e = graph.get_min_cost_edge(u, v);
+                graph[u].contracted_vertices() +=
+                    std::get<0>(e).contracted_vertices();
+                graph[u].add_contracted_vertex(graph[v]);
 
                 deadendVertices -= v;
                 local += u;

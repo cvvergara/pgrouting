@@ -128,6 +128,10 @@ class Pgr_contractionGraph : public Pgr_base_graph<G, CH_vertex, CH_edge, t_dire
                 }
             }
         }
+        // To follow the principles presented
+        // for linear contraction in "issue_1002.pg" test 3
+        edge.set_contracted_vertices(contracted_vertices);
+        
         return std::make_tuple(edge, found);
     }
 
