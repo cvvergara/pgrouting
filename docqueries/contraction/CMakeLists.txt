@@ -2,6 +2,7 @@
 SET(LOCAL_FILES
     contraction-family
     contraction
+    contraction_hierarchies
     )
 
 foreach (f ${LOCAL_FILES})
