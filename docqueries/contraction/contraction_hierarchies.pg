@@ -1,15 +1,12 @@
 -- CopyRight(c) pgRouting developers
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 /* -- q1 */
-SELECT * FROM pgr_contraction(
-  'SELECT id, source, target, cost, reverse_cost FROM edges',
-  ARRAY[1, 2], directed => false);
+SELECT * FROM pgr_contraction_hierarchies(
+  'SELECT id, source, target, cost FROM edges',
+  directed => false);
 /* -- q2 */
-SELECT type, id, contracted_vertices FROM pgr_contraction(
-  'SELECT id, source, target, cost, reverse_cost FROM edges',
-  ARRAY[1]);
+SELECT * FROM pgr_contraction_hierarchies(
+  'SELECT id, source, target, cost FROM edges',
+  forbidden_vertices => ARRAY[6],
+  directed => false);
 /* -- q3 */
-SELECT * FROM pgr_contraction(
-  'SELECT id, source, target, cost, reverse_cost FROM edges',
-  ARRAY[2]);
-/* -- q4 */

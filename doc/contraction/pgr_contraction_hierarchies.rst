@@ -11,10 +11,10 @@
 
 
 
-``pgr_contraction``
+``pgr_contraction_hierarchies``
 ===============================================================================
 
-``pgr_contraction`` — Performs graph contraction and returns the contracted
+``pgr_contraction_hierarchies`` — Performs graph contraction and returns the contracted
 vertices and edges.
 
 .. figure:: images/boost-inside.jpeg
@@ -24,14 +24,7 @@ vertices and edges.
 
 .. rubric:: Availability
 
-* Version 3.0.0
-
-  * Result columns change: ``seq`` is removed
-  * Name change from ``pgr_contractGraph``
-  * Bug fixes
-  * **Official** function
-
-* Version 2.3.0
+* Version 4.0.0
 
   * New **experimental** function
 
@@ -39,31 +32,22 @@ vertices and edges.
 Description
 -------------------------------------------------------------------------------
 
-Contraction reduces the size of the graph by removing some of the vertices and
-edges and, for example, might add edges that represent a sequence of original
-edges decreasing the total time and space used in graph algorithms.
+In large graphs, like the road graphs or electric networks, graph contraction
+can be used to speed up some graph algorithms. Contraction hierarchies can reduce
+the size of explored graph by adding shortcut edges and by introducing an order
+between nodes, which gives a notion of priority to the shortest path algorithm
+used to find point to point paths. In this way, it decreases the total time and
+space used by shortest path algorithms.
 
-The main Characteristics are:
+This implementation allows the user to forbid contraction of a set of nodes.
+The process is done on edges with positive costs. 
 
-- Process is done only on edges with positive costs.
-- Does not return the full contracted graph
+As for ``pgr_contraction`` method, it does not return the full
+contracted graph, only the changes: added shortcut edges and contracted nodes.
+Furthermore, the returned values are ordered as follows:
 
-  - Only changes on the graph are returned
-
-- Currnetly there are two types of contraction methods
-
-  - Dead End Contraction
-  - Linear Contraction
-
-- The returned values include
-
-  - the added edges by linear contraction.
-  - the modified vertices by dead end contraction.
-
-- The returned values are ordered as follows:
-
-  - column ``id`` ascending when type is ``v``
-  - column ``id`` descending when type is ``e``
+  - column ``id`` ascending when type is ``v`` (vertex);
+  - column ``id`` descending when type is ``e`` (edge).
 
 
 Signatures
@@ -71,7 +55,7 @@ Signatures
 
 .. rubric:: Summary
 
-The pgr_contraction function has the following signature:
+The ``pgr_contraction_hierarchies`` function has the following signature:
 
 .. index::
    single: contraction
@@ -79,15 +63,14 @@ The pgr_contraction function has the following signature:
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_contraction(`Edges SQL`_, **contraction order**, [**options**])
+   | pgr_contraction_hierarchies(`Edges SQL`_, [**options**])
 
-   | **options:** ``[ max_cycles, forbidden_vertices, directed]``
-   | Returns set of |result-contract|
+   | **options:** ``[ forbidden_vertices, directed]``
+   | Returns set of |result-contraction-hierarchies|
 
-:Example: Making a dead end and linear contraction in that order on an
-          undirected graph.
+:Example: Building contraction hierarchies on an undirected graph.
 
-.. literalinclude:: contraction.queries
+.. literalinclude:: contraction_hierarchies.queries
    :start-after: -- q1
    :end-before: -- q2
 
@@ -105,12 +88,6 @@ Parameters
    * - `Edges SQL`_
      - ``TEXT``
      - `Edges SQL`_ as described below.
-   * - **contraction Order**
-     - ``ARRAY[`` **ANY-INTEGER** ``]``
-     - Ordered contraction operations.
-
-       - 1 = Dead end contraction
-       - 2 = Linear contraction
 
 Optional parameters
 ...............................................................................
@@ -119,7 +96,7 @@ Optional parameters
     :start-after: dijkstra_optionals_start
     :end-before: dijkstra_optionals_end
 
-Contraction optional parameters
+Contraction hierarchies optional parameters
 ...............................................................................
 
 .. list-table::
@@ -135,11 +112,10 @@ Contraction optional parameters
      - ``ARRAY[`` **ANY-INTEGER** ``]``
      - **Empty**
      - Identifiers of vertices forbidden for contraction.
-   * - ``max_cycles``
-     - ``INTEGER``
+   * - ``directed``
+     - ``BOOLEAN``
      - :math:`1`
-     - Number of times the contraction operations on ``contraction_order`` will
-       be performed.
+     - True if the graph is directed, False otherwise.
 
 Inner Queries
 -------------------------------------------------------------------------------
@@ -207,21 +183,25 @@ The function returns a single row. The columns of the row are:
      - * When ``type`` = **'v'**: :math:`-1`
        * When ``type`` = **'e'**: Weight of the current edge (``source``,
          ``target``).
+   * - ``metric``
+     - ``BIGINT``
+     - * When ``type`` = **'v'**: :math:`-1`
+       * When ``type`` = **'e'**: Weight of the current edge (``source``,
+         ``target``).
+   * - ``vertex_order``
+     - ``BIGINT``
+     - * When ``type`` = **'v'**: :math:`-1`
+       * When ``type`` = **'e'**: Weight of the current edge (``source``,
+         ``target``).
 
 Additional Examples
 -------------------------------------------------------------------------------
 
-:Example: Only dead end contraction
+:Example: with a set of forbidden vertices
 
-.. literalinclude:: contraction.queries
+.. literalinclude:: contraction_hierarchies.queries
    :start-after: -- q2
    :end-before: -- q3
-
-:Example: Only linear contraction
-
-.. literalinclude:: contraction.queries
-   :start-after: -- q3
-   :end-before: -- q4
 
 See Also
 -------------------------------------------------------------------------------
