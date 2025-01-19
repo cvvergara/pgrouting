@@ -139,6 +139,21 @@ _pgr_dijkstrav4(PG_FUNCTION_ARGS) {
                     &result_tuples,
                     &result_count);
 
+        } else if (PG_NARGS() == 9) {
+            if (PG_ARGISNULL(1)) PGR_DBG("is null");
+            process(
+                    text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    PG_ARGISNULL(1)? NULL : text_to_cstring(PG_GETARG_TEXT_P(1)),
+                    PG_ARGISNULL(2)? NULL : PG_GETARG_ARRAYTYPE_P(2),
+                    PG_ARGISNULL(3)? NULL : PG_GETARG_ARRAYTYPE_P(3),
+                    PG_GETARG_BOOL(4),
+                    PG_GETARG_BOOL(5),
+                    PG_GETARG_BOOL(6),
+                    PG_GETARG_INT64(7),
+                    PG_GETARG_BOOL(8),
+                    &result_tuples,
+                    &result_count);
+
         } else /* (PG_NARGS() == 6) */ {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),

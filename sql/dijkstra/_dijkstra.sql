@@ -28,11 +28,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
----------------
----------------
--- dijkstra
----------------
----------------
+--v4.0
+CREATE FUNCTION _pgr_dijkstrav4(
+    edges_sql TEXT,
+    combinations_sql TEXT,
+    start_vids ANYARRAY,
+    end_vids ANYARRAY,
+    directed BOOLEAN,
+    only_cost BOOLEAN,
+    normal BOOLEAN,
+    n_goals BIGINT,
+    global BOOLEAN,
+
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE;
+
 
 --v3.2
 CREATE FUNCTION _pgr_dijkstrav4(
