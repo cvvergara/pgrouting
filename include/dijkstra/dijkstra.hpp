@@ -58,6 +58,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace detail {
 
+/**
+ * @brief gets the path sequence
+ *
+ * For a given graph and a source with all the corresponding targets gets the path sequence
+ *
+ * @tparam G graph instance from Pgr_base_graph
+ * @tparam V graph The corresponding vertex descriptor
+ * @param[in] graph Original graph
+ * @param[in] source for this given source descriptor
+ * @param[in] targets to all the set of target descriptors
+ * @param[in] only_cost when @b true Only get the cost to reach the targets
+ * @param[in] predecessors vector result from processing
+ * @param[in] distance vector result from processings
+ *
+ * @returns the rows needed for postgres one Path per combination
+ */
 template <typename G, typename V>
 std::deque<pgrouting::Path> get_paths(
         const G &graph,
