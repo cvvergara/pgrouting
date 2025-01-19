@@ -46,6 +46,9 @@ PG_MODULE_MAGIC;
 PGDLLEXPORT Datum _pgr_dijkstrav4(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_dijkstrav4);
 
+PGDLLEXPORT Datum _pgr_dijkstra(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_dijkstra);
+
 static
 void
 process(
