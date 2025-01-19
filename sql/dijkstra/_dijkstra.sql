@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ---------------
 
 --v3.2
-CREATE FUNCTION _pgr_dijkstra(
+CREATE FUNCTION _pgr_dijkstrav4(
     edges_sql TEXT,
     start_vids ANYARRAY,
     end_vids ANYARRAY,
@@ -59,7 +59,7 @@ LANGUAGE C VOLATILE STRICT;
 
 
 --v3.2
-CREATE FUNCTION _pgr_dijkstra(
+CREATE FUNCTION _pgr_dijkstrav4(
     edges_sql TEXT,
     combinations_sql TEXT,
     directed BOOLEAN,
@@ -81,8 +81,8 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_dijkstra(TEXT, ANYARRAY, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION _pgr_dijkstrav4(TEXT, ANYARRAY, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_dijkstra(TEXT, TEXT, BOOLEAN, BOOLEAN, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION _pgr_dijkstrav4(TEXT, TEXT, BOOLEAN, BOOLEAN, BIGINT, BOOLEAN)
 IS 'pgRouting internal function';

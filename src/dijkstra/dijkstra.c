@@ -43,8 +43,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 PG_MODULE_MAGIC;
 
-PGDLLEXPORT Datum _pgr_dijkstra(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_dijkstra);
+PGDLLEXPORT Datum _pgr_dijkstrav4(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_dijkstrav4);
 
 static
 void
@@ -113,7 +113,7 @@ process(
 }
 
 PGDLLEXPORT Datum
-_pgr_dijkstra(PG_FUNCTION_ARGS) {
+_pgr_dijkstrav4(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
@@ -125,36 +125,7 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        if (PG_NARGS() == 7) {
-            /* kept for backwards compatibility
-             * TODO remove on 4.0.0 */
-            process(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
-                    PG_GETARG_ARRAYTYPE_P(1),
-                    PG_GETARG_ARRAYTYPE_P(2),
-                    PG_GETARG_BOOL(3),
-                    PG_GETARG_BOOL(4),
-                    PG_GETARG_BOOL(5),
-                    PG_GETARG_INT64(6),
-                    true,
-                    &result_tuples,
-                    &result_count);
-
-        } else if (PG_NARGS() == 5) {
-            /* kept for backwards compatibility
-             * TODO remove on 4.0.0 */
-            process(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    text_to_cstring(PG_GETARG_TEXT_P(1)),
-                    NULL, NULL,
-                    PG_GETARG_BOOL(2),
-                    PG_GETARG_BOOL(3),
-                    true, 0, true,
-                    &result_tuples,
-                    &result_count);
-
-        } else if (PG_NARGS() == 8) {
+        if (PG_NARGS() == 8) {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
                     NULL,
