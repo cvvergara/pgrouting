@@ -31,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CONTRACTION_LINEARCONTRACTION_HPP_
 #pragma once
 
-
 #include <queue>
 #include <functional>
 #include <vector>
@@ -44,7 +43,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/ch_edge.hpp"
 #include "cpp_common/identifiers.hpp"
 
-
 namespace pgrouting {
 namespace contraction {
 
@@ -55,7 +53,6 @@ class Pgr_linear {
      typedef typename G::V_i V_i;
      typedef typename G::B_G B_G;
      typedef typename G::E E;
-
 
  public:
      void operator()(G &graph, Identifiers<V>& forbidden_vertices) {
@@ -77,8 +74,6 @@ class Pgr_linear {
              }
          }
      }
-
-
 
      void doContraction(G &graph, Identifiers<V> forbidden_vertices) {
          graph.setForbiddenVertices(forbidden_vertices);

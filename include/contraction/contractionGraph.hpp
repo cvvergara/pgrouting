@@ -46,7 +46,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/ch_vertex.hpp"
 #include "cpp_common/ch_edge.hpp"
 
-
 namespace pgrouting {
 namespace graph {
 
@@ -277,7 +276,7 @@ class Pgr_contractionGraph :
         // To follow the principles presented
         // for linear contraction in "issue_1002.pg" test 3
         edge.set_contracted_vertices(contracted_vertices);
-        
+
         return std::make_tuple(edge, found);
     }
 

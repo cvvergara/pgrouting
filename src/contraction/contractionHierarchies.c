@@ -25,7 +25,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
- ********************************************************************PGR-GNU*/
+********************************************************************PGR-GNU*/
 
 #include <stdbool.h>
 
@@ -46,7 +46,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_contraction_hierarchies(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_contraction_hierarchies);
 
-
 static
 void
 process(char* edges_sql,
@@ -54,7 +53,6 @@ process(char* edges_sql,
         bool directed,
         contraction_hierarchies_rt **result_tuples,
         size_t *result_count) {
-
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;

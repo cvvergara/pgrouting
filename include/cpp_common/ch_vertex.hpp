@@ -62,6 +62,7 @@ class CH_vertex {
     bool has_contracted_vertices() const;
     void clear_contracted_vertices() {m_contracted_vertices.clear();}
     friend std::ostream& operator << (std::ostream& os, const CH_vertex& v);
+
  private:
     Identifiers<int64_t> m_contracted_vertices;
 };
