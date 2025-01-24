@@ -1,4 +1,5 @@
 add_library(trsp OBJECT
+    # keeping these for backwards compatibility
     edgeInfo.cpp
     trspHandler.cpp
 
