@@ -115,7 +115,7 @@ jobs:
           make -j 4
           sudo make install
 
-      - name: Update old version and test with current tests
+      - name: Test old version with currrent tests after installing current
         run: |
           sudo service postgresql start
           dropdb -p "${PGPORT}"  ___pgr___test___

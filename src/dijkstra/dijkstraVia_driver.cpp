@@ -170,6 +170,7 @@ pgr_do_dijkstraVia(
 
         // get the space required to store all the paths
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
+        log << "\nConverting a set of paths into the tuples";
         (*return_count) = (get_route(return_tuples, paths));
         (*return_tuples)[count - 1].edge = -2;
 

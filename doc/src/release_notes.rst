@@ -126,7 +126,6 @@ Changes:
   * pgr_tspeuclidean(text,bigint,bigint,integer)
 
 - New default parameter: max_cycles with default value `1`
->>>>>>> 887b8d60a2 (updating some files)
 
 pgRouting 3
 *******************************************************************************
