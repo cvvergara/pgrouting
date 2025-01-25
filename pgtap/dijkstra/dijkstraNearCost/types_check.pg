@@ -38,23 +38,22 @@ WHEN min_version('3.2.0') THEN
     function_returns('pgr_dijkstranearcost', ARRAY['text','text','boolean','bigint','boolean'],  'setof record'),
 
     set_eq(
-      $$SELECT  proargnames from pg_proc where proname = 'pgr_dijkstranearcost'$$,
-      $$VALUES
-      ('{"","","","directed","cap","start_vid","end_vid","agg_cost"}'::TEXT[]),
-      ('{"","","","directed","cap","start_vid","end_vid","agg_cost"}'::TEXT[]),
-      ('{"","","","directed","cap","global","start_vid","end_vid","agg_cost"}'::TEXT[]),
-      ('{"","","directed","cap","global","start_vid","end_vid","agg_cost"}'::TEXT[])
-      $$),
+    $$SELECT  proargnames from pg_proc where proname = 'pgr_dijkstranearcost'$$,
+    $$VALUES
+        ('{"","","","directed","cap","start_vid","end_vid","agg_cost"}'::TEXT[]),
+        ('{"","","","directed","cap","start_vid","end_vid","agg_cost"}'::TEXT[]),
+        ('{"","","","directed","cap","global","start_vid","end_vid","agg_cost"}'::TEXT[]),
+        ('{"","","directed","cap","global","start_vid","end_vid","agg_cost"}'::TEXT[])
+    $$),
 
-    -- parameter types
     set_eq(
-      $$SELECT  proallargtypes from pg_proc where proname = 'pgr_dijkstranearcost'$$,
-      $$VALUES
-      ('{25,2277,20,16,20,20,20,701}'::OID[]),
-      ('{25,25,16,20,16,20,20,701}'::OID[]),
-      ('{25,20,2277,16,20,20,20,701}'::OID[]),
-      ('{25,2277,2277,16,20,16,20,20,701}'::OID[])
-      $$))
+    $$SELECT  proallargtypes from pg_proc where proname = 'pgr_dijkstranearcost'$$,
+    $$VALUES
+    ('{25,2277,20,16,20,20,20,701}'::OID[]),
+    ('{25,25,16,20,16,20,20,701}'::OID[]),
+    ('{25,20,2277,16,20,20,20,701}'::OID[]),
+    ('{25,2277,2277,16,20,16,20,20,701}'::OID[])
+    $$))
 ELSE
   collect_tap(skip(1, 'pgr_dijkstranearcost is new on 3.2.0'))
 END;

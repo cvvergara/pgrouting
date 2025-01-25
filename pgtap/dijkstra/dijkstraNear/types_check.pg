@@ -37,6 +37,7 @@ WHEN min_version('3.2.0') THEN
     function_returns('pgr_dijkstranear', ARRAY['text','anyarray','anyarray','boolean','bigint','boolean'],  'setof record'),
     function_returns('pgr_dijkstranear', ARRAY['text','text','boolean','bigint','boolean'],  'setof record'),
 
+    -- parameter's names
     set_eq(
       $$SELECT  proargnames from pg_proc where proname = 'pgr_dijkstranear'$$,
       $$VALUES
