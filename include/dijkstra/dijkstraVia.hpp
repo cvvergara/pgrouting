@@ -92,7 +92,7 @@ dijkstraVia(
         }
 
         log << "\nfrom " << prev_vertex << " to " << vertex;
-        path = pgrouting::algorithms::dijkstra(graph, prev_vertex, vertex, false);
+        path = algorithms::dijkstra(graph, prev_vertex, vertex);
 
         if (!U_turn_on_edge && i > 1) {
             graph.restore_graph();
@@ -103,7 +103,7 @@ dijkstraVia(
                  */
                 log << "\nEmpty so again from "
                     << prev_vertex << " to " << vertex;
-                path = pgrouting::algorithms::dijkstra(graph, prev_vertex, vertex);
+                path = algorithms::dijkstra(graph, prev_vertex, vertex);
             }
         }
 

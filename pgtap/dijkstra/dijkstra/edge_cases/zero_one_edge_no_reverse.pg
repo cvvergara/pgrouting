@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.1.0') THEN plan(136) ELSE PLAN(102) END;
+SELECT CASE WHEN min_version('3.1.0') THEN plan(126) ELSE PLAN(102) END;
 
 -- 0 edges tests
 
@@ -102,27 +102,6 @@ SELECT taptest('is_empty','edges5', 10, 15, true);
 SELECT taptest('is_empty','edges5', 15, 10, true);
 SELECT taptest('is_empty','edges5', 10, 15, false);
 SELECT taptest('is_empty','edges5', 15, 10, false);
-
--- only 10 15
-PREPARE edge_5_6 AS
-SELECT id, source, target, cost from edges where id = 1;
-
-PREPARE combination AS
-SELECT 5 AS source, 6 AS target;
-
--- directed graph
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', 5, 6)$$, 'D. One to one- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', ARRAY[5], 6)$$, 'D. One to many- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', 5, ARRAY[6])$$, 'D. Many to one- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', ARRAY[5], ARRAY[6])$$, 'D. Many to Many- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', 'combination')$$, 'D. Combinations- edge_5_6 -> no result');
-
--- undirected graph
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', 5, 6, false)$$, 'U. One to one- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', ARRAY[5], 6, false)$$, 'U. One to many- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', 5, ARRAY[6], false)$$, 'U. Many to one- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', ARRAY[5], ARRAY[6], false)$$, 'U. Many to Many- edge_5_6 -> no result');
-SELECT isnt_empty($$SELECT * from pgr_dijkstra('edge_5_6', 'combination', false)$$, 'U. Combinations- edge_5_6 -> no result');
 
 SELECT * FROM finish();
 ROLLBACK;

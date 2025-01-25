@@ -23,7 +23,7 @@ BEGIN;
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(1);
 
-create or REPLACE FUNCTION edge_cases()
+create or REPLACE FUNCTION foo()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
@@ -44,7 +44,7 @@ END
 $BODY$
 language plpgsql;
 
-SELECT edge_cases();
+SELECT foo();
 SELECT finish();
 ROLLBACK;
 
