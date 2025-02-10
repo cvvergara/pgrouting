@@ -106,65 +106,6 @@ void process_contraction(
      */
     perform(graph, forbidden_vertices, log, err);
 }
-
-template <typename G>
-void get_postgres_result(
-        G &graph,
-        contraction_hierarchies_rt **return_tuples,
-        size_t *count) {
-    using pgrouting::pgr_alloc;
-    auto modified_vertices(graph.get_modified_vertices());
-    auto shortcut_edges(graph.get_shortcuts());
-
-    (*count) = modified_vertices.size() + shortcut_edges.size();
-    (*return_tuples) = pgr_alloc((*count), (*return_tuples));
-    size_t sequence = 0;
-
-    for (const auto id : modified_vertices) {
-        auto v = graph.get_V(id);
-        int64_t* contracted_vertices = NULL;
-        auto vids = graph[v].contracted_vertices();
-        int64_t o = graph.get_vertex_order(id);
-        int64_t m = graph.get_vertex_metric(id);
-
-        contracted_vertices = pgr_alloc(vids.size(), contracted_vertices);
-
-        int count = 0;
-        for (const auto id : vids) {
-            contracted_vertices[count++] = id;
-        }
-        (*return_tuples)[sequence] = {
-            id,
-            const_cast<char*>("v"),
-            -1, -1, -1.00,
-            contracted_vertices,
-            count,
-            o, m};
-
-        ++sequence;
-    }
-
-    int64_t eid = 0;
-    for (auto e : shortcut_edges) {
-        auto edge = graph[e];
-        int64_t* contracted_vertices = NULL;
-        const auto vids(edge.contracted_vertices());
-        pgassert(!vids.empty());
-
-        contracted_vertices = pgr_alloc(vids.size(), contracted_vertices);
-        int count = 0;
-        for (const auto vid : vids) {
-            contracted_vertices[count++] = vid;
-        }
-        (*return_tuples)[sequence] = {
-            --eid,
-            const_cast<char*>("e"),
-            edge.source, edge.target, edge.cost,
-            contracted_vertices, count, -1, -1};
-        ++sequence;
-    }
-}
-
 }  // namespace
 
 
