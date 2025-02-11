@@ -36,79 +36,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 
 #include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/to_postgres.hpp"
 #include "contraction/ch_graphs.hpp"
 #include "contraction/contractionHierarchies.hpp"
 
 #include "c_types/contraction_hierarchies_rt.h"
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/alloc.hpp"
-
-namespace {
-
-/*! @brief vertices with at least one contracted vertex
-
-  @result The vids Identifiers with at least one contracted vertex
-*/
-template <typename G>
-std::vector<typename G::E> get_shortcuts(const G& graph) {
-    using E = typename G::E;
-    pgrouting::Identifiers<E> eids;
-    for (auto e : boost::make_iterator_range(boost::edges(graph.graph))) {
-        if (graph[e].id < 0) {
-            eids += e;
-            pgassert(!graph[e].contracted_vertices().empty());
-        } else {
-            pgassert(graph[e].contracted_vertices().empty());
-        }
-    }
-    std::vector<E> o_eids(eids.begin(), eids.end());
-    std::sort(o_eids.begin(), o_eids.end(),
-            [&](E lhs, E rhs) {return -graph[lhs].id < -graph[rhs].id;});
-    return o_eids;
-}
-
-template <typename G>
-void perform(
-        G &graph,
-        const std::vector< int64_t > &forbidden_vertices,
-        std::ostringstream &log,
-        std::ostringstream &err) {
-    pgrouting::Identifiers<typename G::V> forbid_vertices;
-    for (const auto &vertex : forbidden_vertices) {
-        if (graph.has_vertex(vertex)) {
-            forbid_vertices += graph.get_V(vertex);
-        }
-    }
-
-    graph.setForbiddenVertices(forbid_vertices);
-    pgrouting::contraction::Pgr_contractionsHierarchy<G> hierarchyContractor;
-
-    try {
-        hierarchyContractor.do_contraction(graph, log, err);
-    }
-    catch ( ... ) {
-        err << "Contractions hierarchy failed" << std::endl;
-        throw;
-    }
-}
-
-template <typename G>
-void process_contraction(
-        G &graph,
-        const std::vector< Edge_t > &edges,
-        const std::vector< int64_t > &forbidden_vertices,
-        std::ostringstream &log,
-        std::ostringstream &err) {
-    graph.insert_edges(edges);
-
-    /*
-     * Function call to get the contracted graph.
-     */
-    perform(graph, forbidden_vertices, log, err);
-}
-}  // namespace
-
-
 
 void
 pgr_do_contractionHierarchies(
@@ -153,18 +87,17 @@ pgr_do_contractionHierarchies(
             using DirectedGraph = pgrouting::graph::CHDirectedGraph;
             DirectedGraph digraph;
 
-            process_contraction(digraph, edges, forbid, log, err);
-
-            get_postgres_result(
+            detail::process_contraction(digraph, edges, forbid, log, err);
+            detail::get_postgres_result_contraction_hierarchies(
                     digraph,
                     return_tuples,
                     return_count);
         } else {
             using UndirectedGraph = pgrouting::graph::CHUndirectedGraph;
             UndirectedGraph undigraph;
-            process_contraction(undigraph, edges, forbid, log, err);
 
-            get_postgres_result(
+            detail::process_contraction(undigraph, edges, forbid, log, err);
+            detail::get_postgres_result_contraction_hierarchies(
                     undigraph,
                     return_tuples,
                     return_count);

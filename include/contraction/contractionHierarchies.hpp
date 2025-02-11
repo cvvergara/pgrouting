@@ -44,6 +44,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
 #include "cpp_common/alloc.hpp"
+#include "cpp_common/ch_edge.hpp"
 #include "cpp_common/messages.hpp"
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/interruption.hpp"
@@ -94,12 +95,12 @@ class Pgr_contractionsHierarchy : public Pgr_messages {
     }
 
     /*! 
-    @brief contracts vertex *v* 
-    @param [in] G graph
-    @param [in] v vertex_descriptor
-    @param [in] log log output
-    @param [in] err err output
-    @return contraction metric: the node-contraction associated metrics
+        @brief contracts vertex *v* 
+        @param [in] G graph
+        @param [in] v vertex_descriptor
+        @param [in] log log output
+        @param [in] err err output
+        @return contraction metric: the node-contraction associated metrics
     */
     int64_t process_vertex_contraction(
         G &graph,
