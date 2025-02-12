@@ -59,7 +59,7 @@ process(char* edges_sql,
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    pgr_do_contractionHierarchies(
+    pgr_contraction_hierarchies(
             edges_sql,
             forbidden,
             directed,

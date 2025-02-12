@@ -280,6 +280,31 @@ class Pgr_contractionGraph :
         return std::make_tuple(edge, found);
     }
 
+    /*! @brief computes p_max used in the contraction hierarchies method
+    */
+    int64_t compute_pmax(
+        V u,
+        V v,
+        Identifiers<V> out_vertices) {
+
+        int64_t p_max;
+        E e, f;
+        bool found_e, found_f;
+        p_max = 0;
+        boost::tie(e, found_e) = boost::edge(u, v, this->graph);
+
+        if (found_e) {
+            p_max = this->graph[e].cost;
+            for (V w : out_vertices) {
+                boost::tie(f, found_f) = boost::edge(v, w, this->graph);
+                if ((found_f) && (u != w)) {
+                    if ((this->graph[e].cost + this->graph[f].cost) > p_max)
+                        p_max = this->graph[e].cost + this->graph[f].cost;
+                }
+            }
+        }
+        return p_max;
+    }
 
      /*! @brief print the graph with contracted vertices of
        all vertices and edges

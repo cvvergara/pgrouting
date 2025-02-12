@@ -57,7 +57,7 @@ typedef struct contraction_hierarchies_rt contraction_hierarchies_rt;
 extern "C" {
 #endif
 
-void pgr_do_contractionHierarchies(
+void pgr_contraction_hierarchies(
         char*,
         ArrayType*,
         bool,

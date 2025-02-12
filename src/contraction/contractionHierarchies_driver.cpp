@@ -45,7 +45,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 
 void
-pgr_do_contractionHierarchies(
+pgr_contraction_hierarchies(
         char *edges_sql,
         ArrayType* forbidden,
         bool directed,
@@ -87,7 +87,7 @@ pgr_do_contractionHierarchies(
             using DirectedGraph = pgrouting::graph::CHDirectedGraph;
             DirectedGraph digraph;
 
-            detail::process_contraction(digraph, edges, forbid, log, err);
+            detail::perform_contraction_hierarchies(digraph, edges, forbid, log, err);
             detail::get_postgres_result_contraction_hierarchies(
                     digraph,
                     return_tuples,
@@ -96,7 +96,7 @@ pgr_do_contractionHierarchies(
             using UndirectedGraph = pgrouting::graph::CHUndirectedGraph;
             UndirectedGraph undigraph;
 
-            detail::process_contraction(undigraph, edges, forbid, log, err);
+            detail::perform_contraction_hierarchies(undigraph, edges, forbid, log, err);
             detail::get_postgres_result_contraction_hierarchies(
                     undigraph,
                     return_tuples,

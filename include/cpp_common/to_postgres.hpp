@@ -85,23 +85,27 @@ namespace detail {
     @param [in/out] err string stream containing err information
  */
 template <class G>
-void perform(
+void perform_contraction_hierarchies(
         G &graph,
+        const std::vector< Edge_t > &edges,
         const std::vector< int64_t > &forbidden_vertices,
         std::ostringstream &log,
         std::ostringstream &err) {
+    // Create the graph
+    graph.insert_edges(edges);
+
+    // Transform the forbidden vertices IDs vector to a collection of vertices
     pgrouting::Identifiers<typename G::V> forbid_vertices;
     for (const auto &vertex : forbidden_vertices) {
         if (graph.has_vertex(vertex)) {
             forbid_vertices += graph.get_V(vertex);
         }
     }
-
     graph.setForbiddenVertices(forbid_vertices);
-    pgrouting::contraction::Pgr_contractionsHierarchy<G> hierarchyContractor;
 
+    // Execute the contraction
     try {
-        hierarchyContractor.do_contraction(graph, log, err);
+        pgrouting::functions::contraction_hierarchies(graph, log, err);
     }
     catch ( ... ) {
         err << "Contractions hierarchy failed" << std::endl;
@@ -172,47 +176,6 @@ void get_postgres_result_contraction_hierarchies(
     }
 }
 
-/*! @brief vertices with at least one contracted vertex
-    @param [in] graph created graph
-    @param [in] edges vector of edges corresponding to the graph
-    built by the SQL query passed to the SQL function
-    @param [in] forbidden_vertices 
-    @param [in] [out] log string stream containing log information
-    @param [in] [out] err string stream containing err information
-*/
-template <class G>
-void process_contraction(
-        G &graph,
-        const std::vector< Edge_t > &edges,
-        const std::vector< int64_t > &forbidden_vertices,
-        std::ostringstream &log,
-        std::ostringstream &err) {
-
-    graph.insert_edges(edges);
-    perform(graph, forbidden_vertices, log, err);
-}
-
-/*! @brief vertices with at least one contracted vertex
-    @param [in] graph created graph
-    @result The vids Identifiers with at least one contracted vertex
-*/
-template <class G>
-std::vector<typename G::E> get_shortcuts(const G& graph) {
-    using E = typename G::E;
-    pgrouting::Identifiers<E> eids;
-    for (auto e : boost::make_iterator_range(boost::edges(graph.graph))) {
-        if (graph[e].id < 0) {
-            eids += e;
-            pgassert(!graph[e].contracted_vertices().empty());
-        } else {
-            pgassert(graph[e].contracted_vertices().empty());
-        }
-    }
-    std::vector<E> o_eids(eids.begin(), eids.end());
-    std::sort(o_eids.begin(), o_eids.end(),
-            [&](E lhs, E rhs) {return -graph[lhs].id < -graph[rhs].id;});
-    return o_eids;
-}
 }
 
 #endif  // INCLUDE_CPP_COMMON_TO_POSTGRES_HPP_
