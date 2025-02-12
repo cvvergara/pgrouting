@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) pgRouting Contributors - Version v3.7
+# Copyright (C) pgRouting Contributors - Version v3.8
 # This file is distributed under the same license as the pgRouting package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: pgRouting v3.7\n"
+"Project-Id-Version: pgRouting v3.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-12 01:00+0000\n"
+"POT-Creation-Date: 2025-02-12 12:00-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -266,6 +266,9 @@ msgid ":ref:`genindex`"
 msgstr ""
 
 msgid ":ref:`search`"
+msgstr ""
+
+msgid "Boost Graph inside"
 msgstr ""
 
 msgid "DFS - Category"
@@ -3925,169 +3928,151 @@ msgstr ""
 msgid ":doc:`release_notes`"
 msgstr ""
 
-msgid "pgRouting 4.0.0 Release Notes"
+msgid "pgRouting 3.8.0 Release Notes"
 msgstr ""
 
-msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 4.0.0 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%204.0.0%22>`__"
+msgid "No Changes Yet"
 msgstr ""
 
-msgid "Functions promoted to official"
+msgid "pgRouting 3.7.3 Release Notes"
 msgstr ""
 
-msgid "pgr_trsp"
+msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.3 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.3%22>`__"
 msgstr ""
 
-msgid "pgr_trspVia"
+msgid "`#2731 <https://github.com/pgRouting/pgrouting/pull/2731>`__ Build Failure on Ubuntu 22"
 msgstr ""
 
-msgid "pgr_trspVia_withPoints"
+msgid "pgRouting 3.7.2 Release Notes"
 msgstr ""
 
-msgid "pgr_trsp_withPoints"
+msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.2 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.2%22>`__"
 msgstr ""
 
-msgid "pgr_withPoints"
+msgid "Build"
 msgstr ""
 
-msgid "pgr_withPointsCost"
+msgid "`#2713 <https://github.com/pgRouting/pgrouting/pull/2713>`__ cmake missing some policies and min version"
 msgstr ""
 
-msgid "pgr_withPointsCostMatrix"
+msgid "Using OLD policies: CMP0148, CMP0144, CMP0167"
 msgstr ""
 
-msgid "pgr_withPointsDD"
+msgid "Minimum cmake version 3.12"
 msgstr ""
 
-msgid "pgr_withPointsKSP"
+msgid "Bug fixes"
 msgstr ""
 
-msgid "pgr_withPointsVia"
+msgid "`#2707 <https://github.com/pgRouting/pgrouting/pull/2707>`__ Build failure in pgRouting 3.7.1 on Alpine"
 msgstr ""
 
-msgid "Signatures promoted to official"
+msgid "`#2706 <https://github.com/pgRouting/pgrouting/pull/2706>`__ winnie crashing on pgr_betweennessCentrality"
 msgstr ""
 
-msgid "pgr_aStar(Combinations)"
+msgid "pgRouting 3.7.1 Release Notes"
 msgstr ""
 
-msgid "pgr_aStarCost(Combinations)"
+msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.1 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.1%22>`__"
 msgstr ""
 
-msgid "pgr_bdAstar(Combinations)"
+msgid "`#2680 <https://github.com/pgRouting/pgrouting/pull/2680>`__ fails to compile under mingw64 gcc 13.2"
 msgstr ""
 
-msgid "pgr_bdAstarCost(Combinations)"
+msgid "`#2689 <https://github.com/pgRouting/pgrouting/pull/2689>`__ When point is a vertex, the withPoints family do not return results."
 msgstr ""
 
-msgid "pgr_bdDijkstra(Combinations)"
+msgid "C/C++ code enhancemet"
 msgstr ""
 
-msgid "pgr_bdDijkstraCost(Combinations)"
+msgid "TRSP family"
 msgstr ""
 
-msgid "pgr_dijkstra(Combinations)"
+msgid "pgRouting 3.7.0 Release Notes"
 msgstr ""
 
-msgid "pgr_dijkstraCost(Combinations)"
+msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.0 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.0%22>`__"
 msgstr ""
 
-msgid "pgr_KSP(All signatures)"
+msgid "Support"
 msgstr ""
 
-msgid "pgr_boykovKolmogorov(Combinations)"
+msgid "`#2656 <https://github.com/pgRouting/pgrouting/pull/2656>`__ Stop support of PostgreSQL12 on pgrouting v3.7"
 msgstr ""
 
-msgid "pgr_edmondsKarp(Combinations)"
+msgid "Stopping support of PostgreSQL 12"
 msgstr ""
 
-msgid "pgr_maxFlow(Combinations)"
+msgid "CI does not test for PostgreSQL 12"
 msgstr ""
 
-msgid "pgr_pushRelabel(Combinations)"
+msgid "New experimental functions"
 msgstr ""
 
-msgid "code enhancements:"
+msgid "Metrics"
 msgstr ""
 
-msgid "Removal of unused C/C++ code"
+msgid "pgr_betweennessCentrality"
 msgstr ""
 
-msgid "Removal of SQL deprecated functions"
+msgid "Official functions changes"
 msgstr ""
 
-msgid "pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)"
+msgid "`#2605 <https://github.com/pgRouting/pgrouting/pull/2605>`__ Standarize spanning tree functions output"
 msgstr ""
 
-msgid "pgr_trsp(text,integer,integer,boolean,boolean,text)"
+msgid "Functions:"
 msgstr ""
 
-msgid "pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)"
+msgid "``pgr_kruskalDD``"
 msgstr ""
 
-msgid "pgr_trspviavertices(text,anyarray,boolean,boolean,text)"
+msgid "``pgr_kruskalDFS``"
 msgstr ""
 
-msgid "Removal of SQL deprecated internal functions"
+msgid "``pgr_kruskalBFS``"
 msgstr ""
 
-msgid "_pgr_dijkstranear(text,anyarray,anyarray,bigint,boolean)"
+msgid "``pgr_primDD``"
 msgstr ""
 
-msgid "_pgr_dijkstranear(text,anyarray,bigint,bigint,boolean)"
+msgid "``pgr_primDFS``"
 msgstr ""
 
-msgid "_pgr_dijkstranear(text,bigint,anyarray,bigint,boolean)"
+msgid "``pgr_primBFS``"
 msgstr ""
 
-msgid "_pgr_dijkstra(text,anyarray,anyarray,boolean,boolean,boolean,bigint)"
+msgid "Standarizing output columns to |result-spantree|"
 msgstr ""
 
-msgid "_pgr_dijkstra(text,text,boolean,boolean,boolean)"
+msgid "Added ``pred`` result columns."
 msgstr ""
 
-msgid "_pgr_drivingdistance(text,anyarray,double precision,boolean,boolean)"
+msgid "Experimental promoted to proposed."
 msgstr ""
 
-msgid "_pgr_kruskal(text,anyarray,text,bigint,double precision)"
+msgid "`#2635 <https://github.com/pgRouting/pgrouting/pull/2635>`__ pgr_LineGraph ignores directed flag and use negative values for identifiers."
 msgstr ""
 
-msgid "_pgr_prim(text,anyarray,text,bigint,double precision)"
+msgid "``pgr_lineGraph``"
 msgstr ""
 
-msgid "_pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)"
+msgid "Function promoted to proposed."
 msgstr ""
 
-msgid "_pgr_trsp(text,text,anyarray,anyarray,boolean)"
+msgid "Works for directed and undirected graphs."
 msgstr ""
 
-msgid "_pgr_trsp(text,text,anyarray,bigint,boolean)"
+msgid "Code enhancement"
 msgstr ""
 
-msgid "_pgr_trsp(text,text,bigint,anyarray,boolean)"
+msgid "`#2599 <https://github.com/pgRouting/pgrouting/pull/2599>`__ Driving distance cleanup"
 msgstr ""
 
-msgid "_pgr_trsp(text,text,bigint,bigint,boolean)"
+msgid "`#2607 <https://github.com/pgRouting/pgrouting/pull/2607>`__ Read postgresql data on C++"
 msgstr ""
 
-msgid "_pgr_trspviavertices(text,integer[],boolean,boolean,text)"
-msgstr ""
-
-msgid "_pgr_withpointsvia(text,bigint[],double precision[],boolean)"
-msgstr ""
-
-msgid "_trsp(text,text,anyarray,anyarray,boolean)"
-msgstr ""
-
-msgid "_v4trsp(text,text,anyarray,anyarray,boolean)"
-msgstr ""
-
-msgid "_v4trsp(text,text,text,boolean)"
-msgstr ""
-
-msgid "Deprecation of internal C/C++ functions"
-msgstr ""
-
-msgid "Internal C/C++ functions in legacy"
+msgid "`#2614 <https://github.com/pgRouting/pgrouting/pull/2614>`__ Clang tidy does not work"
 msgstr ""
 
 msgid "All releases"
@@ -4327,19 +4312,10 @@ msgstr ""
 msgid "|result-bfs|"
 msgstr ""
 
-msgid "``pgr_kruskalDD``"
-msgstr ""
-
 msgid "Single vertex"
 msgstr ""
 
 msgid "Multiple vertices"
-msgstr ""
-
-msgid "``pgr_kruskalDFS``"
-msgstr ""
-
-msgid "``pgr_kruskalBFS``"
 msgstr ""
 
 msgid "Output columns were |result-bfs|"
@@ -4466,15 +4442,6 @@ msgid "Migration of ``pgr_primDD`` / ``pgr_primBFS`` / ``pgr_primDFS``"
 msgstr ""
 
 msgid "Starting from `v3.7.0 <https://docs.pgrouting.org/3.7/en/migration.html>`__ :doc:`pgr_primDD`, :doc:`pgr_primBFS` and :doc:`pgr_primDFS` result columns are being standardized."
-msgstr ""
-
-msgid "``pgr_primDD``"
-msgstr ""
-
-msgid "``pgr_primDFS``"
-msgstr ""
-
-msgid "``pgr_primBFS``"
 msgstr ""
 
 msgid "Prim single vertex"
@@ -4646,12 +4613,6 @@ msgid "Deprecated"
 msgstr ""
 
 msgid "`v3.4.0 <https://docs.pgrouting.org/3.4>`__"
-msgstr ""
-
-msgid "Removed"
-msgstr ""
-
-msgid "`v4.0.0 <https://docs.pgrouting.org/4.0>`__"
 msgstr ""
 
 msgid ":doc:`pgr_dijkstra`"
@@ -6133,7 +6094,7 @@ msgstr ""
 msgid "Upgrading the database"
 msgstr ""
 
-msgid "To upgrade pgRouting in the database to version 4.0.0 use the following command:"
+msgid "To upgrade pgRouting in the database to version 3.8.0 use the following command:"
 msgstr ""
 
 msgid "More information can be found in https://www.postgresql.org/docs/current/sql-createextension.html"
@@ -6526,12 +6487,6 @@ msgstr ""
 msgid "Availability"
 msgstr ""
 
-msgid "Version 4.0.0"
-msgstr ""
-
-msgid "All signatures promoted to official."
-msgstr ""
-
 msgid "Version 3.6.0"
 msgstr ""
 
@@ -6578,9 +6533,6 @@ msgid "The K shortest path routing algorithm based on Yen's algorithm. \"K\" is 
 msgstr ""
 
 msgid "|Boost| Boost Graph Inside"
-msgstr ""
-
-msgid "Boost Graph Inside"
 msgstr ""
 
 msgid "Signatures"
@@ -6961,9 +6913,6 @@ msgstr ""
 msgid "``pgr_aStar`` — Shortest path using the A* algorithm."
 msgstr ""
 
-msgid "Combinations signature promoted to official."
-msgstr ""
-
 msgid "Standarizing output columns to |short-generic-result|"
 msgstr ""
 
@@ -6980,6 +6929,9 @@ msgid "Version 3.2.0"
 msgstr ""
 
 msgid "New proposed signature:"
+msgstr ""
+
+msgid "pgr_aStar(Combinations)"
 msgstr ""
 
 msgid "Function promoted to official."
@@ -7064,6 +7016,9 @@ msgid "``pgr_aStarCost``"
 msgstr ""
 
 msgid "``pgr_aStarCost`` - Total cost of the shortest path using the A* algorithm."
+msgstr ""
+
+msgid "pgr_aStarCost(Combinations)"
 msgstr ""
 
 msgid "New proposed function."
@@ -7175,9 +7130,6 @@ msgid "Support to return multiple outer/inner ring"
 msgstr ""
 
 msgid "Renamed from version 1.x"
-msgstr ""
-
-msgid "Support"
 msgstr ""
 
 msgid "Returns the polygon part of an alpha shape."
@@ -7621,6 +7573,9 @@ msgstr ""
 msgid "pgr_bdAstar(Many to One) added ``start_vid`` column."
 msgstr ""
 
+msgid "pgr_bdAstar(Combinations)"
+msgstr ""
+
 msgid "pgr_bdAstar(One to Many)"
 msgstr ""
 
@@ -7657,6 +7612,9 @@ msgstr ""
 msgid "``pgr_bdAstarCost`` - Total cost of the shortest path using the bidirectional A* algorithm."
 msgstr ""
 
+msgid "pgr_bdAstarCost(Combinations)"
+msgstr ""
+
 msgid "The ``pgr_bdAstarCost`` function sumarizes of the cost of the shortest path using the bidirectional A* algorithm."
 msgstr ""
 
@@ -7691,6 +7649,9 @@ msgid "``pgr_bdDijkstra``"
 msgstr ""
 
 msgid "``pgr_bdDijkstra`` — Returns the shortest path using Bidirectional Dijkstra algorithm."
+msgstr ""
+
+msgid "pgr_bdDijkstra(Combinations)"
 msgstr ""
 
 msgid "pgr_bdDijkstra(One to Many)"
@@ -7754,6 +7715,9 @@ msgid "``pgr_bdDijkstraCost``"
 msgstr ""
 
 msgid "``pgr_bdDijkstraCost`` — Returns the shortest path's cost using Bidirectional Dijkstra algorithm."
+msgstr ""
+
+msgid "pgr_bdDijkstraCost(Combinations)"
 msgstr ""
 
 msgid "The ``pgr_bdDijkstraCost`` function sumarizes of the cost of the shortest path using the bidirectional Dijkstra Algorithm."
@@ -7856,6 +7820,9 @@ msgid "`Boost: Bellman Ford <https://www.boost.org/libs/graph/doc/bellman_ford_s
 msgstr ""
 
 msgid "https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm"
+msgstr ""
+
+msgid "Boost Graph Inside"
 msgstr ""
 
 msgid "``pgr_betweennessCentrality`` - Experimental"
@@ -8080,10 +8047,10 @@ msgstr ""
 msgid "``pgr_boykovKolmogorov`` — Calculates the flow on the graph edges that maximizes the flow from the sources to the targets using Boykov Kolmogorov algorithm."
 msgstr ""
 
-msgid "Renamed from ``pgr_maxFlowBoykovKolmogorov``"
+msgid "pgr_boykovKolmogorov(Combinations)"
 msgstr ""
 
-msgid "Function promoted to proposed."
+msgid "Renamed from ``pgr_maxFlowBoykovKolmogorov``"
 msgstr ""
 
 msgid "Running time: Polynomial"
@@ -8312,9 +8279,6 @@ msgid "``pgr_contraction`` — Performs graph contraction and returns the contra
 msgstr ""
 
 msgid "Name change from ``pgr_contractGraph``"
-msgstr ""
-
-msgid "Bug fixes"
 msgstr ""
 
 msgid "Contraction reduces the size of the graph by removing some of the vertices and edges and, for example, might add edges that represent a sequence of original edges decreasing the total time and space used in graph algorithms."
@@ -9022,6 +8986,9 @@ msgstr ""
 msgid "Version 3.1.0"
 msgstr ""
 
+msgid "pgr_dijkstra(Combinations)"
+msgstr ""
+
 msgid "Version 2.2.0"
 msgstr ""
 
@@ -9214,6 +9181,9 @@ msgstr ""
 msgid "37) Using `Combinations`_"
 msgstr ""
 
+msgid "e Also"
+msgstr ""
+
 msgid "`Boost: Dijkstra shortest paths <https://www.boost.org/libs/graph/doc/dijkstra_shortest_paths.html>`__"
 msgstr ""
 
@@ -9224,6 +9194,9 @@ msgid "``pgr_dijkstraCost``"
 msgstr ""
 
 msgid "``pgr_dijkstraCost`` - Total cost of the shortest path using Dijkstra algorithm."
+msgstr ""
+
+msgid "pgr_dijkstraCost(Combinations)"
 msgstr ""
 
 msgid "The ``pgr_dijkstraCost`` function sumarizes of the cost of the shortest path using Dijkstra Algorithm."
@@ -9601,9 +9574,6 @@ msgstr ""
 msgid "``pgr_drivingDistance`` - Returns the driving distance from a start node."
 msgstr ""
 
-msgid "Standarizing output columns to |result-spantree|"
-msgstr ""
-
 msgid "Added ``depth`` and ``start_vid`` result columns."
 msgstr ""
 
@@ -9799,6 +9769,9 @@ msgstr ""
 msgid "``pgr_edmondsKarp`` — Calculates the flow on the graph edges that maximizes the flow from the sources to the targets using Edmonds Karp Algorithm."
 msgstr ""
 
+msgid "pgr_edmondsKarp(Combinations)"
+msgstr ""
+
 msgid "Renamed from ``pgr_maxFlowEdmondsKarp``"
 msgstr ""
 
@@ -9820,7 +9793,7 @@ msgstr ""
 msgid "pgr_edmondsKarp(`Edges SQL`_, `Combinations SQL`_)"
 msgstr ""
 
-msgid "`Boost: Edmonds Karp max flow <https://www.boost.org/libs/graph/doc/edmonds_karp_max_flow.html>`__"
+msgid "`Boost: edmonds_karp_max_flow <https://www.boost.org/libs/graph/doc/edmonds_karp_max_flow.html>`__"
 msgstr ""
 
 msgid "https://en.wikipedia.org/wiki/Edmonds%E2%80%93Karp_algorithm"
@@ -9995,6 +9968,9 @@ msgid "Returns set of |result-find|"
 msgstr ""
 
 msgid "One point"
+msgstr ""
+
+msgid "**options:** [cap, partial, dryrun]``"
 msgstr ""
 
 msgid "Default: ``cap => 1``"
@@ -10579,9 +10555,6 @@ msgstr ""
 msgid "``pgr_kruskalBFS`` — Kruskal's algorithm for Minimum Spanning Tree with breadth First Search ordering."
 msgstr ""
 
-msgid "Added ``pred`` result columns."
-msgstr ""
-
 msgid "Visits and extracts the nodes information in Breath First Search ordering of the Minimum Spanning Tree created using Kruskal's algorithm."
 msgstr ""
 
@@ -10703,9 +10676,6 @@ msgid "``pgr_lineGraph`` - Proposed"
 msgstr ""
 
 msgid "``pgr_lineGraph`` — Transforms the given graph into its corresponding edge-based graph."
-msgstr ""
-
-msgid "Works for directed and undirected graphs."
 msgstr ""
 
 msgid "Given a graph :math:`G`, its line graph :math:`L(G)` is a graph such that:"
@@ -11171,6 +11141,9 @@ msgid "``pgr_maxFlow``"
 msgstr ""
 
 msgid "``pgr_maxFlow`` — Calculates the maximum flow in a directed graph from the source(s) to the targets(s) using the Push Relabel algorithm."
+msgstr ""
+
+msgid "pgr_maxFlow(Combinations)"
 msgstr ""
 
 msgid "Calculates the maximum flow from the sources to the targets."
@@ -11761,6 +11734,9 @@ msgstr ""
 msgid "``pgr_pushRelabel`` — Calculates the flow on the graph edges that maximizes the flow from the sources to the targets using Push Relabel Algorithm."
 msgstr ""
 
+msgid "pgr_pushRelabel(Combinations)"
+msgstr ""
+
 msgid "Renamed from ``pgr_maxFlowPushRelabel``"
 msgstr ""
 
@@ -12031,7 +12007,7 @@ msgstr ""
 msgid "https://en.wikipedia.org/wiki/Transitive_closure"
 msgstr ""
 
-msgid "``pgr_trsp``"
+msgid "``pgr_trsp`` - Proposed"
 msgstr ""
 
 msgid "``pgr_trsp`` - routing vertices with restrictions."
@@ -12055,10 +12031,16 @@ msgstr ""
 msgid "Deprecated signatures"
 msgstr ""
 
+msgid "pgr_trsp(text,integer,integer,boolean,boolean,text)"
+msgstr ""
+
 msgid "pgr_trsp(text,integer,float,integer,float,boolean,boolean,text)"
 msgstr ""
 
 msgid "pgr_trspViaVertices(text,anyarray,boolean,boolean,text)"
+msgstr ""
+
+msgid "pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)"
 msgstr ""
 
 msgid "New prototypes"
@@ -12121,7 +12103,7 @@ msgstr ""
 msgid "`Deprecated documentation <https://docs.pgrouting.org/3.3/en/pgr_trsp.html>`_"
 msgstr ""
 
-msgid "``pgr_trspVia``"
+msgid "``pgr_trspVia`` - Proposed"
 msgstr ""
 
 msgid "``pgr_trspVia`` Route that goes through a list of vertices with restrictions."
@@ -12184,7 +12166,7 @@ msgstr ""
 msgid ":doc:`via-category`"
 msgstr ""
 
-msgid "``pgr_trspVia_withPoints``"
+msgid "``pgr_trspVia_withPoints`` - Proposed"
 msgstr ""
 
 msgid "``pgr_trspVia_withPoints`` - Route that goes through a list of vertices and/or points with restrictions."
@@ -12313,7 +12295,7 @@ msgstr ""
 msgid "Therefore the result ignores the ``U_turn_on_edge`` flag when set to ``false``. From the :doc:`pgr_withPointsVia` result it removes the conflicting paths and builds the solution with the results of the :doc:`pgr_trsp` algorithm. In this case a U turn is been done using the same edge."
 msgstr ""
 
-msgid "``pgr_trsp_withPoints``"
+msgid "``pgr_trsp_withPoints`` - Proposed"
 msgstr ""
 
 msgid "``pgr_trsp_withPoints`` Routing Vertex/Point with restrictions."
@@ -12481,7 +12463,7 @@ msgstr ""
 msgid "**TBD**"
 msgstr ""
 
-msgid "``pgr_withPoints``"
+msgid "``pgr_withPoints`` - Proposed"
 msgstr ""
 
 msgid "``pgr_withPoints`` - Returns the shortest path in a graph with additional temporary vertices."
@@ -12592,7 +12574,7 @@ msgstr ""
 msgid "Passes in front or visits with left side driving."
 msgstr ""
 
-msgid "``pgr_withPointsCost``"
+msgid "``pgr_withPointsCost`` - Proposed"
 msgstr ""
 
 msgid "``pgr_withPointsCost`` - Calculates the shortest path and returns only the aggregate cost of the shortest path found, for the combination of points given."
@@ -12697,7 +12679,7 @@ msgstr ""
 msgid "Does not matter driving side driving topology"
 msgstr ""
 
-msgid "``pgr_withPointsCostMatrix``"
+msgid "``pgr_withPointsCostMatrix`` - proposed"
 msgstr ""
 
 msgid "``pgr_withPointsCostMatrix`` - Calculates a cost matrix using :doc:`pgr_withPoints`."
@@ -12721,7 +12703,7 @@ msgstr ""
 msgid "Find the matrix cost of the routes from vertex :math:`1` and the two closest locations on the graph of point `(2.9, 1.8)`."
 msgstr ""
 
-msgid "``pgr_withPointsDD``"
+msgid "``pgr_withPointsDD`` - Proposed"
 msgstr ""
 
 msgid "``pgr_withPointsDD`` - Returns the driving **distance** from a starting point."
@@ -12748,10 +12730,10 @@ msgstr ""
 msgid "Only points that are visited are removed, that is, points reached within the distance are included"
 msgstr ""
 
-msgid "pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)"
+msgid "pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean)``"
 msgstr ""
 
-msgid "pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)"
+msgid "pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean)``"
 msgstr ""
 
 msgid "Modify the graph to include points and using Dijkstra algorithm, extracts all the nodes and points that have costs less than or equal to the value ``**distance**`` from the starting point. The edges extracted will conform the corresponding spanning tree."
@@ -12832,7 +12814,7 @@ msgstr ""
 msgid ":doc:`pgr_alphaShape`"
 msgstr ""
 
-msgid "``pgr_withPointsKSP``"
+msgid "``pgr_withPointsKSP`` - Proposed"
 msgstr ""
 
 msgid "``pgr_withPointsKSP`` — Yen's algorithm for K shortest paths using Dijkstra."
@@ -12943,7 +12925,7 @@ msgstr ""
 msgid "Get :math:`2` paths using right side driving topology from, point :math:`1` to point :math:`2` with heap paths and details."
 msgstr ""
 
-msgid "``pgr_withPointsVia``"
+msgid "``pgr_withPointsVia`` - Proposed"
 msgstr ""
 
 msgid "``pgr_withPointsVia`` - Route that goes through a list of vertices and/or points."
@@ -13039,15 +13021,6 @@ msgstr ""
 msgid "Mayors"
 msgstr ""
 
-msgid "pgRouting 4"
-msgstr ""
-
-msgid "Minors 4.x"
-msgstr ""
-
-msgid "pgRouting 4.0"
-msgstr ""
-
 msgid "pgRouting 3"
 msgstr ""
 
@@ -13055,111 +13028,6 @@ msgid "Minors 3.x"
 msgstr ""
 
 msgid "pgRouting 3.7"
-msgstr ""
-
-msgid "pgRouting 3.7.3 Release Notes"
-msgstr ""
-
-msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.3 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.3%22>`__"
-msgstr ""
-
-msgid "`#2731 <https://github.com/pgRouting/pgrouting/pull/2731>`__ Build Failure on Ubuntu 22"
-msgstr ""
-
-msgid "pgRouting 3.7.2 Release Notes"
-msgstr ""
-
-msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.2 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.2%22>`__"
-msgstr ""
-
-msgid "Build"
-msgstr ""
-
-msgid "`#2713 <https://github.com/pgRouting/pgrouting/pull/2713>`__ cmake missing some policies and min version"
-msgstr ""
-
-msgid "Using OLD policies: CMP0148, CMP0144, CMP0167"
-msgstr ""
-
-msgid "Minimum cmake version 3.12"
-msgstr ""
-
-msgid "`#2707 <https://github.com/pgRouting/pgrouting/pull/2707>`__ Build failure in pgRouting 3.7.1 on Alpine"
-msgstr ""
-
-msgid "`#2706 <https://github.com/pgRouting/pgrouting/pull/2706>`__ winnie crashing on pgr_betweennessCentrality"
-msgstr ""
-
-msgid "pgRouting 3.7.1 Release Notes"
-msgstr ""
-
-msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.1 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.1%22>`__"
-msgstr ""
-
-msgid "`#2680 <https://github.com/pgRouting/pgrouting/pull/2680>`__ fails to compile under mingw64 gcc 13.2"
-msgstr ""
-
-msgid "`#2689 <https://github.com/pgRouting/pgrouting/pull/2689>`__ When point is a vertex, the withPoints family do not return results."
-msgstr ""
-
-msgid "C/C++ code enhancemet"
-msgstr ""
-
-msgid "TRSP family"
-msgstr ""
-
-msgid "pgRouting 3.7.0 Release Notes"
-msgstr ""
-
-msgid "To see all issues & pull requests closed by this release see the `Git closed milestone for 3.7.0 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%203.7.0%22>`__"
-msgstr ""
-
-msgid "`#2656 <https://github.com/pgRouting/pgrouting/pull/2656>`__ Stop support of PostgreSQL12 on pgrouting v3.7"
-msgstr ""
-
-msgid "Stopping support of PostgreSQL 12"
-msgstr ""
-
-msgid "CI does not test for PostgreSQL 12"
-msgstr ""
-
-msgid "New experimental functions"
-msgstr ""
-
-msgid "Metrics"
-msgstr ""
-
-msgid "pgr_betweennessCentrality"
-msgstr ""
-
-msgid "Official functions changes"
-msgstr ""
-
-msgid "`#2605 <https://github.com/pgRouting/pgrouting/pull/2605>`__ Standarize spanning tree functions output"
-msgstr ""
-
-msgid "Functions:"
-msgstr ""
-
-msgid "Experimental promoted to proposed."
-msgstr ""
-
-msgid "`#2635 <https://github.com/pgRouting/pgrouting/pull/2635>`__ pgr_LineGraph ignores directed flag and use negative values for identifiers."
-msgstr ""
-
-msgid "``pgr_lineGraph``"
-msgstr ""
-
-msgid "Code enhancement"
-msgstr ""
-
-msgid "`#2599 <https://github.com/pgRouting/pgrouting/pull/2599>`__ Driving distance cleanup"
-msgstr ""
-
-msgid "`#2607 <https://github.com/pgRouting/pgrouting/pull/2607>`__ Read postgresql data on C++"
-msgstr ""
-
-msgid "`#2614 <https://github.com/pgRouting/pgrouting/pull/2614>`__ Clang tidy does not work"
 msgstr ""
 
 msgid "pgRouting 3.6"
@@ -13436,6 +13304,12 @@ msgid "pgr_trspVia(One Via)"
 msgstr ""
 
 msgid "pgr_trspVia_withPoints(One Via)"
+msgstr ""
+
+msgid "pgr_trsp"
+msgstr ""
+
+msgid "``pgr_trsp_withPoints``"
 msgstr ""
 
 msgid "pgr_trsp_withPoints(One to One)"
@@ -14539,6 +14413,9 @@ msgstr ""
 msgid "pgr_eucledianTSP"
 msgstr ""
 
+msgid "pgr_withPointsCostMatrix"
+msgstr ""
+
 msgid "pgr_maxFlowPushRelabel(One to One)"
 msgstr ""
 
@@ -14714,6 +14591,9 @@ msgid "pgr_withPointsDD(single vertex)"
 msgstr ""
 
 msgid "pgr_withPointsDD(multiple vertices)"
+msgstr ""
+
+msgid "pgr_withPointsKSP"
 msgstr ""
 
 msgid "pgr_dijkstraVia"
