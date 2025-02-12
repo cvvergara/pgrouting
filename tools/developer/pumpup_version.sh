@@ -151,8 +151,9 @@ fi
 # ------
 # Documentation related
 # ------
-perl -pi -e 's/# Copyright(.*) v(.*)$/# Copyright$1 v'"${NEW_VERSION}${NEW_KIND}"'/' locale/pot/*.pot
-perl -pi -e 's/# Copyright(.*) v(.*)$/# Copyright$1 v'"${NEW_VERSION}${NEW_KIND}"'/' locale/*/*/*.po
-perl -pi -e 's/('"${MAYOR}.${MINOR}"')/'"${NEW_MAYOR}.${NEW_MINOR}\', \'${MAYOR}.${MINOR}"'/g' doc/_static/page_history.js
 bash tools/transifex/update_locale.sh
+perl -pi -e 's/# Copyright(.*) v(.*)$/# Copyright$1 v'"${NEW_MAYOR}.${NEW_MINOR}"'/' locale/pot/*.pot
+perl -pi -e 's/# Copyright(.*) v(.*)$/# Copyright$1 v'"${NEW_MAYOR}.${NEW_MINOR}"'/' locale/*/*/*.po
+perl -pi -e 's/Id-Version: pgRouting v'"${MAYOR}.${MINOR}"'/Id-Version: pgRouting v'"${NEW_MAYOR}.${NEW_MINOR}"'/' locale/*/*/*.po
+perl -pi -e 's/('"${MAYOR}.${MINOR}"')/'"${NEW_MAYOR}.${NEW_MINOR}\', \'${MAYOR}.${MINOR}"'/g' doc/_static/page_history.js
 
