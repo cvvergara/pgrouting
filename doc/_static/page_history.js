@@ -43,6 +43,8 @@ var newpages = [
 
     {v: '2.4', pages: [ 'pgr_maxFlow', 'pgr_aStarCostMatrix', 'pgr_aStarCost', 'KSP-category',
         'drivingDistance-category', 'costMatrix-category', 'cost-category', 'aStar-family' ] },
+
+    {v: '2.0', pages: [ 'genindex', 'search' ] },
 ];
 
 var filesArr = [
@@ -198,10 +200,12 @@ var filesArr = [
     ]),
     new createInfo('pgr_floydWarshall', '2.0', [
         { v: '2.1', n: 'src/apsp_warshall/doc/index'},
+        { v: '2.2', n: 'src/apsp_warshall/doc/pgr_apspWarshall'},
         { v: '2.3', n: 'src/allpairs/doc/pgr_floydWarshall'}
     ]),
     new createInfo('pgr_johnson', '2.0', [
         { v: '2.1', n: 'src/apsp_johnson/doc/index'},
+        { v: '2.2', n: 'src/apsp_johnson/doc/pgr_apspJohnson'},
         { v: '2.3', n: 'src/allpairs/doc/pgr_johnson'}
     ]),
     new createInfo('pgr_nodeNetwork', '2.0', [
@@ -260,6 +264,203 @@ var filesArr = [
     new createInfo('pgr_alphaShape', '2.0', [
         { v: '2.1', n: 'src/driving_distance/doc/dd_alphashape'},
         { v: '2.3', n: 'src/alpha_shape/doc/pgr_alphaShape'}
+    ]),
+
+    /* removed pages */
+    new createInfo('2_1_0', '2.1', [
+        { v: '2.1', n:'doc/src/changelog/2_1_0'},
+    ]),
+
+    new createInfo('example_recipe', '2.1', [
+        { v: '2.1', n:'doc/src/recipes/example_recipe'},
+    ]),
+
+    new createInfo('parallel_handling', '2.1', [
+        { v: '2.1', n:'doc/src/recipes/parallel_handling'},
+    ]),
+
+    new createInfo('pgr_flipEdges', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/flip_edges'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_flipEdges'},
+    ]),
+
+    new createInfo('index', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/index'},
+        { v: '2.2', n:'src/convinience/doc/convenience'},
+    ]),
+
+    new createInfo('pgr_pointToEdgeNode', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/point_to_edgenode'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_pointToEdgeNode'},
+    ]),
+
+    new createInfo('pgr_textToPoints', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/points_to_dmatrix'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_textToPoints'},
+    ]),
+
+    new createInfo('pgr_pointsToVids', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/points_to_vids'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_pointsToVids'},
+    ]),
+
+    new createInfo('pgr_textToPoints', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/text_to_points'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_textToPoints'},
+    ]),
+
+    new createInfo('pgr_vidsToDMatrix', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/vids_to_dmatrix'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_vidsToDMatrix'},
+    ]),
+
+    new createInfo('pgr_vidsToDMatrix2', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/vids_to_dmatrix2'},
+        { v: '2.2', n:'src/common/doc/convenience/pgr_vidsToDMatrix2'},
+    ]),
+
+    new createInfo('dijkstra_v2', '2.1', [
+        { v: '2.1', n:'src/dijkstra/doc/dijkstra_v2'},
+    ]),
+
+    new createInfo('dd_driving_distance_v2', '2.1', [
+        { v: '2.1', n:'src/driving_distance/doc/dd_driving_distance_v2'},
+    ]),
+
+    new createInfo('ksp_v2', '2.1', [
+        { v: '2.1', n:'src/ksp/doc/ksp_v2'},
+    ]),
+
+    new createInfo('analyze_brokengraph', '2.1', [
+        { v: '2.1', n:'src/label_graph/doc/analyze_brokengraph'},
+    ]),
+    /* removed pages */
+    new createInfo('index_man', '2.0', [
+        { v: '2.0', n:'doc/index_man'},
+    ], '2.2'),
+
+    new createInfo('1_x', '2.0', [
+        { v: '2.0', n:'doc/src/changelog/1_x'},
+    ]),
+
+    new createInfo('2_0', '2.0', [
+        { v: '2.0', n:'doc/src/changelog/2_0'},
+    ]),
+
+    new createInfo('discontinued', '2.0', [
+        { v: '2.0', n:'doc/src/developer/discontinued'},
+        { v: '2.0', n:'doc/src/developer/developer_guide'},
+    ]),
+
+    new createInfo('developer', '2.0', [
+        { v: '2.0', n:'doc/src/developer/index'},
+    ]),
+
+    new createInfo('build', '2.0', [
+        { v: '2.0', n:'doc/src/installation/build'},
+    ]),
+
+    new createInfo('introduction', '2.0', [
+        { v: '2.0', n:'doc/src/introduction/index'},
+    ]),
+
+    new createInfo('analytics', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/analytics'},
+    ]),
+
+    new createInfo('custom_query', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/custom_query'},
+    ]),
+
+    new createInfo('custom_wrapper', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/custom_wrapper'},
+    ]),
+
+    new createInfo('tutorial', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/index'},
+    ]),
+
+    new createInfo('performance', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/performance'},
+    ]),
+
+    new createInfo('recipes', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/recipes'},
+        { v: '2.1', n:'doc/src/recipes/index'},
+    ]),
+
+    new createInfo('topology', '2.0', [
+        { v: '2.0', n:'doc/src/tutorial/topology'},
+    ]),
+
+    new createInfo('common', '2.0', [
+        { v: '2.0', n:'src/common/doc/index'},
+    ]),
+
+    new createInfo('legacy', '2.0', [
+        { v: '2.0', n:'src/common/doc/legacy'},
+    ]),
+
+    new createInfo('cost_result', '2.0', [
+        { v: '2.0', n:'src/common/doc/types/cost_result'},
+    ]),
+
+    new createInfo('geom_result', '2.0', [
+        { v: '2.0', n:'src/common/doc/types/geom_result'},
+    ]),
+
+    new createInfo('types', '2.0', [
+        { v: '2.0', n:'src/common/doc/types/index'},
+    ]),
+
+    new createInfo('end_point', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/end_point'},
+    ]),
+
+    new createInfo('get_column_name', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/get_column_name'},
+    ]),
+
+    new createInfo('get_table_name', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/get_table_name'},
+    ]),
+
+    new createInfo('utilities', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/index'},
+    ]),
+
+    new createInfo('is_column_in_table', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/is_column_in_table'},
+    ]),
+
+    new createInfo('is_column_indexed', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/is_column_indexed'},
+    ]),
+
+    new createInfo('point_to_id', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/point_to_id'},
+    ]),
+
+    new createInfo('quote_ident', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/quote_ident'},
+    ]),
+
+    new createInfo('start_point', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/start_point'},
+    ]),
+
+    new createInfo('versionless', '2.0', [
+        { v: '2.0', n:'src/common/doc/utilities/versionless'},
+    ]),
+
+    new createInfo('dd_points_as_polygon', '2.0', [
+        { v: '2.0', n:'src/driving_distance/doc/dd_points_as_polygon'},
+        { v: '2.2', n:'src/alpha_shape/doc/pgr_pointsAsPolygon'},
+    ]),
+
+    new createInfo('kdijkstra', '2.0', [
+        { v: '2.0', n:'src/kdijkstra/doc/index'},
+        { v: '2.2', n:'src/kdijkstra/doc/pgr_kDijkstra'},
     ]),
 
 ];
