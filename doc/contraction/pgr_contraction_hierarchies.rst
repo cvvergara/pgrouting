@@ -130,7 +130,7 @@ Edges SQL
 Result columns
 -------------------------------------------------------------------------------
 
-Returns set of |result-contract|
+Returns set of |result-contraction-hierarchies|
 
 The function returns a single row. The columns of the row are:
 

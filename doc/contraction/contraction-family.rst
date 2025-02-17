@@ -21,10 +21,17 @@ Contraction - Family of functions
 
 .. official-end
 
+.. experimental-start
+
+* :doc:`pgr_contraction_hierarchies`
+
+.. experimental-end
+
 .. toctree::
     :hidden:
 
     pgr_contraction
+    pgr_contraction_hierarchies
 
 
 Introduction
@@ -47,7 +54,7 @@ to the method ``pgr_contraction``:
 A third one corresponds to the *contraction hierarchies* method and is implemented
 through the ``pgr_contraction_hierarchies`` method.
 
-In both cases, it allows the user to forbid contraction on a set of nodes.
+Both functions allow the user to forbid contraction on a set of nodes.
 
 For the ``pgr_contraction`` method, the user can also decide the order of the
 contraction algorithms and set the maximum number of times they will be executed.
@@ -406,29 +413,32 @@ Edge :math:`u \rightarrow z` has the information of nodes that were contracted.
 Contraction hierarchies
 -------------------------------------------------------------------------------
 
-Contraction of edges and nodes ordered by importance.
+Contraction of edges and nodes ordered by importance. The graph built with
+this method can be then used with an adaptation of bidirectional Dijkstra
+shortest path algorithm, which uses the shortcuts and the hierarchy information
+to organize an optimized search in the graph.
 
 
 Principles
 ...............................................................................
 
-A total node order is given. If u < v, then u is less important than v. 
-A hierarchy is now constructed by contracting the nodes in this order. 
+A total node order is given. If u < v, then u is less important than v.
+A hierarchy is now constructed by contracting the nodes in this order.
 
-A node v is contracted by removing from the graph and adding shortcuts by replacing 
-former paths of the form (u, v, w) by an edge (u, w). The shortcut (u, w) is only 
+A node v is contracted by removing from the graph and adding shortcuts by replacing
+former paths of the form (u, v, w) by an edge (u, w). The shortcut (u, w) is only
 needed when (u, v, w) is the only shortest path between u and w.
 
-The contraction process adds all discovered shortcuts to the edge set E, giving 
+The contraction process adds all discovered shortcuts to the edge set E, giving
 a "contraction hierarchy". Finding an optimal node ordering is a difficult problem.
-Nevertheless, very simple local heuristics work quite well, according to Geisberger 
+Nevertheless, very simple local heuristics work quite well, according to Geisberger
 et al. [2].
 
-The basic idea is to keep the nodes in a priority queue sorted by some estimate of how 
-attractive is their contraction. We estimate that with the "edge difference" given by 
+The basic idea is to keep the nodes in a priority queue sorted by some estimate of how
+attractive is their contraction. We estimate that with the "edge difference" given by
 the difference between the number of shortcuts produced by the node contraction minus
-the number of incident edges in the original graph. Finally, the aim is to reduce 
-with cleverness the size of the graph, without loosing optimality. 
+the number of incident edges in the original graph. Finally, the aim is to reduce
+with cleverness the size of the graph, without loosing optimality.
 
 Initialize the queue with a first vertices order
 ...............................................................................
@@ -509,7 +519,7 @@ corresponds to the only shortest path between the predecessor and the successor 
         u -- w [dir=both, weight=5, arrowhead=vee, arrowtail=vee, label="  5"];
     }
 
-Take the following vertex and contract it. Go on until you have contracted every node of the graph. 
+Take the following vertex and contract it. Go on until you have contracted every node of the graph.
 At the end, there are no more edges in the graph.
 
 This first contraction will give you a vertex order, given by ordering them in ascending order on
@@ -520,7 +530,7 @@ Build the final vertex order
 
 Once you have built the first order, use it to browse the graph once again. For each vertex taken
 in the queue, simulate contraction and calculate its edge difference. If the computed value is
-greater than the one of the next vertex to be contracted, then put it back in the queue. 
+greater than the one of the next vertex to be contracted, then put it back in the queue.
 Otherwise contract it permanently.
 
 At the end, take the initial graph (before edges deletions) and add the shortcut edges to it.
@@ -528,8 +538,11 @@ You will have your contracted graph, ready to use with a specialized Dijkstra al
 which takes into account the order of the nodes in the hierarchy.
 
 
-Application of the cycle of methods (for algorithms of the ``pgr_contraction`` function)
+Application of the cycle of methods
 -------------------------------------------------------------------------------
+
+Application of the cycle of methods (for algorithms of the ``pgr_contraction``
+function)
 
 Contracting a graph, can be done with more than one operation.
 The order of the operations affect the resulting contracted graph, after
@@ -867,7 +880,7 @@ The original graph:
 .. image:: /images/Fig6-undirected.png
    :scale: 25%
 
-Contraction results
+Contraction hierarchies results
 ...............................................................................
 
 The results do not represent the contracted graph.
@@ -883,7 +896,10 @@ affected by the contraction will not appear in the result (see ).
 
 .. literalinclude:: contraction-family.queries
    :start-after: -- q2
-@@ -472,10 +601,14 @@ After doing the linear contraction operation to the graph above:
+   :end-before: -- q3
+
+After doing the linear contraction operation to the graph above:
+
 .. image:: images/undirected_sampledata_c.png
    :scale: 25%
 
