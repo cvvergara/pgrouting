@@ -86,6 +86,7 @@ var filesArr = [
         { v: '2.3', n: 'src/tsp/doc/pgr_eucledianTSP'},
         { v: '2.6', n: 'pgr_eucledianTSP'},
     ]),
+
     new createInfo('pgr_edgeDisjointPaths', '2.3', [
         { v: '2.3', n: 'src/max_flow/doc/pgr_edgeDisjointPaths'},
     ]),
@@ -172,10 +173,17 @@ var filesArr = [
     new createInfo('index', '2.0', [
         { v: '2.3', n: 'doc/index'},
     ]),
+
     new createInfo('pgr_TSP', '2.0', [
         { v: '2.1', n: 'src/tsp/doc/index'},
         { v: '2.3', n: 'src/tsp/doc/pgr_tsp'},
     ]),
+    // src/tsp/doc/pgr_tsp-V2.0,
+    new createInfo('pgr_tsp-V2.0', '2.1', [
+        { v: '2.1', n: 'src/tsp/doc/index'},
+        { v: '2.3', n: 'src/tsp/doc/pgr_tsp'},
+    ]),
+
     new createInfo('pgr_trsp', '2.0', [
         { v: '2.1', n: 'src/trsp/doc/index'},
         { v: '2.3', n: 'src/trsp/doc/pgr_trsp'}
@@ -259,10 +267,6 @@ var filesArr = [
     new createInfo('pgRouting-concepts', '2.0', [
         { v: '2.3', n: 'doc/src/tutorial/tutorial'},
     ]),
-    // doc/src/tutorial/index
-    new createInfo('tutorial', '2.0', [
-        { v: '2.3', n: 'doc/src/tutorial/tutorial'},
-    ], 2.4),
 
     new createInfo('support', '2.0', [
         { v: '2.3', n: 'doc/src/introduction/support'},
@@ -308,10 +312,6 @@ var filesArr = [
         { v: '2.3', n:'src/max_flow/doc/maxFlowApplications'},
         { v: '2.4', n:'flow-family'},
     ], '2.5'),
-
-    new createInfo('pgr_tsp-V2.0', '2.3', [
-        { v: '2.3', n:'src/tsp/doc/pgr_tsp-V2.0'},
-    ]),
 
 
     /* removed pages */
