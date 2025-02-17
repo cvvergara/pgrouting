@@ -111,7 +111,7 @@ var filesArr = [
         { v: '2.6', n: 'proposed'},
     ]),
     new createInfo('proposed', '2.2', [
-        { v: '2.2', n: 'src/proposed'},
+        { v: '2.2', n:'src/proposedNext'},
         { v: '2.3', n: 'src/proposed'},
     ]),
     new createInfo('pgr_withPointsKSP', '2.2', [
@@ -267,6 +267,46 @@ var filesArr = [
     ]),
 
     /* removed pages */
+
+    new createInfo('deprecated', '2.2', [
+        { v: '2.2', n:'doc/deprecated'},
+    ]),
+
+    new createInfo('2_2_0', '2.2', [
+        { v: '2.2', n:'doc/src/changelog/2_2_0'},
+    ]),
+
+    new createInfo('2_2_1', '2.2', [
+        { v: '2.2', n:'doc/src/changelog/2_2_1'},
+    ]),
+
+    new createInfo('2_2_2', '2.2', [
+        { v: '2.2', n:'doc/src/changelog/2_2_2'},
+    ]),
+
+    new createInfo('2_2_3', '2.2', [
+        { v: '2.2', n:'doc/src/changelog/2_2_3'},
+    ]),
+
+    new createInfo('2_2_4', '2.2', [
+        { v: '2.2', n:'doc/src/changelog/2_2_4'},
+    ]),
+
+    new createInfo('install-dependencies', '2.2', [
+        { v: '2.2', n:'doc/src/installation/install-dependencies'},
+    ]),
+
+    new createInfo('pgr_ksp_v2', '2.1', [
+        { v: '2.1', n:'src/ksp/doc/ksp_v2'},
+        { v: '2.2', n:'src/ksp/doc/pgr_ksp_v2'},
+    ]),
+
+    new createInfo('pgr_labelGraph', '2.1', [
+        { v: '2.1', n:'src/label_graph/doc/analyze_brokengraph'},
+        { v: '2.2', n:'src/label_graph/doc/pgr_labelGraph'},
+    ]),
+
+    /* removed pages */
     new createInfo('2_1_0', '2.1', [
         { v: '2.1', n:'doc/src/changelog/2_1_0'},
     ]),
@@ -281,7 +321,7 @@ var filesArr = [
 
     new createInfo('pgr_flipEdges', '2.1', [
         { v: '2.1', n:'src/common/doc/convenience/flip_edges'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_flipEdges'},
+        { v: '2.2', n:'src/convinience/doc/pgr_flipEdges'},
     ]),
 
     new createInfo('index', '2.1', [
@@ -291,49 +331,43 @@ var filesArr = [
 
     new createInfo('pgr_pointToEdgeNode', '2.1', [
         { v: '2.1', n:'src/common/doc/convenience/point_to_edgenode'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_pointToEdgeNode'},
-    ]),
-
-    new createInfo('pgr_textToPoints', '2.1', [
-        { v: '2.1', n:'src/common/doc/convenience/points_to_dmatrix'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_textToPoints'},
+        { v: '2.2', n:'src/convinience/doc/pgr_pointToEdgeNode'},
     ]),
 
     new createInfo('pgr_pointsToVids', '2.1', [
         { v: '2.1', n:'src/common/doc/convenience/points_to_vids'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_pointsToVids'},
+        { v: '2.2', n:'src/convinience/doc/pgr_pointsToVids'},
     ]),
 
     new createInfo('pgr_textToPoints', '2.1', [
         { v: '2.1', n:'src/common/doc/convenience/text_to_points'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_textToPoints'},
+        { v: '2.2', n:'src/convinience/doc/pgr_textToPoints'},
     ]),
 
+    new createInfo('pgr_pointsToDMatrix', '2.1', [
+        { v: '2.1', n:'src/common/doc/convenience/points_to_dmatrix'},
+        { v: '2.2', n:'src/convinience/doc/pgr_pointsToDMatrix'},
+    ]),
     new createInfo('pgr_vidsToDMatrix', '2.1', [
         { v: '2.1', n:'src/common/doc/convenience/vids_to_dmatrix'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_vidsToDMatrix'},
+        { v: '2.2', n:'src/convinience/doc/pgr_vidsToDMatrix'},
     ]),
 
     new createInfo('pgr_vidsToDMatrix2', '2.1', [
         { v: '2.1', n:'src/common/doc/convenience/vids_to_dmatrix2'},
-        { v: '2.2', n:'src/common/doc/convenience/pgr_vidsToDMatrix2'},
+        { v: '2.2', n:'src/convinience/doc/pgr_vidsToDMatrix2'},
     ]),
 
-    new createInfo('dijkstra_v2', '2.1', [
+    new createInfo('pgr_dijkstra_v2', '2.1', [
         { v: '2.1', n:'src/dijkstra/doc/dijkstra_v2'},
+        { v: '2.2', n:'src/dijkstra/doc/pgr_dijkstra_v2'},
     ]),
 
-    new createInfo('dd_driving_distance_v2', '2.1', [
+    new createInfo('pgr_drivingDistance_v2', '2.1', [
         { v: '2.1', n:'src/driving_distance/doc/dd_driving_distance_v2'},
+        { v: '2.2', n:'src/driving_distance/doc/pgr_drivingDistance_v2'},
     ]),
 
-    new createInfo('ksp_v2', '2.1', [
-        { v: '2.1', n:'src/ksp/doc/ksp_v2'},
-    ]),
-
-    new createInfo('analyze_brokengraph', '2.1', [
-        { v: '2.1', n:'src/label_graph/doc/analyze_brokengraph'},
-    ]),
     /* removed pages */
     new createInfo('index_man', '2.0', [
         { v: '2.0', n:'doc/index_man'},
