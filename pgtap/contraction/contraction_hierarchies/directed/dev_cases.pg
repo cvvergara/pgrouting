@@ -28,12 +28,8 @@ SET
     cost = sign(cost),
     reverse_cost = sign(reverse_cost);
 
-SELECT
-    CASE WHEN NOT min_version('4.0.0')
-         THEN plan(0)
-         ELSE plan(6)
-    END;
-
+-- keep in one line (for perl updates)
+SELECT CASE WHEN NOT min_version('4.0.0') THEN plan(1) ELSE plan(6) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
