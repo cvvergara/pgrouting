@@ -8,22 +8,21 @@
    ****************************************************************************
 
 .. index::
-   single: Topology Family ; pgr_degree - Proposed
-   single: degree - Proposed on v3.4
+   single: Topology Family ; pgr_degree
+   single: degree
 
 |
 
-``pgr_degree`` -- Proposed
+``pgr_degree``
 ===============================================================================
 
 ``pgr_degree`` — For each vertex in an undirected graph, return the count of edges incident to the vertex.
 
-
-.. include:: proposed.rst
-   :start-after: warning-begin
-   :end-before: end-warning
-
 .. rubric:: Availability
+
+* Version 3.8.0
+
+  * Function promoted to official.
 
 * Version 3.4.0
 
@@ -33,10 +32,7 @@
 Description
 -------------------------------------------------------------------------------
 
-Calculates the degree of the vertices of an **undirected** graph
-
-
-|Boost| Boost Graph Inside
+Calculates the degree of the vertices of an undirected graph
 
 Signatures
 -------------------------------------------------------------------------------
@@ -51,12 +47,22 @@ Signatures
 
 :Example: Extracting the vertex information
 
-pgr_degree can utilize output from `pgr_extractVertices` or can have `pgr_extractVertices` embedded in the call.
-For decent size networks, it is best to prep your vertices table before hand and use that vertices table
-for pgr_degree calls.
+``pgr_degree`` can utilize output from `pgr_extractVertices` or can have
+``pgr_extractVertices`` embedded in the call.
+
+For decent size networks, it is best to prepare your vertices table before hand
+and use is on ``pgr_degree`` calls.
+
+Extract the vertex information and save into a table:
 
 .. literalinclude:: degree.queries
-   :start-after: -- q1
+   :start-after: -- q1.1
+   :end-before: -- q1.2
+
+Calculate the degree of the nodes:
+
+.. literalinclude:: degree.queries
+   :start-after: -- q1.2
    :end-before: -- q2
 
 
@@ -178,8 +184,9 @@ development needs.
 Degree from an existing table
 ...............................................................................
 If you have a vertices table already built using ``pgr_extractVertices``
-and want the degree of the whole graph rather than a subset, you can forgo using pgr_degree
-and work with the ``in_edges`` and ``out_edges`` columns directly.
+and want the degree of the whole graph rather than a subset, you can forgo using
+``pgr_degree`` and work with the ``in_edges`` and ``out_edges`` columns
+directly.
 
 
 .. include:: pgRouting-concepts.rst

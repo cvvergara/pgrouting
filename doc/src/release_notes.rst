@@ -39,7 +39,10 @@ pgRouting 3.8
 pgRouting 3.8.0 Release Notes
 -------------------------------------------------------------------------------
 
-No Changes Yet
+.. rubric:: Proposed promoted to official.
+
+* pgr_degree
+
 
 pgRouting 3.7
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

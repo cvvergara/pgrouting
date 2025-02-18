@@ -8,7 +8,10 @@
 
 ### pgRouting 3.8.0 Release Notes
 
-No Changes Yet
+**Proposed promoted to official.**
+
+* pgr_degree
+
 
 ## pgRouting 3.7
 

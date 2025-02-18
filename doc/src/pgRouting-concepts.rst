@@ -844,6 +844,9 @@ To get the dead ends:
 That information is correct, for example, when the dead end is on the limit of
 the imported graph.
 
+.. image:: images/Fig1-originalData.png
+   :scale: 20%
+
 Visually node :math:`4` looks to be as start/ending of 3 edges, but it is not.
 
 Is that correct?
@@ -859,8 +862,10 @@ Is that correct?
 * Is there a big cliff and from eagles view look like the dead end is close to
   the segment?
 
-When there are many dead ends, to speed up, the :doc:`contraction-family`
-functions can be used to divide the problem.
+When there are many dead ends, to speed up processing, the :doc:`contraction-family`
+functions can be used to contract the graph.
+
+.. degree_from_table_end
 
 Linear edges
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -876,8 +881,6 @@ account speed bumps, stop signals.
 
 When there are many linear edges, to speed up, the :doc:`contraction-family`
 functions can be used to divide the problem.
-
-.. degree_from_table_end
 
 Function's structure
 -------------------------------------------------------------------------------

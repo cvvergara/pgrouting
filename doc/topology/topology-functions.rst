@@ -24,6 +24,9 @@ created.
 
 .. official-start
 
+- :doc:`pgr_degree` - Returns a set of vertices and corresponding count of
+  incidet edges to the vertex.
+
 The following functions modify the database directly therefore the user must
 have special permissions given by the administrators to use them.
 
@@ -59,7 +62,6 @@ Additional functions to analyze a graph:
 
 These proposed functions do not modify the database.
 
-- :doc:`pgr_degree` - Returns a set of vertices and corresponding count of incidet edges to the vertex.
 - :doc:`pgr_extractVertices` - Extracts vertex information based on the edge
   table information.
 
