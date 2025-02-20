@@ -43,15 +43,29 @@ DECLARE
   eids TEXT;
   query TEXT;
 
+  sqlhint TEXT;
+
 BEGIN
 
-  edges_sql := _pgr_checkQuery($1);
-  PERFORM _pgr_checkColumn(edges_sql, 'id', 'ANY-INTEGER', dryrun => $3);
+  BEGIN
+    edges_sql := _pgr_checkQuery($1);
+    PERFORM _pgr_checkColumn(edges_sql, 'id', 'ANY-INTEGER', dryrun => $3);
 
-  vertices_sql := _pgr_checkQuery($2);
-  PERFORM _pgr_checkColumn(vertices_sql, 'id', 'ANY-INTEGER', dryrun => $3);
+    vertices_sql := _pgr_checkQuery($2);
+    PERFORM _pgr_checkColumn(vertices_sql, 'id', 'ANY-INTEGER', dryrun => $3);
+
+    EXCEPTION WHEN OTHERS THEN
+      GET STACKED DIAGNOSTICS sqlhint = PG_EXCEPTION_HINT;
+      RAISE EXCEPTION '%', SQLERRM USING HINT = sqlhint, ERRCODE = SQLSTATE;
+  END;
+
   has_in_edges := _pgr_checkColumn(vertices_sql, 'in_edges', 'ANY-INTEGER[]', true, dryrun => $3);
   has_out_edges := _pgr_checkColumn(vertices_sql, 'out_edges', 'ANY-INTEGER[]', true, dryrun => $3);
+
+  IF NOT has_in_edges AND NOT has_out_edges THEN
+      RAISE EXCEPTION 'column "in_edges" does not exist' USING HINT = vertices_sql, ERRCODE = 42703;
+  END IF;
+
 
   IF has_in_edges THEN
     eids = $$coalesce(in_edges::BIGINT[], '{}'::BIGINT[])$$;
@@ -97,7 +111,7 @@ BEGIN
       JOIN g_edges AS e ON (e.id = eid) GROUP BY v.id
     )
 
-    SELECT id::BIGINT, coalesce(count, 0)::BIGINT FROM all_vertices LEFT JOIN totals USING (id)
+    SELECT id::BIGINT, count::BIGINT FROM all_vertices JOIN totals USING (id)
     $q$, eids);
 
   IF dryrun THEN
@@ -106,16 +120,10 @@ BEGIN
     RETURN QUERY EXECUTE query;
   END IF;
 
-  EXCEPTION WHEN OTHERS THEN
-    RAISE EXCEPTION '%', SQLERRM
-    USING HINT = 'Please check query: '|| $1;
-
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-
--- COMMENTS
 COMMENT ON FUNCTION pgr_degree(TEXT, TEXT, BOOLEAN)
 IS 'pgr_degree
 - Parameters
