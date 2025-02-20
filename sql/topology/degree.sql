@@ -118,7 +118,6 @@ LANGUAGE plpgsql VOLATILE STRICT;
 -- COMMENTS
 COMMENT ON FUNCTION pgr_degree(TEXT, TEXT, BOOLEAN)
 IS 'pgr_degree
-- PROPOSED
 - Parameters
 - Edges SQL with columns: id
 - Vertices SQL with columns: id, in_edges, out_edges
