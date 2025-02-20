@@ -830,10 +830,11 @@ the number of dead ends and/or the number of linear edges.
 A complete method on how to contract and how to use the contracted graph is
 described on :doc:`contraction-family`
 
-.. degree_from_table_start
 
 Dead ends
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. degree_from_table_start
 
 To get the dead ends:
 
@@ -841,15 +842,18 @@ To get the dead ends:
    :start-after: -- contract1
    :end-before: -- contract2
 
-That information is correct, for example, when the dead end is on the limit of
-the imported graph.
+The dead end information is correct, for example, when the dead end is on the
+limit of the imported graph.
+
+Visually node :math:`4`, indicated as dead end on the query, looks to be of
+degree :math:`3` as is an end point 3 edges.
 
 .. image:: images/Fig1-originalData.png
    :scale: 20%
 
-Visually node :math:`4` looks to be as start/ending of 3 edges, but it is not.
+.. rubric:: Is node :math:`4` a dead end or not?
 
-Is that correct?
+The answer to that question will depend on the application.
 
 * Is there such a small curb:
 
@@ -870,17 +874,22 @@ functions can be used to contract the graph.
 Linear edges
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. linear_degree_from_table_start
+
 To get the linear edges:
 
 .. literalinclude:: concepts.queries
    :start-after: -- contract2
    :end-before: -- contract3
 
-This information is correct, for example, when the application is taking into
-account speed bumps, stop signals.
+This linear vertex is correct, for example, when those the vertices are speed
+bumps, stop signals and the application is taking them into account.
 
-When there are many linear edges, to speed up, the :doc:`contraction-family`
-functions can be used to divide the problem.
+When there are many linear vertices, that need not to be taken into account, to
+speed up the processing, the :doc:`contraction-family` functions can be used to
+contract the problem.
+
+.. linear_degree_from_table_end
 
 Function's structure
 -------------------------------------------------------------------------------
