@@ -2,6 +2,8 @@
 SET(LOCAL_FILES
     _contraction.sql
     contraction.sql
+    _contraction_hierarchies.sql
+    contraction_hierarchies.sql
     )
 
 foreach (f ${LOCAL_FILES})
