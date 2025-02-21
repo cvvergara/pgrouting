@@ -43,7 +43,7 @@ NOTICE:  PROCESSING:
 NOTICE:  pgr_createVerticesTable('edges','source','geom','target','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  ----> PGR ERROR in pgr_createVerticesTable: Wrong type of Column source: geom
-HINT:    ----> Expected type of geom is integer, smallint or bigint but USER-DEFINED was found
+ASTUCE :   ----> Expected type of geom is integer, smallint or bigint but USER-DEFINED was found
 NOTICE:  Unexpected error raise_exception
  pgr_createverticestable
 -------------------------
@@ -196,7 +196,7 @@ NOTICE:  PROCESSING:
 NOTICE:  pgr_createVerticesTable('mytable','src','mygeom','tgt','true')
 NOTICE:  Performing checks, please wait .....
 NOTICE:  ----> PGR ERROR in pgr_createVerticesTable: Wrong type of Column source: mygeom
-HINT:    ----> Expected type of mygeom is integer, smallint or bigint but USER-DEFINED was found
+ASTUCE :   ----> Expected type of mygeom is integer, smallint or bigint but USER-DEFINED was found
 NOTICE:  Unexpected error raise_exception
  pgr_createverticestable
 -------------------------
