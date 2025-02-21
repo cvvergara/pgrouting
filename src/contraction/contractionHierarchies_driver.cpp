@@ -87,16 +87,16 @@ pgr_contraction_hierarchies(
             using DirectedGraph = pgrouting::graph::CHDirectedGraph;
             DirectedGraph digraph;
 
-            detail::perform_contraction_hierarchies(digraph, edges, forbid, log, err);
+            detail::perform_contraction_hierarchies(digraph, directed, edges, forbid, log, err);
             detail::get_postgres_result_contraction_hierarchies(
                     digraph,
                     return_tuples,
                     return_count);
         } else {
-            using UndirectedGraph = pgrouting::graph::CHUndirectedGraph;
+            using UndirectedGraph = pgrouting::graph::CHUniqueUndirectedGraph;
             UndirectedGraph undigraph;
 
-            detail::perform_contraction_hierarchies(undigraph, edges, forbid, log, err);
+            detail::perform_contraction_hierarchies(undigraph, directed, edges, forbid, log, err);
             detail::get_postgres_result_contraction_hierarchies(
                     undigraph,
                     return_tuples,

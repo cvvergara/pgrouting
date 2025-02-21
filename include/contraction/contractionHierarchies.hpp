@@ -66,22 +66,31 @@ namespace pgrouting {
     @return contraction metric: the node-contraction associated metrics
 */
 template < class G >
-int64_t process_vertex_contraction(
+int64_t vertex_contraction(
     G &graph,
+    bool directed,
     typename G::V v,
     bool simulation,
     std::vector<CH_edge> &shortcuts,
     std::ostringstream &log,
     std::ostringstream &err
 ) {
-    Identifiers<typename G::V> adjacent_in_vertices =
-        graph.find_adjacent_in_vertices(v);
-    Identifiers<typename G::V> adjacent_out_vertices =
-        graph.find_adjacent_out_vertices(v);
-    int64_t n_old_edges =
-        static_cast<int64_t>(adjacent_in_vertices.size()) +
-        static_cast<int64_t>(adjacent_out_vertices.size());
-    int64_t n_shortcuts = 0;
+    Identifiers<typename G::V> adjacent_in_vertices;
+    Identifiers<typename G::V> adjacent_out_vertices;
+    int64_t n_old_edges;
+    std::vector<typename G::E> shortcut_edges;
+
+    if (directed) {
+        adjacent_in_vertices = graph.find_adjacent_in_vertices(v);
+        adjacent_out_vertices = graph.find_adjacent_out_vertices(v);
+        n_old_edges =
+            static_cast<int64_t>(adjacent_in_vertices.size()
+            + adjacent_out_vertices.size());
+    } else {
+        adjacent_in_vertices = graph.find_adjacent_vertices(v);
+        adjacent_out_vertices = adjacent_in_vertices;
+        n_old_edges = static_cast<int64_t>(adjacent_in_vertices.size());
+    }
 
     log << ">> Contraction of node " << graph[v].id << std::endl
         << num_vertices(graph.graph) << " vertices and "
@@ -94,9 +103,7 @@ int64_t process_vertex_contraction(
             u,
             v,
             adjacent_out_vertices,
-            shortcuts,
-            n_shortcuts,
-            simulation,
+            shortcut_edges,
             log,
             err);
     }
@@ -106,19 +113,26 @@ int64_t process_vertex_contraction(
         for (auto &u : graph.find_adjacent_in_vertices(v))
             boost::remove_edge(u, v, graph.graph);
         graph[v].clear_contracted_vertices();
-
-        log << "  Size of the graph after contraction: "
-            << num_vertices(graph.graph)
-            << " vertices and " << num_edges(graph.graph)
-            << " edges" << std::endl
-            << "  " << n_shortcuts
-            << " shortcuts created, " << n_old_edges
-            << " old edges" << std::endl;
+        for (auto &e : shortcut_edges)
+            shortcuts.push_back(graph.graph[e]);
+    } else {
+        for (auto &e : shortcut_edges)
+            boost::remove_edge(e, graph.graph);
     }
-    log << "  Metric: edge difference = "
-        << n_shortcuts - n_old_edges << std::endl;
 
-    return static_cast<int64_t>(n_shortcuts - n_old_edges);
+    log << "  Size of the graph after contraction: "
+        << num_vertices(graph.graph)
+        << " vertices and " << num_edges(graph.graph)
+        << " edges" << std::endl
+        << "  " << shortcut_edges.size()
+        << " shortcuts created, " << n_old_edges
+        << " old edges" << std::endl;
+
+    int64_t m;
+    m = shortcut_edges.size() - n_old_edges;
+    log << "  Metric: edge difference = " << shortcut_edges.size()
+        << " - " << n_old_edges << " = " << m << std::endl;
+    return m;
 }
 
 /*! 
@@ -140,9 +154,7 @@ void compute_shortcuts(
     typename G::V u,
     typename G::V v,
     Identifiers<typename G::V> out_vertices,
-    std::vector<CH_edge> &shortcuts,
-    int64_t &n_shortcuts,
-    bool simulation,
+    std::vector<typename G::E> &shortcuts,
     std::ostringstream &log,
     std::ostringstream &err
 ) {
@@ -207,17 +219,10 @@ void compute_shortcuts(
                     c = graph[e].cost + graph[f].cost;
                     if ((predecessors[w] == v) &&
                         (predecessors[v] == u) &&
-                        (distances[w] == c) &&
-                        (graph.is_shortcut_possible(u, v, w))) {
-                        if (!simulation) {
-                            pgrouting::CH_edge ch_e =
-                                graph.process_shortcut(u, v, w);
-                            log << "    Shortcut = (" << graph[u].id
-                                << ", " << graph[w].id << "), ";
-                            log << "cost = " << ch_e.cost << std::endl;
-                            shortcuts.push_back(ch_e);
-                        }
-                        n_shortcuts++;
+                        (distances[w] == c)) {
+                        graph.process_ch_shortcut(
+                            u, v, w,
+                            shortcuts, log);
                     }
                 }
             }
@@ -230,25 +235,29 @@ namespace functions {
 template < class G >
 void contraction_hierarchies(
     G &graph,
+    bool directed,
     std::ostringstream &log,
     std::ostringstream &err
 ) {
     // First iteration over vertices
+    // graph_copy must stay unchanged during this first step,
+    // graph will be modified
     G graph_copy = graph;
-    std::vector<pgrouting::CH_edge> shortcuts;
+    std::vector<CH_edge> shortcuts;
 
     // Fill the priority queue with a first search
     log << "Do contraction" << std::endl;
     log << std::endl << ">>>> FIRST LABELLING" << std::endl;
     typename G::PQ minPQ, priority_queue;
-
+    // graph is destroyed by the contraction operation
     for (const auto &v :
         boost::make_iterator_range(boost::vertices(graph.graph))) {
         if (!(graph.getForbiddenVertices()).has(v)) {
             minPQ.push(
                 std::make_pair(
-                    process_vertex_contraction(
+                    vertex_contraction(
                         graph,
+                        directed,
                         v,
                         false,
                         shortcuts,
@@ -258,16 +267,19 @@ void contraction_hierarchies(
     }
     log << std::endl << ">>>> SECOND LABELLING" << std::endl;
     shortcuts.clear();
-    graph = graph_copy;
 
     // Second iteration: lazy heuristics
     // The graph is reinitialized
+
+    // graph is reinitialized with its initial copy
+    graph = graph_copy;
     while (!minPQ.empty()) {
         std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
         minPQ.pop();
         int64_t corrected_metric =
-            process_vertex_contraction(
+            vertex_contraction(
                 graph_copy,
+                directed,
                 ordered_vertex.second,
                 true,
                 shortcuts,
@@ -287,9 +299,10 @@ void contraction_hierarchies(
         } else {
             std::pair< int64_t, typename G::V > contracted_vertex;
             typename G::V u =
-                graph_copy.vertices_map[graph[ordered_vertex.second].id];
-            contracted_vertex.first = process_vertex_contraction(
+                graph.vertices_map[graph[ordered_vertex.second].id];
+            contracted_vertex.first = vertex_contraction(
                 graph_copy,
+                directed,
                 u,
                 false,
                 shortcuts,
@@ -300,7 +313,6 @@ void contraction_hierarchies(
             priority_queue.push(contracted_vertex);
         }
     }
-
     log << std::endl << "Copy shortcuts" << std::endl;
     graph.copy_shortcuts(shortcuts, log);
     log << std::endl << "Priority queue: " << std::endl;

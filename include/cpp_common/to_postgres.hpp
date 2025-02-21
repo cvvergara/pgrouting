@@ -87,6 +87,7 @@ namespace detail {
 template <class G>
 void perform_contraction_hierarchies(
         G &graph,
+        bool directed,
         const std::vector< Edge_t > &edges,
         const std::vector< int64_t > &forbidden_vertices,
         std::ostringstream &log,
@@ -105,7 +106,7 @@ void perform_contraction_hierarchies(
 
     // Execute the contraction
     try {
-        pgrouting::functions::contraction_hierarchies(graph, log, err);
+        pgrouting::functions::contraction_hierarchies(graph, directed, log, err);
     }
     catch ( ... ) {
         err << "Contractions hierarchy failed" << std::endl;
@@ -176,6 +177,6 @@ void get_postgres_result_contraction_hierarchies(
     }
 }
 
-}
+}  // namespace detail
 
 #endif  // INCLUDE_CPP_COMMON_TO_POSTGRES_HPP_

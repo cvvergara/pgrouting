@@ -282,11 +282,7 @@ class Pgr_contractionGraph :
 
     /*! @brief computes p_max used in the contraction hierarchies method
     */
-    int64_t compute_pmax(
-        V u,
-        V v,
-        Identifiers<V> out_vertices) {
-
+    int64_t compute_pmax(V u, V v, Identifiers<V> out_vertices) {
         int64_t p_max;
         E e, f;
         bool found_e, found_f;
@@ -347,16 +343,15 @@ class Pgr_contractionGraph :
        edge (u, v) is a new edge e
        contracted_vertices = w + contracted vertices
        */
+    bool add_shortcut(const CH_edge &edge, V u, V v) {
+        bool inserted;
+        E e;
 
-     void add_shortcut(const CH_edge &edge, V u, V v) {
-         bool inserted;
-         E e;
-         if (edge.cost < 0) return;
-
-         boost::tie(e, inserted) = boost::add_edge(u, v, this->graph);
-
-         this->graph[e]= edge;
-     }
+        if (edge.cost < 0) return false;
+        boost::tie(e, inserted) = boost::add_edge(u, v, this->graph);
+        this->graph[e]= edge;
+        return inserted;
+    }
 
      bool has_u_v_w(V u, V v, V w) const {
          return boost::edge(u, v, this->graph).second
@@ -481,14 +476,52 @@ class Pgr_contractionGraph :
         return shortcut;
     }
 
+    void process_ch_shortcut(
+        V u, V v, V w,
+        std::vector<E> &shortcuts,
+        std::ostringstream &log) {
+        bool found_e;
+        E e;
+
+        boost::tie(e, found_e) = boost::edge(u, w, this->graph);
+        if ((is_shortcut_possible(u, v, w)) && (!found_e)) {
+            log << "    Shortcut = ("
+                << this->graph[u].id << ", " << this->graph[w].id
+                << "), ";
+            auto e1 = get_min_cost_edge(u, v);
+            auto e2 = get_min_cost_edge(v, w);
+
+            double cost = std::numeric_limits<double>::max();
+            if (std::get<1>(e1) && std::get<1>(e2))
+                cost = std::get<0>(e1).cost + std::get<0>(e2).cost;
+            log << "cost = " << cost << std::endl;
+
+            // Create shortcut
+            CH_edge shortcut(
+                get_next_id(),
+                (this->graph[u]).id,
+                (this->graph[w]).id,
+                cost);
+            shortcut.add_contracted_vertex(this->graph[v]);
+            shortcut.add_contracted_edge_vertices(std::get<0>(e1));
+            shortcut.add_contracted_edge_vertices(std::get<0>(e2));
+
+            // Add shortcut in the current graph (to go on the process)
+            bool inserted;
+            E s;
+            boost::tie(s, inserted) = boost::add_edge(u, w, this->graph);
+            this->graph[s]= shortcut;
+            if (inserted) shortcuts.push_back(s);
+        }
+    }
+
     /*!
         @brief copies shortcuts and modified vertices from another graph
         @result void
     */
     void copy_shortcuts(
         std::vector<pgrouting::CH_edge> &shortcuts,
-        std::ostringstream &log
-    ) {
+        std::ostringstream &log) {
         for (auto it = shortcuts.begin(); it != shortcuts.end(); it++) {
             V u, v;
             u = this->vertices_map[it->source];

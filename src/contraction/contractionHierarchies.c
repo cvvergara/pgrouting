@@ -126,7 +126,7 @@ _pgr_contraction_hierarchies(PG_FUNCTION_ARGS) {
         int16 typlen;
         size_t      call_cntr = funcctx->call_cntr;
 
-        size_t numb = 6;
+        size_t numb = 8;
         values =(Datum *)palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
         size_t i;
@@ -184,8 +184,8 @@ _pgr_contraction_hierarchies(PG_FUNCTION_ARGS) {
         values[3] = Int64GetDatum(result_tuples[call_cntr].source);
         values[4] = Int64GetDatum(result_tuples[call_cntr].target);
         values[5] = Float8GetDatum(result_tuples[call_cntr].cost);
-        values[6] = Int64GetDatum(result_tuples[call_cntr].vertex_order);
-        values[7] = Int64GetDatum(result_tuples[call_cntr].metric);
+        values[6] = Int64GetDatum(result_tuples[call_cntr].metric);
+        values[7] = Int64GetDatum(result_tuples[call_cntr].vertex_order);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
