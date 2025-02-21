@@ -38,7 +38,7 @@ BEGIN
 
     IF NOT min_version('4.0.0') THEN
         RETURN QUERY
-    SELECT skip(1, 'Function is new on 4.0.0');
+        SELECT skip(1, 'Function is new on 4.0.0');
         RETURN;
     END IF;
 
