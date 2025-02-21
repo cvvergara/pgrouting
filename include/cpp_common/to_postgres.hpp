@@ -176,6 +176,6 @@ void get_postgres_result_contraction_hierarchies(
     }
 }
 
-}
+}  // namespace detail
 
 #endif  // INCLUDE_CPP_COMMON_TO_POSTGRES_HPP_

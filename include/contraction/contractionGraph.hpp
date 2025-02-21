@@ -282,11 +282,7 @@ class Pgr_contractionGraph :
 
     /*! @brief computes p_max used in the contraction hierarchies method
     */
-    int64_t compute_pmax(
-        V u,
-        V v,
-        Identifiers<V> out_vertices) {
-
+    int64_t compute_pmax(V u, V v, Identifiers<V> out_vertices) {
         int64_t p_max;
         E e, f;
         bool found_e, found_f;

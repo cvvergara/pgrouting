@@ -45,7 +45,6 @@ class CH_vertex {
     int64_t vertex_order;
     int64_t metric;
     CH_vertex();
-    CH_vertex(const CH_vertex &) = default;
     CH_vertex(const Edge_t &other, bool is_source) :
       id(is_source? other.source : other.target)
       {}
