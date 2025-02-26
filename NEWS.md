@@ -20,6 +20,7 @@
 * pgr_findCloseEdges
 
   * Error messages adjustment.
+  * Function promoted to official
 
 * pgr_degree
 

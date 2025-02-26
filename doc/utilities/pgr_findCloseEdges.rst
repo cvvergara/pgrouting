@@ -8,12 +8,12 @@
    ****************************************************************************
 
 .. index::
-   single: Utilities ; pgr_findCloseEdges - Proposed
+   single: Utilities ; pgr_findCloseEdges
    single: findCloseEdges
 
 |
 
-``pgr_findCloseEdges`` - Proposed
+``pgr_findCloseEdges``
 ===============================================================================
 
 ``pgr_findCloseEdges`` - Finds the close edges to a point geometry.
@@ -23,6 +23,7 @@
 .. rubric:: Version 3.8.0
 
 * Error messages adjustment.
+* Function promoted to official
 
 .. rubric:: Version 3.4.0
 
@@ -51,13 +52,13 @@ Signatures
 
    | pgr_findCloseEdges(`Edges SQL`_, **point**, **tolerance**, [**options**])
    | pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**, [**options**])
-   | **options:** ``[cap, partial, dryrun]``
+   | **options:** ``[cap, dryrun]``
 
    | Returns set of |result-find|
    | OR EMPTY SET
 
 .. index::
-    single: findCloseEdges - Proposed ; One point - Proposed on 3.4
+    single: findCloseEdges ; One point
 
 One point
 ...............................................................................
@@ -66,33 +67,21 @@ One point
    :class: signatures
 
    | pgr_findCloseEdges(`Edges SQL`_, **point**, **tolerance**, [**options**])
-   | **options:** [cap, partial, dryrun]``
+   | **options:** ``[cap, dryrun]``
 
    | Returns set of |result-find|
    | OR EMPTY SET
 
-:Example: With default values
+:Example: Get two close edges to points of interest with :math:`pid = 5`
 
-* Default: ``cap => 1``
-
-  * Maximum one row answer.
-* Default: ``partial => true``
-
-  * With less calculations as possible.
-* Default: ``dryrun => false``
-
-  * Process query
-* Returns
-
-  * values on ``edge_id``, ``fraction``, ``side`` columns.
-  * ``NULL`` on ``distance``, ``geom``, ``edge`` columns.
+* ``cap => 2``
 
 .. literalinclude:: findCloseEdges.queries
    :start-after: -- q1
    :end-before: -- q2
 
 .. index::
-   single: findCloseEdges - Proposed ; Many points - Proposed on 3.4
+   single: findCloseEdges ; Many points
 
 Many points
 ...............................................................................
@@ -101,25 +90,16 @@ Many points
    :class: signatures
 
    | pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**, [**options**])
-   | **options:** ``[cap, partial, dryrun]``
+   | **options:** ``[cap, dryrun]``
 
    | Returns set of |result-find|
    | OR EMPTY SET
 
-:Example: Find at most :math:`2` edges close to all vertices on the points of
-          interest table.
-
-One answer per point, as small as possible.
+:Example: For all points of interests, find the closest edges.
 
 .. literalinclude:: findCloseEdges.queries
    :start-after: -- q2
    :end-before: -- q3
-
-Columns ``edge_id``, ``fraction``, ``side`` and ``geom`` are returned with
-values.
-
-``geom`` contains the original point geometry to assist on deterpartialing to which
-point geometry the row belongs to.
 
 Parameters
 -------------------------------------------------------------------------------
@@ -162,12 +142,6 @@ Optional parameters
      - ``INTEGER``
      - :math:`1`
      - Limit output rows
-   * - ``partial``
-     - ``BOOLEAN``
-     - ``true``
-     - * When ``true`` only columns needed for :doc:`withPoints-category` are
-         calculated.
-       * When ``false`` all columns are calculated
    * - ``dryrun``
      - ``BOOLEAN``
      - ``false``
@@ -194,7 +168,7 @@ Edges SQL
      - Identifier of the edge.
    * - ``geom``
      - ``geometry``
-     - The ``LINESTRING`` geometry of the edge.
+     - The geometry of the edge.
 
 Result columns
 -------------------------------------------------------------------------------
@@ -223,28 +197,22 @@ Returns set of |result-find|
      - Value in ``[r, l]`` indicating if the point is:
 
        * In the right ``r``.
-       * In the left ``l``.
 
          * When the point is on the line it is considered to be on the right.
+       * In the left ``l``.
    * - ``distance``
      - ``FLOAT``
      - Distance from point to edge.
-
-       * ``NULL`` when ``cap = 1`` on the `One point`_ signature
    * - ``geom``
      - ``geometry``
-     - ``POINT`` geometry
-
-       * `One Point`_: Contains the point on the edge that is ``fraction`` away
-         from the starting point of the edge.
-       * `Many Points`_: Contains the corresponding **original point**
+     - Original ``POINT`` geometry.
    * - ``edge``
      - ``geometry``
-     - ``LINESTRING`` geometry from the **original point** to the closest point
-       of the edge with identifier ``edge_id``
+     - Geometry from the original point to the closest point of the edge with
+       identifier ``edge_id``
 
 
-.. rubric:: One point results
+.. rubric:: One point result
 
 * The green nodes is the **original point**
 * The geometry ``geom`` is a point on the :math:`sp \rightarrow ep` edge.
@@ -253,36 +221,34 @@ Returns set of |result-find|
 
 .. graphviz::
 
-   digraph G {
-     splines=false;
-     subgraph cluster0 {
-       point [shape=circle;style=filled;color=green];
-       geom [shape=point;color=black;size=0];
-       sp, ep;
+   digraph D {
+    splines=true;
+    subgraph cluster0 {
+    point [pos="0,1.5!";shape=circle;style=filled;color=green;fontsize=8;width=0.3;fixedsize=true];
+    np [pos="1,1.5!";shape=point;color=black;size=0;fixedsize=true];
+    sp, ep [shape=circle;fontsize=8;width=0.3;fixedsize=true];
+    sp[pos="2,0!"]
+    ep[pos="2,3!"]
 
-       edge[weight=0];
-       point -> geom [dir=none; penwidth=0, color=red];
-       edge[weight=2];
-       sp -> geom -> ep [dir=none;penwidth=3 ];
+    f1 [pos="1.5,2.25!" width=0.3; height=0.5; fixedsize=true; style=invis ];
+    f2 [pos="1.5,0.75!" width=0.3; height=0.5;  fixedsize=true; style=invis];
+    sp:nw ->  np:s [dir=none]
+    np:n -> ep:w
+    }
 
-       {rank=same; point, geom}
-     }
+    subgraph cluster1 {
+    geom [pos="3,1.5!";shape=circle;style=filled;color=green;fontsize=8;width=0.3;fixedsize=true];
+    np1 [pos="4,1.5!";shape=point;color=black;size=0];
+    sp1, ep1 [shape=circle;fontsize=8;width=0.3;fixedsize=true];
+    sp1[pos="5,0!";label=sp]
+    ep1[pos="5,3!";label=ep]
 
-     subgraph cluster1 {
-       point1 [shape=circle;style=filled;color=green;label=point];
-       geom1 [shape=point;color=deepskyblue; xlabel="geom"; width=0.3];
-       sp1 [label=sp]; ep1 [label=ep];
-
-       edge[weight=0];
-       point1 -> geom1 [weight=0, penwidth=3, color=red,
-                      label="edge"];
-       edge[weight=2];
-       sp1 -> geom1 -> ep1 [dir=none;weight=1, penwidth=3 ];
-
-
-       geom1 -> point1 [dir=none;weight=0, penwidth=0, color=red];
-       {rank=same; point1, geom1}
-     }
+    f11 [pos="4.55,2.25!";width=0.3; height=0.5; fixedsize=true; style=invis];
+    f21 [pos="4.557,0.75!";width=0.3; height=0.5; fixedsize=true; style=invis];
+    sp1:nw ->  np1:sw [dir=none];
+    np1:nw -> ep1:w;
+    geom -> np1 [label="edge";color=red]
+    }
    }
 
 .. rubric:: Many point results
@@ -354,9 +320,6 @@ At most two answers
 * ``cap => 2``
 
   * Maximum two row answer.
-* Default: ``partial => true``
-
-  * With less calculations as possible.
 * Default: ``dryrun => false``
 
   * Process query
@@ -395,9 +358,6 @@ One answer, all columns
 * Default: ``cap => 1``
 
   * Maximum one row answer.
-* ``partial => false``
-
-  * Calculate all columns
 * Default: ``dryrun => false``
 
   * Process query
@@ -431,9 +391,6 @@ At most two answers with all columns
 * ``cap => 2``
 
   * Maximum two row answer.
-* ``partial => false``
-
-  * Calculate all columns
 * Default: ``dryrun => false``
 
   * Process query
@@ -478,12 +435,6 @@ One point dry run execution
 
 * Returns ``EMPTY SET``.
 
-
-* ``partial => true``
-
-  * Is ignored
-  * Because it is a **dry run** excecution, the code for all calculations are
-    shown on the PostgreSQL ``NOTICE``.
 * ``dryrun => true``
 
   * Do not process query
@@ -504,9 +455,6 @@ At most two answers per point
 * ``cap => 2``
 
   * Maximum two row answer.
-* Default: ``partial => true``
-
-  * With less calculations as possible.
 * Default: ``dryrun => false``
 
   * Process query
@@ -552,9 +500,6 @@ One answer per point, all columns
 * Default: ``cap => 1``
 
   * Maximum one row answer.
-* ``partial => false``
-
-  * Calculate all columns
 * Default: ``dryrun => false``
 
   * Process query
@@ -586,13 +531,6 @@ Many points dry run execution
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 * Returns ``EMPTY SET``.
-
-
-* ``partial => true``
-
-  * Is ignored
-  * Because it is a **dry run** excecution, the code for all calculations are
-    shown on the PostgreSQL ``NOTICE``.
 * ``dryrun => true``
 
   * Do not process query

@@ -1,13 +1,18 @@
 -- CopyRight(c) pgRouting developers
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 /* -- q1 */
-SELECT  *
+SELECT
+  edge_id, round(fraction::numeric, 2) AS fraction, side, distance,
+  distance, ST_AsText(geom) AS point, ST_AsText(edge) As edge
 FROM pgr_findCloseEdges(
   $$SELECT id, geom FROM edges$$,
   (SELECT geom FROM pointsOfInterest WHERE pid = 5),
-  0.5);
+  0.5, cap => 2);
 /* -- q2 */
-SELECT edge_id, round(fraction::numeric, 2) AS fraction, side, ST_AsText(geom) AS original_point
+SELECT
+edge_id, round(fraction::numeric, 2) AS fraction, side, distance,
+ST_AsText(geom) AS point,
+ST_AsText(edge) AS edge
 FROM pgr_findCloseEdges(
   $$SELECT id, geom FROM edges$$,
   (SELECT array_agg(geom) FROM pointsOfInterest),
