@@ -3113,10 +3113,10 @@ msgstr "Los nodos azules tienen un número ilimitado de aristas."
 msgid "Node"
 msgstr "Nodo"
 
-msgid "Adjacent nodes"
+msgid "Adjecent nodes"
 msgstr "Nodos adyacentes"
 
-msgid "Number of adjacent nodes"
+msgid "Number of Adjecent nodes"
 msgstr "Número de vértices adyacentes"
 
 msgid ":math:`a`"

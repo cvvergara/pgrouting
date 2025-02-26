@@ -14,8 +14,9 @@
 ``pgr_contraction_hierarchies``
 ===============================================================================
 
-``pgr_contraction_hierarchies`` — Performs graph contraction and returns the contracted
-vertices and edges.
+``pgr_contraction_hierarchies`` — Performs graph contraction according to 
+the contraction hierarchies method and returns the contracted vertices and 
+shortcut edges created.
 
 .. figure:: images/boost-inside.jpeg
    :target: https://www.boost.org/libs/graph/doc/table_of_contents.html
@@ -37,7 +38,7 @@ can be used to speed up some graph algorithms. Contraction hierarchies can reduc
 the size of explored graph by adding shortcut edges and by introducing an order
 between nodes, which gives a notion of priority to the shortest path algorithm
 used to find point to point paths. In this way, it decreases the total time and
-space used by shortest path algorithms.
+explored space of shortest path algorithms.
 
 This implementation allows the user to forbid contraction of a set of nodes.
 The process is done on edges with positive costs. 
@@ -132,7 +133,8 @@ Result columns
 
 Returns set of |result-contraction-hierarchies|
 
-The function returns a single row. The columns of the row are:
+The function returns many rows (one per vertex and one per shortcut edge created).
+The columns of the rows are:
 
 .. list-table::
    :width: 81

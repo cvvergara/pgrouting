@@ -110,7 +110,7 @@ Dead end vertex on undirected graph
    :header-rows: 1
 
    * - Node
-     - Adjacent nodes
+     - Adjecent nodes
      - Number of adjacent nodes
    * - :math:`a`
      - :math:`\{u\}`
@@ -151,7 +151,7 @@ Dead end vertex on directed graph
    :header-rows: 1
 
    * - Node
-     - Adjacent nodes
+     - Adjecent nodes
      - Number of adjacent nodes
      - Number of incoming edges
      - Number of outgoing edges
@@ -293,7 +293,7 @@ Linear vertex on undirected graph
    :header-rows: 1
 
    * - Node
-     - Adjacent nodes
+     - Adjecent nodes
      - Number of adjacent nodes
    * - :math:`v`
      - :math:`\{u, w\}`
@@ -331,7 +331,7 @@ Linear vertex on directed graph
    :header-rows: 1
 
    * - Node
-     - Adjacent nodes
+     - Adjecent nodes
      - Number of adjacent nodes
      - Is symmetrical?
    * - :math:`a`
@@ -413,37 +413,51 @@ Edge :math:`u \rightarrow z` has the information of nodes that were contracted.
 Contraction hierarchies
 -------------------------------------------------------------------------------
 
-Contraction of edges and nodes ordered by importance. The graph built with
-this method can be then used with an adaptation of bidirectional Dijkstra
-shortest path algorithm, which uses the shortcuts and the hierarchy information
-to organize an optimized search in the graph.
+This method leads to a contraction of edges and nodes ordered by importance. 
+The graph built with this method can be then used with an adaptation of 
+bidirectional Dijkstra shortest path algorithm, which uses the shortcuts
+and the hierarchy information to organize an optimized search in the graph.
 
 
 Principles
 ...............................................................................
 
-A total node order is given. If u < v, then u is less important than v.
+A total node order is given. If ``u < v``, then ``u`` is less important than ``v``.
 A hierarchy is now constructed by contracting the nodes in this order.
 
-A node v is contracted by removing from the graph and adding shortcuts by replacing
-former paths of the form (u, v, w) by an edge (u, w). The shortcut (u, w) is only
-needed when (u, v, w) is the only shortest path between u and w.
+A node ``v`` is contracted by adding shortcuts replacing former paths of 
+the form ``(u, v, w)`` by an edge ``(u, w)``. The shortcut ``(u, w)`` is only
+needed when ``(u, v, w)`` is the only shortest path between ``u`` and ``w``.
 
-The contraction process adds all discovered shortcuts to the edge set E, giving
-a "contraction hierarchy". Finding an optimal node ordering is a difficult problem.
+When all shortcuts have been added for a given node ``v``, the incident edges 
+of ``v`` are removed and another node is contracted with the remaining graph.
+
+The procedure is destructive for the graph and a copy is made to be able
+to manipulate it again as a whole. The contraction process adds
+all discovered shortcuts to the edge set ``E`` and attributes a metric to each
+contracted node. This metric is giving what is called a *contraction hierarchy*.
+
+The basic idea is to keep the nodes in a priority queue sorted by some 
+estimate of how attractive is their contraction. The implemented case is the use of 
+the metric called *edge difference*, which corresponds to the difference between
+the number of shortcuts produced by the node contraction and the number of incident
+edges in the original graph. Finally, the aim is to reduce the explored part of the
+graph, with a bidirectional Dijkstra-like algorithm, without loosing optimality. 
+The metric will then be used by the shortest path algorithm to feed
+the oriented search.
+
+Finding an optimal node ordering for contraction is a difficult problem. 
 Nevertheless, very simple local heuristics work quite well, according to Geisberger
-et al. [2].
-
-The basic idea is to keep the nodes in a priority queue sorted by some estimate of how
-attractive is their contraction. We estimate that with the "edge difference" given by
-the difference between the number of shortcuts produced by the node contraction minus
-the number of incident edges in the original graph. Finally, the aim is to reduce
-with cleverness the size of the graph, without loosing optimality.
+et al. [2]. The principle here is to estimate a priori the value of
+the *edge difference* and to contract the node at the top of the queue
+only if the new value of the metric keeps it at the top of the queue.
+Otherwise, it is reinserted in the queue, at its right place corresponding
+to the new metric value.
 
 Initialize the queue with a first vertices order
 ...............................................................................
 
-For each vertex ``v`` of the graph, build contraction of ``v``:
+For each vertex ``v`` of the graph, build a contraction of ``v``:
 
 .. graphviz::
 
@@ -468,13 +482,13 @@ For each vertex ``v`` of the graph, build contraction of ``v``:
    :header-rows: 1
 
    * - Node
-     - Adjacent nodes
+     - Adjecent nodes
    * - :math:`v`
-     - :math:`\{p, r, u, w\}`
+     - :math:`\{p, r, u\}`
    * - :math:`p`
-     - :math:`\{r, v\}`
+     - :math:`\{u, v\}`
    * - :math:`u`
-     - :math:`\{r, v, w\}`
+     - :math:`\{p, v, w\}`
    * - :math:`r`
      - :math:`\{v, w\}`
    * - :math:`w`
@@ -501,6 +515,7 @@ Remove adjacent edges.
 
 Build shortcuts from predecessors of ``v`` to successors of ``v`` if and only if the path through ``v``
 corresponds to the only shortest path between the predecessor and the successor of ``v`` in the graph.
+The *edge difference* metric will here take the value -2 (``# shortcuts - # incident edges``).
 
 .. graphviz::
 
@@ -520,7 +535,7 @@ corresponds to the only shortest path between the predecessor and the successor 
     }
 
 Take the following vertex and contract it. Go on until you have contracted every node of the graph.
-At the end, there are no more edges in the graph.
+At the end, there are no more edges in the graph, which has been destroyed by the process.
 
 This first contraction will give you a vertex order, given by ordering them in ascending order on
 the metric (edge difference). Keep the vertices into a queue.
@@ -883,39 +898,35 @@ The original graph:
 Contraction hierarchies results
 ...............................................................................
 
-The results do not represent the contracted graph.
-They represent the changes done to the graph after applying the contraction
-algorithm.
-
-Vertices are all represented in the result (except of course forbidden ones)
-as long as the contraction hierarchies are applied (method 3), since the method
-gives an order to all contracted vertices in the graph.
-
-Otherwise, when applying linear or dead-end contractions, vertices that are not
-affected by the contraction will not appear in the result (see ).
+The results do not represent the contracted graph. They represent the changes 
+done to the graph after applying the contraction algorithm and give the vertex
+order built by the algorithm, by ordering vertices according to the *edge difference*
+metric. As a consequence, vertices are all represented in the result
+(except of course forbidden ones). Only shortcut built by the algorithm are
+represented in the result.
 
 .. literalinclude:: contraction-family.queries
-   :start-after: -- q2
-   :end-before: -- q3
+   :start-after: -- case4
+   :end-before: -- end
 
-After doing the linear contraction operation to the graph above:
+After doing the contraction hierarchies operation, we obtain the graph above:
 
-.. image:: images/undirected_sampledata_c.png
+.. image:: images/Fig6-unidirected-contraction-hierarchies.png
    :scale: 25%
 
-After computing the contraction hierarchies, the graph stays unchanged.
-Nevertheless, an order is now given to the vertices, in order to be used
-with a specific Dijkstra algorithm (implementation coming in a future version),
-which speeds up the search. As a consequence, if method 3 is used, all vertices
-browsed by the contraction will be represented in the result.
+After computing the contraction hierarchies, an order is now given to the vertices,
+ in order to be used with a specific Dijkstra algorithm (implementation coming 
+ in a future version), which speeds up the search.
 
-The process to create the graph in the database is the same as before.
-
+To create the graph in the database, you will have to insert normal edges in addition
+to shortcut edges. You can use the vertices list given by the contraction hierarchies
+function.
 
 See Also
 -------------------------------------------------------------------------------
 
 * :doc:`pgr_contraction`
+* :doc:`pgr_contraction_hierarchies`
 * :doc:`sampledata`
 * https://www.cs.cmu.edu/afs/cs/academic/class/15210-f12/www/lectures/lecture16.pdf
 * https://ae.iti.kit.edu/download/diploma_thesis_geisberger.pdf
