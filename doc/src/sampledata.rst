@@ -196,16 +196,21 @@ will be stored on a table.
      - Description
    * - ``pid``
      - A unique identifier.
-   * - ``edge_id``
-     - Identifier of the edge nearest edge that allows an arrival to the point.
-   * - ``side``
-     - Is it on the left, right or both sides of the segment ``edge_id``
-   * - ``fraction``
-     - Where in the segment is the point located.
    * - ``geom``
      - The geometry of the points.
+   * - ``edge_id``
+     - Identifier of the nearest segment.
+   * - ``fraction``
+     - Where in the segment ``edge_id`` is the closest point.
+   * - ``side``
+     - Is it on the left, right or both sides of the segment ``edge_id``.
+   * - ``distance``
+     - The distance between ``geom`` and the segment ``edge_id``.
+   * - ``edge``
+     - A segment that connects the ``geom`` of the point to the closest point
+       ``newPoint`` on the segment ``edge_id``.
    * - ``newPoint``
-     - The geometry of the points moved on top of the segment.
+     - A point on segment ``edge_id`` that is the closest to ``geom``.
 
 .. literalinclude:: sampledata.queries
    :start-after: -- p1
@@ -214,9 +219,30 @@ will be stored on a table.
 Points of interest fillup
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+Inserting the points of interest.
+
 .. literalinclude:: sampledata.queries
    :start-after: -- p2
    :end-before: -- p3
+
+Filling the rest of the table.
+
+.. literalinclude:: sampledata.queries
+   :start-after: -- p3
+   :end-before: -- p4
+
+Any other additional modifications: In this manual, point :math:`6` can be
+reached from both sides.
+
+.. literalinclude:: sampledata.queries
+   :start-after: -- p4
+   :end-before: -- p5
+
+The points of interest:
+
+.. literalinclude:: sampledata.queries
+   :start-after: -- p5
+   :end-before: -- p6
 
 .. pois_end
 
