@@ -196,4 +196,8 @@ SELECT * FROM my_dijkstra(10, 12);
 SELECT * FROM my_dijkstra(15, 12);
 /* -- use3-2 */
 SELECT * FROM my_dijkstra(15, 1);
+/* -- case4 */
+SELECT * FROM pgr_contraction_hierarchies(
+  'SELECT id, source, target, cost FROM edges ORDER BY id',
+  directed => false);
 /* -- end */
