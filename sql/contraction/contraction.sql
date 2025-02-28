@@ -89,4 +89,3 @@ LANGUAGE plpgsql VOLATILE STRICT;
 
 COMMENT ON FUNCTION pgr_contraction(TEXT, BIGINT[], INTEGER, BIGINT[], BOOLEAN)
 IS 'pgr_contraction deprecated in 3.8.0';
-
