@@ -1,8 +1,9 @@
 -- CopyRight(c) pgRouting developers
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
+SET extra_float_digits=-3;
 /* -- q1 */
 SELECT
-  edge_id, round(fraction::numeric, 2) AS fraction, side, distance,
+  edge_id, fraction, side, distance,
   distance, ST_AsText(geom) AS point, ST_AsText(edge) As edge
 FROM pgr_findCloseEdges(
   $$SELECT id, geom FROM edges$$,
@@ -10,7 +11,7 @@ FROM pgr_findCloseEdges(
   0.5, cap => 2);
 /* -- q2 */
 SELECT
-edge_id, round(fraction::numeric, 2) AS fraction, side, distance,
+edge_id, fraction, side, distance,
 ST_AsText(geom) AS point,
 ST_AsText(edge) AS edge
 FROM pgr_findCloseEdges(
@@ -28,7 +29,7 @@ ST_MakePoint(0,1.5), 5);
 /* -- o4 */
 SELECT * FROM pgr_withPoints(
   $e$ SELECT * FROM edges $e$,
-  $p$ SELECT edge_id, round(fraction::numeric, 2) AS fraction, side
+  $p$ SELECT edge_id, fraction, side
       FROM pgr_findCloseEdges(
         $$SELECT id, geom FROM edges$$,
         (SELECT geom FROM pointsOfInterest WHERE pid = 5),
