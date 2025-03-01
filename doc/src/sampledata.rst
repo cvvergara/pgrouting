@@ -196,19 +196,19 @@ will be stored on a table.
      - Description
    * - ``pid``
      - A unique identifier.
-   * - ``geom``
-     - The geometry of the points.
    * - ``edge_id``
      - Identifier of the nearest segment.
-   * - ``fraction``
-     - Where in the segment ``edge_id`` is the closest point.
    * - ``side``
      - Is it on the left, right or both sides of the segment ``edge_id``.
+   * - ``fraction``
+     - Where in the segment is the point located.
+   * - ``geom``
+     - The geometry of the points.
    * - ``distance``
      - The distance between ``geom`` and the segment ``edge_id``.
    * - ``edge``
      - A segment that connects the ``geom`` of the point to the closest point
-       ``newPoint`` on the segment ``edge_id``.
+       on the segment ``edge_id``.
    * - ``newPoint``
      - A point on segment ``edge_id`` that is the closest to ``geom``.
 
@@ -231,7 +231,7 @@ Filling the rest of the table.
    :start-after: -- p3
    :end-before: -- p4
 
-Any other additional modifications: In this manual, point :math:`6` can be
+Any other additional modification: In this manual, point :math:`6` can be
 reached from both sides.
 
 .. literalinclude:: sampledata.queries

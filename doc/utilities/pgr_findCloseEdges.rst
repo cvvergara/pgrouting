@@ -23,7 +23,8 @@
 .. rubric:: Version 3.8.0
 
 * Error messages adjustment.
-* Function promoted to official
+* ``partial`` option is removed.
+* Function promoted to official.
 
 .. rubric:: Version 3.4.0
 
@@ -95,7 +96,7 @@ Many points
    | Returns set of |result-find|
    | OR EMPTY SET
 
-:Example: For all points of interests, find the closest edges.
+:Example: For each points of interests, find the closest edge.
 
 .. literalinclude:: findCloseEdges.queries
    :start-after: -- q2
@@ -168,7 +169,7 @@ Edges SQL
      - Identifier of the edge.
    * - ``geom``
      - ``geometry``
-     - The geometry of the edge.
+     - The ``LINESTRING`` geometry of the edge.
 
 Result columns
 -------------------------------------------------------------------------------
@@ -196,20 +197,20 @@ Returns set of |result-find|
      - ``CHAR``
      - Value in ``[r, l]`` indicating if the point is:
 
-       * In the right ``r``.
+       * At the right ``r`` of the segment.
 
          * When the point is on the line it is considered to be on the right.
-       * In the left ``l``.
+       * At the left ``l`` of the segment.
    * - ``distance``
      - ``FLOAT``
-     - Distance from point to edge.
+     - Distance from the point to the edge.
    * - ``geom``
      - ``geometry``
      - Original ``POINT`` geometry.
    * - ``edge``
      - ``geometry``
-     - Geometry from the original point to the closest point of the edge with
-       identifier ``edge_id``
+     - ``LINESTRING`` geometry that connects the original **point** to the
+       closest point of the edge with identifier ``edge_id``
 
 
 Additional Examples
