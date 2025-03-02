@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v3.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-27 23:12+0000\n"
+"POT-Creation-Date: 2025-03-02 02:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4362,6 +4362,11 @@ msgstr ""
 msgid ":doc:`pgr_nodeNetwork` - to create nodes to a not noded edge table."
 msgstr ""
 
+msgid ""
+":doc:`pgr_extractVertices` - Extracts vertex information based on the "
+"edge table information."
+msgstr ""
+
 msgid ":doc:`pgr_trsp` - Turn Restriction Shortest Path (TRSP)"
 msgstr ""
 
@@ -4404,7 +4409,7 @@ msgstr ""
 msgid "pgRouting 3.8.0 Release Notes"
 msgstr ""
 
-msgid "Changes on proposed functions"
+msgid "Promotion to official function of pgRouting."
 msgstr ""
 
 msgid "pgr_extractVertices"
@@ -4413,7 +4418,16 @@ msgstr ""
 msgid "Error messages adjustment."
 msgstr ""
 
+msgid "Function promoted to official."
+msgstr ""
+
+msgid "Changes on proposed functions"
+msgstr ""
+
 msgid "pgr_findCloseEdges"
+msgstr ""
+
+msgid "``partial`` option is removed."
 msgstr ""
 
 msgid "pgr_degree"
@@ -7845,9 +7859,6 @@ msgid "New proposed signature:"
 msgstr ""
 
 msgid "pgr_aStar(Combinations)"
-msgstr ""
-
-msgid "Function promoted to official."
 msgstr ""
 
 msgid "Version 2.4.0"
@@ -11460,7 +11471,7 @@ msgstr ""
 msgid "https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm"
 msgstr ""
 
-msgid "``pgr_extractVertices`` -- Proposed"
+msgid "``pgr_extractVertices``"
 msgstr ""
 
 msgid "``pgr_extractVertices`` — Extracts the vertices information"
@@ -11559,7 +11570,7 @@ msgid ""
 "``dryrun := true``."
 msgstr ""
 
-msgid "``pgr_findCloseEdges`` - Proposed"
+msgid "``pgr_findCloseEdges``"
 msgstr ""
 
 msgid "``pgr_findCloseEdges`` - Finds the close edges to a point geometry."
@@ -11587,7 +11598,7 @@ msgstr ""
 msgid "pgr_findCloseEdges(`Edges SQL`_, **points**, **tolerance**, [**options**])"
 msgstr ""
 
-msgid "**options:** ``[cap, partial, dryrun]``"
+msgid "**options:** ``[cap, dryrun]``"
 msgstr ""
 
 msgid "Returns set of |result-find|"
@@ -11596,55 +11607,16 @@ msgstr ""
 msgid "One point"
 msgstr ""
 
-msgid "**options:** [cap, partial, dryrun]``"
+msgid "Get two close edges to points of interest with :math:`pid = 5`"
 msgstr ""
 
-msgid "Default: ``cap => 1``"
-msgstr ""
-
-msgid "Maximum one row answer."
-msgstr ""
-
-msgid "Default: ``partial => true``"
-msgstr ""
-
-msgid "With less calculations as possible."
-msgstr ""
-
-msgid "Default: ``dryrun => false``"
-msgstr ""
-
-msgid "Process query"
-msgstr ""
-
-msgid "Returns"
-msgstr ""
-
-msgid "values on ``edge_id``, ``fraction``, ``side`` columns."
-msgstr ""
-
-msgid "``NULL`` on ``distance``, ``geom``, ``edge`` columns."
+msgid "``cap => 2``"
 msgstr ""
 
 msgid "Many points"
 msgstr ""
 
-msgid ""
-"Find at most :math:`2` edges close to all vertices on the points of "
-"interest table."
-msgstr ""
-
-msgid "One answer per point, as small as possible."
-msgstr ""
-
-msgid ""
-"Columns ``edge_id``, ``fraction``, ``side`` and ``geom`` are returned "
-"with values."
-msgstr ""
-
-msgid ""
-"``geom`` contains the original point geometry to assist on "
-"deterpartialing to which point geometry the row belongs to."
+msgid "For each points of interests, find the closest edge."
 msgstr ""
 
 msgid "**point**"
@@ -11671,17 +11643,6 @@ msgstr ""
 msgid "Limit output rows"
 msgstr ""
 
-msgid "``partial``"
-msgstr ""
-
-msgid ""
-"When ``true`` only columns needed for :doc:`withPoints-category` are "
-"calculated."
-msgstr ""
-
-msgid "When ``false`` all columns are calculated"
-msgstr ""
-
 msgid "When ``false`` calculations are performed."
 msgstr ""
 
@@ -11704,55 +11665,73 @@ msgstr ""
 msgid "Value in ``[r, l]`` indicating if the point is:"
 msgstr ""
 
-msgid "In the right ``r``."
-msgstr ""
-
-msgid "In the left ``l``."
+msgid "At the right ``r`` of the segment."
 msgstr ""
 
 msgid "When the point is on the line it is considered to be on the right."
 msgstr ""
 
+msgid "At the left ``l`` of the segment."
+msgstr ""
+
 msgid "``distance``"
 msgstr ""
 
-msgid "Distance from point to edge."
+msgid "Distance from the point to the edge."
 msgstr ""
 
-msgid "``NULL`` when ``cap = 1`` on the `One point`_ signature"
-msgstr ""
-
-msgid "``POINT`` geometry"
+msgid "Original ``POINT`` geometry."
 msgstr ""
 
 msgid ""
-"`One Point`_: Contains the point on the edge that is ``fraction`` away "
-"from the starting point of the edge."
+"``LINESTRING`` geometry that connects the original **point** to the "
+"closest point of the edge with identifier ``edge_id``"
 msgstr ""
 
-msgid "`Many Points`_: Contains the corresponding **original point**"
+msgid "One point examples"
 msgstr ""
 
-msgid ""
-"``LINESTRING`` geometry from the **original point** to the closest point "
-"of the edge with identifier ``edge_id``"
+msgid "One point in an edge"
 msgstr ""
 
-msgid "One point results"
+msgid "The green node is the original point."
 msgstr ""
 
-msgid "The green nodes is the **original point**"
-msgstr ""
-
-msgid "The geometry ``geom`` is a point on the :math:`sp \\rightarrow ep` edge."
+msgid "``geom`` has the value of the original point."
 msgstr ""
 
 msgid ""
-"The geometry ``edge`` is a line that connects the **original point** with"
-" ``geom``"
+"The geometry ``edge`` is a line that connects the original point with the"
+" edge :math:`sp \\rightarrow ep` edge."
 msgstr ""
 
-msgid "Many point results"
+msgid "The point is located at the left of the edge."
+msgstr ""
+
+msgid "One point dry run execution"
+msgstr ""
+
+msgid "Using the query from the previous example:"
+msgstr ""
+
+msgid "Returns ``EMPTY SET``."
+msgstr ""
+
+msgid "``dryrun => true``"
+msgstr ""
+
+msgid "Generates a PostgreSQL ``NOTICE`` with the code used."
+msgstr ""
+
+msgid ""
+"The generated code can be used as a starting base code for additional "
+"requirements, like taking into consideration the SRID."
+msgstr ""
+
+msgid "Many points examples"
+msgstr ""
+
+msgid "Many points in an edge"
 msgstr ""
 
 msgid "The green nodes are the **original points**"
@@ -11769,131 +11748,7 @@ msgid ""
 "\\rightarrow ep` edge."
 msgstr ""
 
-msgid "One point examples"
-msgstr ""
-
-msgid "At most two answers"
-msgstr ""
-
-msgid "``cap => 2``"
-msgstr ""
-
-msgid "Maximum two row answer."
-msgstr ""
-
-msgid "Understanding the result"
-msgstr ""
-
-msgid "``NULL`` on ``geom``, ``edge``"
-msgstr ""
-
-msgid "``edge_id`` identifier of the edge close to the **original point**"
-msgstr ""
-
-#, python-brace-format
-msgid ""
-"Two edges are withing :math:`0.5` distance units from the **original "
-"point**: :math:`{5, 8}`"
-msgstr ""
-
-msgid "For edge :math:`5`:"
-msgstr ""
-
-msgid ""
-"``fraction``: The closest point from the **original point** is at the "
-":math:`0.8` fraction of the edge :math:`5`."
-msgstr ""
-
-msgid ""
-"``side``: The **original point** is located to the left side of edge "
-":math:`5`."
-msgstr ""
-
-msgid ""
-"``distance``: The **original point** is located :math:`0.1` length units "
-"from edge :math:`5`."
-msgstr ""
-
-msgid "For edge :math:`8`:"
-msgstr ""
-
-msgid ""
-"``fraction``: The closest point from the **original point** is at the "
-":math:`0.89..` fraction of the edge :math:`8`."
-msgstr ""
-
-msgid ""
-"``side``: The **original point** is located to the right side of edge "
-":math:`8`."
-msgstr ""
-
-msgid ""
-"``distance``: The **original point** is located :math:`0.19..` length "
-"units from edge :math:`8`."
-msgstr ""
-
-msgid "One answer, all columns"
-msgstr ""
-
-msgid "``partial => false``"
-msgstr ""
-
-msgid "Calculate all columns"
-msgstr ""
-
-msgid "``edge_id`` identifier of the edge **closest** to the **original point**"
-msgstr ""
-
-#, python-brace-format
-msgid ""
-"From all edges within :math:`0.5` distance units from the **original "
-"point**: :math:`{5}` is the closest one."
-msgstr ""
-
-msgid ""
-"``geom``: Contains the geometry of the closest point on edge :math:`5` "
-"from the **original point**."
-msgstr ""
-
-msgid ""
-"``edge``: Contains the ``LINESTRING`` geometry of the **original point** "
-"to the closest point on on edge :math:`5` ``geom``"
-msgstr ""
-
-msgid "At most two answers with all columns"
-msgstr ""
-
-msgid "Understanding the result:"
-msgstr ""
-
-msgid ""
-"``geom``: Contains the geometry of the closest point on edge :math:`8` "
-"from the **original point**."
-msgstr ""
-
-msgid ""
-"``edge``: Contains the ``LINESTRING`` geometry of the **original point** "
-"to the closest point on on edge :math:`8` ``geom``"
-msgstr ""
-
-msgid "One point dry run execution"
-msgstr ""
-
-msgid "Returns ``EMPTY SET``."
-msgstr ""
-
-msgid "``partial => true``"
-msgstr ""
-
-msgid "Is ignored"
-msgstr ""
-
-msgid ""
-"Because it is a **dry run** excecution, the code for all calculations are"
-" shown on the PostgreSQL ``NOTICE``."
-msgstr ""
-
-msgid "``dryrun => true``"
+msgid "Many points dry run execution"
 msgstr ""
 
 msgid "Do not process query"
@@ -11905,61 +11760,6 @@ msgid ""
 msgstr ""
 
 msgid "``cap`` and **original point** are used in the code"
-msgstr ""
-
-msgid "Many points examples"
-msgstr ""
-
-msgid "At most two answers per point"
-msgstr ""
-
-msgid "``NULL`` on ``edge``"
-msgstr ""
-
-msgid ""
-"``edge_id`` identifier of the edge close to a **original point** "
-"(``geom``)"
-msgstr ""
-
-msgid ""
-"Two edges at most withing :math:`0.5` distance units from each of the "
-"**original points**:"
-msgstr ""
-
-msgid "For ``POINT(1.8 0.4)`` and ``POINT(0.3 1.8)`` only one edge was found."
-msgstr ""
-
-msgid "For the rest of the points two edges were found."
-msgstr ""
-
-msgid "For point ``POINT(2.9 1.8)``"
-msgstr ""
-
-msgid ""
-"Edge :math:`5` is before :math:`8` therefore edge :math:`5` has the "
-"shortest distance to ``POINT(2.9 1.8)``."
-msgstr ""
-
-msgid "One answer per point, all columns"
-msgstr ""
-
-msgid "For the **original point** ``POINT(2.9 1.8)``"
-msgstr ""
-
-msgid "Edge :math:`5` is the closest edge to the **original point**"
-msgstr ""
-
-msgid ""
-"``geom``: Contains the geometry of the **original point** ``POINT(2.9 "
-"1.8)``"
-msgstr ""
-
-msgid ""
-"``edge``: Contains the ``LINESTRING`` geometry of the **original point** "
-"(``geom``) to the closest point on on edge."
-msgstr ""
-
-msgid "Many points dry run execution"
 msgstr ""
 
 msgid "Find at most two routes to a given point"
@@ -11996,10 +11796,10 @@ msgstr ""
 msgid "A unique identifier."
 msgstr ""
 
-msgid "Identifier of the edge nearest edge that allows an arrival to the point."
+msgid "Identifier of the nearest segment."
 msgstr ""
 
-msgid "Is it on the left, right or both sides of the segment ``edge_id``"
+msgid "Is it on the left, right or both sides of the segment ``edge_id``."
 msgstr ""
 
 msgid "Where in the segment is the point located."
@@ -12008,13 +11808,35 @@ msgstr ""
 msgid "The geometry of the points."
 msgstr ""
 
+msgid "The distance between ``geom`` and the segment ``edge_id``."
+msgstr ""
+
+msgid ""
+"A segment that connects the ``geom`` of the point to the closest point on"
+" the segment ``edge_id``."
+msgstr ""
+
 msgid "``newPoint``"
 msgstr ""
 
-msgid "The geometry of the points moved on top of the segment."
+msgid "A point on segment ``edge_id`` that is the closest to ``geom``."
 msgstr ""
 
 msgid "Points of interest fillup"
+msgstr ""
+
+msgid "Inserting the points of interest."
+msgstr ""
+
+msgid "Filling the rest of the table."
+msgstr ""
+
+msgid ""
+"Any other additional modification: In this manual, point :math:`6` can be"
+" reached from both sides."
+msgstr ""
+
+msgid "The points of interest:"
 msgstr ""
 
 msgid "``pgr_floydWarshall``"
@@ -15355,11 +15177,6 @@ msgstr ""
 msgid ""
 ":doc:`pgr_degree` - Returns a set of vertices and corresponding count of "
 "incidet edges to the vertex."
-msgstr ""
-
-msgid ""
-":doc:`pgr_extractVertices` - Extracts vertex information based on the "
-"edge table information."
 msgstr ""
 
 msgid ""
