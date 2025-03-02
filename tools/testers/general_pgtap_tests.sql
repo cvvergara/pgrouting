@@ -65,4 +65,3 @@ $BODY$
       SELECT array_agg(typname ORDER BY idx)  FROM b GROUP BY oid
       $$, $1), $2, $1 || ': Function types');
 $BODY$ LANGUAGE SQL;
-
