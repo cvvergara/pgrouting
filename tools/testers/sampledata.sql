@@ -90,13 +90,13 @@ FROM edges ORDER BY id;
 /* -- p1 */
 CREATE TABLE pointsOfInterest(
     pid BIGSERIAL PRIMARY KEY,
-    geom geometry,
     edge_id BIGINT,
-    fraction FLOAT,
     side CHAR,
+    fraction FLOAT,
     distance FLOAT,
     edge geometry,
-    newPoint geometry);
+    newPoint geometry,
+    geom geometry);
 /* -- p2 */
 INSERT INTO pointsOfInterest (geom) VALUES
 (ST_Point(1.8, 0.4)),
@@ -117,15 +117,15 @@ FROM (
   SELECT *
   FROM pgr_findCloseEdges(
     $$SELECT id, geom FROM edges$$,(SELECT array_agg(geom) FROM pointsOfInterest), 0.5) ) AS poi
-WHERE pointsofinterest.geom = poi.geom;
+WHERE pointsOfInterest.geom = poi.geom;
 /* -- p4 */
-UPDATE pointsofinterest SET side = 'b' WHERE pid = 6;
+UPDATE pointsOfInterest SET side = 'b' WHERE pid = 6;
 /* -- p5 */
 SELECT
   pid, ST_AsText(geom) geom,
   edge_id, fraction AS frac, side, distance AS dist,
   ST_AsText(edge) edge, ST_AsText(newPoint) newPoint
-FROM pointsofinterest;
+FROM pointsOfInterest;
 /* -- p6 */
 /* --POINTS CREATE end */
 

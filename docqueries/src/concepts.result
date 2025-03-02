@@ -308,7 +308,7 @@ SELECT edge_id, fraction, ST_AsText(edge) AS edge, id AS closest_vertex
 FROM pgr_findCloseEdges(
   $$SELECT id, geom FROM edges WHERE component = 1$$,
   (SELECT array_agg(geom) FROM vertices WHERE component = 2),
-  2, partial => false) JOIN vertices USING (geom) ORDER BY distance LIMIT 1;
+  2) JOIN vertices USING (geom) ORDER BY distance LIMIT 1;
  edge_id | fraction |                 edge                 | closest_vertex
 ---------+----------+--------------------------------------+----------------
       14 |      0.5 | LINESTRING(1.999999999999 3.5,2 3.5) |              4
@@ -323,7 +323,7 @@ info AS (
   FROM pgr_findCloseEdges(
     $$SELECT id, geom FROM edges WHERE component = 1$$,
     (SELECT array_agg(geom) FROM vertices WHERE component = 2),
-    2, partial => false) AS ce
+    2) AS ce
   JOIN vertices AS v USING (geom)
   JOIN edges AS e ON (edge_id = e.id)
   ORDER BY distance LIMIT 1),

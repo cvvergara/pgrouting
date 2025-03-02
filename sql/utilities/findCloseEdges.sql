@@ -22,12 +22,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v3.6
-CREATE FUNCTION pgr_findCloseEdges(
+CREATE FUNCTION _pgr_findCloseEdges(
   TEXT,
   geometry[],
   FLOAT,
-  cap INTEGER,
-  dryrun BOOLEAN,
+  INTEGER,
+  BOOLEAN,
 
   OUT edge_id BIGINT,
   OUT fraction FLOAT,
@@ -38,13 +38,15 @@ CREATE FUNCTION pgr_findCloseEdges(
 returns SETOF RECORD AS
 $BODY$
 DECLARE
+  geomarr geometry[] := $2;
+  tolerance FLOAT := $3;
+  cap INTEGER := $4;
+  dryrun BOOLEAN := $5;
   edges_SQL TEXT;
   has_id BOOLEAN;
   has_geom BOOLEAN;
   ret_query TEXT;
   ret_query_end TEXT;
-  tolerance FLOAT := $3;
-  geomarr geometry[] := $2;
 
   sqlhint TEXT;
 
@@ -112,6 +114,47 @@ $BODY$
 LANGUAGE PLPGSQL VOLATILE STRICT
 COST 5;
 
+--v3.6
+CREATE FUNCTION pgr_findCloseEdges(
+  TEXT, geometry[], FLOAT, cap INTEGER DEFAULT 1, dryrun BOOLEAN default false,
+  OUT edge_id BIGINT, OUT fraction FLOAT, OUT side CHAR, OUT distance FLOAT, OUT geom geometry, OUT edge geometry)
+returns SETOF RECORD AS
+$BODY$
+  SELECT * FROM _pgr_findCloseEdges($1, $2, $3, cap, dryrun);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT COST 5;
+
+--v3.6
+CREATE FUNCTION pgr_findCloseEdges(
+  TEXT, geometry[], FLOAT, cap INTEGER, partial BOOLEAN, dryrun BOOLEAN,
+  OUT edge_id BIGINT, OUT fraction FLOAT, OUT side CHAR, OUT distance FLOAT, OUT geom geometry, OUT edge geometry)
+returns SETOF RECORD AS
+$BODY$
+  SELECT * FROM _pgr_findCloseEdges($1, $2, $3, cap, dryrun);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT COST 5;
+
+--v3.6
+CREATE FUNCTION pgr_findCloseEdges(
+  TEXT, geometry, FLOAT, cap INTEGER DEFAULT 1, dryrun BOOLEAN default false,
+  OUT edge_id BIGINT, OUT fraction FLOAT, OUT side CHAR, OUT distance FLOAT, OUT geom geometry, OUT edge geometry)
+returns SETOF RECORD AS
+$BODY$
+  SELECT * FROM _pgr_findCloseEdges($1, ARRAY[$2]::GEOMETRY[], $3, cap, dryrun);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT COST 5;
+
+--v3.6
+CREATE FUNCTION pgr_findCloseEdges(
+  TEXT, geometry, FLOAT, cap INTEGER, partial BOOLEAN, dryrun BOOLEAN,
+  OUT edge_id BIGINT, OUT fraction FLOAT, OUT side CHAR, OUT distance FLOAT, OUT geom geometry, OUT edge geometry)
+returns SETOF RECORD AS
+$BODY$
+  SELECT * FROM _pgr_findCloseEdges($1, ARRAY[$2]::GEOMETRY[], $3, cap, dryrun);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT COST 5;
+
+/*
 --v3.6
 CREATE FUNCTION pgr_findCloseEdges(
   TEXT, geometry[], FLOAT,
@@ -221,3 +264,4 @@ $BODY$
   SELECT * FROM pgr_findCloseEdges($1, ARRAY[$2]::GEOMETRY[], $3, cap, dryrun);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT COST 5;
+*/
