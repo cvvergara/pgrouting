@@ -201,6 +201,7 @@ END IF;
 END;
 $BODY$;
 DO
+/* -- p6 */
 SELECT
   pid, ST_AsText(geom) geom,
   edge_id, fraction AS frac, side, distance AS dist,
@@ -216,7 +217,7 @@ FROM pointsOfInterest;
    6 | POINT(2.2 1.7) |       4 |  0.7 | b    |  0.2 | LINESTRING(2.2 1.7,2 1.7) | POINT(2 1.7)
 (6 rows)
 
-/* -- p6 */
+/* -- p7 */
 /* --POINTS CREATE end */
 /* --COMBINATIONS CREATE start */
 /* -- c1 */
