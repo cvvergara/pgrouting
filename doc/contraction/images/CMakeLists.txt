@@ -3,6 +3,7 @@ SET(LOCAL_FILES
     undirected_sampledata_b.png
     undirected_sampledata_c.png
     newgraph.png
+    Fig6-unidirected-contraction-hierarchies.png
     )
 
 foreach (f ${LOCAL_FILES})

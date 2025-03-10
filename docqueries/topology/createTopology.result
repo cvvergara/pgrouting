@@ -48,7 +48,7 @@ NOTICE:  PROCESSING:
 NOTICE:  pgr_createTopology('edges', 0.001, 'id', 'geom', 'source', 'target', rows_where := 'true', clean := f)
 NOTICE:  Performing checks, please wait .....
 NOTICE:  ----> PGR ERROR in pgr_createTopology: Wrong type of Column id:geom
-HINT:    ----> Expected type of geom is integer,smallint or bigint but USER-DEFINED was found
+ASTUCE :   ----> Expected type of geom is integer,smallint or bigint but USER-DEFINED was found
 NOTICE:  Unexpected error raise_exception
  pgr_createtopology
 --------------------
@@ -148,7 +148,7 @@ NOTICE:  PROCESSING:
 NOTICE:  pgr_createTopology('mytable', 0.001, 'gid', 'mygeom', 'src', 'tgt', rows_where := 'true', clean := f)
 NOTICE:  Performing checks, please wait .....
 NOTICE:  ----> PGR ERROR in pgr_createTopology: Wrong type of Column id:mygeom
-HINT:    ----> Expected type of mygeom is integer,smallint or bigint but USER-DEFINED was found
+ASTUCE :   ----> Expected type of mygeom is integer,smallint or bigint but USER-DEFINED was found
 NOTICE:  Unexpected error raise_exception
  pgr_createtopology
 --------------------

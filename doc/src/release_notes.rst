@@ -55,6 +55,7 @@ milestone for 4.0.0
 * pgr_withPointsDD
 * pgr_withPointsKSP
 * pgr_withPointsVia
+* pgr_contraction_hierarchies
 
 .. rubric:: Signatures promoted to official
 

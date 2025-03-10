@@ -2873,7 +2873,7 @@ msgstr ""
 msgid "Adjacent nodes"
 msgstr ""
 
-msgid "Number of adjacent nodes"
+msgid "Number of Adjecent nodes"
 msgstr ""
 
 msgid ":math:`a`"

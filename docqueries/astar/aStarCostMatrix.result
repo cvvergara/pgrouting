@@ -32,7 +32,7 @@ SELECT * FROM pgr_TSP(
     directed=> false, heuristic => 2)
   $$);
 NOTICE:  pgr_TSP no longer solving with simulated annaeling
-HINT:  Ignoring annaeling parameters
+ASTUCE : Ignoring annaeling parameters
  seq | node | cost | agg_cost
 -----+------+------+----------
    1 |    5 |    0 |        0

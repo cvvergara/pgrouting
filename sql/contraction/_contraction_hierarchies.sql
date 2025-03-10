@@ -1,11 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: found_goals.hpp
+File: _contraction_hierarchies.sql
 
-Copyright (c) 2018 pgRouting developers
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2018 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+Function's developer:
+Copyright (c) Aurélie Bousquet - 2024
+Mail: aurelie.bousquet at oslandia.com
 
 ------
 
@@ -25,14 +27,31 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_VISITORS_FOUND_GOALS_HPP_
-#define INCLUDE_VISITORS_FOUND_GOALS_HPP_
-namespace pgrouting {
+----------------------------
+----------------------------
+-- contraction_hierarchies
+----------------------------
+----------------------------
 
-//! exceptions for visitor termination
-struct found_goals{};
-struct max_dist_reached{};
+--v4.0
+CREATE FUNCTION _pgr_contraction_hierarchies(
+    edges_sql TEXT,
+    forbidden_vertices BIGINT[],
+    directed BOOLEAN,
 
-}  // namespace pgrouting
+    OUT type TEXT,
+    OUT id BIGINT,
+    OUT contracted_vertices BIGINT[],
+    OUT source BIGINT,
+    OUT target BIGINT,
+    OUT cost FLOAT,
+    OUT metric BIGINT,
+    OUT vertex_order BIGINT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
 
-#endif  // INCLUDE_VISITORS_FOUND_GOALS_HPP_
+-- COMMENTS
+
+COMMENT ON FUNCTION _pgr_contraction_hierarchies(TEXT, BIGINT[], BOOLEAN)
+IS 'pgRouting internal function';

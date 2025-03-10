@@ -3116,7 +3116,7 @@ msgstr "Nodo"
 msgid "Adjacent nodes"
 msgstr "Nodos adyacentes"
 
-msgid "Number of adjacent nodes"
+msgid "Number of Adjecent nodes"
 msgstr "Número de vértices adyacentes"
 
 msgid ":math:`a`"
