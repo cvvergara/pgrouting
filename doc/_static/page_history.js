@@ -5,7 +5,7 @@ function createInfo(file, newat, altnames = '', removedat = '') {
     this.removedat = removedat;
 }
 
-const versionsArr = ['3.8','3.7', '3.6', '3.5', '3.4', '3.3', '3.2', '3.1', '3.0'];
+const versionsArr = ['4.0', '3.8','3.7', '3.6', '3.5', '3.4', '3.3', '3.2', '3.1', '3.0'];
 var unsuportedArr = ['2.6', '2.5', '2.4', '2.3', '2.2', '2.1', '2.0'];
 var titles = [
     {k: 'en', v: ['Supported versions', 'Unsupported versions']},
@@ -228,7 +228,7 @@ var filesArr = [
     ]),
     new createInfo('pgr_analyzeGraph', '2.0', [
         { v: '2.1', n: 'src/common/doc/functions/analyze_graph'},
-        { v: '2.3', n: 'src/topology/doc/pgr_analyzeGraph'},
+        { v: '2.3', n: 'src/topology/doc/pgr_analyzeGraph'}, 3.8
     ]),
     new createInfo('pgRouting-concepts', '2.0', [
         { v: '2.3', n: 'doc/src/tutorial/tutorial'},

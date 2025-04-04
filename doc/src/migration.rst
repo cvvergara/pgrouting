@@ -24,8 +24,6 @@ Results can be different because of the changes.
 .. contents:: Contents
    :depth: 2
 
-.. migrate_pgr_analyzeGraph_start
-
 Migration of ``pgr_analyzeGraph``
 -------------------------------------------------------------------------------
 
@@ -103,8 +101,6 @@ For example:
 .. literalinclude:: migration.queries
    :start-after: --analysis4
    :end-before: --analysis5
-
-.. migrate_pgr_analyzeGraph_end
 
 Migration of ``pgr_aStar``
 -------------------------------------------------------------------------------

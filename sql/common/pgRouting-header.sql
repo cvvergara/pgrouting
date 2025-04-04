@@ -1,6 +1,6 @@
 /*PGR-GNU*****************************************************************
 
-Copyright (c) 2015~2022 pgRouting developers
+Copyright (c) 2015~2025 pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -21,8 +21,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 \echo Use "CREATE EXTENSION pgrouting" to load this file. \quit
-
-
 
 
 ---
@@ -50,8 +48,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --- -- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ---
 --- The following functions have MIT-X licence:
----  pgr_analyzeGraph
----  pgr_analizeOneWay
+--  pgr_analizeOneWay
 
 --- This is free software, you can redistribute and/or modify it:
 --- the terms of the GNU General Public Licence. See the COPYING file.
