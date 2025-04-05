@@ -164,9 +164,14 @@ BEGIN
         || ' USING gist (' || quote_ident(n_geom) || ')';
       EXECUTE 'SET client_min_messages  TO '|| debuglevel;
     END IF;
+
+    EXCEPTION WHEN OTHERS THEN
+      RAISE NOTICE 'Could create not create index on "%" IN table %', n_geom,intab;
   END;
 
----------------
+  EXECUTE 'SET client_min_messages  TO '|| debuglevel;
+
+  ---------------
   BEGIN
     RAISE DEBUG 'initializing %', outtab;
     EXECUTE 'SELECT sname, tname FROM _pgr_getTableName('||quote_literal(outtab)||',0)' INTO naming;
@@ -181,19 +186,19 @@ BEGIN
         sub_id INTEGER,
         source BIGINT,
         target BIGINT)';
-    END IF;
-    EXECUTE 'SELECT geometrytype('||quote_ident(n_geom)||') FROM '||_pgr_quote_ident(intab)||' limit 1' INTO geomtype;
-    IF geomtype IS NULL THEN
-      RAISE NOTICE '-------> Table %.% must contain invalid geometries',sname, tname;
-      RETURN 'FAIL';
-    ELSE
-      RAISE DEBUG '  ------> Create geometry column of type %', geomtype;
-      EXECUTE 'SELECT addGeometryColumn('||quote_literal(sname)||','||quote_literal(outname)||','||quote_literal(n_geom)||','|| srid||', '||quote_literal(geomtype)||', 2)';
-      EXECUTE 'CREATE INDEX '||quote_ident(outname||'_'||n_geom||'_idx')||' ON '||_pgr_quote_ident(outtab)||' USING GIST ('||quote_ident(n_geom)||')';
-      EXECUTE 'SET client_min_messages TO '|| debuglevel;
-      RAISE DEBUG '  ------>OK';
-    END IF;
-  END;
+  END IF;
+  EXECUTE 'SELECT geometrytype('||quote_ident(n_geom)||') FROM '||_pgr_quote_ident(intab)||' limit 1' INTO geomtype;
+  IF geomtype IS NULL THEN
+    RAISE NOTICE '-------> Table %.% must contain invalid geometries',sname, tname;
+    RETURN 'FAIL';
+  ELSE
+    RAISE DEBUG '  ------> Create geometry column of type %', geomtype;
+    EXECUTE 'SELECT addGeometryColumn('||quote_literal(sname)||','||quote_literal(outname)||','||quote_literal(n_geom)||','|| srid||', '||quote_literal(geomtype)||', 2)';
+    EXECUTE 'CREATE INDEX '||quote_ident(outname||'_'||n_geom||'_idx')||' ON '||_pgr_quote_ident(outtab)||' USING GIST ('||quote_ident(n_geom)||')';
+    EXECUTE 'SET client_min_messages TO '|| debuglevel;
+    RAISE DEBUG '  ------>OK';
+  END IF;
+END;
 ----------------
 
   RAISE NOTICE 'Processing, please wait .....';
