@@ -325,6 +325,7 @@ pdf_style_path = ['.', '_styles']
 
 # cases to ignore during link checking
 linkcheck_ignore = [
+    r'https://docs.pgrouting.org/3.8/',
     # link failing used in contraction-family
     'https://algo2.iti.kit.edu/documents/routeplanning/geisberger_dipl.pdf',
 
