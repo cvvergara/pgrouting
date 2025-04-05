@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v3.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-05 01:34+0000\n"
+"POT-Creation-Date: 2025-04-05 02:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3855,11 +3855,6 @@ msgstr ""
 msgid ""
 ":doc:`pgr_createVerticesTable` - reconstruct the vertices table based on "
 "the source and target information."
-msgstr ""
-
-msgid ""
-":doc:`pgr_analyzeGraph` - to analyze the edges and vertices of the edge "
-"table."
 msgstr ""
 
 msgid ":doc:`pgr_analyzeOneWay` - to analyze directionality of the edges."
@@ -7958,285 +7953,6 @@ msgstr ""
 msgid "`ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__"
 msgstr ""
 
-msgid "``pgr_analyzeGraph`` -- Deprecated since 3.8.0"
-msgstr ""
-
-msgid "``pgr_analyzeGraph`` — Analyzes the network topology."
-msgstr ""
-
-msgid "Version 3.8.0"
-msgstr ""
-
-msgid "Deprecated function."
-msgstr ""
-
-msgid "The function returns:"
-msgstr ""
-
-msgid "``OK`` after the analysis has finished."
-msgstr ""
-
-msgid "``FAIL`` when the analysis was not completed due to an error."
-msgstr ""
-
-msgid "pgr_analyzeGraph(**edge_table**, **tolerance**, [**options**])"
-msgstr ""
-
-msgid "**options:** ``[the_geom, id, source, target, rows_where]``"
-msgstr ""
-
-msgid "RETURNS ``VARCHAR``"
-msgstr ""
-
-msgid "Prerequisites"
-msgstr ""
-
-msgid ""
-"The edge table to be analyzed must contain a source column and a target "
-"column filled with id's of the vertices of the segments and the "
-"corresponding vertices table <edge_table>_vertices_pgr that stores the "
-"vertices information."
-msgstr ""
-
-msgid "Use :doc:`pgr_createVerticesTable` to create the vertices table."
-msgstr ""
-
-msgid ""
-"Use :doc:`pgr_createTopology` to create the topology and the vertices "
-"table."
-msgstr ""
-
-msgid "The analyze graph function accepts the following parameters:"
-msgstr ""
-
-msgid "edge_table"
-msgstr ""
-
-msgid "``text`` Network table name. (may contain the schema name as well)"
-msgstr ""
-
-msgid "tolerance"
-msgstr ""
-
-msgid "``float8`` Snapping tolerance of disconnected edges. (in projection unit)"
-msgstr ""
-
-msgid "the_geom"
-msgstr ""
-
-msgid ""
-"``text`` Geometry column name of the network table. Default value is "
-"``the_geom``."
-msgstr ""
-
-msgid "id"
-msgstr ""
-
-msgid ""
-"``text`` Primary key column name of the network table. Default value is "
-"``id``."
-msgstr ""
-
-msgid "source"
-msgstr ""
-
-msgid ""
-"``text`` Source column name of the network table. Default value is "
-"``source``."
-msgstr ""
-
-msgid "target"
-msgstr ""
-
-msgid ""
-"``text`` Target column name of the network table. Default value is "
-"``target``."
-msgstr ""
-
-msgid "rows_where"
-msgstr ""
-
-msgid ""
-"``text`` Condition to select a subset or rows. Default value is ``true`` "
-"to indicate all rows."
-msgstr ""
-
-msgid "Uses the vertices table: <edge_table>_vertices_pgr."
-msgstr ""
-
-msgid "Fills completely the ``cnt`` and ``chk`` columns of the vertices table."
-msgstr ""
-
-msgid ""
-"Returns the analysis of the section of the network defined by "
-"``rows_where``"
-msgstr ""
-
-msgid "The vertices table is not found."
-msgstr ""
-
-msgid ""
-"A required column of the Network table is not found or is not of the "
-"appropriate type."
-msgstr ""
-
-msgid "The condition is not well formed."
-msgstr ""
-
-msgid "The names of source , target or id are the same."
-msgstr ""
-
-msgid "The SRID of the geometry could not be determined."
-msgstr ""
-
-msgid "The Vertices Table"
-msgstr ""
-
-msgid ""
-"The vertices table can be created with :doc:`pgr_createVerticesTable "
-"<pgr_createVerticesTable>` or :doc:`pgr_createTopology "
-"<pgr_createTopology>`"
-msgstr ""
-
-msgid "The structure of the vertices table is:"
-msgstr ""
-
-msgid "``bigint`` Identifier of the vertex."
-msgstr ""
-
-msgid "cnt"
-msgstr ""
-
-msgid ""
-"``integer`` Number of vertices in the edge_table that reference this "
-"vertex."
-msgstr ""
-
-msgid "chk"
-msgstr ""
-
-msgid "``integer`` Indicator that the vertex might have a problem."
-msgstr ""
-
-msgid "ein"
-msgstr ""
-
-msgid ""
-"``integer`` Number of vertices in the edge_table that reference this "
-"vertex as incoming. See :doc:`pgr_analyzeOneWay <pgr_analyzeOneWay>`."
-msgstr ""
-
-msgid "eout"
-msgstr ""
-
-msgid ""
-"``integer`` Number of vertices in the edge_table that reference this "
-"vertex as outgoing. See :doc:`pgr_analyzeOneWay <pgr_analyzeOneWay>`."
-msgstr ""
-
-msgid "``geometry`` Point geometry of the vertex."
-msgstr ""
-
-msgid "Usage when the edge table's columns MATCH the default values:"
-msgstr ""
-
-msgid "The simplest way to use pgr_analyzeGraph is:"
-msgstr ""
-
-msgid "Arguments are given in the order described in the parameters:"
-msgstr ""
-
-msgid "We get the same result as the simplest way to use the function."
-msgstr ""
-
-msgid "An error would occur when"
-msgstr ""
-
-msgid "the arguments are not given in the appropriate order:"
-msgstr ""
-
-msgid ""
-"In this example, the column ``id`` of the table ``mytable`` is passed to "
-"the function as the geometry column, and the geometry column ``the_geom``"
-" is passed to the function as the id column."
-msgstr ""
-
-msgid "When using the named notation"
-msgstr ""
-
-msgid "The order of the parameters do not matter:"
-msgstr ""
-
-msgid ""
-"Parameters defined with a default value can be omitted, as long as the "
-"value matches the default:"
-msgstr ""
-
-msgid "Selecting rows using rows_where parameter"
-msgstr ""
-
-msgid ""
-"Selecting rows based on the id. Displays the analysis a the section of "
-"the network."
-msgstr ""
-
-msgid ""
-"Selecting the rows where the geometry is near the geometry of row with "
-"``id`` = 5"
-msgstr ""
-
-msgid ""
-"Selecting the rows where the geometry is near the geometry of the row "
-"with ``gid`` =100 of the table ``othertable``."
-msgstr ""
-
-msgid "Usage when the edge table's columns DO NOT MATCH the default values:"
-msgstr ""
-
-msgid "For the following table"
-msgstr ""
-
-msgid "Using positional notation:"
-msgstr ""
-
-msgid "The arguments need to be given in the order described in the parameters:"
-msgstr ""
-
-msgid ""
-"An error would occur when the arguments are not given in the appropriate "
-"order: In this example, the column ``gid`` of the table ``mytable`` is "
-"passed to the function as the geometry column, and the geometry column "
-"``mygeom`` is passed to the function as the id column."
-msgstr ""
-
-msgid ""
-"In this scenario omitting a parameter would create an error because the "
-"default values for the column names do not match the column names of the "
-"table."
-msgstr ""
-
-msgid "Selecting rows based on the id."
-msgstr ""
-
-msgid ""
-"Selecting the rows WHERE the geometry is near the geometry of row with "
-"``id`` =5 ."
-msgstr ""
-
-msgid ""
-"Selecting the rows WHERE the geometry is near the place='myhouse' of the "
-"table ``othertable``. (note the use of quote_literal)"
-msgstr ""
-
-msgid ":doc:`pgr_analyzeOneWay`"
-msgstr ""
-
-msgid ":doc:`pgr_createVerticesTable`"
-msgstr ""
-
-msgid ":doc:`pgr_nodeNetwork` to create nodes to a not noded edge table."
-msgstr ""
-
 msgid "``pgr_analyzeOneWay``"
 msgstr ""
 
@@ -8278,6 +7994,24 @@ msgid ""
 "your data vendor."
 msgstr ""
 
+msgid "Prerequisites"
+msgstr ""
+
+msgid ""
+"The edge table to be analyzed must contain a source column and a target "
+"column filled with id's of the vertices of the segments and the "
+"corresponding vertices table <edge_table>_vertices_pgr that stores the "
+"vertices information."
+msgstr ""
+
+msgid "Use :doc:`pgr_createVerticesTable` to create the vertices table."
+msgstr ""
+
+msgid ""
+"Use :doc:`pgr_createTopology` to create the topology and the vertices "
+"table."
+msgstr ""
+
 msgid ""
 "pgr_analyzeOneWay(**geom_table**, **s_in_rules**, **s_out_rules**, "
 "**t_in_rules**, **t_out_rules**, [**options**])"
@@ -8287,6 +8021,12 @@ msgid "**options:** ``[oneway, source, target, two_way_if_null]``"
 msgstr ""
 
 msgid "RETURNS ``TEXT``"
+msgstr ""
+
+msgid "edge_table"
+msgstr ""
+
+msgid "``text`` Network table name. (may contain the schema name as well)"
 msgstr ""
 
 msgid "s_in_rules"
@@ -8321,6 +8061,22 @@ msgid ""
 "``oneway``."
 msgstr ""
 
+msgid "source"
+msgstr ""
+
+msgid ""
+"``text`` Source column name of the network table. Default value is "
+"``source``."
+msgstr ""
+
+msgid "target"
+msgstr ""
+
+msgid ""
+"``text`` Target column name of the network table. Default value is "
+"``target``."
+msgstr ""
+
 msgid "two_way_if_null"
 msgstr ""
 
@@ -8334,7 +8090,27 @@ msgid ""
 ":doc:`pgr_createVerticesTable` or :doc:`pgr_createTopology` for examples."
 msgstr ""
 
+msgid "The function returns:"
+msgstr ""
+
+msgid "``OK`` after the analysis has finished."
+msgstr ""
+
+msgid "Uses the vertices table: <edge_table>_vertices_pgr."
+msgstr ""
+
 msgid "Fills completely the ``ein`` and ``eout`` columns of the vertices table."
+msgstr ""
+
+msgid "``FAIL`` when the analysis was not completed due to an error."
+msgstr ""
+
+msgid "The vertices table is not found."
+msgstr ""
+
+msgid ""
+"A required column of the Network table is not found or is not of the "
+"appropriate type."
 msgstr ""
 
 msgid "The names of source , target or oneway are the same."
@@ -8346,9 +8122,38 @@ msgid ""
 "**in** or **out** condition."
 msgstr ""
 
+msgid "The Vertices Table"
+msgstr ""
+
 msgid ""
 "The vertices table can be created with :doc:`pgr_createVerticesTable` or "
 ":doc:`pgr_createTopology`"
+msgstr ""
+
+msgid "The structure of the vertices table is:"
+msgstr ""
+
+msgid "id"
+msgstr ""
+
+msgid "``bigint`` Identifier of the vertex."
+msgstr ""
+
+msgid "cnt"
+msgstr ""
+
+msgid ""
+"``integer`` Number of vertices in the edge_table that reference this "
+"vertex."
+msgstr ""
+
+msgid "chk"
+msgstr ""
+
+msgid "``integer`` Indicator that the vertex might have a problem."
+msgstr ""
+
+msgid "ein"
 msgstr ""
 
 msgid ""
@@ -8356,9 +8161,21 @@ msgid ""
 "vertex as incoming."
 msgstr ""
 
+msgid "eout"
+msgstr ""
+
 msgid ""
 "``integer`` Number of vertices in the edge_table that reference this "
 "vertex as outgoing."
+msgstr ""
+
+msgid "the_geom"
+msgstr ""
+
+msgid "``geometry`` Point geometry of the vertex."
+msgstr ""
+
+msgid ":doc:`pgr_createVerticesTable`"
 msgstr ""
 
 msgid "``pgr_articulationPoints``"
@@ -9318,6 +9135,9 @@ msgid ""
 "contracted vertices and edges."
 msgstr ""
 
+msgid "Version 3.8.0"
+msgstr ""
+
 msgid "New signature:"
 msgstr ""
 
@@ -10045,7 +9865,29 @@ msgstr ""
 msgid "**options:** ``[the_geom, id, source, target, rows_where, clean]``"
 msgstr ""
 
+msgid "RETURNS ``VARCHAR``"
+msgstr ""
+
 msgid "The topology creation function accepts the following parameters:"
+msgstr ""
+
+msgid "tolerance"
+msgstr ""
+
+msgid "``float8`` Snapping tolerance of disconnected edges. (in projection unit)"
+msgstr ""
+
+msgid ""
+"``text`` Geometry column name of the network table. Default value is "
+"``the_geom``."
+msgstr ""
+
+msgid ""
+"``text`` Primary key column name of the network table. Default value is "
+"``id``."
+msgstr ""
+
+msgid "rows_where"
 msgstr ""
 
 msgid ""
@@ -10094,6 +9936,15 @@ msgstr ""
 msgid "``FAIL`` when the network topology was not built due to an error:"
 msgstr ""
 
+msgid "The condition is not well formed."
+msgstr ""
+
+msgid "The names of source , target or id are the same."
+msgstr ""
+
+msgid "The SRID of the geometry could not be determined."
+msgstr ""
+
 msgid ""
 "The vertices table is a requirement of the :doc:`pgr_analyzeOneWay` "
 "functions."
@@ -10107,6 +9958,9 @@ msgstr ""
 msgid ""
 "``integer`` Number of vertices in the edge_table that reference this "
 "vertex AS outgoing. See :doc:`pgr_analyzeOneWay`."
+msgstr ""
+
+msgid "Usage when the edge table's columns MATCH the default values:"
 msgstr ""
 
 msgid "The simplest way to use pgr_createTopology is:"
@@ -10125,15 +9979,38 @@ msgid ""
 "``the_geom`` is passed to the function as the id column."
 msgstr ""
 
+msgid "When using the named notation"
+msgstr ""
+
 msgid ""
 "Parameters defined with a default value can be omitted, as long as the "
 "value matches the default And The order of the parameters would not "
 "matter."
 msgstr ""
 
+msgid "Selecting rows using rows_where parameter"
+msgstr ""
+
+msgid "Selecting rows based on the id."
+msgstr ""
+
 msgid ""
 "Selecting the rows where the geometry is near the geometry of row with "
 "``id = 5``."
+msgstr ""
+
+msgid ""
+"Selecting the rows where the geometry is near the geometry of the row "
+"with ``gid`` =100 of the table ``othertable``."
+msgstr ""
+
+msgid "Usage when the edge table's columns DO NOT MATCH the default values:"
+msgstr ""
+
+msgid "For the following table"
+msgstr ""
+
+msgid "Using positional notation:"
 msgstr ""
 
 msgid "The arguments need to be given in the order described in the parameters."
@@ -10267,12 +10144,18 @@ msgstr ""
 msgid "The simplest way to use pgr_createVerticesTable"
 msgstr ""
 
+msgid "We get the same result as the simplest way to use the function."
+msgstr ""
+
 msgid ""
 "An error would occur when the arguments are not given in the appropriate "
 "order: In this example, the column source column ``source`` of the table "
 "``mytable`` is passed to the function as the geometry column, and the "
 "geometry column ``the_geom`` is passed to the function as the source "
 "column."
+msgstr ""
+
+msgid "The order of the parameters do not matter:"
 msgstr ""
 
 msgid "Example 4"
@@ -10282,6 +10165,11 @@ msgid "Using a different ordering"
 msgstr ""
 
 msgid "Example 5"
+msgstr ""
+
+msgid ""
+"Parameters defined with a default value can be omitted, as long as the "
+"value matches the default:"
 msgstr ""
 
 msgid "Example 6"
@@ -10304,6 +10192,9 @@ msgstr ""
 msgid "Example 9"
 msgstr ""
 
+msgid "The arguments need to be given in the order described in the parameters:"
+msgstr ""
+
 msgid ""
 "An error would occur when the arguments are not given in the appropriate "
 "order: In this example, the column ``src`` of the table ``mytable`` is "
@@ -10315,6 +10206,12 @@ msgid "Example 10"
 msgstr ""
 
 msgid "Example 11"
+msgstr ""
+
+msgid ""
+"In this scenario omitting a parameter would create an error because the "
+"default values for the column names do not match the column names of the "
+"table."
 msgstr ""
 
 msgid "Example 12"
