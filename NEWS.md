@@ -24,6 +24,7 @@ milestone for 4.0.0
 * pgr_withPointsDD
 * pgr_withPointsKSP
 * pgr_withPointsVia
+* pgr_contractionHierarchies
 
 **Signatures promoted to official**
 
@@ -124,12 +125,17 @@ milestone for 4.0.0
     * New name and order of optional parameters.
   * Deprecated signature pgr_contraction(text,bigint[],integer,bigint[],boolean)
 
+**C/C++ code enhancement**
+
+* Code factorization on pgr_contraction family
+
 **New proposed functions**
 
 * Contraction
 
   * [#2790](https://github.com/pgRouting/pgrouting/issues/2790): pgr_contractionDeadEnd
   * [#2791](https://github.com/pgRouting/pgrouting/issues/2791): pgr_contractionLinear
+  * [#2536](https://github.com/pgRouting/pgrouting/issues/2536): pgr_contractionHierarchies
 
 ## pgRouting 3.7
 

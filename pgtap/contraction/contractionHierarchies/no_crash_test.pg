@@ -1,58 +1,55 @@
-/*PGR-GNU*****************************************************************
-File: _contraction.sql
 
-Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+/*PGR-GNU*****************************************************************
+
+Copyright (c) 2018  pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2016 Rohith Reddy
-Mail:
-
 ------
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-
  ********************************************************************PGR-GNU*/
+BEGIN;
 
---------------------
---------------------
--- contraction
---------------------
---------------------
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+SELECT plan(5);
 
---v3.0
-CREATE FUNCTION _pgr_contraction(
-    edges_sql TEXT,
-    contraction_order BIGINT[],
-    max_cycles INTEGER DEFAULT 1,
-    forbidden_vertices BIGINT[] DEFAULT ARRAY[]::BIGINT[],
-    directed BOOLEAN DEFAULT true,
+PREPARE edges AS
+SELECT id, source, target, cost, reverse_cost FROM edges_2;
 
-    OUT type TEXT,
-    OUT id BIGINT,
-    OUT contracted_vertices BIGINT[],
-    OUT source BIGINT,
-    OUT target BIGINT,
-    OUT cost FLOAT)
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+SELECT isnt_empty('edges', 'Should be not empty to tests be meaningful');
 
--- COMMENTS
 
-COMMENT ON FUNCTION _pgr_contraction(TEXT, BIGINT[], INTEGER, BIGINT[], BOOLEAN)
-IS 'pgRouting internal function';
+CREATE OR REPLACE FUNCTION test_function()
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+params TEXT[];
+subs TEXT[];
+BEGIN
+    params = ARRAY[
+    '$$SELECT id, source, target, cost, reverse_cost FROM edges_2$$'
+    ]::TEXT[];
+    subs = ARRAY[
+    'NULL',
+    'NULL'
+    ]::TEXT[];
 
+    RETURN query SELECT * FROM no_crash_test('pgr_contractionHierarchies', params, subs);
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+
+SELECT * FROM test_function();
+
+SELECT finish();
+ROLLBACK;

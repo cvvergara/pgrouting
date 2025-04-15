@@ -1,13 +1,8 @@
 /*PGR-GNU*****************************************************************
-File: _contraction.sql
+File: contracted_rt.h
 
-Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2017 pgRouting developers
 Mail: project@pgrouting.org
-
-Function's developer:
-Copyright (c) 2016 Rohith Reddy
-Mail:
 
 ------
 
@@ -26,33 +21,32 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
+/*! @file */
 
---------------------
---------------------
--- contraction
---------------------
---------------------
+#ifndef INCLUDE_C_TYPES_CONTRACTIONHIERARCHIES_RT_H_
+#define INCLUDE_C_TYPES_CONTRACTIONHIERARCHIES_RT_H_
+#pragma once
 
---v3.0
-CREATE FUNCTION _pgr_contraction(
-    edges_sql TEXT,
-    contraction_order BIGINT[],
-    max_cycles INTEGER DEFAULT 1,
-    forbidden_vertices BIGINT[] DEFAULT ARRAY[]::BIGINT[],
-    directed BOOLEAN DEFAULT true,
+/* for int64_t */
+#ifdef __cplusplus
+#   include <cstdint>
+#else
+#   include <stdint.h>
+#endif
 
-    OUT type TEXT,
-    OUT id BIGINT,
-    OUT contracted_vertices BIGINT[],
-    OUT source BIGINT,
-    OUT target BIGINT,
-    OUT cost FLOAT)
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
+/**************************************************************************
+ * return type for contraction
+ * ***********************************************************************/
+struct contractionHierarchies_rt {
+    int64_t id;
+    char* type;
+    int64_t source;
+    int64_t target;
+    double cost;
+    int64_t *contracted_vertices;
+    int contracted_vertices_size;
+    int64_t vertex_order;
+    int64_t metric;
+};
 
--- COMMENTS
-
-COMMENT ON FUNCTION _pgr_contraction(TEXT, BIGINT[], INTEGER, BIGINT[], BOOLEAN)
-IS 'pgRouting internal function';
-
+#endif  // INCLUDE_C_TYPES_CONTRACTIONHIERARCHIES_RT_H_

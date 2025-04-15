@@ -55,6 +55,7 @@ milestone for 4.0.0
 * pgr_withPointsDD
 * pgr_withPointsKSP
 * pgr_withPointsVia
+* pgr_contractionHierarchies
 
 .. rubric:: Signatures promoted to official
 
@@ -163,12 +164,17 @@ pgRouting 3.8.0 Release Notes
      :start-after: Version 3.8.0
      :end-before: .. rubric
 
+.. rubric:: C/C++ code enhancement
+
+* Code factorization on pgr_contraction family
+
 .. rubric:: New proposed functions
 
 * Contraction
 
   * `#2790 <https://github.com/pgRouting/pgrouting/issues/2790>`__: pgr_contractionDeadEnd
   * `#2791 <https://github.com/pgRouting/pgrouting/issues/2791>`__: pgr_contractionLinear
+  * `#2536 <https://github.com/pgRouting/pgrouting/issues/2536>`__: pgr_contractionHierarchies
 
 pgRouting 3.7
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
