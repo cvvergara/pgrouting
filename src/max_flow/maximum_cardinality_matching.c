@@ -47,8 +47,8 @@ static
 void
 process(
     char *edges_sql,
-    Only_int_rt** result_tuples,
-    size_t* result_count) {
+    int64_t **result_tuples,
+    size_t *result_count) {
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
@@ -63,7 +63,7 @@ process(
             &log_msg,
             &notice_msg,
             &err_msg);
-    time_msg("pgr_maximumCardinalityMatching()", start_t, clock());
+    time_msg("pgr_maxCardinalityMatch()", start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -78,9 +78,8 @@ process(
 
 PGDLLEXPORT Datum _pgr_maxcardinalitymatch_v4(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
-    TupleDesc tuple_desc;
 
-    Only_int_rt* result_tuples = NULL;
+    int64_t *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -96,61 +95,32 @@ PGDLLEXPORT Datum _pgr_maxcardinalitymatch_v4(PG_FUNCTION_ARGS) {
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
-                != TYPEFUNC_COMPOSITE) {
-            ereport(ERROR,
-                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-                     errmsg("function returning record called in context "
-                         "that cannot accept type record")));
-        }
-
-        funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
 
     funcctx = SRF_PERCALL_SETUP();
-    tuple_desc = funcctx->tuple_desc;
-    result_tuples = (Only_int_rt *) funcctx->user_fctx;
+    result_tuples = (int64_t *) funcctx->user_fctx;
+
 
     if (funcctx->call_cntr < funcctx->max_calls) {
-        HeapTuple tuple;
         Datum result;
-        Datum *values;
-        bool *nulls;
-
-        values = palloc(2 * sizeof(Datum));
-        nulls = palloc(2 * sizeof(bool));
 
 
-        size_t i;
-        for (i = 0; i < 2; ++i) {
-            nulls[i] = false;
-        }
+        result = Int64GetDatum(result_tuples[funcctx->call_cntr]);
 
-        values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge_id);
-
-        tuple = heap_form_tuple(tuple_desc, values, nulls);
-        result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
     }
 }
 
-/*
- * TODO (v5) v5 remove deprecated code
- * TODO (v4 last micro) warn about deprecated code
- */
-PGDLLEXPORT Datum _pgr_maxcardinalitymatch(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_maxcardinalitymatch);
 
 PGDLLEXPORT Datum
 _pgr_maxcardinalitymatch(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
     TupleDesc tuple_desc;
-
-    Only_int_rt* result_tuples = NULL;
+    int64_t *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -180,7 +150,8 @@ _pgr_maxcardinalitymatch(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (Only_int_rt *) funcctx->user_fctx;
+    result_tuples = (int64_t *) funcctx->user_fctx;
+
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple tuple;
@@ -191,17 +162,17 @@ _pgr_maxcardinalitymatch(PG_FUNCTION_ARGS) {
         values = palloc(4 * sizeof(Datum));
         nulls = palloc(4 * sizeof(bool));
 
+        result = Int64GetDatum(result_tuples[funcctx->call_cntr]);
 
         size_t i;
         for (i = 0; i < 4; ++i) {
             nulls[i] = false;
         }
 
-        values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr].edge_id);
-        values[2] = Int64GetDatum(result_tuples[funcctx->call_cntr].source);
-        values[3] = Int64GetDatum(result_tuples[funcctx->call_cntr].target);
-
+        values[0] = 0;
+        values[1] = Int64GetDatum(result_tuples[funcctx->call_cntr]);
+        values[2] = 0;
+        values[3] = 0;
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);

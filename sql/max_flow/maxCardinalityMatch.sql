@@ -5,7 +5,7 @@ Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2016 Andrea Nardelli
-mail: nrd.nardelli@gmail.com
+mail: nrd.nardelli at gmail.com
 
 ------
 

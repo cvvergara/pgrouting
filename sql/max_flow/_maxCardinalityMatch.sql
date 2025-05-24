@@ -5,7 +5,7 @@ Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2016 Andrea Nardelli
-mail: nrd.nardelli@gmail.com
+mail: nrd.nardelli at gmail.com
 
 ------
 
@@ -33,10 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --v4.0
 CREATE FUNCTION _pgr_maxCardinalityMatch_v4(
     edges_sql TEXT,
-
-    OUT seq INTEGER,
     OUT edge BIGINT)
-RETURNS SETOF RECORD AS
+RETURNS SETOF BIGINT AS
 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE STRICT;
 
