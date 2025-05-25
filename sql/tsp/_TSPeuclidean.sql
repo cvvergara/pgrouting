@@ -25,11 +25,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v4.0
-CREATE FUNCTION _pgr_TSPeuclidean(
-  coordinates_sql TEXT,
-  start_id BIGINT,
-  end_id BIGINT,
-  max_cycles INTEGER,
+CREATE FUNCTION _pgr_TSPeuclidean_v4(
+  TEXT,
+  BIGINT,
+  BIGINT,
+  INTEGER,
+  BOOLEAN,
 
   OUT seq integer,
   OUT node BIGINT,
@@ -40,5 +41,5 @@ AS 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
-COMMENT ON FUNCTION _pgr_TSPeuclidean(TEXT, BIGINT, BIGINT, INTEGER)
+COMMENT ON FUNCTION _pgr_TSPeuclidean_v4(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN)
 IS 'pgRouting internal function';

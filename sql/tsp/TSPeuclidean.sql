@@ -24,19 +24,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/*
-start summary
-pgr_TSPeuclidean(Coordinates SQL, [start_id], [end_id], [max_cycles])
-RETURNS SETOF (seq, node, cost, agg_cost)
-end summary
- */
-
 --v4.0
 CREATE FUNCTION pgr_TSPeuclidean(
   TEXT,
   start_id BIGINT DEFAULT 0,
   end_id BIGINT DEFAULT 0,
   max_cycles INTEGER DEFAULT 1,
+  ranodmize BOOLEAN DEFAULT true,
 
   OUT seq integer,
   OUT node BIGINT,
@@ -45,7 +39,7 @@ CREATE FUNCTION pgr_TSPeuclidean(
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT *
-FROM _pgr_TSPeuclidean(_pgr_get_statement($1), $2, $3, $4);
+FROM _pgr_TSPeuclidean_v4(_pgr_get_statement($1), $2, $3, $4, $5);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -54,7 +48,7 @@ ROWS 1000;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_TSPeuclidean(TEXT, BIGINT, BIGINT, INTEGER)
+COMMENT ON FUNCTION pgr_TSPeuclidean(TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN)
 IS 'pgr_TSPeuclidean
 - Parameters
   - coordinates SQL with columns: id, x, y
