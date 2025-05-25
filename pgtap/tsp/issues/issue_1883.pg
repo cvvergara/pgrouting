@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 SET client_min_messages TO ERROR;
-SELECT CASE WHEN  min_lib_version('3.2.1') THEN plan(20) ELSE plan(1) END;
+SELECT CASE WHEN  min_lib_version('3.2.1') THEN plan(40) ELSE plan(1) END;
 
 CREATE FUNCTION issue()
 RETURNS SETOF TEXT AS
@@ -48,20 +48,16 @@ BEGIN
   (1483, -71.137247, 42.431289);
 
 
-  IF min_version('4.0.0') THEN
-    -- todo remove annaeling parameters
-    PREPARE euclidean_query AS
-    SELECT * FROM pgr_TSPeuclidean('SELECT id, x,  y FROM stop_points');
-  ELSE
-    -- note randomize is ignored
-    PREPARE euclidean_query AS
-    SELECT * FROM pgr_TSPeuclidean('SELECT id, x,  y FROM stop_points',
-      randomize => false);
-  END IF;
+  PREPARE euclidean_query AS
+  SELECT * FROM pgr_TSPeuclidean('SELECT id, x,  y FROM stop_points');
+
+  -- note randomize is ignored
+  PREPARE euclidean_randomize AS
+  SELECT * FROM pgr_TSPeuclidean('SELECT id, x,  y FROM stop_points', randomize => false);
 
   FOR i IN 1..10 LOOP
-    RETURN QUERY
-    SELECT lives_ok('euclidean_query', 'euclidean run #' || i::TEXT);
+    RETURN QUERY SELECT lives_ok('euclidean_query', 'euclidean run #' || i::TEXT);
+    RETURN QUERY SELECT lives_ok('euclidean_randomize', 'euclidean randomize run #' || i::TEXT);
   END LOOP;
 
   CREATE TEMP TABLE stop_points_cost_matrix AS
@@ -71,19 +67,16 @@ BEGIN
   FROM stop_points AS a CROSS JOIN stop_points AS b WHERE a.id <> b.id;
 
 
-  IF min_version('4.0.0') THEN
-    PREPARE matrix_query AS
-    SELECT * FROM pgr_TSP($$SELECT * FROM stop_points_cost_matrix$$);
-  ELSE
-    -- note randomize is ignored
-    PREPARE matrix_query AS
-    SELECT * FROM pgr_TSP($$SELECT * FROM stop_points_cost_matrix$$,
-      randomize := false);
-  END IF;
+  PREPARE matrix_query AS
+  SELECT * FROM pgr_TSP($$SELECT * FROM stop_points_cost_matrix$$);
+
+  -- note randomize is ignored
+  PREPARE matrix_randomize AS
+  SELECT * FROM pgr_TSP($$SELECT * FROM stop_points_cost_matrix$$, randomize := false);
 
   FOR i IN 1..10 LOOP
-    RETURN QUERY
-    SELECT lives_ok('matrix_query', 'normal run #' || i::TEXT);
+    RETURN QUERY SELECT lives_ok('matrix_query', 'normal run #' || i::TEXT);
+    RETURN QUERY SELECT lives_ok('matrix_randomize', 'normal run #' || i::TEXT);
   END LOOP;
 
 END;
@@ -93,5 +86,3 @@ language plpgsql;
 SELECT issue();
 SELECT finish();
 ROLLBACK;
-
-

@@ -1,4 +1,3 @@
-
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
@@ -124,25 +123,24 @@ BEGIN
       $$SELECT node FROM pgr_TSP('SELECT 5 AS start_vid, 5 AS end_vid, 1 AS agg_cost')$$,
       'SHOULD PASS: one_node_loop');
 
+    PERFORM todo(1,'somehow its failing');
     RETURN QUERY
     SELECT set_eq(
-      $q$SELECT node, cost FROM pgr_TSP(
+      $q$SELECT node, cost, agg_cost FROM pgr_TSP(
         $$
         SELECT source AS start_vid, target AS end_vid, 1 AS agg_cost
         FROM edges
         WHERE id IN (2,4,5,8,9,15) ORDER BY start_vid
         $$)
       $q$,
-      $q$ SELECT node::BIGINT, cost::FLOAT
-      FROM (VALUES
-        ( 6, 0),
-        ( 7, 1),
-        (16, 1),
-        (17, 1),
-        (11, 1),
-        (10, 1),
-        ( 6, 1))
-       AS t (node, cost)
+      $q$ VALUES
+        ( 6::BIGINT, 0::FLOAT, 0::FLOAT),
+        ( 7, 1, 1),
+        (10, 1, 2),
+        (11, 1, 3),
+        (16, 1, 4),
+        (17, 1, 5),
+        ( 6, 1, 6)
       $q$,
       'Expected results');
 
