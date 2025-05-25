@@ -21,11 +21,6 @@ graph.
 
 .. Rubric:: Availability
 
-* Version 4.0.0
-
-  * Use ``going`` and ``coming`` on the inner query is no longer available.
-  * Deprecated signature is removed.
-
 * Version 3.4.0
 
   * Use ``cost`` and ``reverse_cost`` on the inner query

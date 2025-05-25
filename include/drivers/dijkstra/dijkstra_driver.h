@@ -68,6 +68,7 @@ void pgr_do_dijkstra(
         const char*,
         const char*,
         ArrayType*, ArrayType*,
+
         bool, bool, bool,
         int64_t, bool,
 
