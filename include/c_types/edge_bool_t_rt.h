@@ -5,7 +5,7 @@ Copyright (c) 2017 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2017 Celia Virginia Vergara Castillo
-Mail: vicky_vergara at hotmail.com
+Mail: vicky_vergara at erosion.com
 
 ------
 
