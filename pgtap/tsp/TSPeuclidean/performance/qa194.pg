@@ -25,7 +25,7 @@ BEGIN;
 -- DIMENSION : 194
 -- EDGE_WEIGHT_TYPE : EUC_2D
 
-DROP TABLE IF EXISTS qa194;
+--DROP TABLE IF EXISTS qa194;
 CREATE TABLE qa194 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 INSERT INTO qa194 (id, x, y) VALUES
 (1, 24748.3333, 50840.0000),
@@ -226,7 +226,7 @@ INSERT INTO qa194 (id, x, y) VALUES
 
 UPDATE qa194 SET the_geom = ST_makePoint(x,y);
 
-SELECT plan(5);
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(5) ELSE plan(1) END;
 SELECT tsp_performance('qa194', 5, 9352, 2);
 SELECT finish();
 ROLLBACK;

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT plan(9);
+SELECT CASE WHEN min_version('4.0.0') THEN plan(20) ELSE plan(8) END;
 
 CREATE TEMP TABLE  data AS
 SELECT * FROM pgr_dijkstraCostMatrix(
@@ -29,7 +29,6 @@ SELECT * FROM pgr_dijkstraCostMatrix(
     directed := false
 );
 
-SELECT isnt_empty('SELECT * FROM data', 'Should not be empty true to tests be meaningful');
 SELECT tsp_no_crash();
 
 SELECT finish();

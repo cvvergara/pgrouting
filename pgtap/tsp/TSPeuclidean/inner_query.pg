@@ -26,15 +26,15 @@ CREATE TEMP TABLE data AS
 SELECT id, ST_X(geom) AS x, ST_Y(geom) AS y
 FROM vertices;
 
-SELECT test_anyInteger('pgr_tspeuclidean(',')',
+SELECT tsp_anyInteger('pgr_tspeuclidean',
     ARRAY['id', 'x', 'y'],
-    'id','data');
-SELECT test_anyNumerical('pgr_tspeuclidean(',')',
+    'id');
+SELECT tsp_anyNumerical('pgr_tspeuclidean',
     ARRAY['id', 'x', 'y'],
-    'x','data');
-SELECT test_anyNumerical('pgr_tspeuclidean(',')',
+    'x');
+SELECT tsp_anyNumerical('pgr_tspeuclidean',
     ARRAY['id', 'x', 'y'],
-    'y','data');
+    'y');
 
 SELECT finish();
 ROLLBACK;

@@ -30,7 +30,7 @@ CREATE FUNCTION pgr_TSPeuclidean(
   start_id BIGINT DEFAULT 0,
   end_id BIGINT DEFAULT 0,
   max_cycles INTEGER DEFAULT 1,
-  ranodmize BOOLEAN DEFAULT true,
+  randomize BOOLEAN DEFAULT true,
 
   OUT seq integer,
   OUT node BIGINT,

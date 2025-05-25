@@ -25,7 +25,7 @@ BEGIN;
 -- DIMENSION : 29
 -- EDGE_WEIGHT_TYPE : EUC_2D
 
-DROP TABLE IF EXISTS wi29;
+--DROP TABLE IF EXISTS wi29;
 CREATE TABLE wi29 (id BIGINT, x FLOAT, y FLOAT, the_geom geometry);
 INSERT INTO wi29 (id, x, y) VALUES
 (1, 20833.3333, 17100.0000),
@@ -60,7 +60,7 @@ INSERT INTO wi29 (id, x, y) VALUES
 
 UPDATE wi29 SET the_geom = ST_makePoint(x,y);
 
-SELECT plan(29);
+SELECT CASE WHEN min_lib_version('3.2.1') THEN plan(29) ELSE plan(1) END;
 SELECT tsp_performance('wi29', 29, 95345, 2);
 SELECT finish();
 ROLLBACK;
