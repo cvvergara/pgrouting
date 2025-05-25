@@ -4,11 +4,6 @@ File: flowgraph.hpp
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Refactoring
-Copyright (c) 2022 Celia Vriginia Vergara Castillo
-Mail: vicky_vergara at hotmail.com
-
-Function's developer:
 Copyright (c) 2016 Andrea Nardelli
 Mail: nrd.nardelli@gmail.com
 
@@ -30,51 +25,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_CPP_COMMON_UNDIRECTEDNOCOSTBG_HPP_
-#define INCLUDE_CPP_COMMON_UNDIRECTEDNOCOSTBG_HPP_
+#ifndef INCLUDE_MAX_FLOW_FLOWGRAPH_HPP_
+#define INCLUDE_MAX_FLOW_FLOWGRAPH_HPP_
 #pragma once
 
-#include <map>
+#include <cstdint>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-#include "c_types/edge_bool_t.h"
-
 
 namespace pgrouting {
-namespace graph {
 
+typedef boost::adjacency_list_traits<boost::vecS, boost::vecS, boost::directedS>
+    Traits;
+typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS,
+        // Vertex properties
+        boost::property<boost::vertex_index_t, int64_t,
+        boost::property<boost::vertex_color_t, boost::default_color_type,
+        boost::property<boost::vertex_distance_t, int64_t,
+        boost::property<boost::vertex_predecessor_t, Traits::edge_descriptor>
+        > > >,
+        // Edge properties
+        boost::property<boost::edge_capacity_t, int64_t,
+        boost::property<boost::edge_residual_capacity_t, int64_t,
+        boost::property<boost::edge_reverse_t, Traits::edge_descriptor> > > >
+    FlowGraph;
 
-class UndirectedNoCostsBG {
- public:
-     using G = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;
-     using V = boost::graph_traits<G>::vertex_descriptor;
-     using E = boost::graph_traits<G>::edge_descriptor;
-     using V_it = boost::graph_traits<G>::vertex_iterator;
-     using Edge_bool_t = struct Edge_bool_t;
-
-     UndirectedNoCostsBG(Edge_bool_t*, size_t);
-
-     V get_boost_vertex(int64_t id) {
-         return id_to_V[id];
-     }
-
-     int64_t get_edge_id(E e) {
-         return E_to_id[e];
-     }
-
-     G& operator()() {return graph;}
-     const G& operator()() const {return graph;}
-
- private:
-     G graph;
-     std::map<int64_t, V> id_to_V;
-     std::map<V, int64_t> V_to_id;
-     std::map<E, int64_t> E_to_id;
-};
-
-}  // namespace graph
 }  // namespace pgrouting
 
-#endif  // INCLUDE_CPP_COMMON_UNDIRECTEDNOCOSTBG_HPP_
+#endif  // INCLUDE_MAX_FLOW_FLOWGRAPH_HPP_

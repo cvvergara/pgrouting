@@ -650,12 +650,6 @@ Migration is needed, because:
 
 :Before migration:
 
-The following query could be done:
-
-.. literalinclude:: migration.queries
-   :start-after: --maxcard1
-   :end-before: --maxcard2
-
 * Columns used are ``going`` and ``coming`` to represent the existence of an
   edge.
 * Flag ``directed`` was used to indicate if it was for a **directed** or

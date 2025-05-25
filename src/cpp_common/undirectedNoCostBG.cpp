@@ -3,14 +3,6 @@
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Refactoring
-Copyright (c) 2022 Celia Vriginia Vergara Castillo
-Mail: vicky_vergara at hotmail.com
-
-Function's developer:
-Copyright (c) 2016 Andrea Nardelli
-Mail: nrd.nardelli@gmail.com
-
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -32,20 +24,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/undirectedNoCostBG.hpp"
 
 #include <set>
+#include <vector>
 
 #include <boost/graph/max_cardinality_matching.hpp>
 
-#include "c_types/edge_bool_t.h"
+#include "c_types/edge_bool_t_rt.h"
 
 
 namespace pgrouting {
 namespace graph {
 
-UndirectedNoCostsBG::UndirectedNoCostsBG(Edge_bool_t *edges, size_t edges_size) {
+UndirectedNoCostsBG::UndirectedNoCostsBG(const std::vector<Edge_bool_t> &edges) {
     std::set<int64_t> vertices;
-    for (size_t i = 0; i < edges_size; ++i) {
-        vertices.insert(edges[i].source);
-        vertices.insert(edges[i].target);
+    for (const auto edge : edges) {
+        vertices.insert(edge.source);
+        vertices.insert(edge.target);
     }
     for (auto id : vertices) {
         V v = add_vertex(graph);
@@ -53,14 +46,14 @@ UndirectedNoCostsBG::UndirectedNoCostsBG(Edge_bool_t *edges, size_t edges_size) 
         V_to_id.insert(std::pair<V, int64_t>(v, id));
     }
 
-    for (size_t i = 0; i < edges_size; ++i) {
-        V v1 = get_boost_vertex(edges[i].source);
-        V v2 = get_boost_vertex(edges[i].target);
+    for (const auto edge : edges) {
+        V v1 = get_boost_vertex(edge.source);
+        V v2 = get_boost_vertex(edge.target);
         E e;
         bool added;
-        if (edges[i].going) {
+        if (edge.going) {
             boost::tie(e, added) = boost::add_edge(v1, v2, graph);
-            if (added) {E_to_id.insert(std::pair<E, int64_t>(e, edges[i].id));}
+            if (added) E_to_id.insert(std::pair<E, int64_t>(e, edge.id));
         }
     }
 }

@@ -5,7 +5,6 @@ Copyright (c) 2021 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2021 Celia Virginia Vergara Castillo
-Mail: vicky at georepublic.de
 
 ------
 

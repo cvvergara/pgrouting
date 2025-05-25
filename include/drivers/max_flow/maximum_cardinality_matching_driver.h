@@ -1,16 +1,13 @@
 /*PGR-GNU*****************************************************************
 File: maximum_cardinality_matching_driver.h
 
+Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Refactoring
-Copyright (c) 2022 Celia Virginia Vergara Castillo
-Mail: vicky_vergara at hotmail.com
-
 Function's developer:
 Copyright (c) 2016 Andrea Nardelli
-Mail: nrd.nardelli@gmail.com
+Mail: nrd.nardelli at gmail.com
 
 ------
 
@@ -35,26 +32,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #ifdef __cplusplus
-# include <cstddef>
-# include <cstdint>
-using Edges = struct Edge_bool_t;
+#include <cstddef>
+#include <cstdint>
 #else
-# include <stddef.h>
-# include <stdint.h>
-typedef struct Edge_bool_t Edges;
+#include <stddef.h>
+#include <stdint.h>
 #endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void do_maxCardinalityMatch(
-            Edges *,
-            size_t,
+void pgr_do_maximum_cardinality_matching(
+            const char*,
 
-            bool,
-
-            Only_int_rt **, size_t *,
+            int64_t **, size_t *,
             char**, char**, char **);
 
 

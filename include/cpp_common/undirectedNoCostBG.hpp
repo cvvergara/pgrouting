@@ -4,14 +4,6 @@ File: undirectedNoCostBG.hpp
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Refactoring
-Copyright (c) 2022 Celia Vriginia Vergara Castillo
-Mail: vicky_vergara at hotmail.com
-
-Function's developer:
-Copyright (c) 2016 Andrea Nardelli
-Mail: nrd.nardelli@gmail.com
-
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -35,10 +27,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <map>
+#include <vector>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include "c_types/edge_bool_t.h"
+#include "c_types/edge_bool_t_rt.h"
 
 
 namespace pgrouting {
@@ -53,7 +46,7 @@ class UndirectedNoCostsBG {
      using V_it = boost::graph_traits<G>::vertex_iterator;
      using Edge_bool_t = struct Edge_bool_t;
 
-     UndirectedNoCostsBG(Edge_bool_t*, size_t);
+     explicit UndirectedNoCostsBG(const std::vector<Edge_bool_t>&);
 
      V get_boost_vertex(int64_t id) {
          return id_to_V[id];

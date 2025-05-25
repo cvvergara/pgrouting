@@ -4,12 +4,8 @@ FILE: _maxCardinalityMatch.sql
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Refactoring
-Copyright (c) 2022 Celia Vriginia Vergara Castillo
-Mail: vicky_vergara at hotmail.com
-
 Copyright (c) 2016 Andrea Nardelli
-mail: nrd.nardelli@gmail.com
+mail: nrd.nardelli at gmail.com
 
 ------
 
@@ -29,20 +25,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---------------------------
--- pgr_maxCardinalityMatch
----------------------------
-
-
 --v4.0
-CREATE FUNCTION _pgr_maxCardinalityMatch(
+CREATE FUNCTION _pgr_maxCardinalityMatch_v4(
     edges_sql TEXT,
     OUT edge BIGINT)
 RETURNS SETOF BIGINT AS
 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE STRICT;
 
--- COMMENTS
-
-COMMENT ON FUNCTION _pgr_maxCardinalityMatch(TEXT)
+COMMENT ON FUNCTION _pgr_maxCardinalityMatch_v4(TEXT)
 IS 'pgRouting internal function';
