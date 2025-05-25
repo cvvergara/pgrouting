@@ -24,13 +24,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-/*
-start summary
-pgr_TSP(Matrix SQL, [start_id], [end_id], [max_cycles])
-RETURNS SETOF (seq, node, cost, agg_cost)
-end summary
- */
-
 --v4.0
 CREATE FUNCTION pgr_TSP(
   TEXT, -- matrix_row_sql (required)
@@ -45,8 +38,8 @@ CREATE FUNCTION pgr_TSP(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT *
-FROM _pgr_TSP(_pgr_get_statement($1), $2, $3, $4);
+SELECT seq, node, cost, agg_cost
+FROM _pgr_TSP_v4(_pgr_get_statement($1), $2, $3, $4);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

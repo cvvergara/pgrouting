@@ -4,7 +4,7 @@ Copyright (c) 2016 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2016 Celia Virginia Vergara Castillo
-mail: vicky_vergara@hotmail.com
+mail: vicky at erosion.dev
 
 ------
 
@@ -24,12 +24,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
--------------
--- TSP
--------------
-
 --v4.0
-CREATE FUNCTION _pgr_TSP(
+CREATE FUNCTION _pgr_TSP_v4(
   matrix_row_sql TEXT,
   start_id BIGINT,
   end_id BIGINT,
@@ -44,5 +40,5 @@ AS 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE STRICT;
 
 -- COMMENTS
-COMMENT ON FUNCTION _pgr_TSP(TEXT, BIGINT, BIGINT, INTEGER)
+COMMENT ON FUNCTION _pgr_TSP_v4(TEXT, BIGINT, BIGINT, INTEGER)
 IS 'pgRouting internal function';
