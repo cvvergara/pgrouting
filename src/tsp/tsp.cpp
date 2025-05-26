@@ -458,7 +458,7 @@ TSP::tsp(
      * the has a start value same as end_vid ignore end_vid
      */
     if ((end_vid == 0) || (start_vid == end_vid)) {
-        return crossover_optimize(graph, tsp(graph, start_vid), 1, 5);
+        return crossover_optimize(graph, tsp(graph, start_vid), 1, max_cycles);
     }
 
     /*
