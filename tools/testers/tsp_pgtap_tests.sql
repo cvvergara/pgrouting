@@ -160,19 +160,19 @@ BEGIN
   END IF;
 
   RETURN QUERY
-  SELECT has_function(fn, ARRAY['text', 'bigint', 'bigint', 'integer']);
+  SELECT has_function(fn, ARRAY['text', 'bigint', 'bigint']);
 
   RETURN QUERY
-  SELECT function_returns(fn, ARRAY['text', 'bigint', 'bigint', 'integer'], 'setof record');
+  SELECT function_returns(fn, ARRAY['text', 'bigint', 'bigint'], 'setof record');
 
   RETURN QUERY
   SELECT function_args_eq(fn,
-  $$VALUES ('{"",start_id,end_id,max_cycles,seq,node,cost,agg_cost}'::TEXT[]) $$
+  $$VALUES ('{"",start_id,end_id,seq,node,cost,agg_cost}'::TEXT[]) $$
   );
 
   RETURN QUERY
   SELECT function_types_eq(fn,
-    $$VALUES ('{text,int8,int8,int4,int4,int8,float8,float8}'::TEXT[]) $$
+    $$VALUES ('{text,int8,int8,int4,int8,float8,float8}'::TEXT[]) $$
   );
 
 END;
