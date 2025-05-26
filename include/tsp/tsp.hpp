@@ -45,54 +45,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/identifiers.hpp"
 #include "cpp_common/messages.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/undirectedHasCostBG.hpp"
+
 
 
 namespace pgrouting {
-namespace graph {
-
-class TSP_graph {
- public:
-    using TSP_Graph =
-        boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
-        boost::property<boost::vertex_index_t, int>,
-        boost::property<boost::edge_weight_t, double>,
-        boost::no_property>;
-
-    using V       = boost::graph_traits<TSP_Graph>::vertex_descriptor;
-    using E       = boost::graph_traits<TSP_Graph>::edge_descriptor;
-    using V_it    = boost::graph_traits<TSP_Graph>::vertex_iterator;
-    using E_it    = boost::graph_traits<TSP_Graph>::edge_iterator;
-    using Eout_it = boost::graph_traits<TSP_Graph>::out_edge_iterator;
-
- public:
-    explicit TSP_graph(std::vector<IID_t_rt>&);
-    explicit TSP_graph(const std::vector<Coordinate_t>&);
-    TSP_graph() = delete;
-
-#if BOOST_VERSION >= 106800
-    friend std::ostream& operator<<(std::ostream &, const TSP_graph&);
-#endif
-    bool has_vertex(int64_t id) const;
-
-    const TSP_Graph& graph() const {return m_graph;}
-    TSP_Graph& graph() {return m_graph;}
-
-    V get_boost_vertex(int64_t id) const;
-    void insert_vertex(int64_t id);
-    int64_t get_vertex_id(V v) const;
-    int64_t get_edge_id(E e) const;
-
-
- private:
-    TSP_Graph m_graph;
-    std::map<int64_t, V> id_to_V;
-    std::map<V, int64_t> V_to_id;
-    std::map<E, int64_t> E_to_id;
-    Identifiers<int64_t> ids;
-};
-
-}  // namespace graph
-
 namespace algorithm {
 
 class TSP : public Pgr_messages {

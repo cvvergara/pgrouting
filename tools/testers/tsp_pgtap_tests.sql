@@ -37,7 +37,6 @@ start_sql TEXT;
 end_sql TEXT;
 query TEXT;
 p TEXT;
-randomize TEXT := ', randomize := false)';
 BEGIN
 
   start_sql = 'SELECT * from ' || fn || '($$ SELECT ';
@@ -47,7 +46,7 @@ BEGIN
     END IF;
     start_sql = start_sql || p || ', ';
   END LOOP;
-  end_sql = ' FROM data $$' || randomize;
+  end_sql = ' FROM data $$)';
 
   query := start_sql || parameter || '::SMALLINT ' || end_sql;
   RETURN query SELECT lives_ok(query, parameter || '::SMALLINT ');
@@ -77,10 +76,7 @@ start_sql TEXT;
 end_sql TEXT;
 query TEXT;
 p TEXT;
-randomize TEXT := ', randomize := false)';
 BEGIN
-
-  IF min_version('4.0.1') THEN randomize :=')'; END IF;
 
   start_sql = 'select * from ' || fn || '($$ SELECT ';
   FOREACH  p IN ARRAY params
@@ -89,7 +85,7 @@ BEGIN
     END IF;
     start_sql = start_sql || p || ', ';
   END LOOP;
-  end_sql = ' FROM data $$' || randomize;
+  end_sql = ' FROM data $$)';
 
   query := start_sql || parameter || '::SMALLINT ' || end_sql;
   RETURN query SELECT lives_ok(query, parameter || '::SMALLINT');
@@ -127,17 +123,6 @@ BEGIN
   subs = ARRAY['NULL', 'NULL', 'NULL']::TEXT[];
   RETURN query SELECT * FROM no_crash_test('pgr_TSP', params, subs);
 
-  IF min_version('4.0.0') THEN
-
-    params = ARRAY[
-    '$fn$SELECT * FROM data$fn$',
-    '5::BIGINT', '6::BIGINT', '1', 'true::BOOLEAN']::TEXT[];
-
-    subs = ARRAY['NULL', 'NULL', 'NULL', 'NULL', 'NULL']::TEXT[];
-    RETURN query SELECT * FROM no_crash_test('pgr_TSP', params, subs);
-
-  END IF;
-
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
@@ -160,18 +145,6 @@ BEGIN
 
   RETURN query SELECT * FROM no_crash_test('pgr_TSPeuclidean', params, subs);
 
-  IF min_version('4.0.0') THEN
-
-    params = ARRAY[
-    '$fn$SELECT * FROM data$fn$',
-    '1::BIGINT', '2::BIGINT', '1', 'true::BOOLEAN']::TEXT[];
-
-    subs = ARRAY['NULL', 'NULL', 'NULL', 'NULL', 'NULL']::TEXT[];
-
-    RETURN query SELECT * FROM no_crash_test('pgr_TSPeuclidean', params, subs);
-
-  END IF;
-
 END
 $BODY$
 LANGUAGE plpgsql VOLATILE;
@@ -187,19 +160,19 @@ BEGIN
   END IF;
 
   RETURN QUERY
-  SELECT has_function(fn, ARRAY['text', 'bigint', 'bigint', 'integer', 'boolean']);
+  SELECT has_function(fn, ARRAY['text', 'bigint', 'bigint', 'integer']);
 
   RETURN QUERY
-  SELECT function_returns(fn, ARRAY['text', 'bigint', 'bigint', 'integer', 'boolean'], 'setof record');
+  SELECT function_returns(fn, ARRAY['text', 'bigint', 'bigint', 'integer'], 'setof record');
 
   RETURN QUERY
   SELECT function_args_eq(fn,
-  $$VALUES ('{"",start_id,end_id,max_cycles,randomize,seq,node,cost,agg_cost}'::TEXT[]) $$
+  $$VALUES ('{"",start_id,end_id,max_cycles,seq,node,cost,agg_cost}'::TEXT[]) $$
   );
 
   RETURN QUERY
   SELECT function_types_eq(fn,
-    $$VALUES ('{text,int8,int8,int4,bool,int4,int8,float8,float8}'::TEXT[]) $$
+    $$VALUES ('{text,int8,int8,int4,int4,int8,float8,float8}'::TEXT[]) $$
   );
 
 END;
