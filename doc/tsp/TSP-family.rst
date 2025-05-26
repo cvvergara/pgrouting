@@ -88,7 +88,7 @@ Characteristics
 - Metric Algorithm is used
 - Implementation generates solutions that *are twice as long as the optimal tour
   in the worst case*:
-- Graph charateristics:
+- Graph charateristics for best performance:
 
   - Graph is undirected
   - Graph is fully connected

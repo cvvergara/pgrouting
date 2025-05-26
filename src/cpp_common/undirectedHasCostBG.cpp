@@ -71,6 +71,12 @@ UndirectedHasCostBG::UndirectedHasCostBG(std::vector<IID_t_rt> &distances) {
          * skip loops
          */
         if (edge.from_vid == edge.to_vid) continue;
+
+        /*
+         * skip negative costs
+         */
+        if (edge.cost < 0) continue;
+
         auto v1 = get_boost_vertex(edge.from_vid);
         auto v2 = get_boost_vertex(edge.to_vid);
         auto e_exists = boost::edge(v1, v2, m_graph);
