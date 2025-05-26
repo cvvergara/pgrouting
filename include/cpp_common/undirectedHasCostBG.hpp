@@ -35,8 +35,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>
-#include <boost/version.hpp>
-
 #include "cpp_common/identifiers.hpp"
 
 using Coordinate_t = struct Coordinate_t;
@@ -77,10 +75,9 @@ class UndirectedHasCostBG {
 
  private:
     TSP_Graph m_graph;
-    std::map<int64_t, V> id_to_V;
-    std::map<V, int64_t> V_to_id;
-    std::map<E, int64_t> E_to_id;
-    Identifiers<int64_t> ids;
+    std::map<int64_t, V> m_id_to_V;
+    std::map<V, int64_t> m_V_to_id;
+    std::map<E, int64_t> m_E_to_id;
 };
 
 }  // namespace graph

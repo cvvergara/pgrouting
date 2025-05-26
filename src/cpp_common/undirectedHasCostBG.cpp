@@ -33,20 +33,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string>
 #include <limits>
 
-#include <boost/graph/metric_tsp_approx.hpp>
-#include <boost/graph/connected_components.hpp>
-#include <boost/graph/dijkstra_shortest_paths.hpp>
-#include <boost/graph/graph_utility.hpp>
-#include <boost/version.hpp>
-
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/coordinate_t.hpp"
-#include "cpp_common/identifiers.hpp"
-#include "cpp_common/messages.hpp"
-#include "cpp_common/assert.hpp"
 #include "cpp_common/interruption.hpp"
-
-#include "visitors/dijkstra_visitors.hpp"
+#include <boost/graph/connected_components.hpp>
 
 
 namespace pgrouting {
@@ -180,17 +170,17 @@ UndirectedHasCostBG::UndirectedHasCostBG(const std::vector<Coordinate_t> &coordi
 
 bool
 UndirectedHasCostBG::has_vertex(int64_t id) const {
-    return id_to_V.find(id) != id_to_V.end();
+    return m_id_to_V.find(id) != m_id_to_V.end();
 }
 
 void
 UndirectedHasCostBG::insert_vertex(int64_t id) {
     try {
         if (has_vertex(id)) return;
-        auto v = add_vertex(ids.size(), m_graph);
-        id_to_V.insert(std::make_pair(id, v));
-        V_to_id.insert(std::make_pair(v, id));
-        ids += id;
+        auto v = add_vertex(m_id_to_V.size(), m_graph);
+        m_id_to_V.insert(std::make_pair(id, v));
+        m_V_to_id.insert(std::make_pair(v, id));
+        m_ids += id;
     } catch (...) {
         throw std::make_pair(
                 std::string("INTERNAL: something went wrong when inserting a vertex"),
@@ -201,7 +191,7 @@ UndirectedHasCostBG::insert_vertex(int64_t id) {
 UndirectedHasCostBG::V
 UndirectedHasCostBG::get_boost_vertex(int64_t id) const {
     try {
-        return id_to_V.at(id);
+        return m_id_to_V.at(id);
     } catch (...) {
         throw std::make_pair(
                 std::string("INTERNAL: something went wrong when getting the vertex descriptor"),
@@ -212,7 +202,7 @@ UndirectedHasCostBG::get_boost_vertex(int64_t id) const {
 int64_t
 UndirectedHasCostBG::get_vertex_id(V v) const {
     try {
-        return V_to_id.at(v);
+        return m_V_to_id.at(v);
     } catch (...) {
         throw std::make_pair(
                 std::string("INTERNAL: something went wrong when getting the vertex id"),
@@ -223,7 +213,7 @@ UndirectedHasCostBG::get_vertex_id(V v) const {
 int64_t
 UndirectedHasCostBG::get_edge_id(E e) const {
     try {
-        return E_to_id.at(e);
+        return m_E_to_id.at(e);
     } catch (...) {
         throw std::make_pair(
                 std::string("INTERNAL: something went wrong when getting the edge id"),
