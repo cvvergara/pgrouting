@@ -20,6 +20,12 @@
 
 .. rubric:: Availability:
 
+* Version 4.0.0
+
+  * Simulated Annealing signature removed
+  * Results change depending on input order
+  * Only for undirected graphs
+
 * Version 3.2.1
 
   * Metric Algorithm from `Boost library

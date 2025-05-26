@@ -20,25 +20,30 @@
 
 .. rubric:: Availability:
 
-* Version 3.2.1
+.. rubric:: Version 4.0.0
 
-  * Using `Boost: metric TSP approx
-    <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>`__
-  * Simulated Annealing Algorithm no longer supported
+* Simulated Annealing signature removed
+* Results change depending on input order
 
-    * The Simulated Annealing Algorithm related parameters are ignored:
-      `max_processing_time`, `tries_per_temperature`,
-      `max_changes_per_temperature`, `max_consecutive_non_changes`,
-      `initial_temperature`, `final_temperature`, `cooling_factor`,
-      `randomize`
+.. rubric:: Version 3.2.1
 
-* Version 3.0.0
+* Using `Boost: metric TSP approx
+ <https://www.boost.org/libs/graph/doc/metric_tsp_approx.html>`__
+* Simulated Annealing Algorithm no longer supported
+
+ * The Simulated Annealing Algorithm related parameters are ignored:
+   `max_processing_time`, `tries_per_temperature`,
+   `max_changes_per_temperature`, `max_consecutive_non_changes`,
+   `initial_temperature`, `final_temperature`, `cooling_factor`,
+   `randomize`
+
+.. rubric:: Version 3.0.0
 
   * Name change from pgr_eucledianTSP
 
-* Version 2.3.0
+.. rubric:: Version 2.3.0
 
-  * New official function.
+* New official function.
 
 
 Description
@@ -52,6 +57,7 @@ Description
    :start-after: tsp characteristics start
    :end-before: tsp characteristics end
 
+- Results change depending on input order
 - Any duplicated identifier will be ignored. The coordinates that will be kept
   is arbitrarily.
 

@@ -150,7 +150,6 @@ TSP::tsp(TSP_graph& graph) {
                 std::string("INTERNAL: something went wrong while calling boost::metric_tsp_approx_tour"),
                 std::string(__PGR_PRETTY_FUNCTION__));
     }
-    pgassert(tsp_path.size() == num_vertices(graph.graph()) + 1);
 
     return eval_tour(graph, tsp_path);
 }
@@ -180,7 +179,6 @@ TSP::tsp(TSP_graph& graph, int64_t start_vid) {
                 std::string("INTERNAL: something went wrong while calling boost::metric_tsp_approx_tour_from_vertex"),
                 std::string(__PGR_PRETTY_FUNCTION__));
     }
-    pgassert(tsp_path.size() == num_vertices(graph.graph()) + 1);
 
     return eval_tour(graph, tsp_path);
 }
@@ -197,7 +195,6 @@ TSP::eval_tour(TSP_graph& graph, const std::vector<V> &tsp_tour) {
         u = v;
         results.push_back(std::make_pair(graph.get_vertex_id(v), cost));
     }
-    pgassert(results.size() == num_vertices(graph.graph()) + 1);
     return results;
 }
 

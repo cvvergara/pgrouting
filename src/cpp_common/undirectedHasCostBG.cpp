@@ -96,23 +96,6 @@ UndirectedHasCostBG::UndirectedHasCostBG(std::vector<IID_t_rt> &distances) {
                     std::string(__PGR_PRETTY_FUNCTION__));
         }
     }
-
-    /*
-     * Check data validity
-     * - One component
-     * Not checking triangle inequality
-     */
-    std::vector<V> components(boost::num_vertices(m_graph));
-    CHECK_FOR_INTERRUPTS();
-    try {
-        if (boost::connected_components(m_graph, &components[0]) > 1) {
-            throw std::make_pair(
-                    std::string("Graph is not fully connected"),
-                    std::string("Check graph before calling"));
-        }
-    } catch (...) {
-        throw;
-    }
 }
 
 
