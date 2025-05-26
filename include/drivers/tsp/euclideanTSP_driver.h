@@ -53,6 +53,7 @@ pgr_do_euclideanTSP(
 
         int64_t,
         int64_t,
+        int32_t,
         bool,
 
         TSP_tour_rt**, size_t*,

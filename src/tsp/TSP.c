@@ -50,6 +50,7 @@ process(
         int64_t start_vid,
         int64_t end_vid,
         int max_cycles,
+        bool randomize,
 
         TSP_tour_rt **result_tuples,
         size_t *result_count) {
@@ -64,6 +65,7 @@ process(
             start_vid,
             end_vid,
             max_cycles,
+            randomize,
 
             result_tuples,
             result_count,
@@ -100,6 +102,7 @@ PGDLLEXPORT Datum _pgr_tsp_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT64(1),
                 PG_GETARG_INT64(2),
                 PG_GETARG_INT32(3),
+                true,
 
                 &result_tuples,
                 &result_count);
@@ -174,7 +177,7 @@ _pgr_tsp(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_INT64(1),
                 PG_GETARG_INT64(2),
-                1,
+                1, true,
 
                 &result_tuples,
                 &result_count);
