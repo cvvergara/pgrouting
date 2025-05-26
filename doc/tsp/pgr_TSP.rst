@@ -111,15 +111,15 @@ Description
   - Missing values will be calculated with dijkstra algorithm.
   - When the graph has more than one component:
 
-    - ``start_vid`` or ``end_vid`` are defined and are on the same commponent:
+    - ``start_vid`` or ``end_vid`` are defined and are on the same component:
       the TSP tour will happen on that component.
     - ``start_vid`` or ``end_vid`` are defined and are not on the same
-      commponent: the TSP tour will propose a toor that has both components
+      component: the TSP tour will propose a toor that has both components
       where connecting costs are estimated.
     - ``start_vid`` or ``end_vid`` are not defined: the starting point could be
       on any component and will include data only from that component.
 
-- One cycle attemt to remove crossing edges is done to the TSP results.
+- One cycle attempt to remove crossing edges is done to the TSP results.
 
 
 |Boost| Boost Graph Inside

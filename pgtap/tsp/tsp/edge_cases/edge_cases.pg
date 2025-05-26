@@ -42,7 +42,7 @@ $code$
 BEGIN
   IF NOT min_lib_version('3.2.1') AND tbl::TEXT = 'data_directed' THEN
     RETURN QUERY
-    SELECT skip(1, 'Annaeling complains about non symetric matrix');
+    SELECT skip(1, 'Annaeling complains about non symmetric matrix');
     RETURN;
   END IF;
 

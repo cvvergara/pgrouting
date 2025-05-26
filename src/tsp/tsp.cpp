@@ -93,7 +93,6 @@ get_min_cost(
         V u,
         V v,
         TSP_graph &graph) {
-
     auto the_edge = boost::edge(u, v, graph.graph());
     /*
      * The edge exists, then return the weight it has
