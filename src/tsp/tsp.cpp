@@ -50,7 +50,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
-using V = pgrouting::graph::TSP_graph::V;
+using TSP_graph = pgrouting::graph::UndirectedHasCostBG;
+using V = TSP_graph::V;
 
 std::deque<std::pair<int64_t, double>>
 start_vid_end_vid_are_fixed(
@@ -91,7 +92,7 @@ double
 get_min_cost(
         V u,
         V v,
-        pgrouting::graph::TSP_graph &graph) {
+        TSP_graph &graph) {
 
     auto the_edge = boost::edge(u, v, graph.graph());
     /*
@@ -186,7 +187,7 @@ TSP::tsp(TSP_graph& graph, int64_t start_vid) {
 
 
 std::deque<std::pair<int64_t, double>>
-TSP::eval_tour(graph::TSP_graph& graph, const std::vector<V> &tsp_tour) {
+TSP::eval_tour(TSP_graph& graph, const std::vector<V> &tsp_tour) {
     std::deque<std::pair<int64_t, double>> results;
     auto u = graph.graph().null_vertex();
     for (auto v : tsp_tour) {
@@ -318,7 +319,7 @@ TSP::crossover_optimize(TSP_graph& graph, std::deque<std::pair<int64_t, double>>
 }  // namespace algorithm
 
 std::deque<std::pair<int64_t, double>>
-tsp(graph::TSP_graph& graph, int64_t sid, int64_t eid, int cycles) {
+tsp(TSP_graph& graph, int64_t sid, int64_t eid, int cycles) {
     algorithm::TSP fn;
     return fn.tsp(graph, sid, eid, cycles);
 }

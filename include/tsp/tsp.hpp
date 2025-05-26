@@ -54,8 +54,8 @@ namespace algorithm {
 
 class TSP : public Pgr_messages {
  public:
-    using TSP_graph = graph::TSP_graph;
-    using V = graph::TSP_graph::V;
+    using TSP_graph = graph::UndirectedHasCostBG;
+    using V = TSP_graph::V;
 
     /** @brief just a TSP value **/
     std::deque<std::pair<int64_t, double>> tsp(TSP_graph&);
@@ -76,7 +76,7 @@ class TSP : public Pgr_messages {
 
 }  // namespace algorithm
 
-std::deque<std::pair<int64_t, double>> tsp(graph::TSP_graph&, int64_t, int64_t, int);
+std::deque<std::pair<int64_t, double>> tsp(graph::UndirectedHasCostBG&, int64_t, int64_t, int);
 
 }  // namespace pgrouting
 

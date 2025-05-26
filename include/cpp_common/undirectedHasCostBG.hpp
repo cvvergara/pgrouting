@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CPP_COMMON_UNDIRECTEDHASCOSTBG_HPP_
 #pragma once
 
-
 #include <map>
 #include <string>
 #include <vector>
@@ -38,22 +37,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/version.hpp>
 
-#if 0
-#include "c_types/iid_t_rt.h"
-#include "cpp_common/coordinate_t.hpp"
-#endif
 #include "cpp_common/identifiers.hpp"
-#include "cpp_common/messages.hpp"
-#include "cpp_common/assert.hpp"
 
 using Coordinate_t = struct Coordinate_t;
 using IID_t_rt = struct IID_t_rt;
 
-
 namespace pgrouting {
 namespace graph {
 
-class TSP_graph {
+class UndirectedHasCostBG {
  public:
     using TSP_Graph =
         boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS,
@@ -68,13 +60,10 @@ class TSP_graph {
     using Eout_it = boost::graph_traits<TSP_Graph>::out_edge_iterator;
 
  public:
-    explicit TSP_graph(std::vector<IID_t_rt>&);
-    explicit TSP_graph(const std::vector<Coordinate_t>&);
-    TSP_graph() = delete;
+    explicit UndirectedHasCostBG(std::vector<IID_t_rt>&);
+    explicit UndirectedHasCostBG(const std::vector<Coordinate_t>&);
+    UndirectedHasCostBG() = delete;
 
-#if BOOST_VERSION >= 106800
-    friend std::ostream& operator<<(std::ostream &, const TSP_graph&);
-#endif
     bool has_vertex(int64_t id) const;
 
     const TSP_Graph& graph() const {return m_graph;}

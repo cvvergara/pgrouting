@@ -52,7 +52,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace graph {
 
-TSP_graph::TSP_graph(std::vector<IID_t_rt> &distances) {
+UndirectedHasCostBG::UndirectedHasCostBG(std::vector<IID_t_rt> &distances) {
     /*
      * Inserting vertices
      */
@@ -136,7 +136,7 @@ TSP_graph::TSP_graph(std::vector<IID_t_rt> &distances) {
  * 2 , 3.6 1
  * but when the remove_duplicates flag is on, keep only the first row that has the same id
  */
-TSP_graph::TSP_graph(const std::vector<Coordinate_t> &coordinates) {
+UndirectedHasCostBG::UndirectedHasCostBG(const std::vector<Coordinate_t> &coordinates) {
     /*
      * Inserting edges
      */
@@ -179,12 +179,12 @@ TSP_graph::TSP_graph(const std::vector<Coordinate_t> &coordinates) {
 
 
 bool
-TSP_graph::has_vertex(int64_t id) const {
+UndirectedHasCostBG::has_vertex(int64_t id) const {
     return id_to_V.find(id) != id_to_V.end();
 }
 
 void
-TSP_graph::insert_vertex(int64_t id) {
+UndirectedHasCostBG::insert_vertex(int64_t id) {
     try {
         if (has_vertex(id)) return;
         auto v = add_vertex(ids.size(), m_graph);
@@ -198,8 +198,8 @@ TSP_graph::insert_vertex(int64_t id) {
     }
 }
 
-TSP_graph::V
-TSP_graph::get_boost_vertex(int64_t id) const {
+UndirectedHasCostBG::V
+UndirectedHasCostBG::get_boost_vertex(int64_t id) const {
     try {
         return id_to_V.at(id);
     } catch (...) {
@@ -210,7 +210,7 @@ TSP_graph::get_boost_vertex(int64_t id) const {
 }
 
 int64_t
-TSP_graph::get_vertex_id(V v) const {
+UndirectedHasCostBG::get_vertex_id(V v) const {
     try {
         return V_to_id.at(v);
     } catch (...) {
@@ -221,7 +221,7 @@ TSP_graph::get_vertex_id(V v) const {
 }
 
 int64_t
-TSP_graph::get_edge_id(E e) const {
+UndirectedHasCostBG::get_edge_id(E e) const {
     try {
         return E_to_id.at(e);
     } catch (...) {
@@ -230,18 +230,6 @@ TSP_graph::get_edge_id(E e) const {
                 std::string(__PGR_PRETTY_FUNCTION__));
     }
 }
-
-
-
-#if BOOST_VERSION >= 106800
-std::ostream& operator<<(std::ostream &log, const TSP_graph& data) {
-    log << "Number of Vertices is:" << num_vertices(data.m_graph) << "\n";
-    log << "Number of Edges is:" << num_edges(data.m_graph) << "\n";
-    log << "\n the print_graph\n";
-    boost::print_graph(data.m_graph, boost::get(boost::vertex_index, data.m_graph), log);
-    return log;
-}
-#endif
 
 }  // namespace graph
 

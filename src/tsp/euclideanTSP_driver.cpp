@@ -60,7 +60,7 @@ pgr_do_euclideanTSP(
     using pgrouting::pgr_free;
     using pgrouting::tsp;
     using pgrouting::pgget::get_coordinates;
-    using pgrouting::graph::TSP_graph;
+    using TSP_graph = pgrouting::graph::UndirectedHasCostBG;
 
     std::ostringstream log;
     std::ostringstream notice;

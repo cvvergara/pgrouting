@@ -63,7 +63,7 @@ pgr_do_tsp(
     using pgrouting::pgr_free;
     using pgrouting::tsp;
     using pgrouting::pgget::get_matrixRows;
-    using pgrouting::graph::TSP_graph;
+    using TSP_graph = pgrouting::graph::UndirectedHasCostBG;
 
     std::ostringstream log;
     std::ostringstream notice;
@@ -81,7 +81,7 @@ pgr_do_tsp(
         }
         hint = nullptr;
 
-        pgrouting::graph::TSP_graph graph{distances};
+        TSP_graph graph{distances};
 
         if (start_vid != 0 && !graph.has_vertex(start_vid)) {
             err << "Parameter 'start_id' do not exist on the data";
