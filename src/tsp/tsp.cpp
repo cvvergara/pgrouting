@@ -228,8 +228,7 @@ std::deque<std::pair<int64_t, double>>
 TSP::tsp(
         TSP_graph& graph,
         int64_t start_vid,
-        int64_t end_vid,
-        int max_cycles) {
+        int64_t end_vid) {
     /*
      * check that the start_vid, and end_vid exist on the data
      */
@@ -253,14 +252,14 @@ TSP::tsp(
      * just get a tsp result
      */
     if (start_vid == 0) {
-        return crossover_optimize(graph, tsp(graph), 1, max_cycles);
+        return crossover_optimize(graph, tsp(graph), 1);
     }
 
     /*
      * the has a start value same as end_vid ignore end_vid
      */
     if ((end_vid == 0) || (start_vid == end_vid)) {
-        return crossover_optimize(graph, tsp(graph, start_vid), 1, max_cycles);
+        return crossover_optimize(graph, tsp(graph, start_vid), 1);
     }
 
     /*
@@ -282,7 +281,7 @@ TSP::tsp(
     result = tsp(graph, start_vid);
     result = start_vid_end_vid_are_fixed(result, start_vid, end_vid);
 
-    return crossover_optimize(graph, result, 2, max_cycles);
+    return crossover_optimize(graph, result, 2);
 }
 
 
@@ -290,28 +289,22 @@ TSP::tsp(
  * fixing (some) crossovers
  */
 std::deque<std::pair<int64_t, double>>
-TSP::crossover_optimize(TSP_graph& graph, std::deque<std::pair<int64_t, double>> result, size_t limit, int cycles) {
+TSP::crossover_optimize(TSP_graph& graph, std::deque<std::pair<int64_t, double>> result, size_t limit) {
     auto best_cost = eval_tour(graph, result);
-    for (int k = 0; k < cycles; ++k) {
-        bool change(false);
-        for (size_t i = 1; i < result.size() - limit; ++i) {
-            for (size_t j = result.size() - limit; j >= i + 1; --j) {
-                auto tmp = result;
-                std::reverse(tmp.begin() + static_cast<ptrdiff_t>(i),  tmp.begin() + static_cast<ptrdiff_t>(j));
-                auto new_cost = eval_tour(graph, tmp);
-                if (new_cost < best_cost) {
-                    log << "\n" << k << ", " << i << "," << j << "\n";
-                    for (const auto e : tmp) {
-                        log << e.first << "->";
-                    }
-                    log <<" cost = " << new_cost;
-                    result = tmp;
-                    best_cost = new_cost;
-                    change = true;
+    for (size_t i = 1; i < result.size() - limit; ++i) {
+        for (size_t j = result.size() - limit; j >= i + 1; --j) {
+            auto tmp = result;
+            std::reverse(tmp.begin() + static_cast<ptrdiff_t>(i),  tmp.begin() + static_cast<ptrdiff_t>(j));
+            auto new_cost = eval_tour(graph, tmp);
+            if (new_cost < best_cost) {
+                for (const auto e : tmp) {
+                    log << e.first << "->";
                 }
+                log <<" cost = " << new_cost;
+                result = tmp;
+                best_cost = new_cost;
             }
         }
-        if (!change) break;
     }
     return result;
 }
@@ -319,9 +312,9 @@ TSP::crossover_optimize(TSP_graph& graph, std::deque<std::pair<int64_t, double>>
 }  // namespace algorithm
 
 std::deque<std::pair<int64_t, double>>
-tsp(TSP_graph& graph, int64_t sid, int64_t eid, int cycles) {
+tsp(TSP_graph& graph, int64_t sid, int64_t eid) {
     algorithm::TSP fn;
-    return fn.tsp(graph, sid, eid, cycles);
+    return fn.tsp(graph, sid, eid);
 }
 
 }  // namespace pgrouting

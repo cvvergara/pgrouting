@@ -30,7 +30,6 @@ CREATE FUNCTION pgr_TSPeuclidean(
 
     start_id BIGINT DEFAULT 0,
     end_id BIGINT DEFAULT 0,
-    max_cycles INTEGER DEFAULT 1,
 
     OUT seq integer,
     OUT node BIGINT,
@@ -39,21 +38,19 @@ CREATE FUNCTION pgr_TSPeuclidean(
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT seq, node, cost, agg_cost
-FROM _pgr_TSPeuclidean_v4(_pgr_get_statement($1), $2, $3, $4);
+FROM _pgr_TSPeuclidean_v4(_pgr_get_statement($1), $2, $3);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-COMMENT ON FUNCTION pgr_TSPeuclidean(TEXT, BIGINT, BIGINT, INTEGER)
+COMMENT ON FUNCTION pgr_TSPeuclidean(TEXT, BIGINT, BIGINT)
 IS 'pgr_TSPeuclidean
 - Parameters
    - coordinates SQL with columns: id, x, y
 - Optional parameters
     - start_id := 0
     - end_id := 0
-    - max_cycles := 1
-    - randomize := true
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_TSPeuclidean.html
 ';

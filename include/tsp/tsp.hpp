@@ -42,12 +42,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/coordinate_t.hpp"
-#include "cpp_common/identifiers.hpp"
 #include "cpp_common/messages.hpp"
 #include "cpp_common/assert.hpp"
 #include "cpp_common/undirectedHasCostBG.hpp"
-
-
 
 namespace pgrouting {
 namespace algorithm {
@@ -62,12 +59,12 @@ class TSP : public Pgr_messages {
     /** @brief order the results with a start vertex */
     std::deque<std::pair<int64_t, double>> tsp(TSP_graph&, int64_t);
     /** @brief order the results with a start vertex and an endig vertex*/
-    std::deque<std::pair<int64_t, double>> tsp(TSP_graph&, int64_t, int64_t, int);
+    std::deque<std::pair<int64_t, double>> tsp(TSP_graph&, int64_t, int64_t);
     /** @brief crossover optimization **/
     std::deque<std::pair<int64_t, double>> crossover_optimize(
             TSP_graph&,
-            std::deque<std::pair<int64_t, double>> result,
-            size_t limit, int cycles);
+            std::deque<std::pair<int64_t, double>>,
+            size_t);
 
  private:
     std::deque<std::pair<int64_t, double>> eval_tour(TSP_graph&, const std::vector<V>&);
@@ -76,7 +73,7 @@ class TSP : public Pgr_messages {
 
 }  // namespace algorithm
 
-std::deque<std::pair<int64_t, double>> tsp(graph::UndirectedHasCostBG&, int64_t, int64_t, int);
+std::deque<std::pair<int64_t, double>> tsp(graph::UndirectedHasCostBG&, int64_t, int64_t);
 
 }  // namespace pgrouting
 

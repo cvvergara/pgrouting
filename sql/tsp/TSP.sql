@@ -30,7 +30,6 @@ CREATE FUNCTION pgr_TSP(
 
     start_id BIGINT DEFAULT 0,
     end_id BIGINT DEFAULT 0,
-    max_cycles INTEGER DEFAULT 1,
 
     OUT seq INTEGER,
     OUT node BIGINT,
@@ -39,21 +38,19 @@ CREATE FUNCTION pgr_TSP(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, node, cost, agg_cost
-    FROM _pgr_TSP_v4(_pgr_get_statement($1), $2, $3, $4);
+    FROM _pgr_TSP_v4(_pgr_get_statement($1), $2, $3);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-COMMENT ON FUNCTION pgr_TSP(TEXT, BIGINT, BIGINT, INTEGER)
+COMMENT ON FUNCTION pgr_TSP(TEXT, BIGINT, BIGINT)
 IS 'pgr_TSP
 - Parameters
   - matrix SQL with columns: start_vid, end_vid, agg_cost
 - Optional parameters
     - start_id := 0
     - end_id := 0
-    - max_cycles := 1
-    - randomize := true
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_TSP.html
 ';

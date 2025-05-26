@@ -29,7 +29,6 @@ CREATE FUNCTION _pgr_TSPeuclidean_v4(
   TEXT,
   BIGINT,
   BIGINT,
-  INTEGER,
 
   OUT seq integer,
   OUT node BIGINT,
@@ -39,5 +38,5 @@ RETURNS SETOF record
 AS 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
 
-COMMENT ON FUNCTION _pgr_TSPeuclidean_v4(TEXT, BIGINT, BIGINT, INTEGER)
+COMMENT ON FUNCTION _pgr_TSPeuclidean_v4(TEXT, BIGINT, BIGINT)
 IS 'pgRouting internal function';

@@ -50,8 +50,6 @@ pgr_do_tsp(
         const char *matrix_sql,
         int64_t start_vid,
         int64_t end_vid,
-        int32_t max_cycles,
-        bool,
 
         TSP_tour_rt **return_tuples,
         size_t *return_count,
@@ -95,7 +93,7 @@ pgr_do_tsp(
             return;
         }
 
-        auto tsp_path = tsp(graph, start_vid, end_vid, max_cycles);
+        auto tsp_path = tsp(graph, start_vid, end_vid);
 
         if (!tsp_path.empty()) {
             *return_count = tsp_path.size();
