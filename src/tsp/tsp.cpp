@@ -129,15 +129,40 @@ get_min_cost(
     return agg_cost;
 }
 
-}  // namespace
+std::deque<std::pair<int64_t, double>>
+eval_tour(TSP_graph& graph, const std::vector<V> &tsp_tour) {
+    std::deque<std::pair<int64_t, double>> results;
+    auto u = graph.graph().null_vertex();
+    for (auto v : tsp_tour) {
+        auto cost = (u == graph.graph().null_vertex()) ?
+            0 :
+            get_min_cost(u, v, graph);
+        u = v;
+        results.push_back(std::make_pair(graph.get_vertex_id(v), cost));
+    }
+    return results;
+}
 
+double
+eval_tour(TSP_graph& graph, std::deque<std::pair<int64_t, double>>& tsp_tour) {
+    std::deque<std::pair<int64_t, double>> results;
+    auto u = graph.graph().null_vertex();
+    double agg_cost(0);
+    for (auto &node : tsp_tour) {
+        auto v = graph.get_boost_vertex(node.first);
+        auto cost = (u == graph.graph().null_vertex()) ?
+            0 :
+            get_min_cost(u, v, graph);
+        u = v;
+        node.second = cost;
+        agg_cost += cost;
+    }
+    return agg_cost;
+}
 
-namespace pgrouting {
-
-namespace algorithm {
 
 std::deque<std::pair<int64_t, double>>
-TSP::tsp(TSP_graph& graph) {
+tsp(TSP_graph& graph) {
     std::vector<V> tsp_path;
 
     CHECK_FOR_INTERRUPTS();
@@ -155,7 +180,7 @@ TSP::tsp(TSP_graph& graph) {
 }
 
 std::deque<std::pair<int64_t, double>>
-TSP::tsp(TSP_graph& graph, int64_t start_vid) {
+tsp(TSP_graph& graph, int64_t start_vid) {
     std::vector<V> tsp_path;
     /*
      * check that the start_vid
@@ -184,35 +209,25 @@ TSP::tsp(TSP_graph& graph, int64_t start_vid) {
 }
 
 
-std::deque<std::pair<int64_t, double>>
-TSP::eval_tour(TSP_graph& graph, const std::vector<V> &tsp_tour) {
-    std::deque<std::pair<int64_t, double>> results;
-    auto u = graph.graph().null_vertex();
-    for (auto v : tsp_tour) {
-        auto cost = (u == graph.graph().null_vertex()) ?
-            0 :
-            get_min_cost(u, v, graph);
-        u = v;
-        results.push_back(std::make_pair(graph.get_vertex_id(v), cost));
-    }
-    return results;
-}
 
-double
-TSP::eval_tour(TSP_graph& graph, std::deque<std::pair<int64_t, double>>& tsp_tour) {
-    std::deque<std::pair<int64_t, double>> results;
-    auto u = graph.graph().null_vertex();
-    double agg_cost(0);
-    for (auto &node : tsp_tour) {
-        auto v = graph.get_boost_vertex(node.first);
-        auto cost = (u == graph.graph().null_vertex()) ?
-            0 :
-            get_min_cost(u, v, graph);
-        u = v;
-        node.second = cost;
-        agg_cost += cost;
+/*
+ * fixing (some) crossovers
+ */
+std::deque<std::pair<int64_t, double>>
+crossover_optimize(TSP_graph& graph, std::deque<std::pair<int64_t, double>> result, size_t limit) {
+    auto best_cost = eval_tour(graph, result);
+    for (size_t i = 1; i < result.size() - limit; ++i) {
+        for (size_t j = result.size() - limit; j >= i + 1; --j) {
+            auto tmp = result;
+            std::reverse(tmp.begin() + static_cast<ptrdiff_t>(i),  tmp.begin() + static_cast<ptrdiff_t>(j));
+            auto new_cost = eval_tour(graph, tmp);
+            if (new_cost < best_cost) {
+                result = tmp;
+                best_cost = new_cost;
+            }
+        }
     }
-    return agg_cost;
+    return result;
 }
 
 
@@ -222,7 +237,7 @@ TSP::eval_tour(TSP_graph& graph, std::deque<std::pair<int64_t, double>>& tsp_tou
  * @param [in] max_cycles Upper limit of ccycles
  */
 std::deque<std::pair<int64_t, double>>
-TSP::tsp(
+do_tsp(
         TSP_graph& graph,
         int64_t start_vid,
         int64_t end_vid) {
@@ -281,37 +296,13 @@ TSP::tsp(
     return crossover_optimize(graph, result, 2);
 }
 
+}  // namespace
 
-/*
- * fixing (some) crossovers
- */
-std::deque<std::pair<int64_t, double>>
-TSP::crossover_optimize(TSP_graph& graph, std::deque<std::pair<int64_t, double>> result, size_t limit) {
-    auto best_cost = eval_tour(graph, result);
-    for (size_t i = 1; i < result.size() - limit; ++i) {
-        for (size_t j = result.size() - limit; j >= i + 1; --j) {
-            auto tmp = result;
-            std::reverse(tmp.begin() + static_cast<ptrdiff_t>(i),  tmp.begin() + static_cast<ptrdiff_t>(j));
-            auto new_cost = eval_tour(graph, tmp);
-            if (new_cost < best_cost) {
-                for (const auto e : tmp) {
-                    log << e.first << "->";
-                }
-                log <<" cost = " << new_cost;
-                result = tmp;
-                best_cost = new_cost;
-            }
-        }
-    }
-    return result;
-}
-
-}  // namespace algorithm
+namespace pgrouting {
 
 std::deque<std::pair<int64_t, double>>
 tsp(TSP_graph& graph, int64_t sid, int64_t eid) {
-    algorithm::TSP fn;
-    return fn.tsp(graph, sid, eid);
+    return do_tsp(graph, sid, eid);
 }
 
 }  // namespace pgrouting

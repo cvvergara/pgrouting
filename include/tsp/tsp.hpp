@@ -47,31 +47,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/undirectedHasCostBG.hpp"
 
 namespace pgrouting {
-namespace algorithm {
-
-class TSP : public Pgr_messages {
- public:
-    using TSP_graph = graph::UndirectedHasCostBG;
-    using V = TSP_graph::V;
-
-    /** @brief just a TSP value **/
-    std::deque<std::pair<int64_t, double>> tsp(TSP_graph&);
-    /** @brief order the results with a start vertex */
-    std::deque<std::pair<int64_t, double>> tsp(TSP_graph&, int64_t);
-    /** @brief order the results with a start vertex and an endig vertex*/
-    std::deque<std::pair<int64_t, double>> tsp(TSP_graph&, int64_t, int64_t);
-    /** @brief crossover optimization **/
-    std::deque<std::pair<int64_t, double>> crossover_optimize(
-            TSP_graph&,
-            std::deque<std::pair<int64_t, double>>,
-            size_t);
-
- private:
-    std::deque<std::pair<int64_t, double>> eval_tour(TSP_graph&, const std::vector<V>&);
-    double eval_tour(TSP_graph&, std::deque<std::pair<int64_t, double>>&tsp_tour);
-};
-
-}  // namespace algorithm
 
 std::deque<std::pair<int64_t, double>> tsp(graph::UndirectedHasCostBG&, int64_t, int64_t);
 
