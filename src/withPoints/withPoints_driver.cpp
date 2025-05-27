@@ -193,24 +193,25 @@ pgr_do_withPoints(
             *err_msg = to_pg_msg(err);
             return;
         }
+        auto new_edges = pg_graph.new_edges();
 
+        edges.insert(edges.end(), new_edges.begin(), new_edges.end());
         auto vertices(pgrouting::extract_vertices(edges));
         vertices = pgrouting::extract_vertices(vertices, pg_graph.new_edges());
 
         std::deque<Path> paths;
         if (directed) {
-            pgrouting::DirectedGraph digraph(vertices);
+            pgrouting::DirectedGraph digraph;
             digraph.insert_edges(edges);
-            digraph.insert_edges(pg_graph.new_edges());
 
             paths = pgr_dijkstra(
                     digraph,
                     combinations,
                     only_cost, normal);
         } else {
-            pgrouting::UndirectedGraph undigraph(vertices);
+            pgrouting::UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
-            undigraph.insert_edges(pg_graph.new_edges());
+
             paths = pgr_dijkstra(
                     undigraph,
                     combinations,
