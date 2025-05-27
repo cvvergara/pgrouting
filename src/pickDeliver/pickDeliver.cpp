@@ -52,11 +52,12 @@ namespace vrp {
 void
 Pgr_pickDeliver::solve() {
     auto initial_sols = solutions;
+    constexpr int tot = 7;
 
     if (m_initial_id == 0) {
         msg.log << "trying all \n";
-        for (int i = 1; i < 7; ++i) {
-            initial_sols.push_back(Initial_solution((Initials_code)i, m_orders.size()));
+        for (int i = 1; i < tot; ++i) {
+            initial_sols.push_back(Initial_solution(static_cast<Initials_code>(i), m_orders.size()));
             msg.log << "solution " << i << "\n" << initial_sols.back().tau();
             // TODO(vicky) calculate the time it takes
             msg.log << "Initial solution " << i
@@ -64,7 +65,7 @@ Pgr_pickDeliver::solve() {
         }
     } else {
         msg.log << "only trying " << m_initial_id << "\n";
-        initial_sols.push_back(Initial_solution((Initials_code)m_initial_id, m_orders.size()));
+        initial_sols.push_back(Initial_solution(static_cast<Initials_code>(m_initial_id), m_orders.size()));
         // TODO(vicky) calculate the time it takes
         msg.log << "Initial solution " << m_initial_id
             << " duration: " << initial_sols[0].duration();

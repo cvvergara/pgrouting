@@ -332,20 +332,21 @@ std::vector<Orders_t> get_orders(
     std::vector<Column_info_t> info{
     {-1, 0, true, "id", ANY_INTEGER},
     {-1, 0, true, "demand", ANY_NUMERICAL},
-    {-1, 0, true, "p_x", ANY_NUMERICAL},
-    {-1, 0, true, "p_y", ANY_NUMERICAL},
+    {-1, 0, with_id? false : true, "p_x", ANY_NUMERICAL},
+    {-1, 0, with_id? false : true, "p_y", ANY_NUMERICAL},
     {-1, 0, true, "p_open", ANY_NUMERICAL},
     {-1, 0, true, "p_close", ANY_NUMERICAL},
     {-1, 0, false, "p_service", ANY_NUMERICAL},
-    {-1, 0, true, "d_x", ANY_NUMERICAL},
-    {-1, 0, true, "d_y", ANY_NUMERICAL},
+    {-1, 0, with_id? false : true, "d_x", ANY_NUMERICAL},
+    {-1, 0, with_id? false : true, "d_y", ANY_NUMERICAL},
     {-1, 0, true, "d_open", ANY_NUMERICAL},
     {-1, 0, true, "d_close", ANY_NUMERICAL},
     {-1, 0, false, "d_service", ANY_NUMERICAL},
     /* nodes are going to be ignored*/
-    {-1, 0, false, "p_node_id", ANY_INTEGER},
-    {-1, 0, false, "d_node_id", ANY_INTEGER}};
+    {-1, 0, with_id? true : false, "p_node_id", ANY_INTEGER},
+    {-1, 0, with_id? true : false, "d_node_id", ANY_INTEGER}};
 
+#if 0
     if (with_id) {
         /* (x,y) values are ignored*/
         info[2].strict = false;
@@ -356,7 +357,7 @@ std::vector<Orders_t> get_orders(
         info[12].strict = true;
         info[13].strict = true;
     }
-
+#endif
     return get_data<Orders_t>(sql, with_id, info, &fetch_orders);
 }
 
@@ -421,8 +422,8 @@ std::vector<Vehicle_t> get_vehicles(const std::string &sql, bool with_id) {
     std::vector<Column_info_t> info{
     {-1, 0, true, "id", ANY_INTEGER},
     {-1, 0, true, "capacity", ANY_NUMERICAL},
-    {-1, 0, true, "start_x", ANY_NUMERICAL},
-    {-1, 0, true, "start_y", ANY_NUMERICAL},
+    {-1, 0, with_id? false : true, "start_x", ANY_NUMERICAL},
+    {-1, 0, with_id? false : true, "start_y", ANY_NUMERICAL},
     {-1, 0, false, "number", ANY_INTEGER},
     {-1, 0, false, "start_open", ANY_NUMERICAL},
     {-1, 0, false, "start_close", ANY_NUMERICAL},
@@ -434,9 +435,10 @@ std::vector<Vehicle_t> get_vehicles(const std::string &sql, bool with_id) {
     {-1, 0, false, "end_service", ANY_NUMERICAL},
     {-1, 0, false, "speed", ANY_NUMERICAL},
     /* nodes are going to be ignored*/
-    {-1, 0, false, "start_node_id", ANY_INTEGER},
+    {-1, 0, with_id? true : false, "start_node_id", ANY_INTEGER},
     {-1, 0, false, "end_node_id", ANY_INTEGER}};
 
+#if 0
     if (with_id) {
         /* (x,y) values are ignored*/
         info[2].strict = false;
@@ -444,6 +446,7 @@ std::vector<Vehicle_t> get_vehicles(const std::string &sql, bool with_id) {
         /* start nodes are compulsory*/
         info[14].strict = false;
     }
+#endif
 
     return get_data<Vehicle_t>(sql, with_id, info, &fetch_vehicle);
 }

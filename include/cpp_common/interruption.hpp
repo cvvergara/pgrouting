@@ -80,12 +80,14 @@ extern "C" {
 #endif
 
     /* Service interrupt, if one is pending and it's safe to service it now */
+/* NOLINTBEGIN(cppcoreguidelines-avoid-do-while) */
 #define CHECK_FOR_INTERRUPTS() \
     do { \
         if (INTERRUPTS_PENDING_CONDITION()) \
         ProcessInterrupts(); \
     } while (0)
 #endif
+/* NOLINTEND(cppcoreguidelines-avoid-do-while) */
 
 }
 

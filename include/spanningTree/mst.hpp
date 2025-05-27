@@ -362,8 +362,11 @@ class Pgr_mst {
 
      bool no_neg_costs(const G &graph) {
          E_i  ei, ei_end;
-         for (boost::tie(ei, ei_end) = edges(graph.graph); ei != ei_end; ++ei)
+#ifndef NDEBUG
+         for (boost::tie(ei, ei_end) = edges(graph.graph); ei != ei_end; ++ei) {
              pgassert(graph[*ei].cost > 0);
+         }
+#endif
          return true;
      }
 };

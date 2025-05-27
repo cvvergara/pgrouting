@@ -86,7 +86,7 @@ Initial_solution::do_while_foo(int kind) {
         /*
          * kind 1 to 7 work with the same code structure
          */
-        truck.do_while_feasable((Initials_code)kind, m_unassigned, m_assigned);
+        truck.do_while_feasable(static_cast<Initials_code>(kind), m_unassigned, m_assigned);
         pgassertwm(current > m_unassigned.size(), msg().get_log().c_str());
 
         fleet.push_back(truck);

@@ -53,6 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
 
 
+/* NOLINTBEGIN (cppcoreguidelines-macro-usage) */
 #ifndef __STRING
 #define __STRING(x) #x
 #endif
@@ -123,6 +124,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
          "AssertFailedException: " __STRING(expr) \
          " at " __FILE__ ":" __TOSTRING(__LINE__) + get_backtrace(msg) ) )
 #endif
+/* NOLINTEND (cppcoreguidelines-macro-usage) */
 
 /*! @brief returns the execution path of the trace
 

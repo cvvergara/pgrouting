@@ -81,7 +81,7 @@ class Pgr_pickDeliver : public PD_problem {
     void add_node(const Vehicle_node &node);
 
     Initials_code get_kind() const {
-        return (Initials_code) m_initial_id;
+        return static_cast<Initials_code>(m_initial_id);
     }
 
     std::vector<Vehicle_node> get_nodes() const {

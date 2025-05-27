@@ -114,7 +114,7 @@ pgr_do_pickDeliver(
         /*
          * This applies to the one depot problem
          */
-        if ((pgrouting::vrp::Initials_code)(initial_solution_id) == pgrouting::vrp::OneDepot) {
+        if (static_cast<pgrouting::vrp::Initials_code>(initial_solution_id) == pgrouting::vrp::OneDepot) {
             /*
              * All Vehicles must depart from same location
              */

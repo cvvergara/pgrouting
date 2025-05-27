@@ -145,8 +145,8 @@ pgr_do_binaryBreadthFirstSearch(
     std::ostringstream err;
     std::ostringstream notice;
     const char *hint = nullptr;
-    const char c_err_msg[] = "Graph Condition Failed: Graph should have atmost two distinct non-negative edge costs! "
-                             "If there are exactly two distinct edge costs, one of them must equal zero!";
+    const std::string c_err_msg {"Graph Condition Failed: Graph should have atmost two distinct non-negative edge costs! "
+                             "If there are exactly two distinct edge costs, one of them must equal zero!"};
 
     try {
         pgassert(!(*log_msg));
@@ -183,8 +183,7 @@ pgr_do_binaryBreadthFirstSearch(
             digraph.insert_edges(edges);
 
             if (!(costCheck(digraph))) {
-                err << c_err_msg;
-                *err_msg = to_pg_msg(err);
+                *err_msg = to_pg_msg(c_err_msg);
                 return;
             }
             paths = binaryBreadthFirstSearch(digraph, combinations);
@@ -194,8 +193,7 @@ pgr_do_binaryBreadthFirstSearch(
             undigraph.insert_edges(edges);
 
             if (!(costCheck(undigraph))) {
-                err << c_err_msg;
-                *err_msg = to_pg_msg(err);
+                *err_msg = to_pg_msg(c_err_msg);
                 return;
             }
 

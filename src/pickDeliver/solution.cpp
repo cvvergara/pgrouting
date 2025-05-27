@@ -194,42 +194,32 @@ Solution::operator<(const Solution &s_rhs) const {
     /*
      * capacity violations
      */
-    if (std::get<0>(lhs) < std::get<0>(rhs))
-        return true;
-    if (std::get<0>(lhs) > std::get<0>(rhs))
-        return false;
+    if (std::get<0>(lhs) < std::get<0>(rhs)) return true;
+    if (std::get<0>(lhs) > std::get<0>(rhs)) return false;
 
     /*
      * time window violations
      */
-    if (std::get<1>(lhs) < std::get<1>(rhs))
-        return true;
-    if (std::get<1>(lhs) > std::get<1>(rhs))
-        return false;
+    if (std::get<1>(lhs) < std::get<1>(rhs)) return true;
+    if (std::get<1>(lhs) > std::get<1>(rhs)) return false;
 
     /*
      * fleet size
      */
-    if (std::get<2>(lhs) < std::get<2>(rhs))
-        return true;
-    if (std::get<2>(lhs) > std::get<2>(rhs))
-        return false;
+    if (std::get<2>(lhs) < std::get<2>(rhs)) return true;
+    if (std::get<2>(lhs) > std::get<2>(rhs)) return false;
 
     /*
      * waiting time
      */
-    if (std::get<3>(lhs) < std::get<3>(rhs))
-        return true;
-    if (std::get<3>(lhs) > std::get<3>(rhs))
-        return false;
+    if (std::get<3>(lhs) < std::get<3>(rhs)) return true;
+    if (std::get<3>(lhs) > std::get<3>(rhs)) return false;
 
     /*
      * duration
      */
-    if (std::get<4>(lhs) < std::get<4>(rhs))
-        return true;
-    if (std::get<4>(lhs) > std::get<4>(rhs))
-        return false;
+    if (std::get<4>(lhs) < std::get<4>(rhs)) return true;
+    if (std::get<4>(lhs) > std::get<4>(rhs)) return false;
 
     return false;
 }
@@ -240,7 +230,6 @@ Solution::get_kind() const {
 }
 
 Solution::Solution() :
-    EPSILON(0.0001),
     trucks(problem->trucks()) {
     ENTERING(msg());
     for (const auto &t : trucks) {
