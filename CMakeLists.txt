@@ -89,45 +89,19 @@ message(STATUS "POSTGRESQL_MINIMUM_VERSION=${POSTGRESQL_MINIMUM_VERSION}")
 message(STATUS "BOOST_MINIMUM_VERSION=${BOOST_MINIMUM_VERSION}")
 message(STATUS "POSTGIS_MINIMUM_VERSION=${POSTGIS_MINIMUM_VERSION}")
 
-# cmake 3.2 adds unwanted flags
-if(WIN32 AND MSVC)
-    set(CMAKE_C_FLAGS "")
-    set(CMAKE_CXX_FLAGS "")
-endif()
-
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 # C/C++ Compiler requirements
 #-----------------------------------------------------------------------------
 #-----------------------------------------------------------------------------
 
+set(CMAKE_CXX_STANDARD 17)
+
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 if (NOT Boost_VERSION_MACRO)
     set(Boost_VERSION_MACRO ${Boost_VERSION})
 endif()
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
-
-include(CheckCCompilerFlag)
-include(CheckCXXCompilerFlag)
-if (BOOST_VERSION VERSION_LESS "1.75.0")
-    CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
-    if(COMPILER_SUPPORTS_CXX11)
-        set(CMAKE_CXX_STANDARD 11)
-        set(CMAKE_CXX_STANDARD_REQUIRED ON)
-        set(CMAKE_CXX_EXTENSIONS OFF)
-    else()
-        CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
-        if(COMPILER_SUPPORTS_CXX0X)
-            add_compile_options("-std=c++0x")
-            message(STATUS "Using  -std=c++0x.")
-        else()
-        message(WARNING "The compiler ${CMAKE_CXX_COMPILER} has no C++0x or C++11 flags support.
-            Using: callback compiler's standard")
-        endif()
-    endif()
-else()
-    set(CMAKE_CXX_STANDARD 14)
-endif()
 
 add_definitions(-DBOOST_ALLOW_DEPRECATED_HEADERS)
 set(COMPILER_VERSION "${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}")
@@ -136,7 +110,6 @@ set(COMPILER_VERSION "${CMAKE_CXX_COMPILER_ID}-${CMAKE_CXX_COMPILER_VERSION}")
 #---------------------------------------------
 # Windows compiler flags
 #---------------------------------------------
-
 
 if(WIN32 AND NOT MSVC)
     set(OS_BUILD  $ENV{OS_BUILD})
