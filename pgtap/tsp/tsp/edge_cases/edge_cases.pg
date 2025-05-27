@@ -46,8 +46,6 @@ BEGIN
     RETURN;
   END IF;
 
-  IF min_lib_version('3.2.1') THEN
-
     RETURN QUERY
     SELECT throws_ok(format($$
       SELECT * FROM pgr_TSP('SELECT * FROM %1$I', start_id => 7, end_id => 8) $$, tbl),
@@ -77,14 +75,26 @@ BEGIN
       'SHOULD throw because start_vid does not exist');
 
     RETURN QUERY
-    SELECT lives_ok(
+    SELECT CASE
+    WHEN min_lib_version('4.0.0') THEN lives_ok(format($$
+      SELECT * FROM pgr_TSP(
+        'SELECT * FROM %1$I WHERE start_vid = -1 and end_vid = 10
+        UNION
+        SELECT * FROM %1$I WHERE start_vid = 7 and end_vid = 11')
+      $$, tbl),
+      'Should live, even when the matrix is not fully connected')
+    ELSE
+      throws_ok(
       format($$
       SELECT * FROM pgr_TSP(
         'SELECT * FROM %1$I WHERE start_vid = -1 and end_vid = 10
         UNION
         SELECT * FROM %1$I WHERE start_vid = 7 and end_vid = 11')
       $$, tbl),
-      'Should live, even when the matrix is not fully connected');
+      'XX000',
+      'Graph is not fully connected',
+      'Should throw, the matrix is not fully connected')
+      END;
 
     RETURN QUERY
     SELECT throws_ok(format($$
@@ -141,14 +151,6 @@ BEGIN
       ( 6, 1.016, '6.444')
       $q$,
       'Expected results');
-
-  ELSE
-
-    RETURN QUERY
-    SELECT skip(1, 'Checks added on 3.2.1');
-
-  END IF;
-
 
   RETURN QUERY
   SELECT is(
