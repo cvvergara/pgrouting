@@ -145,7 +145,7 @@ pgr_do_withPoints(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        hint = combinations_sql? std::string(combinations_sql) : "";
+        hint = combinations_sql? combinations_sql : "";
         auto combinations = get_combinations(combinations_sql, starts, ends, normal);
         hint = "";
 
@@ -155,14 +155,12 @@ pgr_do_withPoints(
             return;
         }
 
-        driving_side = estimate_drivingSide(driving_side);
-
         std::string eofp;
         std::string enop;
 
         if (points_sql) get_new_queries(edges_sql, points_sql, eofp, enop);
 
-        hint = points_sql? std::string(points_sql) : "";
+        hint = points_sql? points_sql : "";
         auto points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
 
         hint = eofp;
@@ -183,7 +181,7 @@ pgr_do_withPoints(
          */
         pgrouting::Pg_points_graph pg_graph(points, edges_of_points,
                 normal,
-                driving_side,
+                estimate_drivingSide(driving_side),
                 directed);
 
         if (pg_graph.has_error()) {
