@@ -49,6 +49,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
+#if 0
 char
 estimate_drivingSide(char driving_side) {
     char d_side = static_cast<char>(tolower(driving_side));
@@ -57,6 +58,7 @@ estimate_drivingSide(char driving_side) {
     }
     return d_side;
 }
+#endif
 
 void
 get_new_queries(
@@ -169,13 +171,14 @@ pgr_do_withPoints(
         }
 
         hint = points_sql;
-        auto points = get_points(std::string(points_sql));
+        auto points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
 
         hint = edges_of_points_sql;
-        auto edges_of_points = pgrouting::pgget::get_edges(std::string(edges_of_points_sql), normal, false);
+        auto edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
 
         hint = edges_no_points_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_no_points_sql), normal, false);
+        auto edges = !enop.empty()? get_edges(enop, normal, false) : std::vector<Edge_t>();
+
 
         if (edges.size() + edges_of_points.size() == 0) {
             *notice_msg = to_pg_msg("No edges found");
