@@ -139,6 +139,7 @@ pgr_do_withPoints(
     std::string hint = "";
 
     try {
+        pgassert(edges_sql);
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
@@ -157,24 +158,33 @@ pgr_do_withPoints(
 
         std::string eofp;
         std::string enop;
+        std::vector<Edge_t> edges;
+        std::vector<Edge_t> edges_of_points;
+        std::vector<Point_on_edge_t> points;
 
-        if (points_sql) get_new_queries(edges_sql, points_sql, eofp, enop);
+        if (points_sql) {
+            get_new_queries(edges_sql, points_sql, eofp, enop);
 
-        hint = points_sql? points_sql : "";
-        auto points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
+            hint = points_sql;
+            points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
 
-        hint = eofp;
-        auto edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
+            hint = eofp;
+            edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
 
-        hint = enop;
-        auto edges = !enop.empty()? get_edges(enop, normal, false) : std::vector<Edge_t>();
-        hint = "";
+            hint = enop;
+            edges = !enop.empty()? get_edges(enop, normal, false) : std::vector<Edge_t>();
+            hint = "";
 
-
-        if (edges.size() + edges_of_points.size() == 0) {
-            *notice_msg = to_pg_msg("No edges found");
-            return;
+            if (edges.empty() && edges_of_points.empty()) {
+                *notice_msg = to_pg_msg("No edges found");
+                return;
+            }
+        } else {
+            hint = edges_sql;
+            edges = get_edges(edges_sql, normal, false);
+            hint = "";
         }
+
 
         /*
          * processing points
@@ -185,15 +195,18 @@ pgr_do_withPoints(
                 directed);
 
         if (pg_graph.has_error()) {
-            log << pg_graph.get_log();
-            err << pg_graph.get_error();
-            *log_msg = to_pg_msg(log);
-            *err_msg = to_pg_msg(err);
+            *log_msg = to_pg_msg(pg_graph.get_log());
+            *err_msg = to_pg_msg(pg_graph.get_error());
             return;
         }
         auto new_edges = pg_graph.new_edges();
 
         edges.insert(edges.end(), new_edges.begin(), new_edges.end());
+
+        if (edges.empty()) {
+            *notice_msg = to_pg_msg("No edges found");
+            return;
+        }
 
         std::deque<Path> paths;
         if (directed) {
