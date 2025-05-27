@@ -49,6 +49,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
+char
+estimate_drivingSide(char driving_side) {
+    char d_side = static_cast<char>(tolower(driving_side));
+    if (!((d_side == 'r') || (d_side == 'l') || (d_side == 'b'))) {
+        d_side = ' ';
+    }
+    return d_side;
+}
+
+void
+get_new_queries(
+        const char *edges_sql,
+        const char *points_sql,
+        std::string &edges_of_points_query,
+        std::string &edges_no_points_query) {
+
+    edges_of_points_query = std::string ("WITH ")
+        + " edges AS (" + edges_sql + "), "
+        + " points AS (" + points_sql + ")"
+        + " SELECT DISTINCT edges.* FROM edges JOIN points ON (id = edge_id)";
+
+    edges_no_points_query  = std::string ("WITH ")
+        + " edges AS (" + edges_sql + "), "
+        + " points AS (" + points_sql + ")"
+        + " SELECT edges.*"
+        + " FROM edges"
+        + " WHERE NOT EXISTS (SELECT edge_id FROM points WHERE id = edge_id)";
+}
+
+
 template < class G >
 std::deque<pgrouting::Path>
 pgr_dijkstra(
@@ -79,6 +109,7 @@ pgr_dijkstra(
 void
 pgr_do_withPoints(
         const char *edges_sql,
+        const char *edges_no_points_sql,
         const char *points_sql,
         const char *edges_of_points_sql,
         const char *combinations_sql,
@@ -100,6 +131,8 @@ pgr_do_withPoints(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::pgget::get_points;
+    using pgrouting::pgget::get_edges;
     using pgrouting::utilities::get_combinations;
 
     std::ostringstream log;
@@ -114,8 +147,6 @@ pgr_do_withPoints(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-
-
         hint = combinations_sql;
         auto combinations = get_combinations(combinations_sql, starts, ends, normal);
         hint = nullptr;
@@ -127,14 +158,24 @@ pgr_do_withPoints(
         }
 
 
+        std::string eofp;
+        std::string enop;
+
+        if (points_sql) {
+            get_new_queries(edges_sql, points_sql, eofp, enop);
+
+            pgassert(std::string(edges_of_points_sql) == eofp);
+            pgassert(std::string(edges_no_points_sql) == enop);
+        }
+
         hint = points_sql;
-        auto points = pgrouting::pgget::get_points(std::string(points_sql));
+        auto points = get_points(std::string(points_sql));
 
         hint = edges_of_points_sql;
         auto edges_of_points = pgrouting::pgget::get_edges(std::string(edges_of_points_sql), normal, false);
 
-        hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), normal, false);
+        hint = edges_no_points_sql;
+        auto edges = pgrouting::pgget::get_edges(std::string(edges_no_points_sql), normal, false);
 
         if (edges.size() + edges_of_points.size() == 0) {
             *notice_msg = to_pg_msg("No edges found");
