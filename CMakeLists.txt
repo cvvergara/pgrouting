@@ -98,6 +98,8 @@ message(STATUS "POSTGIS_MINIMUM_VERSION=${POSTGIS_MINIMUM_VERSION}")
 set(CMAKE_CXX_STANDARD 17)
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
+set(CMAKE_CXX_CLANG_TIDY "clang-tidy"
+    "-checks=google-*,clang-analyzer-*")
 
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 if (NOT Boost_VERSION_MACRO)
