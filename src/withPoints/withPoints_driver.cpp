@@ -49,7 +49,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
-#if 0
 char
 estimate_drivingSide(char driving_side) {
     char d_side = static_cast<char>(tolower(driving_side));
@@ -58,7 +57,6 @@ estimate_drivingSide(char driving_side) {
     }
     return d_side;
 }
-#endif
 
 void
 get_new_queries(
@@ -157,6 +155,7 @@ pgr_do_withPoints(
             return;
         }
 
+        driving_side = estimate_drivingSide(driving_side);
 
         std::string eofp;
         std::string enop;

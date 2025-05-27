@@ -59,20 +59,10 @@ process(
 
         Path_rt **result_tuples,
         size_t *result_count) {
-    driving_side[0] = estimate_drivingSide(driving_side[0]);
-
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
-
-    char *edges_of_points_query = NULL;
-    char *edges_no_points_query = NULL;
-    get_new_queries(
-            edges_sql, points_sql,
-            &edges_of_points_query,
-            &edges_no_points_query);
-
 
     clock_t start_t = clock();
     pgr_do_withPoints(
