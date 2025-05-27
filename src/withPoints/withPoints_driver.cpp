@@ -140,7 +140,7 @@ pgr_do_withPoints(
     std::ostringstream log;
     std::ostringstream notice;
     std::ostringstream err;
-    const char *hint = nullptr;
+    std::string hint = "";
 
     try {
         pgassert(!(*log_msg));
@@ -149,9 +149,9 @@ pgr_do_withPoints(
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        hint = combinations_sql;
+        hint = combinations_sql? std::string(combinations_sql) : "";
         auto combinations = get_combinations(combinations_sql, starts, ends, normal);
-        hint = nullptr;
+        hint = "";
 
         if (combinations.empty() && combinations_sql) {
             *notice_msg = to_pg_msg("No (source, target) pairs found");
@@ -170,22 +170,21 @@ pgr_do_withPoints(
             pgassert(std::string(edges_no_points_sql) == enop);
         }
 
-        hint = points_sql;
+        hint = points_sql? std::string(points_sql) : "";
         auto points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
 
-        hint = edges_of_points_sql;
+        hint = eofp;
         auto edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
 
-        hint = edges_no_points_sql;
+        hint = enop;
         auto edges = !enop.empty()? get_edges(enop, normal, false) : std::vector<Edge_t>();
+        hint = "";
 
 
         if (edges.size() + edges_of_points.size() == 0) {
             *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
             return;
         }
-        hint = nullptr;
 
         /*
          * processing points
@@ -266,7 +265,7 @@ pgr_do_withPoints(
         *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        *log_msg = !hint.empty()? to_pg_msg(hint) : to_pg_msg(log);
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
