@@ -101,7 +101,7 @@ include(CheckCXXCompilerFlag)
 set(CMAKE_CXX_CLANG_TIDY
     clang-tidy;
     -header-filter=.;
-    -checks=google-*,clang-analyzer-*,cppcoreguidelines-avoid-capturing-lambda-coroutines)
+    -checks=google-*,clang-analyzer-*,cppcoreguidelines-avoid-capturing-lambda-coroutines,cppcoreguidelines-avoid-goto,cppcoreguidelines-avoid-non-const-global-variables,cppcoreguidelines-avoid-reference-coroutine-parameters,cppcoreguidelines-init-variables)
 
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 if (NOT Boost_VERSION_MACRO)

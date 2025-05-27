@@ -142,7 +142,7 @@ std::string get_backtrace(const std::string &);
  */
 class AssertFailedException : public std::exception {
  private:
-     const std::string str;   ///< Holds what() we got as message
+     std::string str;   ///< Holds what() we got as message
 
  public:
      virtual const char *what() const throw();
