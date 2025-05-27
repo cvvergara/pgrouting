@@ -111,9 +111,7 @@ pgr_dijkstra(
 void
 pgr_do_withPoints(
         const char *edges_sql,
-        const char *edges_no_points_sql,
         const char *points_sql,
-        const char *edges_of_points_sql,
         const char *combinations_sql,
         ArrayType *starts,
         ArrayType *ends,
@@ -163,12 +161,7 @@ pgr_do_withPoints(
         std::string eofp;
         std::string enop;
 
-        if (points_sql) {
-            get_new_queries(edges_sql, points_sql, eofp, enop);
-
-            pgassert(std::string(edges_of_points_sql) == eofp);
-            pgassert(std::string(edges_no_points_sql) == enop);
-        }
+        if (points_sql) get_new_queries(edges_sql, points_sql, eofp, enop);
 
         hint = points_sql? std::string(points_sql) : "";
         auto points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
