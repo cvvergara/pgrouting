@@ -196,8 +196,6 @@ pgr_do_withPoints(
         auto new_edges = pg_graph.new_edges();
 
         edges.insert(edges.end(), new_edges.begin(), new_edges.end());
-        auto vertices(pgrouting::extract_vertices(edges));
-        vertices = pgrouting::extract_vertices(vertices, pg_graph.new_edges());
 
         std::deque<Path> paths;
         if (directed) {
