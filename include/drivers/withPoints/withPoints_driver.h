@@ -63,6 +63,7 @@ void pgr_do_withPoints(
         const char*,
         const char*,
         const char*,
+        const char*,
         ArrayType*, ArrayType*,
 
         char, bool, bool, bool, bool,
