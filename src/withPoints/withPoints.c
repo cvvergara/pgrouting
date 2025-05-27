@@ -77,9 +77,7 @@ process(
     clock_t start_t = clock();
     pgr_do_withPoints(
             edges_sql,
-            edges_no_points_query,
             points_sql,
-            edges_of_points_query,
             combinations_sql,
             starts, ends,
 
