@@ -6,7 +6,6 @@ Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2025 Celia Virginia Vergara Castillo
 Copyright (c) 2023 Celia Virginia Vergara Castillo
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
@@ -45,14 +44,21 @@ extern "C" {
 }
 
 #include "cpp_common/undefPostgresDefine.hpp"
-#include <cstddef>
-#include <cstdint>
-#include <string>
 
+#ifdef __cplusplus
+#   include <cstddef>
+#   include <cstdint>
 using Path_rt = struct Path_rt;
+#else
+#   include <stddef.h>
+#   include <stdint.h>
+typedef struct Path_rt Path_rt;
+#endif
 
 void do_dijkstra(
-        std::string, std::string, std::string,
+        const char*,
+        const char*,
+        const char*,
         ArrayType*, ArrayType*,
 
         bool, bool, bool,

@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/dijkstra/dijkstra_driver.h"
+#include "drivers/dijkstra_driver.hpp"
 
 #include <algorithm>
 #include <sstream>
@@ -81,31 +81,6 @@ get_new_queries(
         + " FROM edges"
         + " WHERE NOT EXISTS (SELECT edge_id FROM points WHERE id = edge_id)";
 }
-
-#if 0
-template < class G >
-std::deque<pgrouting::Path>
-pgr_dijkstra(
-        G &graph,
-        const std::map<int64_t , std::set<int64_t>> &combinations,
-        bool only_cost,
-        bool normal) {
-    size_t n_goals = (std::numeric_limits<size_t>::max)();
-    auto paths = pgrouting::algorithms::dijkstra(graph, combinations, only_cost, n_goals);
-
-    if (!normal) {
-        for (auto &path : paths) {
-            path.reverse();
-        }
-    }
-    if (!only_cost) {
-        for (auto &p : paths) {
-            p.recalculate_agg_cost();
-        }
-    }
-    return paths;
-}
-#endif
 
 void
 post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, size_t n_goals, bool global) {
@@ -159,7 +134,7 @@ post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, si
 
 
 void
-pgr_do_dijkstra(
+do_dijkstra(
         const char *edges_sql,
         const char *points_sql,
         const char *combinations_sql,
@@ -263,7 +238,7 @@ pgr_do_dijkstra(
         }
 
         size_t n = n_goals <= 0? (std::numeric_limits<size_t>::max)() : static_cast<size_t>(n_goals);
-        
+
         std::deque<Path> paths;
         if (directed) {
             pgrouting::DirectedGraph graph;

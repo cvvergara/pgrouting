@@ -33,7 +33,7 @@ extern "C" {
 
 #include "c_types/path_rt.h"
 #include "cpp_common/assert.hpp"
-#include "drivers/dijkstra/dijkstra_driver.h"
+#include "drivers/dijkstra_driver.hpp"
 
 /**
  which function is determined by the parameters
@@ -69,7 +69,7 @@ void pgr_process_dijkstra(
     char* err_msg = NULL;
 
     clock_t start_t = clock();
-    pgr_do_dijkstra(
+    do_dijkstra(
             edges_sql,
             points_sql,
             combinations_sql,
