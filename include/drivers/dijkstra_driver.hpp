@@ -45,15 +45,9 @@ extern "C" {
 
 #include "cpp_common/undefPostgresDefine.hpp"
 
-#ifdef __cplusplus
 #   include <cstddef>
 #   include <cstdint>
 using Path_rt = struct Path_rt;
-#else
-#   include <stddef.h>
-#   include <stdint.h>
-typedef struct Path_rt Path_rt;
-#endif
 
 void do_dijkstra(
         const char*,
