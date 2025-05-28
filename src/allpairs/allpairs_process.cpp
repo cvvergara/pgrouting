@@ -25,13 +25,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "process/allpairs_process.h"
 
-#include <string>
-
 extern "C" {
 #include "c_common/postgres_connection.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 }
+
+#include <string>
 
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/assert.hpp"
@@ -41,7 +41,7 @@ extern "C" {
  which = 0 -> johnson
  which = 1 -> floydWarshall
 
- This is c++ code, linked as C code, because process_allpairs is called from C code
+ This is c++ code, linked as C code, because pgr_process_allpairs is called from C code
  */
 void pgr_process_allpairs(
         const char* edges_sql,
@@ -49,6 +49,7 @@ void pgr_process_allpairs(
         int which,
         IID_t_rt **result_tuples,
         size_t *result_count) {
+    pgassert(edges_sql);
     pgassert(!(*result_tuples));
     pgassert(*result_count == 0);
     pgr_SPI_connect();
@@ -68,7 +69,6 @@ void pgr_process_allpairs(
     } else {
         time_msg(std::string(" processing pgr_floydWarshall").c_str(), start_t, clock());
     }
-
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
