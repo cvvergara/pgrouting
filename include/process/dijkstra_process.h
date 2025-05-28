@@ -58,17 +58,14 @@ typedef struct Path_rt Path_rt;
 extern "C" {
 #endif
 
-void pgr_dijkstra_process(
-        const char*,
-        const char*,
-        const char*,
+void pgr_process_dijkstra(
+        const char*, const char*, const char*,
         ArrayType*, ArrayType*,
-
         bool, bool, bool,
-        int64_t, bool, char, bool,
+        int64_t, bool,
+        char*, bool,
 
-        Path_rt**, size_t*,
-        char**, char**, char**);
+        Path_rt**, size_t*);
 
 #ifdef __cplusplus
 }

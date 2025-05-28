@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: process_allpairs.cpp
+File: allpairs_process.cpp
 
 Function's developer:
 Copyright (c) 2025 Celia Virginia Vergara Castillo

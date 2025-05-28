@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: dijkstra.c
+File: dijkstra_process.cpp
 
 Function's developer:
 Copyright (c) 2025 Celia Virginia Vergara Castillo
@@ -55,7 +55,7 @@ void pgr_process_dijkstra(
         int64_t n_goals,
         bool global,
 
-        const char *driving_side,
+        char *driving_side,
         bool details,
 
         Path_rt **result_tuples,
@@ -73,6 +73,7 @@ void pgr_process_dijkstra(
             edges_sql,
             points_sql,
             combinations_sql,
+
             starts, ends,
 
             directed,

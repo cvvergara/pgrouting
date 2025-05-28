@@ -34,12 +34,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-#include "drivers/dijkstra/dijkstra_driver.h"
+#include "process/dijkstra_process.h"
 
 PGDLLEXPORT Datum _pgr_withpoints(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpoints);
 
 
+#if 0
 static
 void
 process(
@@ -121,6 +122,7 @@ process(
 
     pgr_SPI_finish();
 }
+#endif
 
 PGDLLEXPORT Datum
 _pgr_withpoints(PG_FUNCTION_ARGS) {
@@ -141,7 +143,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
              * many to many
              */
 
-            process(
+            pgr_process_dijkstra(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 NULL,
@@ -165,7 +167,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
             /*
              * Combinations
              */
-            process(
+            pgr_process_dijkstra(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 text_to_cstring(PG_GETARG_TEXT_P(2)),
