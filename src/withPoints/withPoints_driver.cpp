@@ -33,7 +33,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <sstream>
 #include <deque>
 #include <vector>
-#include <cassert>
 #include <limits>
 #include <string>
 #include <map>
@@ -78,7 +77,7 @@ get_new_queries(
         + " WHERE NOT EXISTS (SELECT edge_id FROM points WHERE id = edge_id)";
 }
 
-
+#if 0
 template < class G >
 std::deque<pgrouting::Path>
 pgr_dijkstra(
@@ -101,9 +100,57 @@ pgr_dijkstra(
     }
     return paths;
 }
+#endif
+
+void
+post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, size_t n_goals, bool global) {
+    using pgrouting::Path;
+    paths.erase(std::remove_if(paths.begin(), paths.end(),
+                [](const Path &p) {
+                    return p.size() == 0;
+                }),
+                paths.end());
+    using difference_type = std::deque<double>::difference_type;
+
+    if (!normal) {
+        for (auto &path : paths) path.reverse();
+    }
+
+    if (!only_cost) {
+        for (auto &p : paths) {
+            p.recalculate_agg_cost();
+        }
+    }
+
+    if (n_goals != (std::numeric_limits<size_t>::max)()) {
+        std::sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.end_id() < e2.end_id();
+                });
+        std::stable_sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.start_id() < e2.start_id();
+                });
+        std::stable_sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.tot_cost() < e2.tot_cost();
+                });
+        if (global && n_goals < paths.size()) {
+            paths.erase(paths.begin() + static_cast<difference_type>(n_goals), paths.end());
+        }
+    } else {
+        std::sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.end_id() < e2.end_id();
+                });
+        std::stable_sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.start_id() < e2.start_id();
+                });
+    }
+}
 
 }  // namespace
-
 
 
 void
@@ -114,17 +161,18 @@ pgr_do_withPoints(
         ArrayType *starts,
         ArrayType *ends,
 
-        char driving_side,
-        bool details,
         bool directed,
         bool only_cost,
         bool normal,
+        int64_t n_goals,
+        bool global,
+        char driving_side,
+        bool details,
 
         Path_rt **return_tuples, size_t *return_count,
-
-        char** log_msg,
-        char** notice_msg,
-        char** err_msg) {
+        char **log_msg,
+        char **notice_msg,
+        char **err_msg) {
     using pgrouting::Path;
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
@@ -205,46 +253,30 @@ pgr_do_withPoints(
 
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
+            *log_msg = to_pg_msg(edges_sql);
             return;
         }
 
+        size_t n = n_goals <= 0? (std::numeric_limits<size_t>::max)() : static_cast<size_t>(n_goals);
+        
         std::deque<Path> paths;
         if (directed) {
-            pgrouting::DirectedGraph digraph;
-            digraph.insert_edges(edges);
-
-            paths = pgr_dijkstra(
-                    digraph,
-                    combinations,
-                    only_cost, normal);
+            pgrouting::DirectedGraph graph;
+            graph.insert_edges(edges);
+            paths = pgrouting::algorithms::dijkstra(graph, combinations, only_cost, n);
         } else {
-            pgrouting::UndirectedGraph undigraph;
-            undigraph.insert_edges(edges);
-
-            paths = pgr_dijkstra(
-                    undigraph,
-                    combinations,
-                    only_cost, normal);
+            pgrouting::UndirectedGraph graph;
+            graph.insert_edges(edges);
+            paths =  pgrouting::algorithms::dijkstra(graph, combinations, only_cost, n);
         }
+
+        post_process(paths, only_cost, normal, n, global);
 
         if (!details) {
             for (auto &path : paths) path = pg_graph.eliminate_details(path);
         }
 
-        /*
-         * order paths based on the start_pid, end_pid
-         */
-        std::sort(paths.begin(), paths.end(),
-                [](const Path &a, const Path &b)
-                -> bool {
-                if (b.start_id() != a.start_id()) {
-                return a.start_id() < b.start_id();
-                }
-                return a.end_id() < b.end_id();
-                });
-
-        auto count(count_tuples(paths));
-
+        auto count = count_tuples(paths);
 
         if (count == 0) {
             (*return_tuples) = NULL;

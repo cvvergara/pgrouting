@@ -71,11 +71,13 @@ process(
             combinations_sql,
             starts, ends,
 
-            driving_side[0],
-            details,
             directed,
             only_cost,
             normal,
+            0,
+            true,
+            driving_side[0],
+            details,
 
             result_tuples, result_count,
             &log_msg,
