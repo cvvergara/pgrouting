@@ -49,16 +49,22 @@ PG_FUNCTION_INFO_V1(_pgr_dijkstra);
 static
 void
 process(
-        char *edges_sql,
-        char *combinations_sql,
+        const char *edges_sql,
+        const char *points_sql,
+        const char *combinations_sql,
+
         ArrayType *starts,
         ArrayType *ends,
 
         bool directed,
         bool only_cost,
         bool normal,
+
         int64_t n_goals,
         bool global,
+
+        const char *driving_side,
+        bool details,
 
         Path_rt **result_tuples,
         size_t *result_count) {
@@ -70,21 +76,21 @@ process(
     clock_t start_t = clock();
     pgr_do_dijkstra(
             edges_sql,
-            NULL,
+            points_sql,
             combinations_sql,
             starts, ends,
 
             directed,
             only_cost,
             normal,
+
             n_goals,
             global,
-            ' ',
-            true,
 
-            result_tuples,
-            result_count,
+            driving_side[0],
+            details,
 
+            result_tuples, result_count,
             &log_msg,
             &notice_msg,
             &err_msg);
@@ -93,16 +99,23 @@ process(
         if (n_goals > 0) {
             time_msg("processing pgr_dijkstraNearCost", start_t, clock());
         } else {
-            time_msg("processing pgr_dijkstraCost", start_t, clock());
+            if (points_sql) {
+                time_msg("processing pgr_withPointsCost", start_t, clock());
+            } else {
+                time_msg("processing pgr_dijkstraCost", start_t, clock());
+            }
         }
     } else {
         if (n_goals > 0) {
             time_msg("processing pgr_dijkstraNear", start_t, clock());
         } else {
-            time_msg("processing pgr_dijkstra", start_t, clock());
+            if (points_sql) {
+                time_msg("processing pgr_withPoints", start_t, clock());
+            } else {
+                time_msg("processing pgr_dijkstra", start_t, clock());
+            }
         }
     }
-
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
@@ -127,10 +140,12 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+        const char *driving_side = " ";
 
         if (PG_NARGS() == 7) {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    NULL,
                     NULL,
                     PG_GETARG_ARRAYTYPE_P(1),
                     PG_GETARG_ARRAYTYPE_P(2),
@@ -139,23 +154,30 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
                     PG_GETARG_BOOL(5),
                     PG_GETARG_INT64(6),
                     true,
+
+                    driving_side, true,
+
                     &result_tuples,
                     &result_count);
 
         } else if (PG_NARGS() == 5) {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    NULL,
                     text_to_cstring(PG_GETARG_TEXT_P(1)),
                     NULL, NULL,
                     PG_GETARG_BOOL(2),
                     PG_GETARG_BOOL(3),
                     true, 0, true,
+                    driving_side, true,
+
                     &result_tuples,
                     &result_count);
 
         } else if (PG_NARGS() == 8) {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    NULL,
                     NULL,
                     PG_GETARG_ARRAYTYPE_P(1),
                     PG_GETARG_ARRAYTYPE_P(2),
@@ -164,19 +186,27 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
                     PG_GETARG_BOOL(5),
                     PG_GETARG_INT64(6),
                     PG_GETARG_BOOL(7),
+
+                    driving_side, true,
+
                     &result_tuples,
                     &result_count);
 
         } else /* (PG_NARGS() == 6) */ {
             process(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
+                    NULL,
                     text_to_cstring(PG_GETARG_TEXT_P(1)),
                     NULL, NULL,
+
                     PG_GETARG_BOOL(2),
                     PG_GETARG_BOOL(3),
                     true,
                     PG_GETARG_INT64(4),
                     PG_GETARG_BOOL(5),
+
+                    driving_side, true,
+
                     &result_tuples,
                     &result_count);
         }
