@@ -45,20 +45,21 @@ extern "C" {
 
 #include "cpp_common/undefPostgresDefine.hpp"
 
-#   include <cstddef>
-#   include <cstdint>
+#include <cstddef>
+#include <cstdint>
+#include <string>
 using Path_rt = struct Path_rt;
 
 void do_dijkstra(
-        const char*,
-        const char*,
-        const char*,
+        const std::string&,
+        const std::string&,
+        const std::string&,
         ArrayType*, ArrayType*,
 
         bool, bool, bool,
         int64_t, bool, char, bool,
 
         Path_rt**, size_t*,
-        char**, char**, char**);
+        bool*, char**, char**, char**);
 
 #endif  // INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRA_DRIVER_H_

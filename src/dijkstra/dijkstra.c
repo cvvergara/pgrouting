@@ -139,48 +139,14 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
     Path_rt  *result_tuples = NULL;
     size_t result_count = 0;
 
+
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
         char *driving_side = " ";
 
-        if (PG_NARGS() == 7) {
-            pgr_process_dijkstra(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
-                    NULL,
-
-                    PG_GETARG_ARRAYTYPE_P(1),
-                    PG_GETARG_ARRAYTYPE_P(2),
-
-                    PG_GETARG_BOOL(3),
-                    PG_GETARG_BOOL(4),
-                    PG_GETARG_BOOL(5),
-
-                    PG_GETARG_INT64(6),
-                    true,
-
-                    driving_side, true,
-
-                    &result_tuples,
-                    &result_count);
-
-        } else if (PG_NARGS() == 5) {
-            pgr_process_dijkstra(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
-                    text_to_cstring(PG_GETARG_TEXT_P(1)),
-                    NULL, NULL,
-                    PG_GETARG_BOOL(2),
-                    PG_GETARG_BOOL(3),
-                    true, 0, true,
-                    driving_side, true,
-
-                    &result_tuples,
-                    &result_count);
-
-        } else if (PG_NARGS() == 8) {
+        if (PG_NARGS() == 8) {
             pgr_process_dijkstra(
                     text_to_cstring(PG_GETARG_TEXT_P(0)),
                     NULL,

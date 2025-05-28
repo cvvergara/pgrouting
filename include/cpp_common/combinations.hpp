@@ -60,7 +60,7 @@ std::map<int64_t, std::set<int64_t>>
 get_combinations(const std::vector<II_t_rt>&);
 
 std::map<int64_t, std::set<int64_t>>
-get_combinations(const std::string&, ArrayType*, ArrayType*, bool);
+get_combinations(const std::string&, ArrayType*, ArrayType*, bool, bool&);
 
 std::map<int64_t, std::set<int64_t>>
 get_combinations(const char*, ArrayType*, ArrayType*, bool);

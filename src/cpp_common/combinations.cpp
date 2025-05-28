@@ -143,27 +143,34 @@ get_combinations(
  * @param[in] normal the graph is reversed so reverse starts & ends
  * @returns[out] map: for each departure a set of destinations
  *
- * The resulting map can be empty
+ * When: combinations_sql comes from a combinations signature
+ * When: startsArr && endsArr comes from a Cost signature
+ * When: startsArr && !endsArr comes from a CostMatrix signature
+ *
+ * The resulting std::map can be empty
  */
 std::map<int64_t , std::set<int64_t>>
 get_combinations(
         const std::string &combinations_sql,
-        ArrayType* startsArr, ArrayType* endsArr, bool normal) {
+        ArrayType* startsArr, ArrayType* endsArr, bool normal, bool &is_matrix) {
     using pgrouting::pgget::get_intSet;
+    using pgrouting::pgget::get_combinations;
     std::map<int64_t, std::set<int64_t>> result;
 
-    std::set<int64_t> starts;
-    std::set<int64_t> ends;
-
-    if (startsArr && endsArr) {
-        starts = normal? get_intSet(startsArr) : get_intSet(endsArr);
-        ends =   normal? get_intSet(endsArr) : get_intSet(startsArr);
-    }
+    auto starts = normal? get_intSet(startsArr) : get_intSet(endsArr);
+    auto ends = endsArr? (normal? get_intSet(endsArr) : get_intSet(startsArr)) : std::set<int64_t>();
 
     /* TODO Read query storing like std::map<int64_t , std::set<int64_t>> */
     /* queries are stored in vectors */
-    auto combinations = !combinations_sql.empty()?
-        pgrouting::pgget::get_combinations(std::string(combinations_sql)) : std::vector<II_t_rt>();
+    auto combinations = !combinations_sql.empty()? get_combinations(combinations_sql) : std::vector<II_t_rt>();
+
+#if 0
+    /* data comes from CostMatrix */
+    if (combinations.empty() && !starts.empty() && ends.empty()) {
+        is_matrix = true;
+        ends = starts;
+    }
+#endif
 
     /* data comes from a combinations */
     for (const auto &row : combinations) {

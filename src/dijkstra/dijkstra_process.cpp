@@ -35,31 +35,27 @@ extern "C" {
 #include "cpp_common/assert.hpp"
 #include "drivers/dijkstra_driver.hpp"
 
+namespace {
+std::string
+get_name(std::string base, bool is_only_cost, bool is_near, bool is_withPoints) {
+    base = is_withPoints? "pgr_withPoints" : base;
+    return "Processing " + base + (is_near? "Near" : "") + (is_only_cost? "Cost" : "");
+}
+
+}
+
 /**
  which function is determined by the parameters
 
  This is c++ code, linked as C code, because pgr_process_dijkstra is called from C code
  */
 void pgr_process_dijkstra(
-        const char *edges_sql,
-        const char *points_sql,
-        const char *combinations_sql,
-
-        ArrayType *starts,
-        ArrayType *ends,
-
-        bool directed,
-        bool only_cost,
-        bool normal,
-
-        int64_t n_goals,
-        bool global,
-
-        char *driving_side,
-        bool details,
-
-        Path_rt **result_tuples,
-        size_t *result_count) {
+        const char *edges_sql, const char *points_sql, const char *combinations_sql,
+        ArrayType *starts, ArrayType *ends,
+        bool directed, bool only_cost, bool normal,
+        int64_t n_goals, bool global,
+        char *driving_side, bool details,
+        Path_rt **result_tuples, size_t *result_count) {
     pgassert(edges_sql);
     pgassert(!(*result_tuples));
     pgassert(*result_count == 0);
@@ -67,12 +63,13 @@ void pgr_process_dijkstra(
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
+    bool is_matrix = false;
 
     clock_t start_t = clock();
     do_dijkstra(
-            edges_sql,
-            points_sql,
-            combinations_sql,
+            edges_sql? edges_sql : "",
+            points_sql? points_sql : "",
+            combinations_sql? combinations_sql : "",
 
             starts, ends,
 
@@ -87,10 +84,11 @@ void pgr_process_dijkstra(
             details,
 
             result_tuples, result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
+            &is_matrix, &log_msg, &notice_msg, &err_msg);
 
+    auto fn_name = get_name("pgr_dijkstra", only_cost, n_goals > 0, static_cast<bool>(points_sql));
+    time_msg(fn_name.c_str(), start_t, clock());
+#if 0
     if (only_cost) {
         if (n_goals > 0) {
             time_msg("processing pgr_dijkstraNearCost", start_t, clock());
@@ -112,6 +110,7 @@ void pgr_process_dijkstra(
             }
         }
     }
+#endif
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);

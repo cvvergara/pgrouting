@@ -64,8 +64,8 @@ estimate_drivingSide(char driving_side) {
 
 void
 get_new_queries(
-        const char *edges_sql,
-        const char *points_sql,
+        const std::string &edges_sql,
+        const std::string &points_sql,
         std::string &edges_of_points_query,
         std::string &edges_no_points_query) {
 
@@ -135,9 +135,9 @@ post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, si
 
 void
 do_dijkstra(
-        const char *edges_sql,
-        const char *points_sql,
-        const char *combinations_sql,
+        const std::string &edges_sql,
+        const std::string &points_sql,
+        const std::string &combinations_sql,
         ArrayType *starts,
         ArrayType *ends,
 
@@ -150,6 +150,7 @@ do_dijkstra(
         bool details,
 
         Path_rt **return_tuples, size_t *return_count,
+        bool *is_matrix,
         char **log_msg,
         char **notice_msg,
         char **err_msg) {
@@ -167,34 +168,38 @@ do_dijkstra(
     std::string hint = "";
 
     try {
-        pgassert(edges_sql);
+        pgassert(!edges_sql.empty());
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
         pgassert(!(*return_tuples));
         pgassert(*return_count == 0);
 
-        hint = combinations_sql? combinations_sql : "";
-        auto combinations = get_combinations(combinations_sql, starts, ends, normal);
+        hint = combinations_sql;
+        auto combinations = get_combinations(combinations_sql, starts, ends, normal, *is_matrix);
         hint = "";
 
-        if (combinations.empty() && combinations_sql) {
+        if (combinations.empty() && !combinations_sql.empty()) {
             *notice_msg = to_pg_msg("No (source, target) pairs found");
             *log_msg = to_pg_msg(combinations_sql);
             return;
         }
 
-        std::string eofp;
         std::string enop;
+        std::string eofp;
         std::vector<Edge_t> edges;
         std::vector<Edge_t> edges_of_points;
         std::vector<Point_on_edge_t> points;
 
-        if (points_sql) {
+        if (points_sql.empty()) {
+            hint = edges_sql;
+            edges = get_edges(edges_sql, normal, false);
+            hint = "";
+        } else {
             get_new_queries(edges_sql, points_sql, eofp, enop);
 
             hint = points_sql;
-            points = points_sql? get_points(std::string(points_sql)) : std::vector<Point_on_edge_t>();
+            points = get_points(std::string(points_sql));
 
             hint = eofp;
             edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
@@ -207,12 +212,7 @@ do_dijkstra(
                 *notice_msg = to_pg_msg("No edges found");
                 return;
             }
-        } else {
-            hint = edges_sql;
-            edges = get_edges(edges_sql, normal, false);
-            hint = "";
         }
-
 
         /*
          * processing points
@@ -252,19 +252,16 @@ do_dijkstra(
 
         post_process(paths, only_cost, normal, n, global);
 
-#if 1
         if (!details) {
             for (auto &path : paths) path = pg_graph.eliminate_details(path);
         }
-#endif
 
         auto count = count_tuples(paths);
 
         if (count == 0) {
             (*return_tuples) = NULL;
             (*return_count) = 0;
-            notice << "No paths found";
-            *log_msg = to_pg_msg(notice);
+            *log_msg = to_pg_msg("No paths found");
             return;
         }
 
