@@ -1,7 +1,6 @@
 /*PGR-GNU*****************************************************************
-File: withPoints.sql
+File: _withPoints.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
@@ -27,12 +26,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---v2.6
-CREATE FUNCTION _pgr_withPoints(
+--v4.0
+CREATE FUNCTION _pgr_withPoints_v3(
     edges_sql TEXT,
     points_sql TEXT,
+
     start_pids ANYARRAY,
     end_pids ANYARRAY,
+
     directed BOOLEAN,
     driving_side CHAR,
     details BOOLEAN,
@@ -40,21 +41,24 @@ CREATE FUNCTION _pgr_withPoints(
     only_cost BOOLEAN,
     normal BOOLEAN,
 
+    n_goals BIGINT,
+    global BOOLEAN,
+
     OUT seq INTEGER,
     OUT path_seq INTEGER,
-    OUT start_pid BIGINT,
-    OUT end_pid BIGINT,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c VOLATILE;
+LANGUAGE C VOLATILE STRICT;
 
 
 --v3.2
-CREATE FUNCTION _pgr_withPoints(
+CREATE FUNCTION _pgr_withPoints_v3(
     edges_sql TEXT,
     points_sql TEXT,
     combinations_sql TEXT,
@@ -63,12 +67,15 @@ CREATE FUNCTION _pgr_withPoints(
     driving_side CHAR,
     details BOOLEAN,
 
-    only_cost BOOLEAN DEFAULT false,
+    only_cost BOOLEAN,
+
+    n_goals BIGINT,
+    global BOOLEAN,
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
-    OUT start_pid BIGINT,
-    OUT end_pid BIGINT,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -79,8 +86,14 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_withPoints(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _pgr_withPoints_v3(TEXT, TEXT,
+  ANYARRAY, ANYARRAY,
+  BOOLEAN, CHAR, BOOLEAN,
+  BOOLEAN, BOOLEAN,
+  BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_withPoints(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION _pgr_withPoints_v3(TEXT, TEXT, TEXT,
+  BOOLEAN, CHAR, BOOLEAN, BOOLEAN,
+  BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
