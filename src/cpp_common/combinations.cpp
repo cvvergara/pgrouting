@@ -136,5 +136,46 @@ get_combinations(
     return result;
 }
 
+/** @brief gets all the departures and destinations
+ * @param[in] combinations_sql from the @b combinations signatures
+ * @param[in] startsArr PostgreSQL array with the departures
+ * @param[in] endsArr PostgreSQL array with the destinations
+ * @param[in] normal the graph is reversed so reverse starts & ends
+ * @returns[out] map: for each departure a set of destinations
+ *
+ * The resulting map can be empty
+ */
+std::map<int64_t , std::set<int64_t>>
+get_combinations(
+        const std::string &combinations_sql,
+        ArrayType* startsArr, ArrayType* endsArr, bool normal) {
+    using pgrouting::pgget::get_intSet;
+    std::map<int64_t, std::set<int64_t>> result;
+
+    std::set<int64_t> starts;
+    std::set<int64_t> ends;
+
+    if (startsArr && endsArr) {
+        starts = normal? get_intSet(startsArr) : get_intSet(endsArr);
+        ends =   normal? get_intSet(endsArr) : get_intSet(startsArr);
+    }
+
+    /* TODO Read query storing like std::map<int64_t , std::set<int64_t>> */
+    /* queries are stored in vectors */
+    auto combinations = !combinations_sql.empty()?
+        pgrouting::pgget::get_combinations(std::string(combinations_sql)) : std::vector<II_t_rt>();
+
+    /* data comes from a combinations */
+    for (const auto &row : combinations) {
+        result[row.d1.source].insert(row.d2.target);
+    }
+
+    /* data comes from many to many */
+    for (const auto &s : starts) {
+        result[s] = ends;
+    }
+    return result;
+}
+
 }  // namespace utilities
 }  // namespace pgrouting

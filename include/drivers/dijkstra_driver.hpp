@@ -6,6 +6,7 @@ Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
+Copyright (c) 2025 Celia Virginia Vergara Castillo
 Copyright (c) 2023 Celia Virginia Vergara Castillo
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
@@ -36,47 +37,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRA_DRIVER_H_
 #pragma once
 
-#ifdef __cplusplus
 extern "C" {
-#endif
 
 #include <postgres.h>
 #include <utils/array.h>
 
-#ifdef __cplusplus
 }
-#endif
 
 #include "cpp_common/undefPostgresDefine.hpp"
+#include <cstddef>
+#include <cstdint>
+#include <string>
 
-#ifdef __cplusplus
-#   include <cstddef>
-#   include <cstdint>
 using Path_rt = struct Path_rt;
-#else
-#   include <stddef.h>
-#   include <stdint.h>
-typedef struct Path_rt Path_rt;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void pgr_do_dijkstra(
-        const char*,
-        const char*,
-        const char*,
+void do_dijkstra(
+        std::string, std::string, std::string,
         ArrayType*, ArrayType*,
 
         bool, bool, bool,
-        int64_t, bool, char, bool, 
+        int64_t, bool, char, bool,
 
         Path_rt**, size_t*,
         char**, char**, char**);
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif  // INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRA_DRIVER_H_
