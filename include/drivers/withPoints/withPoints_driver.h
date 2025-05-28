@@ -30,7 +30,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_DRIVERS_WITHPOINTS_WITHPOINTS_DRIVER_H_
 #pragma once
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -64,7 +63,8 @@ void pgr_do_withPoints(
         const char*,
         ArrayType*, ArrayType*,
 
-        char, bool, bool, bool, bool,
+        bool, bool, bool,
+        int64_t, bool, char, bool, 
 
         Path_rt**, size_t*,
         char**, char**, char**);

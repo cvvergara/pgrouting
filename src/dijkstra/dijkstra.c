@@ -70,6 +70,7 @@ process(
     clock_t start_t = clock();
     pgr_do_dijkstra(
             edges_sql,
+            NULL,
             combinations_sql,
             starts, ends,
 
@@ -78,6 +79,8 @@ process(
             normal,
             n_goals,
             global,
+            ' ',
+            true,
 
             result_tuples,
             result_count,

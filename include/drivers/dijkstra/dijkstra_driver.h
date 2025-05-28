@@ -1,5 +1,4 @@
 /*PGR-GNU*****************************************************************
-
 File: dijkstra_driver.h
 
 Generated with Template by:
@@ -67,10 +66,11 @@ extern "C" {
 void pgr_do_dijkstra(
         const char*,
         const char*,
+        const char*,
         ArrayType*, ArrayType*,
 
         bool, bool, bool,
-        int64_t, bool,
+        int64_t, bool, char, bool, 
 
         Path_rt**, size_t*,
         char**, char**, char**);
