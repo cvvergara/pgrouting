@@ -36,10 +36,11 @@ extern "C" {
 #include "drivers/dijkstra_driver.hpp"
 
 namespace {
+
 std::string
-get_name(std::string base, bool is_only_cost, bool is_near, bool is_withPoints) {
+get_name(std::string base, bool is_only_cost, bool is_near, bool is_withPoints, bool is_matrix) {
     base = is_withPoints? "pgr_withPoints" : base;
-    return "Processing " + base + (is_near? "Near" : "") + (is_only_cost? "Cost" : "");
+    return "Processing " + base + (is_near? "Near" : "") + (is_only_cost? "Cost" : "") + (is_matrix? "Matrix" : "");
 }
 
 }
@@ -86,31 +87,8 @@ void pgr_process_dijkstra(
             result_tuples, result_count,
             &is_matrix, &log_msg, &notice_msg, &err_msg);
 
-    auto fn_name = get_name("pgr_dijkstra", only_cost, n_goals > 0, static_cast<bool>(points_sql));
+    auto fn_name = get_name("pgr_dijkstra",  only_cost, n_goals > 0, points_sql != nullptr, is_matrix);
     time_msg(fn_name.c_str(), start_t, clock());
-#if 0
-    if (only_cost) {
-        if (n_goals > 0) {
-            time_msg("processing pgr_dijkstraNearCost", start_t, clock());
-        } else {
-            if (points_sql) {
-                time_msg("processing pgr_withPointsCost", start_t, clock());
-            } else {
-                time_msg("processing pgr_dijkstraCost", start_t, clock());
-            }
-        }
-    } else {
-        if (n_goals > 0) {
-            time_msg("processing pgr_dijkstraNear", start_t, clock());
-        } else {
-            if (points_sql) {
-                time_msg("processing pgr_withPoints", start_t, clock());
-            } else {
-                time_msg("processing pgr_dijkstra", start_t, clock());
-            }
-        }
-    }
-#endif
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);

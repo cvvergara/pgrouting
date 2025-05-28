@@ -55,7 +55,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], ARRAY[$4]::bigint[], $5, $6, $7) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], ARRAY[$4]::bigint[], $5, $6, $7, false, true) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -84,7 +84,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT a.seq, a.path_seq, a.end_pid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], $4::bigint[], $5, $6, $7) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], $4::bigint[], $5, $6, $7, false, true) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -113,7 +113,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT a.seq, a.path_seq, a.start_pid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], ARRAY[$4]::bigint[], $5, $6, $7, FALSE, FALSE) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], ARRAY[$4]::bigint[], $5, $6, $7, false, false) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -143,7 +143,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT a.seq, a.path_seq, a.start_pid, a.end_pid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], $4::bigint[], $5, $6, $7) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], $4::bigint[], $5, $6, $7, false, true) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100

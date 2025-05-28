@@ -139,7 +139,6 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
     Path_rt  *result_tuples = NULL;
     size_t result_count = 0;
 
-
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
@@ -147,40 +146,52 @@ _pgr_dijkstra(PG_FUNCTION_ARGS) {
         char *driving_side = " ";
 
         if (PG_NARGS() == 8) {
+            /*
+             * many to many
+             */
+
             pgr_process_dijkstra(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
-                    NULL,
-                    PG_GETARG_ARRAYTYPE_P(1),
-                    PG_GETARG_ARRAYTYPE_P(2),
-                    PG_GETARG_BOOL(3),
-                    PG_GETARG_BOOL(4),
-                    PG_GETARG_BOOL(5),
-                    PG_GETARG_INT64(6),
-                    PG_GETARG_BOOL(7),
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                NULL,
+                NULL,
 
-                    driving_side, true,
+                PG_GETARG_ARRAYTYPE_P(1),
+                PG_GETARG_ARRAYTYPE_P(2),
 
-                    &result_tuples,
-                    &result_count);
+                PG_GETARG_BOOL(3),
+                PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(5),
+
+                PG_GETARG_INT64(6),
+                PG_GETARG_BOOL(7),
+
+                driving_side, true,
+
+                &result_tuples,
+                &result_count);
 
         } else /* (PG_NARGS() == 6) */ {
+            /*
+             * Combinations
+             */
             pgr_process_dijkstra(
-                    text_to_cstring(PG_GETARG_TEXT_P(0)),
-                    NULL,
-                    text_to_cstring(PG_GETARG_TEXT_P(1)),
-                    NULL, NULL,
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                NULL,
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
 
-                    PG_GETARG_BOOL(2),
-                    PG_GETARG_BOOL(3),
-                    true,
-                    PG_GETARG_INT64(4),
-                    PG_GETARG_BOOL(5),
+                NULL, NULL,
 
-                    driving_side, true,
+                PG_GETARG_BOOL(2),
+                PG_GETARG_BOOL(3),
+                true,
+                
+                PG_GETARG_INT64(4),
+                PG_GETARG_BOOL(5),
 
-                    &result_tuples,
-                    &result_count);
+                driving_side, true,
+
+                &result_tuples,
+                &result_count);
         }
 
         funcctx->max_calls = result_count;

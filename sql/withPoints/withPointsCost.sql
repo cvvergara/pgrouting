@@ -49,8 +49,9 @@ CREATE FUNCTION pgr_withPointsCost(
     OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT $3, $4, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, TRUE, TRUE) AS a;
+    SELECT $3, $4, agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
+      directed, driving_side, true, true, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -73,8 +74,9 @@ CREATE FUNCTION pgr_withPointsCost(
     OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT $3, a.end_pid, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, TRUE, TRUE) AS a;
+    SELECT $3, end_pid, agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
+      directed, driving_side, true, true, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -97,8 +99,9 @@ CREATE FUNCTION pgr_withPointsCost(
     OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.start_pid, $4, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, TRUE, TRUE) AS a;
+    SELECT start_pid, $4, agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[],
+      directed, driving_side, true, true, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -121,8 +124,9 @@ CREATE FUNCTION pgr_withPointsCost(
     OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.start_pid, a.end_pid, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::BIGINT[], $4::BIGINT[], $5,  $6, TRUE, TRUE) AS a;
+    SELECT start_pid, end_pid, agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
+      directed, driving_side, true, true, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -144,8 +148,9 @@ CREATE FUNCTION pgr_withPointsCost(
     OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.start_pid, a.end_pid, a.agg_cost
-    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, TRUE, TRUE) AS a;
+    SELECT start_pid, end_pid, agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
+      directed, driving_side, true, true) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100

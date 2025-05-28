@@ -27,19 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-
-------------------
-------------------
--- withPoints
-------------------
-------------------
-
-
-------------------
--- _pgr_withPoints
-------------------
-
-
 --v2.6
 CREATE FUNCTION _pgr_withPoints(
     edges_sql TEXT,
@@ -50,9 +37,8 @@ CREATE FUNCTION _pgr_withPoints(
     driving_side CHAR,
     details BOOLEAN,
 
-    only_cost BOOLEAN DEFAULT false, -- gets path
-    normal BOOLEAN DEFAULT true, -- false for many to onu
-
+    only_cost BOOLEAN,
+    normal BOOLEAN,
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,

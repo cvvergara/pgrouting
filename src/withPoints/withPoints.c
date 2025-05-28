@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail:
+Mail: vicky at erosion.dev
 
 ------
 
@@ -73,6 +73,7 @@ process(
             edges_sql,
             points_sql,
             combinations_sql,
+
             starts, ends,
 
             directed,
@@ -182,6 +183,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
 
                 text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),
+
                 &result_tuples,
                 &result_count);
         }
