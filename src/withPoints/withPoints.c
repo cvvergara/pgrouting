@@ -39,6 +39,91 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_withpoints_v3(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpoints_v3);
 
+
+#if 0
+static
+void
+process(
+        const char *edges_sql,
+        const char *points_sql,
+        const char *combinations_sql,
+
+        ArrayType *starts,
+        ArrayType *ends,
+
+        bool directed,
+        bool only_cost,
+        bool normal,
+
+        int64_t n_goals,
+        bool global,
+
+        const char *driving_side,
+        bool details,
+
+        Path_rt **result_tuples,
+        size_t *result_count) {
+    pgr_SPI_connect();
+    char* log_msg = NULL;
+    char* notice_msg = NULL;
+    char* err_msg = NULL;
+
+    clock_t start_t = clock();
+    pgr_do_dijkstra(
+            edges_sql,
+            points_sql,
+            combinations_sql,
+            starts, ends,
+
+            directed,
+            only_cost,
+            normal,
+
+            n_goals,
+            global,
+
+            driving_side[0],
+            details,
+
+            result_tuples, result_count,
+            &log_msg,
+            &notice_msg,
+            &err_msg);
+
+    if (only_cost) {
+        if (n_goals > 0) {
+            time_msg("processing pgr_dijkstraNearCost", start_t, clock());
+        } else {
+            if (points_sql) {
+                time_msg("processing pgr_withPointsCost", start_t, clock());
+            } else {
+                time_msg("processing pgr_dijkstraCost", start_t, clock());
+            }
+        }
+    } else {
+        if (n_goals > 0) {
+            time_msg("processing pgr_dijkstraNear", start_t, clock());
+        } else {
+            if (points_sql) {
+                time_msg("processing pgr_withPoints", start_t, clock());
+            } else {
+                time_msg("processing pgr_dijkstra", start_t, clock());
+            }
+        }
+    }
+
+    if (err_msg && (*result_tuples)) {
+        pfree(*result_tuples);
+        (*result_tuples) = NULL;
+        (*result_count) = 0;
+    }
+
+    pgr_global_report(&log_msg, &notice_msg, &err_msg);
+
+    pgr_SPI_finish();
+}
+#endif
+
 PGDLLEXPORT Datum
 _pgr_withpoints_v3(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
@@ -98,6 +183,126 @@ _pgr_withpoints_v3(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),
 
+                &result_tuples,
+                &result_count);
+        }
+
+        funcctx->max_calls = result_count;
+        funcctx->user_fctx = result_tuples;
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
+            ereport(ERROR,
+                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                     errmsg("function returning record called in context "
+                         "that cannot accept type record")));
+        }
+
+        funcctx->tuple_desc = tuple_desc;
+        MemoryContextSwitchTo(oldcontext);
+    }
+
+    funcctx = SRF_PERCALL_SETUP();
+    tuple_desc = funcctx->tuple_desc;
+    result_tuples = (Path_rt*) funcctx->user_fctx;
+
+    if (funcctx->call_cntr < funcctx->max_calls) {
+        HeapTuple    tuple;
+        Datum        result;
+        Datum        *values;
+        bool*        nulls;
+        size_t       call_cntr = funcctx->call_cntr;
+
+        size_t numb = 8;
+        values = palloc(numb * sizeof(Datum));
+        nulls = palloc(numb * sizeof(bool));
+
+        size_t i;
+        for (i = 0; i < numb; ++i) {
+            nulls[i] = false;
+        }
+
+        int64_t seq = call_cntr == 0?  1 : result_tuples[call_cntr - 1].start_id;
+
+        values[0] = Int32GetDatum((int32_t)call_cntr + 1);
+        values[1] = Int32GetDatum((int32_t)seq);
+        values[2] = Int64GetDatum(result_tuples[call_cntr].start_id);
+        values[3] = Int64GetDatum(result_tuples[call_cntr].end_id);
+        values[4] = Int64GetDatum(result_tuples[call_cntr].node);
+        values[5] = Int64GetDatum(result_tuples[call_cntr].edge);
+        values[6] = Float8GetDatum(result_tuples[call_cntr].cost);
+        values[7] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
+
+        result_tuples[call_cntr].start_id = result_tuples[call_cntr].edge < 0? 1 : seq + 1;
+
+        tuple = heap_form_tuple(tuple_desc, values, nulls);
+        result = HeapTupleGetDatum(tuple);
+        SRF_RETURN_NEXT(funcctx, result);
+    } else {
+        SRF_RETURN_DONE(funcctx);
+    }
+}
+
+PGDLLEXPORT Datum _pgr_withpoints(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_withpoints);
+
+PGDLLEXPORT Datum
+_pgr_withpoints(PG_FUNCTION_ARGS) {
+    FuncCallContext     *funcctx;
+    TupleDesc            tuple_desc;
+
+    Path_rt  *result_tuples = NULL;
+    size_t result_count = 0;
+
+    if (SRF_IS_FIRSTCALL()) {
+        MemoryContext   oldcontext;
+        funcctx = SRF_FIRSTCALL_INIT();
+        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+
+        if (PG_NARGS() == 9) {
+            /*
+             * many to many
+             */
+
+            pgr_process_dijkstra(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
+                NULL,
+
+                PG_GETARG_ARRAYTYPE_P(2),
+                PG_GETARG_ARRAYTYPE_P(3),
+
+                PG_GETARG_BOOL(4), //directed
+                PG_GETARG_BOOL(7), //only cost
+                PG_GETARG_BOOL(8), //normal
+
+                0, true,
+
+                text_to_cstring(PG_GETARG_TEXT_P(5)), //driving side
+                PG_GETARG_BOOL(6), //details
+
+                &result_tuples,
+                &result_count);
+
+        } else if (PG_NARGS() == 7) {
+            /*
+             * Combinations
+             */
+            pgr_process_dijkstra(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                text_to_cstring(PG_GETARG_TEXT_P(1)),
+                text_to_cstring(PG_GETARG_TEXT_P(2)),
+
+                NULL, NULL,
+
+                PG_GETARG_BOOL(3),
+                PG_GETARG_BOOL(6),
+                true,
+
+                0, true, // n-goals, global
+
+                text_to_cstring(PG_GETARG_TEXT_P(4)),
+                PG_GETARG_BOOL(5),
                 &result_tuples,
                 &result_count);
         }
