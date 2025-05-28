@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.0.0') THEN plan(7) ELSE plan(6) END;
+SELECT PLAN(7);
 
 PREPARE q1 AS
 SELECT  path_seq, node, round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPoints(
@@ -75,18 +75,38 @@ SELECT set_has('q5', 'q2', '4: Right: from point ARRAY[-1,-4] to -5 has results 
 SELECT set_has('q5', 'q3', '5: Right: from point ARRAY[-1,-4] to -5 has results of from point -4 to -5');
 SELECT set_has('q5', 'q4', '6: Right: from point ARRAY[-1,-4] to -5 has results of from point -4 to -5');
 
-create or REPLACE FUNCTION test_function()
+
+CREATE OR REPLACE FUNCTION test_cases()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
-  IF NOT min_version('4.0.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'pgr_withPoints Result columns changed names on 4.0.0');
-    RETURN;
-  END IF;
+
+IF min_version('4.0.0') THEN
+
+  PREPARE q9 AS
+  SELECT  -1 AS start_vid, -5 AS end_vid,  round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPoints(
+      'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+      'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+      ARRAY[-1], -5,
+      driving_side := 'r',
+      directed := true,
+      details := true) WHERE edge = -1;
+
+
+  PREPARE q10 AS
+  SELECT start_vid, end_vid, round(agg_cost::numeric, 12) AS agg_cost  FROM pgr_withPointsCost(
+      'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+      'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+      -1, -5,
+      driving_side := 'r',
+      directed := true);
+
+  RETURN QUERY SELECT set_eq('q10','q9','Right, directed: Cost is the last row');
+
+ELSE
 
 PREPARE q9 AS
-SELECT  -1 AS start_vid, -5 AS end_vid,  round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPoints(
+SELECT  -1 AS start_pid, -5 AS end_pid,  round(agg_cost::numeric, 12) AS agg_cost FROM pgr_withPoints(
     'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
     ARRAY[-1], -5,
@@ -96,21 +116,21 @@ SELECT  -1 AS start_vid, -5 AS end_vid,  round(agg_cost::numeric, 12) AS agg_cos
 
 
 PREPARE q10 AS
-SELECT start_vid, end_vid, round(agg_cost::numeric, 12) AS agg_cost  FROM pgr_withPointsCost(
+SELECT start_pid, end_pid, round(agg_cost::numeric, 12) AS agg_cost  FROM pgr_withPointsCost(
     'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
     'SELECT pid, edge_id, fraction, side from pointsOfInterest',
     -1, -5,
     driving_side := 'r',
     directed := true);
 
-RETURN QUERY
-SELECT set_eq('q10','q9','Right, directed: Cost is the last row');
+  RETURN QUERY SELECT set_eq('q10','q9','Right, directed: Cost is the last row');
 
-END
+END IF;
+END;
 $BODY$
 language plpgsql;
 
-SELECT test_function();
+SELECT test_cases();
 
 SELECT * FROM finish();
 ROLLBACK;
