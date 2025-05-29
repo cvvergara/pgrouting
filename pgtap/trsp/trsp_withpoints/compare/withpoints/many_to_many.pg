@@ -1,4 +1,3 @@
-
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
@@ -45,6 +44,11 @@ BEGIN
 
   result_columns := 'seq, start_vid, end_vid, node, edge, cost, agg_cost';
   result_columns_vid := 'seq, start_pid AS start_vid, end_pid AS end_vid, node, edge, cost, agg_cost';
+
+  IF min_version('4.0.0') THEN
+    result_columns_vid = replace(result_columns_vid, 'pid', 'vid');
+  END IF;
+
   points := 'SELECT * FROM pointsofinterest';
   empty_restrictions := 'SELECT * FROM restrictions WHERE id > 10';
   with_reverse := 'SELECT * FROM edges';
