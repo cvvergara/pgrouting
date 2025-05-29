@@ -25,6 +25,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "process/dijkstra_process.h"
 
+#include <string>
+
 extern "C" {
 #include "c_common/postgres_connection.h"
 #include "c_common/e_report.h"

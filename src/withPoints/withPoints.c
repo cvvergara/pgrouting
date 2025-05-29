@@ -40,89 +40,6 @@ PGDLLEXPORT Datum _pgr_withpoints_v3(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpoints_v3);
 
 
-#if 0
-static
-void
-process(
-        const char *edges_sql,
-        const char *points_sql,
-        const char *combinations_sql,
-
-        ArrayType *starts,
-        ArrayType *ends,
-
-        bool directed,
-        bool only_cost,
-        bool normal,
-
-        int64_t n_goals,
-        bool global,
-
-        const char *driving_side,
-        bool details,
-
-        Path_rt **result_tuples,
-        size_t *result_count) {
-    pgr_SPI_connect();
-    char* log_msg = NULL;
-    char* notice_msg = NULL;
-    char* err_msg = NULL;
-
-    clock_t start_t = clock();
-    pgr_do_dijkstra(
-            edges_sql,
-            points_sql,
-            combinations_sql,
-            starts, ends,
-
-            directed,
-            only_cost,
-            normal,
-
-            n_goals,
-            global,
-
-            driving_side[0],
-            details,
-
-            result_tuples, result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
-
-    if (only_cost) {
-        if (n_goals > 0) {
-            time_msg("processing pgr_dijkstraNearCost", start_t, clock());
-        } else {
-            if (points_sql) {
-                time_msg("processing pgr_withPointsCost", start_t, clock());
-            } else {
-                time_msg("processing pgr_dijkstraCost", start_t, clock());
-            }
-        }
-    } else {
-        if (n_goals > 0) {
-            time_msg("processing pgr_dijkstraNear", start_t, clock());
-        } else {
-            if (points_sql) {
-                time_msg("processing pgr_withPoints", start_t, clock());
-            } else {
-                time_msg("processing pgr_dijkstra", start_t, clock());
-            }
-        }
-    }
-
-    if (err_msg && (*result_tuples)) {
-        pfree(*result_tuples);
-        (*result_tuples) = NULL;
-        (*result_count) = 0;
-    }
-
-    pgr_global_report(&log_msg, &notice_msg, &err_msg);
-
-    pgr_SPI_finish();
-}
-#endif
 
 PGDLLEXPORT Datum
 _pgr_withpoints_v3(PG_FUNCTION_ARGS) {
@@ -151,14 +68,14 @@ _pgr_withpoints_v3(PG_FUNCTION_ARGS) {
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_ARRAYTYPE_P(3),
 
-                PG_GETARG_BOOL(4), //directed
-                PG_GETARG_BOOL(7), //only cost
-                PG_GETARG_BOOL(8), //normal
+                PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(7),
+                PG_GETARG_BOOL(8),
 
-                0, true, // n-goals, global
+                0, true,
 
-                text_to_cstring(PG_GETARG_TEXT_P(5)), //driving side
-                PG_GETARG_BOOL(6), //details
+                text_to_cstring(PG_GETARG_TEXT_P(5)),
+                PG_GETARG_BOOL(6),
 
                 &result_tuples,
                 &result_count);
@@ -178,7 +95,7 @@ _pgr_withpoints_v3(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 true,
 
-                0, true, // n-goals, global
+                0, true,
 
                 text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),
@@ -272,14 +189,14 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_ARRAYTYPE_P(3),
 
-                PG_GETARG_BOOL(4), //directed
-                PG_GETARG_BOOL(7), //only cost
-                PG_GETARG_BOOL(8), //normal
+                PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(7),
+                PG_GETARG_BOOL(8),
 
                 0, true,
 
-                text_to_cstring(PG_GETARG_TEXT_P(5)), //driving side
-                PG_GETARG_BOOL(6), //details
+                text_to_cstring(PG_GETARG_TEXT_P(5)),
+                PG_GETARG_BOOL(6),
 
                 &result_tuples,
                 &result_count);
@@ -299,7 +216,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 true,
 
-                0, true, // n-goals, global
+                0, true,
 
                 text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),

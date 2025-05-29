@@ -53,6 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
+// TODO(vicky) This should be in its own file
 char
 estimate_drivingSide(char driving_side) {
     char d_side = static_cast<char>(tolower(driving_side));
@@ -68,13 +69,12 @@ get_new_queries(
         const std::string &points_sql,
         std::string &edges_of_points_query,
         std::string &edges_no_points_query) {
-
-    edges_of_points_query = std::string ("WITH ")
+    edges_of_points_query = std::string("WITH ")
         + " edges AS (" + edges_sql + "), "
         + " points AS (" + points_sql + ")"
         + " SELECT DISTINCT edges.* FROM edges JOIN points ON (id = edge_id)";
 
-    edges_no_points_query  = std::string ("WITH ")
+    edges_no_points_query  = std::string("WITH ")
         + " edges AS (" + edges_sql + "), "
         + " points AS (" + points_sql + ")"
         + " SELECT edges.*"

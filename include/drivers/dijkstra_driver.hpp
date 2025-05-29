@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: dijkstra_driver.h
+File: dijkstra_driver.hpp
 
 Generated with Template by:
 Copyright (c) 2015 pgRouting developers
@@ -32,9 +32,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRA_DRIVER_H_
-#define INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRA_DRIVER_H_
-#pragma once
+#ifndef INCLUDE_DRIVERS_DIJKSTRA_DRIVER_HPP_
+#define INCLUDE_DRIVERS_DIJKSTRA_DRIVER_HPP_
+
 
 extern "C" {
 
@@ -43,12 +43,14 @@ extern "C" {
 
 }
 
-#include "cpp_common/undefPostgresDefine.hpp"
-
 #include <cstddef>
 #include <cstdint>
 #include <string>
+
+#include "cpp_common/undefPostgresDefine.hpp"
+
 using Path_rt = struct Path_rt;
+// TODO(vicky) check to remove extern C: using ArrayType = struct ArrayType;
 
 void do_dijkstra(
         const std::string&,
@@ -62,4 +64,4 @@ void do_dijkstra(
         Path_rt**, size_t*,
         bool*, char**, char**, char**);
 
-#endif  // INCLUDE_DRIVERS_DIJKSTRA_DIJKSTRA_DRIVER_H_
+#endif  // INCLUDE_DRIVERS_DIJKSTRA_DRIVER_HPP_

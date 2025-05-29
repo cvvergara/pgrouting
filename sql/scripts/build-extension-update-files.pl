@@ -476,7 +476,6 @@ sub update_from_version_2 {
     push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult;  DROP TYPE pgr_costresult CASCADE;\n";
     push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult3; DROP TYPE pgr_costresult3 CASCADE;\n";
     push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_geomresult;  DROP TYPE pgr_geomresult CASCADE;\n";
-    push @commands, dijkstra();
     push @commands, allpairs();
     push @commands, astar();
     push @commands, withpoints();
@@ -665,50 +664,6 @@ sub tsp {
 
     return @commands;
 }
-
-sub dijkstra {
-    my @commands = ();
-
-    push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,anyarray,boolean)");
-
-    push @commands, update_pg_proc(
-        'pgr_dijkstra',
-        'edges_sql,start_vid,end_vid,directed,seq,path_seq,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,node,edge,cost,agg_cost');
-    push @commands, update_pg_proc(
-        'pgr_dijkstra',
-        'edges_sql,start_vid,end_vids,directed,seq,path_seq,end_vid,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,node,end_vid,edge,cost,agg_cost');
-    push @commands, update_pg_proc(
-        'pgr_dijkstra',
-        'edges_sql,start_vids,end_vid,directed,seq,path_seq,start_vid,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,start_vid,node,edge,cost,agg_cost');
-    push @commands, update_pg_proc(
-        'pgr_dijkstra',
-        'edges_sql,start_vids,end_vids,directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost',
-        '"","","",directed,seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost');
-
-    # pgr_dijkstraCost
-    push @commands, update_pg_proc_short(
-        'pgr_dijkstracost',
-        '"","","",directed,start_vid,end_vid,agg_cost');
-
-    # pgr_dijkstraCostMatrix
-    push @commands, update_pg_proc(
-        'pgr_dijkstracostmatrix',
-        'edges_sql,vids,directed,start_vid,end_vid,agg_cost',
-        '"","",directed,start_vid,end_vid,agg_cost');
-
-    push @commands, update_pg_proc(
-        'pgr_dijkstravia',
-        'edges_sql,via_vertices,directed,strict,u_turn_on_edge,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost',
-        '"","",directed,strict,u_turn_on_edge,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost');
-
-
-    return @commands;
-}
-
-
 
 sub ksp {
     my @commands = ();
