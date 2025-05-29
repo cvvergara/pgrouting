@@ -209,6 +209,11 @@ sub generate_upgrade_script {
 
     if ($new_minor != $old_minor) {
         for my $old_function (sort @{$old_signatures}) {
+            if ($old_mayor == 2) {
+                push @commands, drop_special_case_function($old_function);
+                next;
+            }
+
             # Skip signatures from the old version that exist in the new version
             next if $function_map{$old_function};
 
