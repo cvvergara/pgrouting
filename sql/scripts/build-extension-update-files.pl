@@ -57,6 +57,12 @@ use vars qw/*name *dir *prune/;
 *dir    = *File::Find::dir;
 *prune  = *File::Find::prune;
 
+my $version_2_0 = qr/(2.0.[\d+])/;
+my $version_2_1 = qr/(2.1.[\d+])/;
+my $version_2_2 = qr/(2.2.[\d+])/;
+my $version_2_3 = qr/(2.3.[\d+])/;
+my $version_2_4 = qr/(2.4.[\d+])/;
+my $version_2_5 = qr/(2.5.[\d+])/;
 my $version_2_6 = qr/(2.6.[\d+])/;
 my $version_3_0 = qr/(3.0.[\d+])/;
 my $version_3_1 = qr/(3.1.[\d+])/;
@@ -272,8 +278,32 @@ sub generate_upgrade_script {
                 push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,numeric)");
                 push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,double precision)");
             }
+            if ($old_minor >= "3.2") {
+                # Out parameters changed names on v4.0.0
+                push @commands, drop_special_case_function("pgr_withpoints(text,text,text,boolean,character,boolean)");
+                push @commands, drop_special_case_function("pgr_withpointscost(text,text,text,boolean,character)");
+            }
+
+            # Out parameters changed names on v4.0.0
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,anyarray,boolean,character,boolean)");
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,bigint,boolean,character,boolean)");
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,bigint,anyarray,boolean,character,boolean)");
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,bigint,bigint,boolean,character,boolean)");
+
+            # Out parameters changed names on v4.0.0
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,anyarray,anyarray,boolean,character)");
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,anyarray,bigint,boolean,character)");
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,bigint,anyarray,boolean,character)");
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,bigint,bigint,boolean,character)");
+
+            # Out parameters changed names on v4.0.0
+            push @commands, drop_special_case_function("pgr_withpointscostmatrix(text,text,anyarray,boolean,character)");
         }
     }
+
+    #------------------------------------
+    # Special cases
+    #------------------------------------
 
     if ($old_mayor == 2) {
         push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult;  DROP TYPE pgr_costresult CASCADE;\n";
