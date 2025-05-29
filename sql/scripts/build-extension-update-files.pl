@@ -293,19 +293,6 @@ sub generate_upgrade_script {
         push @commands, update_from_version_2();
     }
 
-=pod
-    if ("$old_version" eq "3.0.0") {
-        push @commands, update_from_version_3_0_0();
-    }
-=cut
-
-    # UGH! someone change the definition of the TYPE or reused an existing
-    # TYPE name which is VERY BAD because other people might be dependent
-    # on the old TYPE so we can DROP TYPE <type> CASCADE; or we might drop
-    # a user's function. So just DIE and maybe someone can resolve this
-    die "ERROR: pgrouting TYPE changed! Cannot continue!\n" if $err;
-
-
     write_script(join('', @commands));
 }
 
@@ -427,42 +414,6 @@ AND proallargtypes = '{$old_sig}';
     ";
 }
 
-
-=pod
-*****************************************************************
-code beyond this point is v3.0.0 specific
-*****************************************************************
-=cut
-
-sub update_from_version_3_0_0 {
-    my @commands = ();
-    push @commands, "
-
----------------------------------------------
--- Updating from version 3.0.0
----------------------------------------------
-" if $DEBUG;
-
-    push @commands, tsp();
-    push @commands, withpoints();
-    push @commands, components();
-    push @commands, flow();
-    push @commands, others_3_0_0();
-    return @commands;
-}
-
-sub others_3_0_0 {
-    my @commands = ();
-    push @commands, update_pg_proc(
-        'pgr_topologicalsort',
-        'edges_sql,seq,sorted_v',
-        '"",seq,sorted_v');
-    push @commands, update_pg_proc(
-        'pgr_transitiveclosure',
-        'edges_sql,seq,vid,target_array',
-        '"",seq,vid,target_array');
-    return @commands;
-}
 
 =pod
 *****************************************************************

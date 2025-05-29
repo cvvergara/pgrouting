@@ -43,11 +43,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 PG_MODULE_MAGIC;
 
-PGDLLEXPORT Datum _pgr_dijkstra_v3(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_dijkstra_v3);
+PGDLLEXPORT Datum _pgr_dijkstra_v4(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_dijkstra_v4);
 
 PGDLLEXPORT Datum
-_pgr_dijkstra_v3(PG_FUNCTION_ARGS) {
+_pgr_dijkstra_v4(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 

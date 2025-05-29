@@ -46,7 +46,7 @@ CREATE FUNCTION pgr_withPointsCostMatrix(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], '{}'::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], '{}'::BIGINT[],
       $4, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT

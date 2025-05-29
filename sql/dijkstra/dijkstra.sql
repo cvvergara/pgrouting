@@ -50,7 +50,7 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra_v3(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[],
+    FROM _pgr_dijkstra_v4(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[],
         $4, false, true, 0, false);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -77,7 +77,7 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra_v3(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[],
+    FROM _pgr_dijkstra_v4(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[],
        $4, false, true, 0, false);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -104,7 +104,7 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra_v3(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[],
+    FROM _pgr_dijkstra_v4(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[],
 $4, false, false, 0, false);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -131,7 +131,7 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra_v3(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[],
+    FROM _pgr_dijkstra_v4(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[],
       $4, false, true, 0, false);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -157,7 +157,7 @@ CREATE FUNCTION pgr_dijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_dijkstra_v3(_pgr_get_statement($1), _pgr_get_statement($2),
+    FROM _pgr_dijkstra_v4(_pgr_get_statement($1), _pgr_get_statement($2),
       $3, false, 0, false);
 $BODY$
 LANGUAGE sql VOLATILE STRICT

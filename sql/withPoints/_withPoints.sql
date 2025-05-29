@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v4.0
-CREATE FUNCTION _pgr_withPoints_v3(
+CREATE FUNCTION _pgr_withPoints_v4(
     edges_sql TEXT,
     points_sql TEXT,
 
@@ -58,7 +58,7 @@ LANGUAGE C VOLATILE STRICT;
 
 
 --v3.2
-CREATE FUNCTION _pgr_withPoints_v3(
+CREATE FUNCTION _pgr_withPoints_v4(
     edges_sql TEXT,
     points_sql TEXT,
     combinations_sql TEXT,
@@ -86,14 +86,14 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION _pgr_withPoints_v3(TEXT, TEXT,
+COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT,
   ANYARRAY, ANYARRAY,
   BOOLEAN, CHAR, BOOLEAN,
   BOOLEAN, BOOLEAN,
   BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_withPoints_v3(TEXT, TEXT, TEXT,
+COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT, TEXT,
   BOOLEAN, CHAR, BOOLEAN, BOOLEAN,
   BIGINT, BOOLEAN)
 IS 'pgRouting internal function';

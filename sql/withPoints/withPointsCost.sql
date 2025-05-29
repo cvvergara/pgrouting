@@ -44,7 +44,7 @@ CREATE FUNCTION pgr_withPointsCost(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
         $5, $6, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -68,7 +68,7 @@ CREATE FUNCTION pgr_withPointsCost(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
       $5, $6, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -92,7 +92,7 @@ CREATE FUNCTION pgr_withPointsCost(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[],
       $5, $6, true, true, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -116,7 +116,7 @@ CREATE FUNCTION pgr_withPointsCost(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
       $5, $6, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -139,7 +139,7 @@ CREATE FUNCTION pgr_withPointsCost(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
       directed, driving_side, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT

@@ -50,7 +50,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
         $5, $6, $7, false, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -80,7 +80,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
        $5, $6, $7, false, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -110,7 +110,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), $2, $3::BIGINT[], ARRAY[$4]::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), $2, $3::BIGINT[], ARRAY[$4]::BIGINT[],
       $5, $6, $7, false, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -140,7 +140,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
       $5, $6, $7, false, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
@@ -169,7 +169,7 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_withPoints_v3(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
+    FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
        $4, $5, $6, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
