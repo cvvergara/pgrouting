@@ -1,4 +1,3 @@
-
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
@@ -37,6 +36,9 @@ BEGIN
     RETURN;
   END IF;
 
+  IF min_version('4.0.0') THEN
+    sql_TestFunction = replace(sql_TestFunction, 'pid', 'vid');
+  END IF;
 
     sql_Combinations := '';
     sql_Many := '';
@@ -81,4 +83,3 @@ select * from test_function('SELECT start_pid, end_pid, agg_cost FROM pgr_withPo
 -- Finish the tests and clean up.
 SELECT * FROM finish();
 ROLLBACK;
-
