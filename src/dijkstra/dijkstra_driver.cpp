@@ -32,16 +32,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "drivers/dijkstra/dijkstra_driver.h"
+#include "drivers/dijkstra_driver.hpp"
 
+#include <algorithm>
 #include <sstream>
 #include <deque>
 #include <vector>
-#include <algorithm>
 #include <limits>
 #include <string>
+#include <map>
+#include <set>
 
-
+#include "withPoints/withPoints.hpp"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/combinations.hpp"
 #include "cpp_common/alloc.hpp"
@@ -50,6 +52,35 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dijkstra/dijkstra.hpp"
 
 namespace {
+
+// TODO(vicky) This should be in its own file
+char
+estimate_drivingSide(char driving_side) {
+    char d_side = static_cast<char>(tolower(driving_side));
+    if (!((d_side == 'r') || (d_side == 'l') || (d_side == 'b'))) {
+        d_side = ' ';
+    }
+    return d_side;
+}
+
+void
+get_new_queries(
+        const std::string &edges_sql,
+        const std::string &points_sql,
+        std::string &edges_of_points_query,
+        std::string &edges_no_points_query) {
+    edges_of_points_query = std::string("WITH ")
+        + " edges AS (" + edges_sql + "), "
+        + " points AS (" + points_sql + ")"
+        + " SELECT DISTINCT edges.* FROM edges JOIN points ON (id = edge_id)";
+
+    edges_no_points_query  = std::string("WITH ")
+        + " edges AS (" + edges_sql + "), "
+        + " points AS (" + points_sql + ")"
+        + " SELECT edges.*"
+        + " FROM edges"
+        + " WHERE NOT EXISTS (SELECT edge_id FROM points WHERE id = edge_id)";
+}
 
 void
 post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, size_t n_goals, bool global) {
@@ -103,9 +134,10 @@ post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, si
 
 
 void
-pgr_do_dijkstra(
-        const char *edges_sql,
-        const char *combinations_sql,
+do_dijkstra(
+        const std::string &edges_sql,
+        const std::string &points_sql,
+        const std::string &combinations_sql,
         ArrayType *starts,
         ArrayType *ends,
 
@@ -114,9 +146,11 @@ pgr_do_dijkstra(
         bool normal,
         int64_t n_goals,
         bool global,
+        char driving_side,
+        bool details,
 
-        Path_rt **return_tuples,
-        size_t *return_count,
+        Path_rt **return_tuples, size_t *return_count,
+        bool *is_matrix,
         char **log_msg,
         char **notice_msg,
         char **err_msg) {
@@ -124,15 +158,17 @@ pgr_do_dijkstra(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
-    using pgrouting::utilities::get_combinations;
+    using pgrouting::pgget::get_points;
     using pgrouting::pgget::get_edges;
+    using pgrouting::utilities::get_combinations;
 
     std::ostringstream log;
-    std::ostringstream err;
     std::ostringstream notice;
-    const char *hint = nullptr;
+    std::ostringstream err;
+    std::string hint = "";
 
     try {
+        pgassert(!edges_sql.empty());
         pgassert(!(*log_msg));
         pgassert(!(*notice_msg));
         pgassert(!(*err_msg));
@@ -140,49 +176,92 @@ pgr_do_dijkstra(
         pgassert(*return_count == 0);
 
         hint = combinations_sql;
-        auto combinations = get_combinations(combinations_sql, starts, ends, normal);
-        hint = nullptr;
+        auto combinations = get_combinations(combinations_sql, starts, ends, normal, *is_matrix);
+        hint = "";
 
-        if (combinations.empty() && combinations_sql) {
+        if (combinations.empty() && !combinations_sql.empty()) {
             *notice_msg = to_pg_msg("No (source, target) pairs found");
             *log_msg = to_pg_msg(combinations_sql);
             return;
         }
 
+        std::string enop;
+        std::string eofp;
+        std::vector<Edge_t> edges;
+        std::vector<Edge_t> edges_of_points;
+        std::vector<Point_on_edge_t> points;
 
+        if (points_sql.empty()) {
+            hint = edges_sql;
+            edges = get_edges(edges_sql, normal, false);
+            hint = "";
+        } else {
+            get_new_queries(edges_sql, points_sql, eofp, enop);
 
-        hint = edges_sql;
-        auto edges = get_edges(std::string(edges_sql), normal, false);
+            hint = points_sql;
+            points = get_points(std::string(points_sql));
+
+            hint = eofp;
+            edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
+
+            hint = enop;
+            edges = !enop.empty()? get_edges(enop, normal, false) : std::vector<Edge_t>();
+            hint = "";
+
+            if (edges.empty() && edges_of_points.empty()) {
+                *notice_msg = to_pg_msg("No edges found");
+                return;
+            }
+        }
+
+        /*
+         * processing points
+         */
+        pgrouting::Pg_points_graph pg_graph(points, edges_of_points,
+                normal,
+                estimate_drivingSide(driving_side),
+                directed);
+
+        if (pg_graph.has_error()) {
+            *log_msg = to_pg_msg(pg_graph.get_log());
+            *err_msg = to_pg_msg(pg_graph.get_error());
+            return;
+        }
+        auto new_edges = pg_graph.new_edges();
+
+        edges.insert(edges.end(), new_edges.begin(), new_edges.end());
 
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+            *log_msg = to_pg_msg(edges_sql);
             return;
         }
-        hint = nullptr;
 
         size_t n = n_goals <= 0? (std::numeric_limits<size_t>::max)() : static_cast<size_t>(n_goals);
-        std::deque<Path>paths;
 
+        std::deque<Path> paths;
         if (directed) {
             pgrouting::DirectedGraph graph;
             graph.insert_edges(edges);
-            paths =  pgrouting::algorithms::dijkstra(graph, combinations, only_cost, n);
+            paths = pgrouting::algorithms::dijkstra(graph, combinations, only_cost, n);
         } else {
             pgrouting::UndirectedGraph graph;
             graph.insert_edges(edges);
             paths =  pgrouting::algorithms::dijkstra(graph, combinations, only_cost, n);
         }
+
         post_process(paths, only_cost, normal, n, global);
-        combinations.clear();
+
+        if (!details) {
+            for (auto &path : paths) path = pg_graph.eliminate_details(path);
+        }
 
         auto count = count_tuples(paths);
 
         if (count == 0) {
             (*return_tuples) = NULL;
             (*return_count) = 0;
-            notice << "No paths found";
-            *log_msg = to_pg_msg(notice);
+            *log_msg = to_pg_msg("No paths found");
             return;
         }
 
@@ -199,7 +278,7 @@ pgr_do_dijkstra(
         *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        *log_msg = !hint.empty()? to_pg_msg(hint) : to_pg_msg(log);
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;

@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: allpairs_process.cpp
+File: dijkstra_process.cpp
 
 Function's developer:
 Copyright (c) 2025 Celia Virginia Vergara Castillo
@@ -23,7 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#include "process/allpairs_process.h"
+#include "process/dijkstra_process.h"
 
 #include <string>
 
@@ -33,22 +33,32 @@ extern "C" {
 #include "c_common/time_msg.h"
 }
 
-#include "c_types/iid_t_rt.h"
+#include "c_types/path_rt.h"
 #include "cpp_common/assert.hpp"
-#include "drivers/allpairs_driver.hpp"
+#include "drivers/dijkstra_driver.hpp"
+
+namespace {
+
+std::string
+get_name(std::string base, bool is_only_cost, bool is_near, bool is_withPoints, bool is_matrix) {
+    base = is_withPoints? "pgr_withPoints" : base;
+    return "Processing " + base + (is_near? "Near" : "") + (is_only_cost? "Cost" : "") + (is_matrix? "Matrix" : "");
+}
+
+}
 
 /**
- which = 0 -> johnson
- which = 1 -> floydWarshall
+ which function is determined by the parameters
 
- This is c++ code, linked as C code, because pgr_process_allpairs is called from C code
+ This is c++ code, linked as C code, because pgr_process_dijkstra is called from C code
  */
-void pgr_process_allpairs(
-        const char* edges_sql,
-        bool directed,
-        int which,
-        IID_t_rt **result_tuples,
-        size_t *result_count) {
+void pgr_process_dijkstra(
+        const char *edges_sql, const char *points_sql, const char *combinations_sql,
+        ArrayType *starts, ArrayType *ends,
+        bool directed, bool only_cost, bool normal,
+        int64_t n_goals, bool global,
+        char *driving_side, bool details,
+        Path_rt **result_tuples, size_t *result_count) {
     pgassert(edges_sql);
     pgassert(!(*result_tuples));
     pgassert(*result_count == 0);
@@ -56,19 +66,31 @@ void pgr_process_allpairs(
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
+    bool is_matrix = false;
 
     clock_t start_t = clock();
-    do_allpairs(
-            edges_sql, directed,
-            which,
-            result_tuples, result_count,
-            &log_msg, &err_msg);
+    do_dijkstra(
+            edges_sql? edges_sql : "",
+            points_sql? points_sql : "",
+            combinations_sql? combinations_sql : "",
 
-    if (which == 0) {
-        time_msg(std::string(" processing pgr_johnson").c_str(), start_t, clock());
-    } else {
-        time_msg(std::string(" processing pgr_floydWarshall").c_str(), start_t, clock());
-    }
+            starts, ends,
+
+            directed,
+            only_cost,
+            normal,
+
+            n_goals,
+            global,
+
+            driving_side[0],
+            details,
+
+            result_tuples, result_count,
+            &is_matrix, &log_msg, &notice_msg, &err_msg);
+
+    auto fn_name = get_name("pgr_dijkstra",  only_cost, n_goals > 0, points_sql != nullptr, is_matrix);
+    time_msg(fn_name.c_str(), start_t, clock());
 
     if (err_msg && (*result_tuples)) {
         pfree(*result_tuples);
