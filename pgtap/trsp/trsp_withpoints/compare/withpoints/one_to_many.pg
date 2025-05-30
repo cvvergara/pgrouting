@@ -22,7 +22,7 @@ SELECT CASE WHEN min_version('3.4.0') THEN plan(68) ELSE plan(1) END;
 SET extra_float_digits = -3;
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
-CREATE or REPLACE FUNCTION compareDijkstra(cant INTEGER default 17)
+CREATE or REPLACE FUNCTION compareDijkstra(INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -53,7 +53,7 @@ BEGIN
   no_reverse := 'SELECT id, source, target, cost FROM edges';
   arr := 'ARRAY[1,2,3,4,5,6,7,8]';
 
-  FOR i IN 1.. cant LOOP
+  FOR i IN 1.. $1 LOOP
     points_sql := 'SELECT ' || result_columns_vid || ' FROM pgr_withpoints($$' || with_reverse || '$$, $$' || points || '$$, '
       || i || ', ' || arr || ', directed => true)';
     trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'

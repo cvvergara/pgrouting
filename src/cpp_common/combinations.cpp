@@ -57,7 +57,7 @@ get_combinations(
             auto ptr = std::find(edgesList.begin(), edgesList.end(), r.precedences().front());
             if (ptr == edgesList.end()) continue;
             /*
-             * And edge on the begining of a rule list was found
+             * And edge on the beginning of a rule list was found
              * Checking if the complete rule applies
              */
 

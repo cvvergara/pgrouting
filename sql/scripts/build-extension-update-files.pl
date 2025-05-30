@@ -239,7 +239,7 @@ sub generate_upgrade_script {
         }
 
         if ($old_mayor == 3) {
-            # standardized output colums
+            # standardized output columns
             if ($old_minor < 3.5) {
                 push @commands, drop_special_case_function("pgr_dijkstra(text,anyarray,bigint,boolean)");
                 push @commands, drop_special_case_function("pgr_dijkstra(text,bigint,anyarray,boolean)");
