@@ -26,7 +26,7 @@
 
 .. rubric:: Version 3.6.0
 
-* Standardizing output columns to |nksp-result|
+* Standardizing output columns to |generic-result|
 * pgr_ksp(One to One)
 
   * Added ``start_vid`` and ``end_vid`` result columns.
@@ -72,7 +72,7 @@ Signatures
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 .. index::
@@ -87,7 +87,7 @@ One to One
    | pgr_KSP(`Edges SQL`_, **start vid**, **end vid**, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from :math:`6` to :math:`17` on a directed graph.
@@ -108,7 +108,7 @@ One to Many
    | pgr_KSP(`Edges SQL`_, **start vid**, **end vids**, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from vertex :math:`6` to vertices :math:`\{10, 17\}` on a directed graph.
@@ -129,7 +129,7 @@ Many to One
    | pgr_KSP(`Edges SQL`_, **start vids**, **end vid**, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from vertices :math:`\{6, 1\}` to vertex :math:`17` on a directed graph.
@@ -150,7 +150,7 @@ Many to Many
    | pgr_KSP(`Edges SQL`_, **start vids**, **end vids**, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths vertices :math:`\{6, 1\}` to vertices :math:`\{10, 17\}` on a directed graph.
@@ -171,7 +171,7 @@ Combinations
    | pgr_KSP(`Edges SQL`_, `Combinations SQL`_, **K**, [**options**])
    | **options:** ``[directed, heap_paths]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Using a combinations table on an directed graph
@@ -275,7 +275,7 @@ Result columns
 
 .. ksp_returns_start
 
-Returns set of |nksp-result|
+Returns set of |generic-result|
 
 .. list-table::
    :width: 81

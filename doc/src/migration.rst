@@ -584,7 +584,7 @@ Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
 :doc:`pgr_KSP` result columns are being standardized.
 
 :from: |ksp-result|
-:from: |nksp-result|
+:to: |generic-result|
 
 Signatures to be migrated:
 
@@ -601,6 +601,8 @@ Signatures to be migrated:
 :Migration:
 
 * Be aware of the existence of the additional columns.
+* If needed filter out the added columns, for example, to return the original
+  columns.
 
 ``pgr_KSP`` (One to One)
 ...............................................................................
@@ -859,7 +861,7 @@ Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__
 :doc:`pgr_withPointsKSP` result columns are being standardized.
 
 :from: |ksp-result|
-:from: |nksp-result|
+:to: |generic-result|
 
 And ``driving side`` parameter changed from named optional to unnamed compulsory
 **driving side** and its validity differ for directed and undirected graphs.
@@ -878,7 +880,7 @@ Signatures to be migrated:
 :Migration:
 
 * Be aware of the existence of the additional result Columns.
-* New output columns are |nksp-result|
+* New output columns are |generic-result|
 * **driving side** parameter is unnamed compulsory, and valid values differ for
   directed and undirected graphs.
 

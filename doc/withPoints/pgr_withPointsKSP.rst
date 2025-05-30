@@ -26,7 +26,7 @@
 
 .. rubric:: Version 3.6.0
 
-* Standardizing output columns to |nksp-result|
+* Standardizing output columns to |generic-result|
 * pgr_withPointsKSP(One to One)
 
   * Signature change: ``driving_side`` parameter changed from named optional to
@@ -85,7 +85,7 @@ One to One
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, **K**, **driving_side**, [**options**])
    | **options:** ``[directed, heap_paths, details]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Get 2 paths from Point :math:`1` to point :math:`2` on a directed
@@ -155,7 +155,7 @@ Many to Many
    | pgr_withPointsKSP(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, **K**, **driving_side**, [**options**])
    | **options:** ``[directed, heap_paths, details]``
 
-   | Returns set of |nksp-result|
+   | Returns set of |generic-result|
    | OR EMPTY SET
 
 :Example: Get a path from point :math:`1` and vertex :math:`6` to point :math:`3` and vertex :math:`1` on a **directed**
