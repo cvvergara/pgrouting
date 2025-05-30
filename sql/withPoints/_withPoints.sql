@@ -28,49 +28,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_withPoints_v4(
-    edges_sql TEXT,
-    points_sql TEXT,
+    TEXT, -- edges
+    TEXT, -- points
 
-    start_pids ANYARRAY,
-    end_pids ANYARRAY,
+    ANYARRAY, -- departures
+    ANYARRAY, -- arrivals
 
-    directed BOOLEAN,
-    driving_side CHAR,
-    details BOOLEAN,
+    BOOLEAN, --directed
+    CHAR,    -- driving_side
+    BOOLEAN, -- details
 
-    only_cost BOOLEAN,
-    normal BOOLEAN,
+    BOOLEAN, -- only_cost
+    BOOLEAN, -- normal
 
-    n_goals BIGINT,
-    global BOOLEAN,
-
-    OUT seq INTEGER,
-    OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
-
-
---v3.2
-CREATE FUNCTION _pgr_withPoints_v4(
-    edges_sql TEXT,
-    points_sql TEXT,
-    combinations_sql TEXT,
-
-    directed BOOLEAN,
-    driving_side CHAR,
-    details BOOLEAN,
-
-    only_cost BOOLEAN,
-
-    n_goals BIGINT,
-    global BOOLEAN,
+    BIGINT,  -- n_goals
+    BOOLEAN, -- global
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -84,16 +56,35 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
 
--- COMMENTS
-
-COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT,
-  ANYARRAY, ANYARRAY,
-  BOOLEAN, CHAR, BOOLEAN,
-  BOOLEAN, BOOLEAN,
+COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN, BOOLEAN, BOOLEAN,
   BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
 
-COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT, TEXT,
-  BOOLEAN, CHAR, BOOLEAN, BOOLEAN,
-  BIGINT, BOOLEAN)
+--v4.0
+CREATE FUNCTION _pgr_withPoints_v4(
+    TEXT, -- edges
+    TEXT, -- points
+    TEXT, -- combinations
+
+    BOOLEAN, --directed
+    CHAR,    -- driving_side
+    BOOLEAN, -- details
+    BOOLEAN, -- only_cost
+
+    BIGINT,  -- n_goals
+    BOOLEAN, -- global
+
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
+
+COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN, BOOLEAN, BIGINT, BOOLEAN)
 IS 'pgRouting internal function';

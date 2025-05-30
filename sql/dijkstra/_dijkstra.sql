@@ -29,20 +29,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---v3.2
+--v4.0
 CREATE FUNCTION _pgr_dijkstra_v4(
-    edges_sql TEXT,
+    TEXT, -- edges
 
-    start_vids ANYARRAY,
-    end_vids ANYARRAY,
+    ANYARRAY, -- departures
+    ANYARRAY, -- arrivals
 
-    directed BOOLEAN,
+    BOOLEAN, --directed
 
-    only_cost BOOLEAN,
-    normal BOOLEAN,
+    BOOLEAN, -- only_cost
+    BOOLEAN, -- normal
 
-    n_goals BIGINT,
-    global BOOLEAN,
+    BIGINT,  -- n_goals
+    BOOLEAN, -- global
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -57,16 +57,16 @@ RETURNS SETOF RECORD AS
 LANGUAGE C VOLATILE STRICT;
 
 
---v3.2
+--v4.0
 CREATE FUNCTION _pgr_dijkstra_v4(
-    edges_sql TEXT,
-    combinations_sql TEXT,
+    TEXT, -- edges
+    TEXT, -- combinations
 
-    directed BOOLEAN,
-    only_cost BOOLEAN,
+    BOOLEAN, --directed
+    BOOLEAN, -- only_cost
 
-    n_goals BIGINT,
-    global BOOLEAN,
+    BIGINT,  -- n_goals
+    BOOLEAN, -- global
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,

@@ -757,6 +757,144 @@ columns
    :start-after: --primDD4
    :end-before: --primDD5
 
+Migration of ``pgr_withPoints``
+-------------------------------------------------------------------------------
+
+.. |old-pid-result| replace:: ``(seq, path_seq, [start_pid], [end_pid], node, edge, cost, agg_cost)``
+.. |pid-1-m| replace:: ``(seq, path_seq, end_pid, node, edge, cost, agg_cost)``
+.. |pid-m-1| replace:: ``(seq, path_seq, start_pid, node, edge, cost, agg_cost)``
+.. |pid-m-m| replace:: ``(seq, path_seq, start_pid, end_pid, node, edge, cost, agg_cost)``
+
+Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__
+:doc:`pgr_withPoints` result columns are being standardized.
+
+:from: |old-pid-result|
+:to: |generic-result|
+
+Signatures to be migrated:
+
+* ``pgr_withPointsKSP`` (all signatures)
+
+.. rubric:: Before Migration
+
+Output columns were |old-pid-result|
+
+.. rubric:: Migration
+
+Output columns are |generic-result|
+
+To get the old version column names, depending on the signature:
+
+* Filter out the columns: ``start_vid`` and/or ``end_vid``
+* Rename the columns:
+
+  * ``start_vid`` to ``start_pid``
+  * ``end_vid`` to ``end_pid``
+
+Example with ``pgr_withPoints`` (`One to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#one-to-one>`__
+example.
+
+:from: |result-1-1|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-1
+   :end-before: --withPoints-1-to-1-filter
+
+Get the old signature columns by filtering out the extra columns.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-1-filter
+   :end-before: --withPoints-1-to-m
+
+Example with ``pgr_withPoints`` (`One to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#one-to-many>`__
+example.
+
+:from: |pid-1-m|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-m
+   :end-before: --withPoints-1-to-m-filter
+
+Get the old signature columns by filtering out the extra column and renaming
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-1-to-m-filter
+   :end-before: --withPoints-m-to-1
+
+Example with ``pgr_withPoints`` (`Many to One`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#many-to-one>`__
+example.
+
+:from: |pid-m-1|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-1
+   :end-before: --withPoints-m-to-1-filter
+
+Get the old signature columns by filtering out the extra column and renaming
+``start_vid`` to ``start_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-1-filter
+   :end-before: --withPoints-m-to-m
+
+Example with ``pgr_withPoints`` (`Many to Many`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#many-to-many>`__
+example.
+
+:from: |pid-m-m|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-m
+   :end-before: --withPoints-m-to-m-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-m-to-m-filter
+   :end-before: --withPoints-c
+
+Example with ``pgr_withPoints`` (`Combinations`)
+...............................................................................
+
+Using
+`this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#combinations>`__
+example.
+
+:from: |pid-m-m|
+:to: |generic-result|
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-c
+   :end-before: --withPoints-c-filter
+
+Get the old signature columns by renaming ``start_vid`` to ``start_pid`` and
+``end_vid`` to ``end_pid``.
+
+.. literalinclude:: migration.queries
+   :start-after: --withPoints-c-filter
+   :end-before: --withPoints-END
+
 Migration of ``pgr_withPointsDD``
 -------------------------------------------------------------------------------
 
@@ -853,6 +991,7 @@ To get results from previous versions:
 .. literalinclude:: migration.queries
    :start-after: --withpointsdd7
    :end-before: --withpointsdd8
+
 
 Migration of ``pgr_withPointsKSP``
 -------------------------------------------------------------------------------
