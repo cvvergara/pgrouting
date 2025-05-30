@@ -43,14 +43,25 @@ To see all issues & pull requests closed by this release see the `Git closed
 milestone for 4.0.0
 <https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%204.0.0%22>`__
 
-.. rubric:: Functions promoted to official
+Functions promoted to official
+...............................................................................
 
 * pgr_trsp
 * pgr_trspVia
 * pgr_trspVia_withPoints
 * pgr_trsp_withPoints
 * pgr_withPoints
+
+  .. include:: pgr_withPoints.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
 * pgr_withPointsCost
+
+  .. include:: pgr_withPointsCost.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
 * pgr_withPointsCostMatrix
 * pgr_withPointsDD
 * pgr_withPointsKSP
@@ -76,6 +87,10 @@ milestone for 4.0.0
 
 * Removal of unused C/C++ code
 * Refactor the Script to build the update PostgreSQL file.
+* One driver for:
+
+  * allpairs: johnson and Flowy-Warshall
+  * Shortest path: Dijkstra and withPoints using Dijkstra
 
 .. rubric:: Removal of SQL deprecated signatures
 

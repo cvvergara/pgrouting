@@ -23,20 +23,20 @@ temporary vertices.
 
 .. rubric:: Availability
 
-* Version 4.0.0
+.. rubric:: Version 4.0.0
 
-  * Standardizing output columns to |short-generic-result|
-  * Function promoted to official.
+* Output columns standardized to |short-generic-result|
+* Function promoted to official.
 
-* Version 3.2.0
+.. rubric:: Version 3.2.0
 
-  * New proposed signature:
+* New proposed signature:
 
-    * pgr_withPoints(Combinations)
+ * pgr_withPoints(Combinations)
 
-* Version 2.2.0
+.. rubric:: Version 2.2.0
 
-  * New proposed function.
+* New proposed function.
 
 Description
 -------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ The main characteristics are:
 
   - For **undirected** graphs, the results are **symmetric**.
 
-    - The sequence of nodes from `u` to `v` is the reverse sequence of nodes 
+    - The sequence of nodes from `u` to `v` is the reverse sequence of nodes
       from `v` to `u`
     - The `agg_cost` of `(u, v)` is the same as for `(v, u)`.
 
