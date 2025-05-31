@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-30 20:07+0000\n"
+"POT-Creation-Date: 2025-05-31 21:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3529,7 +3529,7 @@ msgstr ""
 msgid "Function promoted to official."
 msgstr ""
 
-msgid "`#TBD <https://github.com/pgRouting/pgrouting/issues/2798>`__ pgr_withPointsCost"
+msgid "`#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__ pgr_withPointsCost"
 msgstr ""
 
 msgid "Output columns standardized to |matrix-result|"
@@ -3587,6 +3587,18 @@ msgid "pgr_maxFlow(Combinations)"
 msgstr ""
 
 msgid "pgr_pushRelabel(Combinations)"
+msgstr ""
+
+msgid "SQL signatures modification on functions"
+msgstr ""
+
+msgid "`#2906 <https://github.com/pgRouting/pgrouting/issues/2906>`__ pgr_bdDijkstra"
+msgstr ""
+
+msgid "Combinations signature promoted to official."
+msgstr ""
+
+msgid "`#2907 <https://github.com/pgRouting/pgrouting/issues/2907>`__ pgr_bellmanFord"
 msgstr ""
 
 msgid "Removal of SQL deprecated signatures"
@@ -3913,7 +3925,103 @@ msgstr ""
 msgid "For PostGIS 3.5+ use the old name ``ST_AlphaShape``"
 msgstr ""
 
-msgid "Other PostGIS options are * `ST_ConvexHull <https://postgis.net/docs/ST_ConvexHull.html>`__ * `ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__"
+msgid "Other PostGIS options are"
+msgstr ""
+
+msgid "`ST_ConvexHull <https://postgis.net/docs/ST_ConvexHull.html>`__"
+msgstr ""
+
+msgid "`ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__"
+msgstr ""
+
+msgid "Migration of ``pgr_bdDijkstra`` / ``pgr_bellmanFord``"
+msgstr ""
+
+msgid "Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__ :doc:`pgr_bdDijkstra` result columns are being standardized."
+msgstr ""
+
+msgid "from"
+msgstr ""
+
+msgid "|old-generic-result|"
+msgstr ""
+
+msgid "to"
+msgstr ""
+
+msgid "|short-generic-result|"
+msgstr ""
+
+msgid "Signatures to be migrated:"
+msgstr ""
+
+msgid "``pgr_bellmanFord`` (One to One)"
+msgstr ""
+
+msgid "``pgr_bellmanFord`` (One to Many)"
+msgstr ""
+
+msgid "``pgr_bellmanFord`` (Many to One)"
+msgstr ""
+
+msgid "``pgr_bdDijkstra`` (One to One)"
+msgstr ""
+
+msgid "``pgr_bdDijkstra`` (One to Many)"
+msgstr ""
+
+msgid "``pgr_bdDijkstra`` (Many to One)"
+msgstr ""
+
+msgid "Before Migration"
+msgstr ""
+
+msgid "Output columns were |old-generic-result|"
+msgstr ""
+
+msgid "Migration"
+msgstr ""
+
+msgid "Output columns are |short-generic-result|"
+msgstr ""
+
+msgid "To get the old version column names, depending on the signature:"
+msgstr ""
+
+msgid "Filter out the columns: ``start_vid`` and/or ``end_vid``"
+msgstr ""
+
+msgid "Example with ``pgr_bdDijkstra`` (`One to One`)"
+msgstr ""
+
+msgid "Using `this <https://docs.pgrouting.org/3.8/en/pgr_bdDijkstra.html#one-to-one>`__ example."
+msgstr ""
+
+msgid "|result-1-1|"
+msgstr ""
+
+msgid "Get the old signature columns by filtering out the extra columns."
+msgstr ""
+
+msgid "Example with ``pgr_bdDijkstra`` (`One to Many`)"
+msgstr ""
+
+msgid "Using `this <https://docs.pgrouting.org/3.8/en/pgr_bdDijkstra.html#one-to-many>`__ example."
+msgstr ""
+
+msgid "|result-1-m|"
+msgstr ""
+
+msgid "Example with ``pgr_bdDijkstra`` (`Many to One`)"
+msgstr ""
+
+msgid "Using `this <https://docs.pgrouting.org/3.8/en/pgr_bdDijkstra.html#many-to-one>`__ example."
+msgstr ""
+
+msgid "|result-m-1|"
+msgstr ""
+
+msgid "|generic-result|"
 msgstr ""
 
 msgid "Migration of ``pgr_nodeNetwork``"
@@ -4093,9 +4201,6 @@ msgstr ""
 msgid "Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__"
 msgstr ""
 
-msgid "Signatures to be migrated:"
-msgstr ""
-
 msgid "``pgr_aStar`` (`One to One`)"
 msgstr ""
 
@@ -4103,12 +4208,6 @@ msgid "``pgr_aStar`` (`One to Many`)"
 msgstr ""
 
 msgid "``pgr_aStar`` (`Many to One`)"
-msgstr ""
-
-msgid "Before Migration"
-msgstr ""
-
-msgid "Output columns were |old-generic-result|"
 msgstr ""
 
 msgid "Depending on the overload used, the columns ``start_vid`` and ``end_vid`` might be missing:"
@@ -4121,9 +4220,6 @@ msgid "``pgr_aStar`` (`One to Many`) does not have ``start_vid``."
 msgstr ""
 
 msgid "``pgr_aStar`` (`Many to One`) does not have ``end_vid``."
-msgstr ""
-
-msgid "Migration"
 msgstr ""
 
 msgid "Be aware of the existence of the additional columns."
@@ -4228,13 +4324,7 @@ msgstr ""
 msgid "Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`__ :doc:`pgr_drivingDistance` result columns are being standardized."
 msgstr ""
 
-msgid "from"
-msgstr ""
-
 msgid "|result-dij-dd|"
-msgstr ""
-
-msgid "to"
 msgstr ""
 
 msgid "|result-spantree|"
@@ -4346,9 +4436,6 @@ msgid "Starting from `v3.6.0 <https://docs.pgrouting.org/3.6/en/migration.html>`
 msgstr ""
 
 msgid "|ksp-result|"
-msgstr ""
-
-msgid "|generic-result|"
 msgstr ""
 
 msgid "``pgr_KSP`` (One to One)"
@@ -4468,22 +4555,10 @@ msgstr ""
 msgid "|old-pid-result|"
 msgstr ""
 
-msgid "|short-generic-result|"
-msgstr ""
-
 msgid "``pgr_withPoints`` (all signatures)"
 msgstr ""
 
 msgid "Output columns were |old-pid-result|"
-msgstr ""
-
-msgid "Output columns are |short-generic-result|"
-msgstr ""
-
-msgid "To get the old version column names, depending on the signature:"
-msgstr ""
-
-msgid "Filter out the columns: ``start_vid`` and/or ``end_vid``"
 msgstr ""
 
 msgid "Rename the columns:"
@@ -4499,12 +4574,6 @@ msgid "``pgr_withPoints`` (`One to One`)"
 msgstr ""
 
 msgid "Using `this <https://docs.pgrouting.org/3.8/en/pgr_withPoints.html#one-to-one>`__ example."
-msgstr ""
-
-msgid "|result-1-1|"
-msgstr ""
-
-msgid "Get the old signature columns by filtering out the extra columns."
 msgstr ""
 
 msgid "``pgr_withPoints`` (`One to Many`)"
@@ -7012,9 +7081,6 @@ msgstr ""
 msgid "``pgr_aStar`` — Shortest path using the A* algorithm."
 msgstr ""
 
-msgid "Combinations signature promoted to official."
-msgstr ""
-
 msgid "Standardizing output columns to |short-generic-result|"
 msgstr ""
 
@@ -7357,19 +7423,10 @@ msgstr ""
 msgid "pgr_bdDijkstra(`Edges SQL`_, `Combinations SQL`_, [``directed``])"
 msgstr ""
 
-msgid "Returns set of |result-1-1|"
-msgstr ""
-
 msgid "From vertex :math:`6` to vertex :math:`10` on a **directed** graph"
 msgstr ""
 
-msgid "Returns set of |result-1-m|"
-msgstr ""
-
 msgid "From vertex :math:`6` to vertices :math:`\\{10, 17\\}` on a **directed** graph"
-msgstr ""
-
-msgid "Returns set of |result-m-1|"
 msgstr ""
 
 msgid "From vertices :math:`\\{6, 1\\}` to vertex :math:`17` on a **directed** graph"
@@ -7480,19 +7537,10 @@ msgstr ""
 msgid "pgr_bellmanFord(`Edges SQL`_, `Combinations SQL`_, [``directed``])"
 msgstr ""
 
-msgid "From vertex :math:`6` to vertices :math:`\\{ 10, 17\\}` on a **directed** graph"
-msgstr ""
-
-msgid "Using a combinations table on an **undirected** graph."
-msgstr ""
-
 msgid "`Boost: Bellman Ford <https://www.boost.org/libs/graph/doc/bellman_ford_shortest.html>`__"
 msgstr ""
 
 msgid "https://en.wikipedia.org/wiki/Bellman%E2%80%93Ford_algorithm"
-msgstr ""
-
-msgid "Boost Graph Inside"
 msgstr ""
 
 msgid "``pgr_betweennessCentrality`` - Experimental"
@@ -7652,6 +7700,15 @@ msgid "pgr_binaryBreadthFirstSearch(`Edges SQL`_, `Combinations SQL`_, [``direct
 msgstr ""
 
 msgid "**Note:** Using the :doc:`sampledata` Network as all weights are same (i.e :math:`1``)"
+msgstr ""
+
+msgid "Returns set of |result-1-1|"
+msgstr ""
+
+msgid "Returns set of |result-1-m|"
+msgstr ""
+
+msgid "Returns set of |result-m-1|"
 msgstr ""
 
 msgid "`Boost: Breadth First Search <https://www.boost.org/libs/graph/doc/breadth_first_search.html>`__"
@@ -10001,6 +10058,12 @@ msgid "pgr_edwardMoore(`Edges SQL`_, **start vids**, **end vids**, [``directed``
 msgstr ""
 
 msgid "pgr_edwardMoore(`Edges SQL`_, `Combinations SQL`_, [``directed``])"
+msgstr ""
+
+msgid "From vertex :math:`6` to vertices :math:`\\{ 10, 17\\}` on a **directed** graph"
+msgstr ""
+
+msgid "Using a combinations table on an **undirected** graph."
 msgstr ""
 
 msgid "https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm"
