@@ -132,83 +132,86 @@ $BODY$
 LANGUAGE plpgsql VOLATILE;
 
 
-CREATE OR REPLACE FUNCTION dijkstra_types_check(fn TEXT) RETURNS SETOF TEXT AS
+CREATE OR REPLACE FUNCTION dijkstra_types_check(
+  fn TEXT,
+  withPoints BOOLEAN DEFAULT false,
+  created_v TEXT DEFAULT '3.0.0',
+  standard_v TEXT default '4.0.0')
+RETURNS SETOF TEXT AS
 $BODY$
+DECLARE
+  in_names TEXT[] := '{"","",directed}'::TEXT[];
+  out_names TEXT[] := '{seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[];
+  out_types TEXT[] := '{int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[];
+  point_name TEXT := $d$'{""}'::TEXT[] || $d$;
+  point_type TEXT := $d$'{text}'::TEXT[] || $d$;
+  opt_name TEXT := $d$'{driving_side,details}'::TEXT[] || $d$;
+  opt_type TEXT := $d$'{bpchar,bool}'::TEXT[] || $d$;
 BEGIN
-  RETURN QUERY SELECT has_function(fn);
+  IF NOT withPoints THEN
+    point_name := '';
+    point_type := '';
+    opt_name := '';
+    opt_type := '';
+  END IF;
 
-  RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','bigint','boolean']);
-  RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','anyarray','boolean']);
-  RETURN QUERY SELECT has_function(fn, ARRAY['text','anyarray','bigint','boolean']);
-  RETURN QUERY SELECT has_function(fn, ARRAY['text','anyarray','anyarray','boolean']);
-
-  RETURN QUERY SELECT function_returns(fn, ARRAY['text','bigint','bigint','boolean'],'setof record');
-  RETURN QUERY SELECT function_returns(fn, ARRAY['text','bigint','anyarray','boolean'],'setof record');
-  RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','bigint','boolean'],'setof record');
-  RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','anyarray','boolean'],'setof record');
-
-  -- pgr_dijkstra standarized output on 3.5.0
-  IF ((min_version('3.5.0') AND fn = 'pgr_dijkstra') OR
-    (min_version('4.0.0') AND fn = 'pgr_bddijkstra')) THEN
-    RETURN QUERY SELECT has_function(fn, ARRAY['text','text','boolean']);
-    RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','boolean'],'setof record');
-    RETURN QUERY SELECT function_args_eq(fn,
-      $$VALUES
-      ('{"","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-      ('{"","","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
-      $$);
-
-    RETURN QUERY SELECT function_types_eq(fn,
-      $$VALUES
-      ('{text,int8,int8,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-      ('{text,int8,anyarray,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-      ('{text,anyarray,int8,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-      ('{text,anyarray,anyarray,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-      ('{text,text,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
-      $$);
-
+  IF NOT min_version(created_v) THEN
+    RETURN QUERY SELECT skip(1, fn || ' : Created on version' || created_v);
     RETURN;
   END IF;
 
-IF (min_version('3.2.0') AND fn != 'pgr_dijkstra') OR (min_version('3.1.0') AND fn = 'pgr_dijkstra') THEN
-  RETURN QUERY SELECT has_function(fn, ARRAY['text','text','boolean']);
-  RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','boolean'],'setof record');
+  RETURN QUERY SELECT has_function(fn);
+
+  IF NOT withPoints THEN
+
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','bigint','boolean']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','anyarray','boolean']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','anyarray','bigint','boolean']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','anyarray','anyarray','boolean']);
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, ARRAY['text','text','boolean']); END IF;
+
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','bigint','bigint','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','bigint','anyarray','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','bigint','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','anyarray','boolean'],'setof record');
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','boolean'],'setof record'); END IF;
+
+  ELSE
+
+    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','bigint','bigint','boolean','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','bigint','anyarray','boolean','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','anyarray','bigint','boolean','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','anyarray','anyarray','boolean','character','boolean']);
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, ARRAY['text','text','text','boolean','character','boolean']); END IF;
+
+    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','bigint','bigint','boolean','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','bigint','anyarray','boolean','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','anyarray','bigint','boolean','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','anyarray','anyarray','boolean','character','boolean'],'setof record');
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','text','boolean','character','boolean'],'setof record'); END IF;
+
+  END IF;
+
+
+  IF NOT min_version(standard_v) THEN
+    RETURN QUERY SELECT skip(1, fn || ': Standarized on ' || standard_v || ', skiping non standardized signatures');
+    RETURN;
+  END IF;
 
   RETURN QUERY SELECT function_args_eq(fn,
-    $$VALUES
-    ('{"","","","directed","seq","path_seq","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","","directed","seq","path_seq","end_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","","directed","seq","path_seq","start_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
-    $$);
+    format($$VALUES
+    (%1$s '%2$s'::TEXT[] || %3$s '%4$s'::TEXT[]),
+    (%1$s '{""}'::TEXT[] || '%2$s'::TEXT[] || %3$s '%4$s'::TEXT[])
+    $$,point_name, in_names, opt_name, out_names));
 
   RETURN QUERY SELECT function_types_eq(fn,
-    $$VALUES
-    ('{text,int8,int8,bool,int4,int4,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,int8,anyarray,bool,int4,int4,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,anyarray,int8,bool,int4,int4,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,anyarray,anyarray,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,text,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
-    $$);
-
-ELSE
-  RETURN QUERY SELECT function_args_eq(fn,
-    $$VALUES
-    ('{"","","","directed","seq","path_seq","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","","directed","seq","path_seq","end_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","","directed","seq","path_seq","start_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","","","directed","seq","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
-    $$);
-
-  RETURN QUERY SELECT function_types_eq(fn,
-    $$VALUES
-    ('{text,int8,int8,bool,int4,int4,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,int8,anyarray,bool,int4,int4,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,anyarray,int8,bool,int4,int4,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,anyarray,anyarray,bool,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
-    $$);
-END IF;
+    format($$VALUES
+    (%1$s '{text,int8,int8,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
+    (%1$s '{text,int8,anyarray,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
+    (%1$s '{text,anyarray,int8,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
+    (%1$s '{text,anyarray,anyarray,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
+    (%1$s '{text,text,bool}'::TEXT[] ||  %2$s '%3$s'::TEXT[])
+    $$, point_type, opt_type, out_types));
 
 END
 $BODY$
