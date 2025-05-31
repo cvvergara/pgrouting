@@ -153,7 +153,7 @@ $BODY$
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
--- COMMENTSCOMMENT ON FUNCTION pgr_edgeDisjointPaths(TEXT, BIGINT, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION pgr_edgeDisjointPaths(TEXT, BIGINT, BIGINT, BOOLEAN)
 IS 'pgr_edgeDisjointPaths(One to One)
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
