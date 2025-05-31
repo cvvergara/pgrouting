@@ -285,6 +285,15 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bddijkstra(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,anyarray,boolean)");
+            push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,bigint,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,anyarray,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,bigint,anyarray,boolean)");
+            push @commands, drop_special_case_function("pgr_edgedisjointpaths(text,bigint,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_edgedisjointpaths(text,anyarray,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_edgedisjointpaths(text,bigint,anyarray,boolean)");
+            push @commands, drop_special_case_function("pgr_edwardmoore(text,bigint,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_edwardmoore(text,anyarray,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_edwardmoore(text,bigint,anyarray,boolean)");
 
             # Out parameters changed names on v4.0.0
             push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,anyarray,boolean,character,boolean)");
