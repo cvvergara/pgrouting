@@ -52,7 +52,7 @@ Other PostGIS options are
 * `ST_ConvexHull <https://postgis.net/docs/ST_ConvexHull.html>`__
 * `ST_ConcaveHull <https://postgis.net/docs/ST_ConcaveHull.html>`__
 
-Migration of ``pgr_bdDijkstra``
+Migration of ``pgr_bdDijkstra`` / ``pgr_bellmanFord``
 -------------------------------------------------------------------------------
 
 Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__
@@ -63,6 +63,9 @@ Starting from `v4.0.0 <https://docs.pgrouting.org/4.0/en/migration.html>`__
 
 Signatures to be migrated:
 
+* ``pgr_bellmanFord`` (One to One)
+* ``pgr_bellmanFord`` (One to Many)
+* ``pgr_bellmanFord`` (Many to One)
 * ``pgr_bdDijkstra`` (One to One)
 * ``pgr_bdDijkstra`` (One to Many)
 * ``pgr_bdDijkstra`` (Many to One)
@@ -79,7 +82,7 @@ To get the old version column names, depending on the signature:
 
 * Filter out the columns: ``start_vid`` and/or ``end_vid``
 
-``pgr_bdDijkstra`` (`One to One`)
+Example with ``pgr_bdDijkstra`` (`One to One`)
 ...............................................................................
 
 Using
@@ -99,7 +102,7 @@ Get the old signature columns by filtering out the extra columns.
    :start-after: --bdDijkstra-1-to-1-filter
    :end-before: --bdDijkstra-1-to-m
 
-``pgr_bdDijkstra`` (`One to Many`)
+Example with ``pgr_bdDijkstra`` (`One to Many`)
 ...............................................................................
 
 Using
@@ -119,7 +122,7 @@ Get the old signature columns by filtering out the extra columns.
    :start-after: --bdDijkstra-1-to-m-filter
    :end-before: --bdDijkstra-m-to-1
 
-``pgr_bdDijkstra`` (`Many to One`)
+Example with ``pgr_bdDijkstra`` (`Many to One`)
 ...............................................................................
 
 Using
