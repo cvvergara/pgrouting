@@ -134,25 +134,22 @@ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION dijkstra_types_check(
   fn TEXT,
-  withPoints BOOLEAN DEFAULT false,
+  opt_names TEXT[] DEFAULT '{directed}'::TEXT[],
+  opt_types TEXT[] DEFAULT '{bool}'::TEXT[],
   created_v TEXT DEFAULT '3.0.0',
   standard_v TEXT default '4.0.0')
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-  in_names TEXT[] := '{"","",directed}'::TEXT[];
+  in_names TEXT[] := '{"",""}'::TEXT[];
   out_names TEXT[] := '{seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[];
   out_types TEXT[] := '{int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[];
   point_name TEXT := $d$'{""}'::TEXT[] || $d$;
   point_type TEXT := $d$'{text}'::TEXT[] || $d$;
-  opt_name TEXT := $d$'{driving_side,details}'::TEXT[] || $d$;
-  opt_type TEXT := $d$'{bpchar,bool}'::TEXT[] || $d$;
 BEGIN
-  IF NOT withPoints THEN
+  IF NOT fn ilike '%withPoints%' THEN
     point_name := '';
     point_type := '';
-    opt_name := '';
-    opt_type := '';
   END IF;
 
   IF NOT min_version(created_v) THEN
@@ -162,7 +159,35 @@ BEGIN
 
   RETURN QUERY SELECT has_function(fn);
 
-  IF NOT withPoints THEN
+  IF fn ilike '%withPoints%' THEN
+
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','text','bigint','bigint','boolean','character','boolean']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','text','bigint','anyarray','boolean','character','boolean']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','text','anyarray','bigint','boolean','character','boolean']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','text','anyarray','anyarray','boolean','character','boolean']);
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, ARRAY['text','text','text','boolean','character','boolean']); END IF;
+
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','bigint','bigint','boolean','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','bigint','anyarray','boolean','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','anyarray','bigint','boolean','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','anyarray','anyarray','boolean','character','boolean'],'setof record');
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','text','boolean','character','boolean'],'setof record'); END IF;
+
+  ELSIF fn ilike '%dag%' THEN
+
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','bigint']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','anyarray']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','anyarray','bigint']);
+    RETURN QUERY SELECT has_function(fn, ARRAY['text','anyarray','anyarray']);
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, ARRAY['text','text']); END IF;
+
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','bigint','bigint'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','bigint','anyarray'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','bigint'],'setof record');
+    RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','anyarray'],'setof record');
+    IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, ARRAY['text','text'],'setof record'); END IF;
+
+  ELSE
 
     RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','bigint','boolean']);
     RETURN QUERY SELECT has_function(fn, ARRAY['text','bigint','anyarray','boolean']);
@@ -176,20 +201,6 @@ BEGIN
     RETURN QUERY SELECT function_returns(fn, ARRAY['text','anyarray','anyarray','boolean'],'setof record');
     IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','boolean'],'setof record'); END IF;
 
-  ELSE
-
-    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','bigint','bigint','boolean','character','boolean']);
-    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','bigint','anyarray','boolean','character','boolean']);
-    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','anyarray','bigint','boolean','character','boolean']);
-    RETURN QUERY SELECT has_function('pgr_withpoints', ARRAY['text','text','anyarray','anyarray','boolean','character','boolean']);
-    IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, ARRAY['text','text','text','boolean','character','boolean']); END IF;
-
-    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','bigint','bigint','boolean','character','boolean'],'setof record');
-    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','bigint','anyarray','boolean','character','boolean'],'setof record');
-    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','anyarray','bigint','boolean','character','boolean'],'setof record');
-    RETURN QUERY SELECT function_returns('pgr_withpoints', ARRAY['text','text','anyarray','anyarray','boolean','character','boolean'],'setof record');
-    IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, ARRAY['text','text','text','boolean','character','boolean'],'setof record'); END IF;
-
   END IF;
 
 
@@ -200,18 +211,18 @@ BEGIN
 
   RETURN QUERY SELECT function_args_eq(fn,
     format($$VALUES
-    (%1$s '%2$s'::TEXT[] || %3$s '%4$s'::TEXT[]),
-    (%1$s '{""}'::TEXT[] || '%2$s'::TEXT[] || %3$s '%4$s'::TEXT[])
-    $$,point_name, in_names, opt_name, out_names));
+    (%1$s '%2$s'::TEXT[] || '%3$s'::TEXT[] || '%4$s'::TEXT[]),
+    (%1$s '{""}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[] || '%4$s'::TEXT[])
+    $$,point_name, in_names, opt_names, out_names));
 
   RETURN QUERY SELECT function_types_eq(fn,
     format($$VALUES
-    (%1$s '{text,int8,int8,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
-    (%1$s '{text,int8,anyarray,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
-    (%1$s '{text,anyarray,int8,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
-    (%1$s '{text,anyarray,anyarray,bool}'::TEXT[] || %2$s '%3$s'::TEXT[]),
-    (%1$s '{text,text,bool}'::TEXT[] ||  %2$s '%3$s'::TEXT[])
-    $$, point_type, opt_type, out_types));
+    (%1$s '{text,int8,int8}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
+    (%1$s '{text,int8,anyarray}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
+    (%1$s '{text,anyarray,int8}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
+    (%1$s '{text,anyarray,anyarray}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
+    (%1$s '{text,text}'::TEXT[] ||  '%2$s'::TEXT[] || '%3$s'::TEXT[])
+    $$, point_type, opt_types, out_types));
 
 END
 $BODY$
