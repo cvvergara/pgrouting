@@ -92,6 +92,13 @@ SQL signatures modification on functions
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
+* `#2907 <https://github.com/pgRouting/pgrouting/issues/2907>`__
+  pgr_bellmanFord
+
+  .. include:: pgr_bellmanFord.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
 
 Removal of SQL deprecated signatures
 ...............................................................................

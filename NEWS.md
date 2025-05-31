@@ -59,6 +59,11 @@ SQL signatures modification on functions
   * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
   * Combinations signature promoted to official.
 
+* [#2907](https://github.com/pgRouting/pgrouting/issues/2907)
+  pgr_bellmanFord
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+
 
 Removal of SQL deprecated signatures
 ...............................................................................
