@@ -26,11 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-------------------
--- pgr_bellmanFord
-------------------
-
-
 --ONE TO ONE
 --v3.0
 CREATE FUNCTION pgr_bellmanFord(
@@ -42,6 +37,8 @@ CREATE FUNCTION pgr_bellmanFord(
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -49,7 +46,7 @@ CREATE FUNCTION pgr_bellmanFord(
 
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
     FROM _pgr_bellmanFord(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], directed, false) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
@@ -67,6 +64,7 @@ CREATE FUNCTION pgr_bellmanFord(
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
@@ -75,7 +73,7 @@ CREATE FUNCTION pgr_bellmanFord(
 
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
     FROM _pgr_bellmanFord(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed, false) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
@@ -93,6 +91,7 @@ CREATE FUNCTION pgr_bellmanFord(
     OUT seq INTEGER,
     OUT path_seq INTEGER,
     OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -100,7 +99,7 @@ CREATE FUNCTION pgr_bellmanFord(
 
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
     FROM _pgr_bellmanFord(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed, false) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
@@ -126,8 +125,8 @@ CREATE FUNCTION pgr_bellmanFord(
 
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_bellmanFord(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], directed, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_bellmanFord(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], directed, false );
 $BODY$
 LANGUAGE sql VOLATILE STRICT;
 
@@ -151,8 +150,8 @@ CREATE FUNCTION pgr_bellmanFord(
 
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_bellmanFord(_pgr_get_statement($1), _pgr_get_statement($2), directed, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_bellmanFord(_pgr_get_statement($1), _pgr_get_statement($2), directed, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
