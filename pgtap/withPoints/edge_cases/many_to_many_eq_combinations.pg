@@ -29,6 +29,7 @@ $BODY$
 DECLARE
 sql_Combinations TEXT;
 sql_Many TEXT;
+drv_side TEXT = $$, driving_side => 'r'$$;
 BEGIN
   IF NOT min_version('3.2.0') THEN
     RETURN QUERY
@@ -38,6 +39,7 @@ BEGIN
 
   IF min_version('4.0.0') THEN
     sql_TestFunction = replace(sql_TestFunction, 'pid', 'vid');
+    drv_side = replace(drv_side, 'driving_side =>', '');
   END IF;
 
     sql_Combinations := '';
@@ -61,12 +63,12 @@ BEGIN
     sql_Many := ( sql_TestFunction || '(
         ''SELECT id, source, target, cost, reverse_cost FROM edges''::text,
         ''SELECT pid, edge_id, fraction, side from pointsOfInterest'',
-        ARRAY[' || sql_Many  ||'], ARRAY[' || sql_Many || '] ) ');
+        ARRAY[' || sql_Many  ||'], ARRAY[' || sql_Many || '] ' || drv_side || ' ) ');
 
     sql_Combinations := ( sql_TestFunction || '(
         ''SELECT id, source, target, cost, reverse_cost FROM edges''::text,
         ''SELECT pid, edge_id, fraction, side from pointsOfInterest'',
-        ''SELECT * FROM (VALUES' || sql_Combinations  ||') AS combinations (source, target)'' ) ');
+        ''SELECT * FROM (VALUES' || sql_Combinations  ||') AS combinations (source, target)'' '  || drv_side || ' ) ');
 
     RETURN query SELECT set_eq( sql_Many, sql_Combinations );
     RETURN;
