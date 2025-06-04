@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2018 Sourabh Garg
-Mail: sourabh.garg.mat@gmail.com
+Mail: sourabh.garg.mat at gmail.com
 
 ------
 
@@ -27,104 +27,96 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-----------------------
--- pgr_dagShortestPath
-----------------------
-
--- ONE to ONE
+-- ONE TO ONE
 --v3.0
 CREATE FUNCTION pgr_dagShortestPath(
-    TEXT,     -- edges_sql (required)
-    BIGINT,   -- from_vid (required)
-    BIGINT,   -- from_vid (required)
+    TEXT,   -- edges sql (required)
+    BIGINT, -- from vid (required)
+    BIGINT, -- to vid (required)
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_dagShortestPath(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], true, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_dagShortestPath_v4(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], false, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
-COST 100
-ROWS 1000;
+LANGUAGE SQL VOLATILE STRICT;
 
 
--- ONE to MANY
+-- ONE TO MANY
 --v3.0
 CREATE FUNCTION pgr_dagShortestPath(
-    TEXT,     -- edges_sql (required)
-    BIGINT,   -- from_vid (required)
-    ANYARRAY, -- to_vids (required)
+    TEXT,     -- edges sql (required)
+    BIGINT,   -- from vid (required)
+    ANYARRAY, -- to vids (required)
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_dagShortestPath(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], true, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_dagShortestPath_v4(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], false, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
-COST 100
-ROWS 1000;
+LANGUAGE SQL VOLATILE STRICT;
 
 
--- MANY to ONE
+-- MANY TO ONE
 --v3.0
 CREATE FUNCTION pgr_dagShortestPath(
-    TEXT,     -- edges_sql (required)
-    ANYARRAY, -- from_vids (required)
-    BIGINT,   -- to_vid (required)
+    TEXT,     -- edges sql (required)
+    ANYARRAY, -- from vids (required)
+    BIGINT,   -- to vid (required)
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_dagShortestPath(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], true, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_dagShortestPath_v4(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], false, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
-COST 100
-ROWS 1000;
+LANGUAGE SQL VOLATILE STRICT;
 
 
--- MANY to MANY
+-- MANY TO MANY
 --v3.0
 CREATE FUNCTION pgr_dagShortestPath(
-    TEXT,     -- edges_sql (required)
-    ANYARRAY, -- from_vids (required)
-    ANYARRAY, -- to_vids (required)
+    TEXT,     -- edges sql (required)
+    ANYARRAY, -- from vids (required)
+    ANYARRAY, -- to vids (required)
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_dagShortestPath(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], true, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_dagShortestPath_v4(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], false, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
-COST 100
-ROWS 1000;
+LANGUAGE SQL VOLATILE STRICT;
 
 
 -- COMBINATIONS
@@ -135,31 +127,31 @@ CREATE FUNCTION pgr_dagShortestPath(
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_dagShortestPath(_pgr_get_statement($1), _pgr_get_statement($2), true, false ) AS a;
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_dagShortestPath_v4(_pgr_get_statement($1), _pgr_get_statement($2), false);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- COMMENTS
 
 COMMENT ON FUNCTION pgr_dagShortestPath(TEXT, BIGINT, BIGINT)
 IS 'pgr_dagShortestPath(One to One)
 - EXPERIMENTAL
 - Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - From vertex identifier
-    - To vertex identifier
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - From vertex identifier
+  - To vertex identifier
 - Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_dagShortestPath.html
+  - ${PROJECT_DOC_LINK}/pgr_dagShortestPath.html
 ';
 
 COMMENT ON FUNCTION pgr_dagShortestPath(TEXT, BIGINT, ANYARRAY)
