@@ -199,7 +199,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(5)),
                 PG_GETARG_BOOL(6),
 
-                1,  // which
+                101,  // which
                 &result_tuples,
                 &result_count);
 
@@ -222,7 +222,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
 
                 text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),
-                1,  // which
+                101,  // which
                 &result_tuples,
                 &result_count);
         }
