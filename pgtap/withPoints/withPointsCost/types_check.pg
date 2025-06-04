@@ -25,49 +25,65 @@ SELECT plan(13);
 
 SELECT has_function('pgr_withpointscost');
 
+CREATE OR REPLACE FUNCTION check_types()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
-SELECT has_function('pgr_withpointscost', ARRAY['text','text','bigint','bigint','boolean','character']);
-SELECT has_function('pgr_withpointscost', ARRAY['text','text','bigint','anyarray','boolean','character']);
-SELECT has_function('pgr_withpointscost', ARRAY['text','text','anyarray','bigint','boolean','character']);
-SELECT has_function('pgr_withpointscost', ARRAY['text','text','anyarray','anyarray','boolean','character']);
+  IF min_version('4.0.0') THEN
 
-SELECT function_returns('pgr_withpointscost', ARRAY['text','text','bigint','bigint','boolean','character'],'setof record');
-SELECT function_returns('pgr_withpointscost', ARRAY['text','text','bigint','anyarray','boolean','character'],'setof record');
-SELECT function_returns('pgr_withpointscost', ARRAY['text','text','anyarray','bigint','boolean','character'],'setof record');
-SELECT function_returns('pgr_withpointscost', ARRAY['text','text','anyarray','anyarray','boolean','character'],'setof record');
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','bigint','bigint','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','bigint','anyarray','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','anyarray','bigint','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','anyarray','anyarray','character','boolean']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','text','character','boolean']);
 
-SELECT CASE
-WHEN min_version('3.2.0') THEN
-  collect_tap(
-    has_function('pgr_withpointscost', ARRAY['text','text','text','boolean','character']),
-    function_returns('pgr_withpointscost', ARRAY['text','text','text','boolean','character'],'setof record')
-  )
-ELSE
-  skip(2, 'Combinations signature added on 3.1.0')
-END;
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','bigint','bigint','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','bigint','anyarray','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','anyarray','bigint','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','anyarray','anyarray','character','boolean'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','text','character','boolean'],'setof record');
+
+  ELSE
+
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','bigint','bigint','boolean','character']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','bigint','anyarray','boolean','character']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','anyarray','bigint','boolean','character']);
+    RETURN QUERY SELECT has_function('pgr_withpointscost', ARRAY['text','text','anyarray','anyarray','boolean','character']);
+
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','bigint','bigint','boolean','character'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','bigint','anyarray','boolean','character'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','anyarray','bigint','boolean','character'],'setof record');
+    RETURN QUERY SELECT function_returns('pgr_withpointscost', ARRAY['text','text','anyarray','anyarray','boolean','character'],'setof record');
 
 
-SELECT CASE
-WHEN min_version('4.0.0') THEN
+    RETURN QUERY SELECT CASE WHEN min_version('3.2.0') THEN
+    collect_tap(
+      has_function('pgr_withpointscost', ARRAY['text','text','text','boolean','character']),
+      function_returns('pgr_withpointscost', ARRAY['text','text','text','boolean','character'],'setof record')
+    ) ELSE skip(2, 'Combinations signature added on 3.1.0') END;
+
+  END IF;
+
+  RETURN QUERY SELECT CASE WHEN min_version('4.0.0') THEN
   collect_tap(
     function_args_eq('pgr_withpointscost',
       $$VALUES
-      ('{"","","",   directed,driving_side,start_vid,end_vid,agg_cost}'::TEXT[]),
-      ('{"","","","",directed,driving_side,start_vid,end_vid,agg_cost}')
+      ('{"","","","",   directed,start_vid,end_vid,agg_cost}'::TEXT[]),
+      ('{"","","","","",directed,start_vid,end_vid,agg_cost}')
       $$),
 
     function_types_eq('pgr_withpointscost',
       $$VALUES
-      ('{text,text,anyarray,int8,    bool,bpchar,int8,int8,float8}'::TEXT[]),
-      ('{text,text,int8,int8,        bool,bpchar,int8,int8,float8}'),
-      ('{text,text,int8,anyarray,    bool,bpchar,int8,int8,float8}'),
-      ('{text,text,anyarray,anyarray,bool,bpchar,int8,int8,float8}'),
-      ('{text,text,text,             bool,bpchar,int8,int8,float8}')
+      ('{text,text,anyarray,int8,    bpchar,bool,int8,int8,float8}'::TEXT[]),
+      ('{text,text,int8,int8,        bpchar,bool,int8,int8,float8}'),
+      ('{text,text,int8,anyarray,    bpchar,bool,int8,int8,float8}'),
+      ('{text,text,anyarray,anyarray,bpchar,bool,int8,int8,float8}'),
+      ('{text,text,text,             bpchar,bool,int8,int8,float8}')
       $$)
   )
-WHEN min_version('3.2.0') THEN
+  WHEN min_version('3.2.0') THEN
   collect_tap(
-
     function_args_eq('pgr_withpointscost',
       $$VALUES
       ('{"","","","","directed","driving_side","start_pid","end_pid","agg_cost"}'::TEXT[]),
@@ -85,10 +101,8 @@ WHEN min_version('3.2.0') THEN
       ('{text,text,anyarray,int8,bool,bpchar,int8,int8,float8}'::TEXT[]),
       ('{text,text,anyarray,anyarray,bool,bpchar,int8,int8,float8}'::TEXT[])
       $$)
-  )
-ELSE
+  ) ELSE
   collect_tap(
-
     function_args_eq('pgr_withpointscost',
       $$VALUES
       ('{"","","","","directed","driving_side","start_pid","end_pid","agg_cost"}'::TEXT[]),
@@ -104,8 +118,12 @@ ELSE
       ('{text,text,anyarray,int8,bool,bpchar,int8,int8,float8}'::TEXT[]),
       ('{text,text,anyarray,anyarray,bool,bpchar,int8,int8,float8}'::TEXT[])
       $$)
-  )
-END;
+  ) END;
 
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT check_types();
 SELECT finish();
 ROLLBACK;
