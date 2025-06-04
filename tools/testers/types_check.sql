@@ -9,8 +9,8 @@ $BODY$
 DECLARE
   out_names TEXT[] := '{seq,path_seq,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[];
   out_types TEXT[] := '{int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[];
-  point_name TEXT[] := '{}'::TEXT[];
-  point_type TEXT[] := '{}'::TEXT[];
+  extra_name TEXT[] := '{}'::TEXT[];
+  extra_type TEXT[] := '{}'::TEXT[];
   taptypes TEXT[];
   args TEXT;
   types TEXT;
@@ -18,13 +18,18 @@ DECLARE
 BEGIN
 
   IF fn ilike '%trsp%' THEN
-    point_name := '{""}'::TEXT[];
-    point_type := '{text}'::TEXT[];
+    extra_name := '{""}'::TEXT[];
+    extra_type := '{text}'::TEXT[];
   END IF;
 
   IF fn ilike '%withPoints%' THEN
-    point_name := point_name || '{""}'::TEXT[];
-    point_type := point_type || '{text}'::TEXT[];
+    extra_name := extra_name || '{""}'::TEXT[];
+    extra_type := extra_type || '{text}'::TEXT[];
+
+    IF NOT min_version('4.0.0') THEN
+      opt_names := '{directed,driving_side,details}'::TEXT[];
+      opt_types := '{bool,bpchar,bool}'::TEXT[];
+    END IF;
   END IF;
 
   IF fn ilike '%near%' THEN
@@ -44,21 +49,21 @@ BEGIN
   RETURN QUERY SELECT has_function(fn);
 
   IF NOT fn ilike '%near%' THEN
-    RETURN QUERY SELECT has_function(fn, point_type || '{text,bigint,bigint}' || taptypes);
+    RETURN QUERY SELECT has_function(fn, extra_type || '{text,bigint,bigint}' || taptypes);
   END IF;
 
-  RETURN QUERY SELECT has_function(fn, point_type || '{text,bigint,anyarray}' || taptypes[1:bounds]);
-  RETURN QUERY SELECT has_function(fn, point_type || '{text,anyarray,bigint}' || taptypes[1:bounds]);
-  RETURN QUERY SELECT has_function(fn, point_type || '{text,anyarray,anyarray}' || taptypes);
-  IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, point_type || '{text,text}' || taptypes); END IF;
+  RETURN QUERY SELECT has_function(fn, extra_type || '{text,bigint,anyarray}' || taptypes[1:bounds]);
+  RETURN QUERY SELECT has_function(fn, extra_type || '{text,anyarray,bigint}' || taptypes[1:bounds]);
+  RETURN QUERY SELECT has_function(fn, extra_type || '{text,anyarray,anyarray}' || taptypes);
+  IF min_version('3.2.0') THEN RETURN QUERY SELECT has_function(fn, extra_type || '{text,text}' || taptypes); END IF;
 
   IF NOT fn ilike '%near%' THEN
-    RETURN QUERY SELECT function_returns(fn, point_type || '{text,bigint,bigint}' || taptypes, 'setof record');
+    RETURN QUERY SELECT function_returns(fn, extra_type || '{text,bigint,bigint}' || taptypes, 'setof record');
   END IF;
-  RETURN QUERY SELECT function_returns(fn, point_type || '{text,bigint,anyarray}' || taptypes[1:bounds], 'setof record');
-  RETURN QUERY SELECT function_returns(fn, point_type || '{text,anyarray,bigint}' || taptypes[1:bounds], 'setof record');
-  RETURN QUERY SELECT function_returns(fn, point_type || '{text,anyarray,anyarray}' || taptypes, 'setof record');
-  IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, point_type || '{text,text}' || taptypes, 'setof record'); END IF;
+  RETURN QUERY SELECT function_returns(fn, extra_type || '{text,bigint,anyarray}' || taptypes[1:bounds], 'setof record');
+  RETURN QUERY SELECT function_returns(fn, extra_type || '{text,anyarray,bigint}' || taptypes[1:bounds], 'setof record');
+  RETURN QUERY SELECT function_returns(fn, extra_type || '{text,anyarray,anyarray}' || taptypes, 'setof record');
+  IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, extra_type || '{text,text}' || taptypes, 'setof record'); END IF;
 
 
   IF NOT min_version(standard_v) THEN
@@ -72,21 +77,21 @@ BEGIN
       ('%1$s'::TEXT[] || '{"","",""}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{"","",""}'::TEXT[] || '%4$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{"",""}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[])
-      $$,point_name, opt_names, out_names, opt_names[1:bounds]);
+      $$,extra_name, opt_names, out_names, opt_names[1:bounds]);
 
     types :=  format($$VALUES
       ('%1$s'::TEXT[] || '{text,int8,anyarray}'::TEXT[] || '%4$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{text,anyarray,int8}'::TEXT[] || '%4$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{text,anyarray,anyarray}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{text,text}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[])
-      $$, point_type, opt_types, out_types, opt_types[1:bounds]);
+      $$, extra_type, opt_types, out_types, opt_types[1:bounds]);
 
   ELSE
 
     args :=  format($$VALUES
       ('%1$s'::TEXT[] || '{"","",""}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{"",""}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[])
-      $$,point_name, opt_names, out_names);
+      $$,extra_name, opt_names, out_names);
 
     types :=  format($$VALUES
       ('%1$s'::TEXT[] || '{text,int8,int8}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
@@ -94,7 +99,7 @@ BEGIN
       ('%1$s'::TEXT[] || '{text,anyarray,int8}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{text,anyarray,anyarray}'::TEXT[] || '%2$s'::TEXT[] || '%3$s'::TEXT[]),
       ('%1$s'::TEXT[] || '{text,text}'::TEXT[] ||  '%2$s'::TEXT[] || '%3$s'::TEXT[])
-      $$, point_type, opt_types, out_types);
+      $$, extra_type, opt_types, out_types);
   END IF;
 
   RETURN QUERY SELECT CASE WHEN min_version('4.0.0') THEN function_args_eq(fn, args) ELSE function_args_has(fn, args) END;
