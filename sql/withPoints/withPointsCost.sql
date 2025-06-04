@@ -34,9 +34,9 @@ CREATE FUNCTION pgr_withPointsCost(
     TEXT,   -- points_sql (required)
     BIGINT, -- start_vid (required)
     BIGINT, -- end_vid (required)
+    CHAR,   -- driving side
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
@@ -45,7 +45,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
-        $5, $6, true, true, true, 0, true);
+        $6, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -58,9 +58,9 @@ CREATE FUNCTION pgr_withPointsCost(
     TEXT,     -- points_sql (required)
     BIGINT,   -- start_vid (required)
     ANYARRAY, -- end_vid (required)
+    CHAR,   -- driving side
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
@@ -69,7 +69,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
-      $5, $6, true, true, true, 0, true);
+      $6, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -82,9 +82,9 @@ CREATE FUNCTION pgr_withPointsCost(
     TEXT,     -- points_sql (required)
     ANYARRAY, -- start_vid (required)
     BIGINT,   -- end_vid (required)
+    CHAR,   -- driving side
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
@@ -93,7 +93,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[],
-      $5, $6, true, true, false, 0, true);
+      $6, $5, true, true, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -106,9 +106,9 @@ CREATE FUNCTION pgr_withPointsCost(
     TEXT,     -- points_sql (required)
     ANYARRAY, -- start_vid (required)
     ANYARRAY, -- end_vid (required)
+    CHAR,   -- driving side
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
@@ -117,7 +117,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
-      $5, $6, true, true, true, 0, true);
+      $6, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -129,9 +129,9 @@ CREATE FUNCTION pgr_withPointsCost(
     TEXT, -- edges_sql (required)
     TEXT, -- points_sql (required)
     TEXT, -- combinations_sql (required)
+    CHAR,   -- driving side
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
@@ -140,7 +140,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-      directed, driving_side, true, true, 0, true);
+      directed, $5, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -149,7 +149,7 @@ ROWS 1000;
 
 
 
-COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR)
+COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, BIGINT, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost (One to One)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -163,7 +163,7 @@ IS 'pgr_withPointsCost (One to One)
    - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
-COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR)
+COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, ANYARRAY, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost (One to Many)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -177,7 +177,7 @@ IS 'pgr_withPointsCost (One to Many)
    - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
-COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR)
+COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, BIGINT, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost (Many to One)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -192,7 +192,7 @@ IS 'pgr_withPointsCost (Many to One)
 ';
 
 
-COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR)
+COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, ANYARRAY, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost (Many to Many)
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -206,7 +206,7 @@ IS 'pgr_withPointsCost (Many to Many)
   - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
-COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, TEXT, BOOLEAN, CHAR)
+COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, TEXT, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost(Combinations)
 - Parameters:
    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
