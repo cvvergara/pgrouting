@@ -60,7 +60,6 @@ estimate_drivingSide(char driving_side, bool directed, int32_t which) {
     if (!((d_side == 'r') || (d_side == 'l') || (d_side == 'b'))) {
         d_side = ' ';
     }
-
     if (which == 0) {
         return ' ';
     } else if (which == 1) {
@@ -75,7 +74,6 @@ estimate_drivingSide(char driving_side, bool directed, int32_t which) {
         /* For the moment its old signature of pgr_withPoints */
         if (!((d_side == 'r') || (d_side == 'l'))) d_side = 'b';
     }
-
     return d_side;
 }
 
@@ -265,6 +263,7 @@ do_shortestPath(
 
             switch (which) {
                 case 0:
+                case 101:
                 case 1: {
                             paths =  dijkstra(graph, combinations, only_cost, n);
                         }
@@ -275,6 +274,7 @@ do_shortestPath(
 
             switch (which) {
                 case 0:
+                case 101:
                 case 1: {
                             paths =  dijkstra(graph, combinations, only_cost, n);
                         }
