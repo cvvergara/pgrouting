@@ -21,19 +21,50 @@ BEGIN;
 
 SELECT plan(5);
 
-SELECT has_function('pgr_withpointscostmatrix');
-SELECT has_function('pgr_withpointscostmatrix', ARRAY['text','text','anyarray','boolean','character']);
-SELECT function_returns('pgr_withpointscostmatrix', ARRAY['text','text','anyarray','boolean','character'],'setof record');
+CREATE OR REPLACE FUNCTION check_types()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
-SELECT function_args_eq('pgr_withpointscostmatrix',
-  $$VALUES
-  ('{"","","","directed","driving_side","start_vid","end_vid","agg_cost"}'::TEXT[])
-  $$);
+  IF min_version('4.0.0') THEN
 
-SELECT function_types_eq('pgr_withpointscostmatrix',
-  $$VALUES
-  ('{text,text,anyarray,bool,bpchar,int8,int8,float8}'::TEXT[])
-  $$);
+    RETURN QUERY SELECT has_function('pgr_withpointscostmatrix');
+    RETURN QUERY SELECT has_function('pgr_withpointscostmatrix', ARRAY['text','text','anyarray','character','boolean']);
+    RETURN QUERY SELECT function_returns('pgr_withpointscostmatrix', ARRAY['text','text','anyarray','character','boolean'],'setof record');
+
+    RETURN QUERY SELECT function_args_eq('pgr_withpointscostmatrix',
+      $$VALUES
+      ('{"","","","",directed,start_vid,end_vid,agg_cost}'::TEXT[])
+      $$);
+
+    RETURN QUERY SELECT function_types_eq('pgr_withpointscostmatrix',
+      $$VALUES
+      ('{text,text,anyarray,bpchar,bool,int8,int8,float8}'::TEXT[])
+      $$);
+
+  ELSE
+
+    RETURN QUERY SELECT has_function('pgr_withpointscostmatrix');
+    RETURN QUERY SELECT has_function('pgr_withpointscostmatrix', ARRAY['text','text','anyarray','boolean','character']);
+    RETURN QUERY SELECT function_returns('pgr_withpointscostmatrix', ARRAY['text','text','anyarray','boolean','character'],'setof record');
+
+    RETURN QUERY SELECT function_args_eq('pgr_withpointscostmatrix',
+      $$VALUES
+      ('{"","","",directed,driving_side,start_vid,end_vid,agg_cost}'::TEXT[])
+      $$);
+
+    RETURN QUERY SELECT function_types_eq('pgr_withpointscostmatrix',
+      $$VALUES
+      ('{text,text,anyarray,bool,bpchar,int8,int8,float8}'::TEXT[])
+      $$);
+
+  END IF;
+
+END
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT check_types();
 
 SELECT finish();
 ROLLBACK;
