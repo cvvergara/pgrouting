@@ -190,7 +190,7 @@ FROM _pgr_trsp_withPoints_v4(
   _pgr_get_statement($2),
   _pgr_get_statement($3),
   _pgr_get_statement($4),
-  $6, $5, $7);
+  directed, $5, details);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
