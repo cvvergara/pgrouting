@@ -25,12 +25,6 @@ SELECT plan(38);
 CREATE VIEW four_edges AS
 SELECT * FROM edges WHERE id IN (1,4,10,14);
 
-CREATE OR REPLACE FUNCTION test_cases()
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-
-  IF min_version('4.0.0') THEN
 
     PREPARE dijkstra1(BIGINT, BIGINT) AS
     SELECT agg_cost::TEXT FROM pgr_dijkstra(
