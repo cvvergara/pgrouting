@@ -32,9 +32,9 @@ CREATE FUNCTION _pgr_trsp_withPoints(
     ANYARRAY,  -- start_vid
     ANYARRAY,  -- end_vids
 
-    directed BOOLEAN,
-    driving_side CHAR,
-    details BOOLEAN,
+    BOOLEAN, -- directed
+    CHAR,    -- driving side
+    BOOLEAN, -- details
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -56,9 +56,9 @@ CREATE FUNCTION _pgr_trsp_withPoints(
     TEXT,  -- points_sql
     TEXT,  -- combinations_sql
 
-    directed BOOLEAN,
-    driving_side CHAR,
-    details BOOLEAN,
+    BOOLEAN, -- directed
+    CHAR,    -- driving side
+    BOOLEAN, -- details
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
