@@ -153,7 +153,7 @@ BEGIN
   ELSE
 
     PREPARE dijkstra1(BIGINT, BIGINT) AS
-    SELECT agg_cost::TEXT FROM pgr_dijkstra(
+    SELECT agg_cost::TEXT FROM pgr_dijkstraCost(
       $$SELECT id, source, target, cost, reverse_cost FROM four_edges$$,
       $1, $2, true);
 
