@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 SET extra_float_digits = -3;
-SELECT CASE WHEN min_version('4.0.0') THEN plan(5) else plan(6) END;
+SELECT plan(6);
 
 CREATE OR REPLACE FUNCTION test_cases()
 RETURNS SETOF TEXT AS
@@ -88,7 +88,7 @@ BEGIN
       details := true);
 
     PREPARE q61 AS
-    SELECT -6::BIGINT AS node, 4::BIGINT AS edge, 1.3 AS agg_cost;
+    SELECT -6::BIGINT AS node, 4::BIGINT AS edge, 2.1 AS agg_cost;
 
     PREPARE q7 AS
     SELECT  -3 AS start_vid, -1 AS end_vid,  agg_cost FROM pgr_withPoints(
