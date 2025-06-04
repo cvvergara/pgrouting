@@ -31,14 +31,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_withPointsCostMatrix
 ---------------------------
 
---v3.0
+--v4.0
 CREATE FUNCTION pgr_withPointsCostMatrix(
     TEXT,     -- edges_sql (required)
     TEXT,     -- points_sql (required)
     ANYARRAY, -- pids (required)
+    CHAR,     -- driving side
 
     directed BOOLEAN DEFAULT true,
-    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
@@ -47,7 +47,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], '{}'::BIGINT[],
-      $4, $5, true, true, true, 0, true);
+      $5, $4, true, true, true, 0, true);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -55,15 +55,15 @@ ROWS 1000;
 
 -- COMMENTS
 
-COMMENT ON FUNCTION pgr_withPointsCostMatrix(TEXT, TEXT, ANYARRAY, BOOLEAN, CHAR)
+COMMENT ON FUNCTION pgr_withPointsCostMatrix(TEXT, TEXT, ANYARRAY, CHAR, BOOLEAN)
 IS'pgr_withPointsCostMatrix
 - Parameters:
     - Edges SQL with columns: id, source, target, cost [,reverse_cost]
     - Points SQL with columns: [pid], edge_id, fraction[,side]
     - ARRAY [points identifiers],
+    - driving_side
 - Optional Parameters
     - directed := true
-    - driving_side := ''b''
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsCostMatrix.html
 ';

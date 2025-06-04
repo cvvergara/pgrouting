@@ -45,7 +45,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
-        $6, $5, true, true, true, 0, true);
+        directed, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -69,7 +69,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
-      $6, $5, true, true, true, 0, true);
+      directed, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -93,7 +93,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], ARRAY[$4]::BIGINT[],
-      $6, $5, true, true, false, 0, true);
+      directed, $5, true, true, false, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -117,7 +117,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
-      $6, $5, true, true, true, 0, true);
+      directed, $5, true, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -140,7 +140,7 @@ RETURNS SETOF RECORD AS
 $BODY$
     SELECT start_vid, end_vid, agg_cost
     FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-      directed, $5, true, true, 0, true);
+      directed, $4, true, true, 0, true);
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
