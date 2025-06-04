@@ -35,7 +35,8 @@ points_sql TEXT;
 trsp_sql TEXT;
 result_columns TEXT;
 result_columns_vid TEXT;
-driving_side TEXT;
+drv_right TEXT;
+drv_both TEXT;
 arr TEXT := 'ARRAY[1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,16,17,18]';
 BEGIN
   IF NOT min_version('3.4.0') THEN
@@ -48,9 +49,11 @@ BEGIN
 
   IF min_version('4.0.0') THEN
     result_columns_vid = replace(result_columns_vid, 'pid', 'vid');
-    driving_side := $$, 'r'$$;
+    drv_right := $$, 'r'$$;
+    drv_both := $$, 'b'$$;
   ELSE
-    driving_side := $$, driving_side => 'r'$$;
+    drv_right := $$, driving_side => 'r'$$;
+    drv_both := $$, driving_side => 'b'$$;
   END IF;
 
   points := 'SELECT * FROM pointsofinterest';
@@ -62,28 +65,28 @@ BEGIN
     || arr || ', ' || arr || ', directed => true)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || points || '$$, '
-    || arr || ', ' || arr ||  driving_side || ', directed => true)';
+    || arr || ', ' || arr ||  drv_right || ', directed => true)';
   RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
   points_sql := 'SELECT ' || result_columns_vid || ' FROM pgr_withpoints($$' || with_reverse || '$$, $$' || points || '$$, '
     || arr || ', ' || arr || ', directed => false)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || points || '$$, '
-    || arr || ', ' || arr || driving_side || ', directed => false)';
+    || arr || ', ' || arr || drv_both || ', directed => false)';
   RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
   points_sql := 'SELECT ' || result_columns_vid || ' FROM pgr_withpoints($$' || no_reverse || '$$, $$' || points || '$$, '
     || arr || ', ' || arr || ', directed => true)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || points || '$$, '
-    || arr || ', ' || arr || driving_side || ', directed => true)';
+    || arr || ', ' || arr || drv_right || ', directed => true)';
   RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
   points_sql := 'SELECT ' || result_columns_vid || ' FROM pgr_withpoints($$' || no_reverse || '$$, $$' || points || '$$, '
     || arr || ', ' || arr || ', directed => false)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || points || '$$, '
-    || arr || ', ' || arr || driving_side || ', directed => false)';
+    || arr || ', ' || arr || drv_both || ', directed => false)';
   RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
 RETURN;

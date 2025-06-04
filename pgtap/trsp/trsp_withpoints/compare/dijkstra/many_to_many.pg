@@ -35,7 +35,8 @@ no_reverse TEXT;
 dijkstra_sql TEXT;
 trsp_sql TEXT;
 result_columns TEXT;
-driving_side TEXT;
+drv_right TEXT;
+drv_both TEXT;
 arr TEXT := 'ARRAY[1,2,3,4,5,6,7,8,9,10,11,12,13,14,16,16,17,18]';
 BEGIN
   IF NOT min_version('3.4.0') THEN
@@ -44,9 +45,11 @@ BEGIN
   END IF;
 
   IF min_version('4.0.0') THEN
-    driving_side := $$, 'r'$$;
+    drv_right := $$, 'r'$$;
+    drv_both := $$, 'b'$$;
   ELSE
-    driving_side := $$, driving_side => 'r'$$;
+    drv_right := $$, driving_side => 'r'$$;
+    drv_both := $$, driving_side => 'b'$$;
   END IF;
   result_columns := 'seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost';
   empty_points := 'SELECT * FROM pointsofinterest WHERE pid IN (-1)';
@@ -58,28 +61,28 @@ BEGIN
     || arr || ', ' || arr || ', directed => true)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || empty_points || '$$, '
-    || arr || ', ' || arr ||  driving_side || ', directed => true)';
+    || arr || ', ' || arr ||  drv_right || ', directed => true)';
   RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
 
   dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || with_reverse || '$$, '
     || arr || ', ' || arr || ', directed => false)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || empty_points || '$$, '
-    || arr || ', ' || arr || driving_side || ', directed => false)';
+    || arr || ', ' || arr || drv_both || ', directed => false)';
   RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
 
   dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || no_reverse || '$$, '
     || arr || ', ' || arr || ', directed => true)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || empty_points || '$$, '
-    || arr || ', ' || arr || driving_side || ', directed => true)';
+    || arr || ', ' || arr || drv_right || ', directed => true)';
   RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
 
   dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || no_reverse || '$$, '
     || arr || ', ' || arr || ', directed => false)';
   trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
     || empty_restrictions || '$$, $$' || empty_points || '$$, '
-    || arr || ', ' || arr || driving_side || ', directed => false)';
+    || arr || ', ' || arr || drv_both || ', directed => false)';
   RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
 
 RETURN;
