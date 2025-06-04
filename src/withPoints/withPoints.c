@@ -190,16 +190,16 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_ARRAYTYPE_P(3),
 
-                PG_GETARG_BOOL(4),
-                PG_GETARG_BOOL(7),
-                PG_GETARG_BOOL(8),
+                PG_GETARG_BOOL(4), //directed
+                PG_GETARG_BOOL(7), // only cost
+                PG_GETARG_BOOL(8), // normal
 
-                0, true,
+                0, true, //n-goals, normal
 
-                text_to_cstring(PG_GETARG_TEXT_P(5)),
-                PG_GETARG_BOOL(6),
+                text_to_cstring(PG_GETARG_TEXT_P(5)), // driving side
+                PG_GETARG_BOOL(6), //details
 
-                101,  // which
+                1,  // which
                 &result_tuples,
                 &result_count);
 
@@ -222,7 +222,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
 
                 text_to_cstring(PG_GETARG_TEXT_P(4)),
                 PG_GETARG_BOOL(5),
-                101,  // which
+                1,  // which
                 &result_tuples,
                 &result_count);
         }
