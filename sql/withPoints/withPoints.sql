@@ -47,7 +47,7 @@ RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM _pgr_withPoints_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2), 
+    _pgr_get_statement($1), _pgr_get_statement($2),
     ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
     directed, $5, details, false, true, 0, true);
 $BODY$
@@ -79,7 +79,7 @@ RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM _pgr_withPoints_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2), 
+    _pgr_get_statement($1), _pgr_get_statement($2),
     ARRAY[$3]::BIGINT[], $4::BIGINT[],
     directed, $5, details, false, true, 0, true);
 $BODY$
@@ -111,7 +111,7 @@ RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM _pgr_withPoints_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2), 
+    _pgr_get_statement($1), _pgr_get_statement($2),
     $3::BIGINT[], ARRAY[$4]::BIGINT[],
     directed, $5, details, false, false, 0, true);
 $BODY$
@@ -143,7 +143,7 @@ RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM _pgr_withPoints_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2), 
+    _pgr_get_statement($1), _pgr_get_statement($2),
     $3::BIGINT[], $4::BIGINT[],
     directed, $5, details, false, false, 0, true);
 $BODY$
@@ -175,7 +175,7 @@ $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM _pgr_withPoints_v4(
     _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-    $5, $4, directed, false, 0, true);
+    directed, $4, details, false, 0, true);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

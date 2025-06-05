@@ -22,6 +22,7 @@ BEGIN;
 SELECT plan(2);
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+SET extra_float_digits=-3;
 
 CREATE OR REPLACE FUNCTION test_function(sql_TestFunction TEXT, INTEGER default 18)
 RETURNS SETOF TEXT AS

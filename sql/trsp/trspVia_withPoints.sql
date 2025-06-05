@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 
 --v4.0
-CREATE FUNCTION pgr_trspVia_withPoints_v4(
+CREATE FUNCTION pgr_trspVia_withPoints(
   TEXT,     -- edges
   TEXT,     -- restrictions
   TEXT,     -- points
@@ -64,7 +64,7 @@ LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-COMMENT ON FUNCTION pgr_trspVia_withPoints_v4(TEXT, TEXT, TEXT, ANYARRAY, CHAR, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN)
+COMMENT ON FUNCTION pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, CHAR, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_trspVia_withPoints
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
