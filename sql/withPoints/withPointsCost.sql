@@ -1,7 +1,6 @@
 /*PGR-GNU*****************************************************************
 File: withPointsCost.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
@@ -157,7 +156,7 @@ IS 'pgr_withPointsCost (One to One)
 - Optional Parameters
   - directed => true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
 ';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, ANYARRAY, CHAR, BOOLEAN)
@@ -171,7 +170,7 @@ IS 'pgr_withPointsCost (One to Many)
 - Optional Parameters
   - directed => true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
 ';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, BIGINT, CHAR, BOOLEAN)
@@ -185,7 +184,7 @@ IS 'pgr_withPointsCost (Many to One)
 - Optional Parameters
   - directed => true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
 ';
 
 
@@ -200,7 +199,7 @@ IS 'pgr_withPointsCost (Many to Many)
 - Optional Parameters
   - directed => true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
 ';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, TEXT, CHAR, BOOLEAN)
@@ -213,7 +212,7 @@ IS 'pgr_withPointsCost(Combinations)
 - Optional Parameters
   - directed => true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
 ';
 
 
@@ -225,21 +224,21 @@ IS 'pgr_withPointsCost(Combinations)
 -- ONE TO ONE
 --v2.6
 CREATE FUNCTION pgr_withPointsCost(
-  TEXT, -- edges
-  TEXT, -- points
-  BIGINT, -- end_pid (required)
-  BIGINT, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    BIGINT, -- end_pid (required)
+    BIGINT, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT agg_cost float)
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT $3, $4, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, TRUE, TRUE) AS a;
+    SELECT $3, $4, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, TRUE, TRUE) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -249,21 +248,21 @@ ROWS 1000;
 -- ONE TO MANY
 --v2.6
 CREATE FUNCTION pgr_withPointsCost(
-  TEXT, -- edges
-  TEXT, -- points
-  BIGINT, -- end_pid (required)
-  ANYARRAY, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    BIGINT, -- end_pid (required)
+    ANYARRAY, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT agg_cost float)
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT $3, a.end_pid, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, TRUE, TRUE) AS a;
+    SELECT $3, a.end_pid, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::BIGINT[], $4::BIGINT[], $5, $6, TRUE, TRUE) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -273,21 +272,21 @@ ROWS 1000;
 -- MANY TO ONE
 --v2.6
 CREATE FUNCTION pgr_withPointsCost(
-  TEXT, -- edges
-  TEXT, -- points
-  ANYARRAY, -- end_pid (required)
-  BIGINT, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    ANYARRAY, -- end_pid (required)
+    BIGINT, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT agg_cost float)
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT a.start_pid, $4, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, TRUE, TRUE) AS a;
+    SELECT a.start_pid, $4, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::BIGINT[], ARRAY[$4]::BIGINT[], $5, $6, TRUE, TRUE) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -297,21 +296,21 @@ ROWS 1000;
 -- MANY TO MANY
 --v2.6
 CREATE FUNCTION pgr_withPointsCost(
-  TEXT, -- edges
-  TEXT, -- points
-  ANYARRAY, -- end_pid (required)
-  ANYARRAY, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    ANYARRAY, -- end_pid (required)
+    ANYARRAY, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT agg_cost float)
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT a.start_pid, a.end_pid, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::BIGINT[], $4::BIGINT[], $5,  $6, TRUE, TRUE) AS a;
+    SELECT a.start_pid, a.end_pid, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::BIGINT[], $4::BIGINT[], $5,  $6, TRUE, TRUE) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -321,20 +320,20 @@ ROWS 1000;
 -- Combinations SQL signature
 --v3.2
 CREATE FUNCTION pgr_withPointsCost(
-  TEXT, -- edges
-  TEXT, -- points
-  TEXT, -- combinations
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    TEXT, -- combinations_sql (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT agg_cost float)
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT a.start_pid, a.end_pid, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, TRUE, TRUE) AS a;
+    SELECT a.start_pid, a.end_pid, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3), $4, $5, TRUE, TRUE) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100

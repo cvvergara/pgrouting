@@ -262,26 +262,26 @@ IS 'pgr_withPoints(Combinations)
 -- ONE TO ONE
 --v2.6
 CREATE FUNCTION pgr_withPoints(
-  TEXT, -- edges_sql (required)
-  TEXT, -- points_sql (required)
-  BIGINT, -- end_pid (required)
-  BIGINT, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    BIGINT, -- end_pid (required)
+    BIGINT, -- end_pid (required)
 
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
-  details BOOLEAN DEFAULT false,
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    details BOOLEAN DEFAULT false,
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], ARRAY[$4]::bigint[], $5, directed, details) AS a;
+    SELECT a.seq, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], ARRAY[$4]::bigint[], $5, $6, $7) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -291,26 +291,26 @@ ROWS 1000;
 -- ONE TO MANY
 --v2.6
 CREATE FUNCTION pgr_withPoints(
-  TEXT, -- edges_sql (required)
-  TEXT, -- points_sql (required)
-  BIGINT, -- end_pid (required)
-  ANYARRAY, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    BIGINT, -- end_pid (required)
+    ANYARRAY, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
-  details BOOLEAN DEFAULT false,
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    details BOOLEAN DEFAULT false,
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT end_pid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT end_pid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT a.seq, a.path_seq, a.end_pid, a.node, a.edge, a.cost, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], $4::bigint[], $5, directed, details) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, ARRAY[$3]::bigint[], $4::bigint[], $5, $6, $7) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -320,26 +320,26 @@ ROWS 1000;
 -- MANY TO ONE
 --v2.6
 CREATE FUNCTION pgr_withPoints(
-  TEXT, -- edges_sql (required)
-  TEXT, -- points_sql (required)
-  ANYARRAY, -- end_pid (required)
-  BIGINT, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    ANYARRAY, -- end_pid (required)
+    BIGINT, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
-  details BOOLEAN DEFAULT false,
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    details BOOLEAN DEFAULT false,
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_pid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_pid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT a.seq, a.path_seq, a.start_pid, a.node, a.edge, a.cost, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], ARRAY[$4]::bigint[], $5, directed, details, FALSE, FALSE) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], ARRAY[$4]::bigint[], $5, $6, $7, FALSE, FALSE) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -349,27 +349,27 @@ ROWS 1000;
 -- MANY TO MANY
 --v2.6
 CREATE FUNCTION pgr_withPoints(
-  TEXT, -- edges_sql (required)
-  TEXT, -- points_sql (required)
-  ANYARRAY, -- end_pid (required)
-  ANYARRAY, -- end_pid (required)
+    TEXT, -- edges_sql (required)
+    TEXT, -- points_sql (required)
+    ANYARRAY, -- end_pid (required)
+    ANYARRAY, -- end_pid (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
-  details BOOLEAN DEFAULT false,
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    details BOOLEAN DEFAULT false,
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
 SELECT a.seq, a.path_seq, a.start_pid, a.end_pid, a.node, a.edge, a.cost, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], $4::bigint[], $5, directed, details) AS a;
+    FROM _pgr_withPoints(_pgr_get_statement($1), $2, $3::bigint[], $4::bigint[], $5, $6, $7) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -379,27 +379,27 @@ ROWS 1000;
 -- Combinations SQL signature
 --v3.2
 CREATE FUNCTION pgr_withPoints(
-  TEXT,     -- edges_sql (required)
-  TEXT,     -- points_sql (required)
-  TEXT,     -- combinations_sql (required)
+    TEXT,     -- edges_sql (required)
+    TEXT,     -- points_sql (required)
+    TEXT,     -- combinations_sql (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
-  details BOOLEAN DEFAULT false,
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    details BOOLEAN DEFAULT false,
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT a.seq, a.path_seq, a.start_pid, a.end_pid, a.node, a.edge, a.cost, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-  $4, $5, directed) AS a;
+    SELECT a.seq, a.path_seq, a.start_pid, a.end_pid, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
+        $4, $5, $6) AS a;
 $BODY$
 LANGUAGE sql VOLATILE STRICT
 COST 100
@@ -410,82 +410,19 @@ ROWS 1000;
 
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (One to One)
-- PROPOSED
-- Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - Points SQL with columns: [pid], edge_id, fraction [,side]
-  - From vertices/point identifier
-  - To vertex/point identifier
-- Optional Parameters
-  - directed => true
-  - driving side: directed graph [r,l], undirected graph [b]
-  - details => false
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
-';
+IS 'pgr_withPoints (One to One)deprecated signature on v.4.0.0';
 
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (One to Many)
-- PROPOSED
-- Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - Points SQL with columns: [pid], edge_id, fraction [,side]
-  - From vertices/point identifier
-  - To ARRAY[vertices/points identifiers]
-- Optional Parameters
-  - directed => true
-  - driving side: directed graph [r,l], undirected graph [b]
-  - details => false
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
-';
+IS 'pgr_withPoints (One to Many)deprecated signature on v.4.0.0';
 
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (Many to One)
-- PROPOSED
-- Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - Points SQL with columns: [pid], edge_id, fraction [,side]
-  - From ARRAY[vertices/points identifiers]
-  - To vertex/point identifier
-- Optional Parameters
-  - directed => true
-  - driving side: directed graph [r,l], undirected graph [b]
-  - details => false
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
-';
+IS 'pgr_withPoints (Many to One)deprecated signature on v.4.0.0';
 
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (Many to Many)
-- PROPOSED
-- Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - Points SQL with columns: [pid], edge_id, fraction [,side]
-  - From ARRAY[vertices/points identifiers]
-  - To ARRAY[vertices/points identifiers]
-- Optional Parameters
-  - directed => true
-  - driving side: directed graph [r,l], undirected graph [b]
-  - details => false
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
-';
+IS 'pgr_withPoints (Many to Many) deprecated signature on v.4.0.0';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints(Combinations)
-- Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - Points SQL with columns: [pid], edge_id, fraction [,side]
-  - Combinations SQL with columns: source, target
-- Optional Parameters
-  - directed => true
-  - driving side: directed graph [r,l], undirected graph [b]
-  - details => false
-- Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
-';
+IS 'pgr_withPoints(Combinations) deprecated signature on v.4.0.0';

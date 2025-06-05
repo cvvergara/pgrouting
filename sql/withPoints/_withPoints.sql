@@ -101,26 +101,26 @@ IS 'pgRouting internal function';
 
 --v2.6
 CREATE FUNCTION _pgr_withPoints(
-  edges_sql TEXT,
-  points_sql TEXT,
-  start_pids ANYARRAY,
-  end_pids ANYARRAY,
-  directed BOOLEAN,
-  driving_side CHAR,
-  details BOOLEAN,
+    edges_sql TEXT,
+    points_sql TEXT,
+    start_pids ANYARRAY,
+    end_pids ANYARRAY,
+    directed BOOLEAN,
+    driving_side CHAR,
+    details BOOLEAN,
 
-  only_cost BOOLEAN DEFAULT false, -- gets path
-  normal BOOLEAN DEFAULT true, -- false for many to onu
+    only_cost BOOLEAN DEFAULT false, -- gets path
+    normal BOOLEAN DEFAULT true, -- false for many to onu
 
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE;
@@ -128,24 +128,24 @@ LANGUAGE c VOLATILE;
 
 --v3.2
 CREATE FUNCTION _pgr_withPoints(
-  edges_sql TEXT,
-  points_sql TEXT,
-  combinations_sql TEXT,
+    edges_sql TEXT,
+    points_sql TEXT,
+    combinations_sql TEXT,
 
-  directed BOOLEAN,
-  driving_side CHAR,
-  details BOOLEAN,
+    directed BOOLEAN,
+    driving_side CHAR,
+    details BOOLEAN,
 
-  only_cost BOOLEAN DEFAULT false,
+    only_cost BOOLEAN DEFAULT false,
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_pid BIGINT,
-  OUT end_pid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_pid BIGINT,
+    OUT end_pid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;

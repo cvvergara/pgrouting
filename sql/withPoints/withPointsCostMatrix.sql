@@ -62,26 +62,27 @@ IS'pgr_withPointsCostMatrix
   - ${PROJECT_DOC_LINK}/pgr_withPointsCostMatrix.html
 ';
 
+/* TODO remove in v5.0 */
 ---------------------------
 -- pgr_withPointsCostMatrix
 ---------------------------
 
 --v2.6
 CREATE FUNCTION pgr_withPointsCostMatrix(
-  TEXT,     -- edges
-  TEXT,     -- points
-  ANYARRAY, -- vids
+    TEXT,     -- edges_sql (required)
+    TEXT,     -- points_sql (required)
+    ANYARRAY, -- pids (required)
 
-  directed BOOLEAN DEFAULT true,
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
 
-  OUT start_vid BIGINT,
-  OUT end_vid BIGINT,
-  OUT agg_cost float)
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT agg_cost float)
 RETURNS SETOF RECORD AS
 $BODY$
-SELECT a.start_pid, a.end_pid, a.agg_cost
-FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), $3, $3, $4,  directed, TRUE, TRUE) AS a;
+    SELECT a.start_pid, a.end_pid, a.agg_cost
+    FROM _pgr_withPoints(_pgr_get_statement($1), _pgr_get_statement($2), $3, $3, $4,  $5, TRUE, TRUE) AS a;
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
