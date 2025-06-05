@@ -5,7 +5,6 @@ Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
@@ -29,30 +28,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_withPoints_v4(
-    TEXT, -- edges
-    TEXT, -- points
+  TEXT,     -- edges
+  TEXT,     -- points
 
-    ANYARRAY, -- departures
-    ANYARRAY, -- arrivals
+  ANYARRAY, -- departures
+  ANYARRAY, -- arrivals
 
-    BOOLEAN, --directed
-    CHAR,    -- driving_side
-    BOOLEAN, -- details
+  BOOLEAN,  --directed
+  CHAR,     -- driving side
+  BOOLEAN,  -- details
+  BOOLEAN,  -- only_cost
+  BOOLEAN,  -- normal
+  BIGINT,   -- n_goals
+  BOOLEAN,  -- global
 
-    BOOLEAN, -- only_cost
-    BOOLEAN, -- normal
-
-    BIGINT,  -- n_goals
-    BOOLEAN, -- global
-
-    OUT seq INTEGER,
-    OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
+  OUT seq INTEGER,
+  OUT path_seq INTEGER,
+  OUT start_vid BIGINT,
+  OUT end_vid BIGINT,
+  OUT node BIGINT,
+  OUT edge BIGINT,
+  OUT cost FLOAT,
+  OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
@@ -63,26 +60,25 @@ IS 'pgRouting internal function';
 
 --v4.0
 CREATE FUNCTION _pgr_withPoints_v4(
-    TEXT, -- edges
-    TEXT, -- points
-    TEXT, -- combinations
+  TEXT,     -- edges
+  TEXT,     -- points
+  TEXT,     -- combinations
 
-    BOOLEAN, --directed
-    CHAR,    -- driving_side
-    BOOLEAN, -- details
-    BOOLEAN, -- only_cost
+  BOOLEAN,  --directed
+  CHAR,     -- driving_side
+  BOOLEAN,  -- details
+  BOOLEAN,  -- only_cost
+  BIGINT,   -- n_goals
+  BOOLEAN,  -- global
 
-    BIGINT,  -- n_goals
-    BOOLEAN, -- global
-
-    OUT seq INTEGER,
-    OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
+  OUT seq INTEGER,
+  OUT path_seq INTEGER,
+  OUT start_vid BIGINT,
+  OUT end_vid BIGINT,
+  OUT node BIGINT,
+  OUT edge BIGINT,
+  OUT cost FLOAT,
+  OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
@@ -90,7 +86,7 @@ LANGUAGE C VOLATILE STRICT;
 COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN, BOOLEAN, BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
 
-
+/* TODO remove on v5*/
 ------------------
 ------------------
 -- withPoints
@@ -105,26 +101,26 @@ IS 'pgRouting internal function';
 
 --v2.6
 CREATE FUNCTION _pgr_withPoints(
-    edges_sql TEXT,
-    points_sql TEXT,
-    start_pids ANYARRAY,
-    end_pids ANYARRAY,
-    directed BOOLEAN,
-    driving_side CHAR,
-    details BOOLEAN,
+  edges_sql TEXT,
+  points_sql TEXT,
+  start_pids ANYARRAY,
+  end_pids ANYARRAY,
+  directed BOOLEAN,
+  driving_side CHAR,
+  details BOOLEAN,
 
-    only_cost BOOLEAN DEFAULT false, -- gets path
-    normal BOOLEAN DEFAULT true, -- false for many to onu
+  only_cost BOOLEAN DEFAULT false, -- gets path
+  normal BOOLEAN DEFAULT true, -- false for many to onu
 
 
-    OUT seq INTEGER,
-    OUT path_seq INTEGER,
-    OUT start_pid BIGINT,
-    OUT end_pid BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
+  OUT seq INTEGER,
+  OUT path_seq INTEGER,
+  OUT start_pid BIGINT,
+  OUT end_pid BIGINT,
+  OUT node BIGINT,
+  OUT edge BIGINT,
+  OUT cost FLOAT,
+  OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE;
@@ -132,24 +128,24 @@ LANGUAGE c VOLATILE;
 
 --v3.2
 CREATE FUNCTION _pgr_withPoints(
-    edges_sql TEXT,
-    points_sql TEXT,
-    combinations_sql TEXT,
+  edges_sql TEXT,
+  points_sql TEXT,
+  combinations_sql TEXT,
 
-    directed BOOLEAN,
-    driving_side CHAR,
-    details BOOLEAN,
+  directed BOOLEAN,
+  driving_side CHAR,
+  details BOOLEAN,
 
-    only_cost BOOLEAN DEFAULT false,
+  only_cost BOOLEAN DEFAULT false,
 
-    OUT seq INTEGER,
-    OUT path_seq INTEGER,
-    OUT start_pid BIGINT,
-    OUT end_pid BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
+  OUT seq INTEGER,
+  OUT path_seq INTEGER,
+  OUT start_pid BIGINT,
+  OUT end_pid BIGINT,
+  OUT node BIGINT,
+  OUT edge BIGINT,
+  OUT cost FLOAT,
+  OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;

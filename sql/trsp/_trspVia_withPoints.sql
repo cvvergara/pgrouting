@@ -1,8 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: _trspVia_withPoints.sql
 
-Function's developer:
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
+
 Copyright (c) 2022 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -28,12 +32,13 @@ CREATE FUNCTION _pgr_trspVia_withPoints_v4(
   TEXT,     -- restrictions
   TEXT,     -- points
   ANYARRAY, -- via
-  -- via parameters
+
   BOOLEAN,  -- directed
+
   BOOLEAN,  -- strict
   BOOLEAN,  -- U_turn_on_edge
-  -- withPoints parameters
-  CHAR,     -- driving_side
+
+  CHAR,     -- driving side
   BOOLEAN,  -- details
 
   OUT seq INTEGER,
@@ -48,7 +53,7 @@ CREATE FUNCTION _pgr_trspVia_withPoints_v4(
   OUT route_agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c VOLATILE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_trspVia_withPoints_v4(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgRouting internal function';
@@ -83,4 +88,4 @@ RETURNS SETOF RECORD AS
 LANGUAGE c VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting deprecated internal function';
+IS 'pgRouting deprecated internal function on v4.0.0';

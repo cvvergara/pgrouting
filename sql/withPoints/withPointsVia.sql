@@ -70,12 +70,12 @@ IS 'pgr_withPointsVia
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - ARRAY[via vertices identifiers]
-  - driving_side := ''b''
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-  - directed := true
-  - strict := false
-  - U_turn_on_edge := true
-  - details := ''false''
+  - directed => true
+  - strict => false
+  - U_turn_on_edge => true
+  - details => false
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_withPointsVia.html
 ';

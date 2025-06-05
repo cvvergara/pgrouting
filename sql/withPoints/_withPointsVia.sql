@@ -1,8 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: _withPointsVia.sql
 
-Function's developer:
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
+
 Copyright (c) 2022 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -27,12 +31,11 @@ CREATE FUNCTION _pgr_withPointsVia_v4(
   TEXT,     -- edges
   TEXT,     -- points
   ANYARRAY, -- via
-  -- via parameters
+
   BOOLEAN,  -- directed
   BOOLEAN,  -- strict
   BOOLEAN,  -- U_turn_on_edge
-  -- withPoints parameters
-  CHAR,     -- driving_side
+  CHAR,     -- driving side
   BOOLEAN,  -- details
 
   OUT seq INTEGER,
@@ -47,11 +50,12 @@ CREATE FUNCTION _pgr_withPointsVia_v4(
   OUT route_agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c VOLATILE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
-COMMENT ON FUNCTION _pgr_withPointsVia(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
+COMMENT ON FUNCTION _pgr_withPointsVia_v4(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgRouting internal function';
 
+/* TODO remove on v5*/
 --v3.4
 CREATE FUNCTION _pgr_withPointsVia(
   TEXT,     -- edges_sql
@@ -75,7 +79,7 @@ CREATE FUNCTION _pgr_withPointsVia(
   OUT route_agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c VOLATILE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_withPointsVia(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgRouting deprecated internal function';

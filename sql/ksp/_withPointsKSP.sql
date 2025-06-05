@@ -1,8 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: _withPointsKSP.sql
 
+Generated with Template by:
+Copyright (c) 2015 pgRouting developers
+Mail: project at pgrouting.org
+
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+Mail" vicky at erosion.dev
 
 Copyright (c) 2023 Abhinav Jain
 Mail: this.abhinav at gmail.com
@@ -25,22 +29,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---------------------
--- pgr_withPointsKSP
---------------------
 
 --v4.0
 CREATE FUNCTION _pgr_withPointsKSP_v4(
-  TEXT, -- edges
-  TEXT, -- points
+  TEXT,     -- edges
+  TEXT,     -- points
   ANYARRAY, -- departures
   ANYARRAY, -- destinations
-  INTEGER, -- k
-  CHAR, -- driving side
+  INTEGER,  -- k
+  CHAR,     -- driving side
 
-  BOOLEAN, -- directed
-  BOOLEAN, -- heaps
-  BOOLEAN, -- details
+  BOOLEAN,  -- directed
+   -- KSP parameters
+  BOOLEAN,  -- heaps
+  -- withPoints parameters
+  BOOLEAN,  -- details
 
   OUT seq INTEGER,
   OUT path_id INTEGER,
@@ -53,7 +56,7 @@ CREATE FUNCTION _pgr_withPointsKSP_v4(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c STABLE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
 --v4.0
 CREATE FUNCTION _pgr_withPointsKSP_v4(
@@ -78,7 +81,7 @@ CREATE FUNCTION _pgr_withPointsKSP_v4(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c STABLE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_withPointsKSP_v4(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
@@ -112,7 +115,7 @@ CREATE FUNCTION _pgr_withPointsKSP(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c STABLE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
 --v3.6
 CREATE FUNCTION _pgr_withPointsKSP(
@@ -137,7 +140,7 @@ CREATE FUNCTION _pgr_withPointsKSP(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c STABLE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';
@@ -161,9 +164,9 @@ CREATE FUNCTION _pgr_withPointsKSP(
     OUT seq INTEGER, OUT path_id INTEGER, OUT path_seq INTEGER,
     OUT node BIGINT, OUT edge BIGINT,
     OUT cost FLOAT, OUT agg_cost FLOAT)
-  RETURNS SETOF RECORD AS
-    'MODULE_PATHNAME'
-    LANGUAGE c STABLE STRICT;
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 

@@ -30,17 +30,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
--------------------
--- pgr_withPointsDD
--------------------
 
 --v3.6
 CREATE FUNCTION _pgr_withPointsDDv4(
-    TEXT,     -- edges SQL
-    TEXT,     -- points SQL
+    TEXT,     -- edges
+    TEXT,     -- points
     ANYARRAY, -- roots
     FLOAT,    -- distance
-    CHAR,     -- driving_side,
+    CHAR,     -- driving side
 
     BOOLEAN,  -- directed
     BOOLEAN,  -- details
