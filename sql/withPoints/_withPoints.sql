@@ -34,7 +34,7 @@ CREATE FUNCTION _pgr_withPoints_v4(
   ANYARRAY, -- departures
   ANYARRAY, -- arrivals
 
-  BOOLEAN,  --directed
+  BOOLEAN,  -- directed
   CHAR,     -- driving side
   BOOLEAN,  -- details
   BOOLEAN,  -- only_cost
@@ -64,7 +64,7 @@ CREATE FUNCTION _pgr_withPoints_v4(
   TEXT,     -- points
   TEXT,     -- combinations
 
-  BOOLEAN,  --directed
+  BOOLEAN,  -- directed
   CHAR,     -- driving_side
   BOOLEAN,  -- details
   BOOLEAN,  -- only_cost
