@@ -1,11 +1,9 @@
 /*PGR-GNU*****************************************************************
 File: withPoints.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
@@ -29,12 +27,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION pgr_withPoints(
-  TEXT,   -- edges_sql (required)
-  TEXT,   -- points_sql (required)
-  BIGINT, -- start_vid (required)
-  BIGINT, -- end_vid (required)
+  TEXT,   -- edges
+  TEXT,   -- points
+  BIGINT, -- start
+  BIGINT, -- end
   CHAR,   -- driving side
-
   directed BOOLEAN DEFAULT true,
   details BOOLEAN DEFAULT false,
 
@@ -49,20 +46,22 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
+  FROM _pgr_withPoints_v4(
+    _pgr_get_statement($1), _pgr_get_statement($2), 
+    ARRAY[$3]::BIGINT[], ARRAY[$4]::BIGINT[],
     directed, $5, details, false, true, 0, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
 
 --v4.0
 CREATE FUNCTION pgr_withPoints(
-  TEXT,     -- edges_sql (required)
-  TEXT,     -- points_sql (required)
-  BIGINT,   -- start_vid (required)
-  ANYARRAY, -- end_vid (required)
+  TEXT,     -- edges
+  TEXT,     -- points
+  BIGINT,   -- start
+  ANYARRAY, -- ends
   CHAR,     -- driving side
 
   directed BOOLEAN DEFAULT true,
@@ -79,21 +78,23 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4::BIGINT[],
+  FROM _pgr_withPoints_v4(
+    _pgr_get_statement($1), _pgr_get_statement($2), 
+    ARRAY[$3]::BIGINT[], $4::BIGINT[],
     directed, $5, details, false, true, 0, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
 
 --v4.0
 CREATE FUNCTION pgr_withPoints(
-  TEXT,     -- edges_sql (required)
-  TEXT,     -- points_sql (required)
-  ANYARRAY, -- start_vid (required)
-  BIGINT,   -- end_vid (required)
-  CHAR,   -- driving side
+  TEXT,     -- edges
+  TEXT,     -- points
+  ANYARRAY, -- start
+  BIGINT,   -- ends
+  CHAR,     -- driving side
 
   directed BOOLEAN DEFAULT true,
   details BOOLEAN DEFAULT false,
@@ -109,21 +110,23 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_withPoints_v4(_pgr_get_statement($1), $2, $3::BIGINT[], ARRAY[$4]::BIGINT[],
+  FROM _pgr_withPoints_v4(
+    _pgr_get_statement($1), _pgr_get_statement($2), 
+    $3::BIGINT[], ARRAY[$4]::BIGINT[],
     directed, $5, details, false, false, 0, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
 
 --v4.0
 CREATE FUNCTION pgr_withPoints(
-  TEXT,     -- edges_sql (required)
-  TEXT,     -- points_sql (required)
-  ANYARRAY, -- start_vid (required)
-  ANYARRAY, -- end_vid (required)
-  CHAR,   -- driving side
+  TEXT,     -- edges
+  TEXT,     -- points
+  ANYARRAY, -- start
+  ANYARRAY, -- ends
+  CHAR,     -- driving side
 
   directed BOOLEAN DEFAULT true,
   details BOOLEAN DEFAULT false,
@@ -139,20 +142,22 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), $3::BIGINT[], $4::BIGINT[],
+  FROM _pgr_withPoints_v4(
+    _pgr_get_statement($1), _pgr_get_statement($2), 
+    $3::BIGINT[], $4::BIGINT[],
     directed, $5, details, false, false, 0, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
 
 --v4.0
 CREATE FUNCTION pgr_withPoints(
-  TEXT,     -- edges_sql (required)
-  TEXT,     -- points_sql (required)
-  TEXT,     -- combinations_sql (required)
-  CHAR,   -- driving side
+  TEXT,     -- edges
+  TEXT,     -- points
+  TEXT,     -- combinations
+  CHAR,     -- driving side
 
   directed BOOLEAN DEFAULT true,
   details BOOLEAN DEFAULT false,
@@ -168,10 +173,11 @@ CREATE FUNCTION pgr_withPoints(
 RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_withPoints_v4(_pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
+  FROM _pgr_withPoints_v4(
+    _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
     $5, $4, directed, false, 0, true);
 $BODY$
-LANGUAGE sql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
@@ -253,7 +259,7 @@ IS 'pgr_withPoints(Combinations)
 ';
 
 
-/* TODO remove on v5*/
+/* TODO remove on v5 */
 --------------------
 -- pgr_withPoints
 --------------------
@@ -405,24 +411,18 @@ LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-
 -- COMMENTS
-
-
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (One to One)deprecated signature on v.4.0.0';
-
+IS 'pgr_withPoints (One to One) deprecated signature on v.4.0.0';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (One to Many)deprecated signature on v.4.0.0';
-
+IS 'pgr_withPoints (One to Many) deprecated signature on v.4.0.0';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (Many to One)deprecated signature on v.4.0.0';
-
+IS 'pgr_withPoints (Many to One) deprecated signature on v.4.0.0';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgr_withPoints (Many to Many) deprecated signature on v.4.0.0';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints(Combinations) deprecated signature on v.4.0.0';
+IS 'pgr_withPoints(Combinations) deprecated signature on v4.0.0';

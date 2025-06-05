@@ -1,13 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: withPointsVia.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
 Copyright (c) 2022 Celia Virginia Vergara Castillo
-Copyright (c) 2015 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -116,4 +114,4 @@ COST 100
 ROWS 1000;
 
 COMMENT ON FUNCTION pgr_withPointsVia(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPointsVia deprecated on v4.0.0';
+IS 'pgr_withPointsVia deprecated signature on v4.0.0';

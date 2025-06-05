@@ -1,8 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: trspVia_withPoints.sql
 
+Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
+
 Function's developer:
 Copyright (c) 2022 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -60,8 +64,6 @@ LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- COMMENTS
-
 COMMENT ON FUNCTION pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgr_trspVia_withPoints
 - Parameters:
@@ -69,17 +71,17 @@ IS 'pgr_trspVia_withPoints
   - Restrictions SQL with columns: cost, path
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - ARRAY[via vertices identifiers]
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-  - directed := true
-  - strict := false
-  - U_turn_on_edge := true
-  - driving_side := ''r''
-  - details := ''false''
+  - directed => true
+  - strict => false
+  - U_turn_on_edge => true
+  - details => false
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_trspVia_withPoints.html
 ';
 
-
+/* TODO remove on v5.0 */
 --v3.4
 CREATE FUNCTION pgr_trspVia_withPoints(
   TEXT,     -- edges sql

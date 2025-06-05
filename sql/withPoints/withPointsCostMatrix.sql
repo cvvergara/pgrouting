@@ -1,13 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: withPointsCost.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail:
+Mail: vicky at erosion.dev
 
 ------
 
@@ -91,4 +90,4 @@ ROWS 1000;
 -- COMMENTS
 
 COMMENT ON FUNCTION pgr_withPointsCostMatrix(TEXT, TEXT, ANYARRAY, BOOLEAN, CHAR)
-IS 'pgr_withPointsCostMatrix deprecated on v4.0.0';
+IS 'pgr_withPointsCostMatrix deprecated signature on v4.0.0';
