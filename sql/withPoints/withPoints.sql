@@ -180,76 +180,76 @@ ROWS 1000;
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, BIGINT, CHAR, BOOLEAN, BOOLEAN)
 IS 'pgr_withPoints (One to One)
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From vertex/point identifier
+  - From vertex/point identifier
   - To vertex/point identifier
-- driving side: directed graph [r,l], undirected graph [b]
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-- directed => true
-- details => false
+  - directed => true
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, ANYARRAY, CHAR, BOOLEAN, BOOLEAN)
 IS 'pgr_withPoints (One to Many)
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From vertex/point identifier
+  - From vertex/point identifier
   - To ARRAY[vertices/points identifiers]
-- driving side: directed graph [r,l], undirected graph [b]
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-- directed => true
-- details => false
+  - directed => true
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, BIGINT, CHAR, BOOLEAN, BOOLEAN)
 IS 'pgr_withPoints (Many to One)
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From  ARRAY[vertices/points identifiers]
+  - From ARRAY[vertices/points identifiers]
   - To vertex/point identifier
-- driving side: directed graph [r,l], undirected graph [b]
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-- directed => true
-- details => false
+  - directed => true
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, ANYARRAY, CHAR, BOOLEAN, BOOLEAN)
 IS 'pgr_withPoints (Many to Many)
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From ARRAY[vertices/points identifiers]
+  - From ARRAY[vertices/points identifiers]
   - To ARRAY[vertices/points identifiers]
-- driving side: directed graph [r,l], undirected graph [b]
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-- directed => true
-- details => false
+  - directed => true
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, TEXT, CHAR, BOOLEAN, BOOLEAN)
 IS 'pgr_withPoints(Combinations)
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- Combinations SQL with columns: source, target
-- driving side: directed graph [r,l], undirected graph [b]
+  - Combinations SQL with columns: source, target
+  - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
-- directed => true
-- details => false
+  - directed => true
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 
@@ -413,16 +413,16 @@ COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR, BO
 IS 'pgr_withPoints (One to One)
 - PROPOSED
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From vertices/point identifier
+  - From vertices/point identifier
   - To vertex/point identifier
 - Optional Parameters
-- directed => true
-- driving side: directed graph [r,l], undirected graph [b]
-- details => false
+  - directed => true
+  - driving side: directed graph [r,l], undirected graph [b]
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 
@@ -430,16 +430,16 @@ COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR, 
 IS 'pgr_withPoints (One to Many)
 - PROPOSED
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From vertices/point identifier
+  - From vertices/point identifier
   - To ARRAY[vertices/points identifiers]
 - Optional Parameters
-- directed => true
-- driving side: directed graph [r,l], undirected graph [b]
-- details => false
+  - directed => true
+  - driving side: directed graph [r,l], undirected graph [b]
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 
@@ -447,16 +447,16 @@ COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR, 
 IS 'pgr_withPoints (Many to One)
 - PROPOSED
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From  ARRAY[vertices/points identifiers]
+  - From ARRAY[vertices/points identifiers]
   - To vertex/point identifier
 - Optional Parameters
-- directed => true
-- driving side: directed graph [r,l], undirected graph [b]
-- details => false
+  - directed => true
+  - driving side: directed graph [r,l], undirected graph [b]
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 
@@ -464,28 +464,28 @@ COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR
 IS 'pgr_withPoints (Many to Many)
 - PROPOSED
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- From ARRAY[vertices/points identifiers]
+  - From ARRAY[vertices/points identifiers]
   - To ARRAY[vertices/points identifiers]
 - Optional Parameters
-- directed => true
-- driving side: directed graph [r,l], undirected graph [b]
-- details => false
+  - directed => true
+  - driving side: directed graph [r,l], undirected graph [b]
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgr_withPoints(Combinations)
 - Parameters:
-- Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-- Combinations SQL with columns: source, target
+  - Combinations SQL with columns: source, target
 - Optional Parameters
-- directed => true
-- driving side: directed graph [r,l], undirected graph [b]
-- details => false
+  - directed => true
+  - driving side: directed graph [r,l], undirected graph [b]
+  - details => false
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';

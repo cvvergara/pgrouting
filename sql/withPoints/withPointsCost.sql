@@ -179,7 +179,7 @@ IS 'pgr_withPointsCost (Many to One)
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
-  - From  ARRAY[vertices/points identifiers]
+  - From ARRAY[vertices/points identifiers]
   - To vertex/point identifier
   - driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
@@ -200,7 +200,7 @@ IS 'pgr_withPointsCost (Many to Many)
 - Optional Parameters
   - directed => true
 - Documentation:
-- ${PROJECT_DOC_LINK}/pgr_withPoints.html
+  - ${PROJECT_DOC_LINK}/pgr_withPoints.html
 ';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, TEXT, CHAR, BOOLEAN)
