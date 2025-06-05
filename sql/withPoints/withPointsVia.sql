@@ -30,7 +30,7 @@ CREATE FUNCTION pgr_withPointsVia(
   TEXT,     -- edges
   TEXT,     -- points
   ANYARRAY, -- via vids
-  CHAR      -- driving side
+  CHAR,      -- driving side
 
   directed BOOLEAN DEFAULT true,
 

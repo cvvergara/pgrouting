@@ -32,7 +32,7 @@ CREATE FUNCTION pgr_trspVia_withPoints_v4(
   TEXT,     -- restrictions
   TEXT,     -- points
   ANYARRAY, -- via vids
-  CHAR      -- driving side
+  CHAR,     -- driving side
 
   directed BOOLEAN DEFAULT true,
 
@@ -64,7 +64,7 @@ LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-COMMENT ON FUNCTION pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
+COMMENT ON FUNCTION pgr_trspVia_withPoints_v4(TEXT, TEXT, TEXT, ANYARRAY, CHAR, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgr_trspVia_withPoints
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
