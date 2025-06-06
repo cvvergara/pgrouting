@@ -24,24 +24,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
----------------
--- pgr_transitiveClosure
----------------
+--v4.0
+CREATE FUNCTION _pgr_transitiveClosure_v4(
+    TEXT,
 
-
---v3.0
-CREATE FUNCTION _pgr_transitiveClosure(
-    edges_sql TEXT,
-
-    OUT seq INTEGER,
     OUT vid BIGINT,
     OUT target_array BIGINT[])
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE STRICT;
 
--- COMMENTS
-
-
-COMMENT ON FUNCTION _pgr_transitiveClosure(TEXT)
+COMMENT ON FUNCTION _pgr_transitiveClosure_v4(TEXT)
 IS 'pgRouting internal function';

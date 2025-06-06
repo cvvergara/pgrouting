@@ -24,22 +24,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
----------------
--- pgr_transitiveClosure
----------------
-
-
 --v3.0
 CREATE FUNCTION pgr_transitiveClosure(
     TEXT, -- edges_sql (required)
 
-    OUT seq INTEGER,
     OUT node BIGINT,
     OUT targets BIGINT[])
 RETURNS SETOF RECORD AS
 $BODY$
-    SELECT seq, vid, target_array
-    FROM _pgr_transitiveClosure(_pgr_get_statement($1));
+    SELECT vid, target_array
+    FROM _pgr_transitiveClosure_v4(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 

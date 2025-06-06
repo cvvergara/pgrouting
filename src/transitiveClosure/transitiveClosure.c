@@ -43,8 +43,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/transitiveClosure_rt.h"
 #include "drivers/transitiveClosure/transitiveClosure_driver.h"
 
-PGDLLEXPORT Datum _pgr_transitiveclosure(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_transitiveclosure);
+PGDLLEXPORT Datum _pgr_transitiveclosure_v4(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_transitiveclosure_v4);
 
 
 static
@@ -79,6 +79,120 @@ process(char* edges_sql,
 
     pgr_SPI_finish();
 }
+
+PGDLLEXPORT Datum
+_pgr_transitiveclosure_v4(PG_FUNCTION_ARGS) {
+    FuncCallContext     *funcctx;
+    TupleDesc            tuple_desc;
+
+    TransitiveClosure_rt  *result_tuples = NULL;
+    size_t result_count = 0;
+
+    if (SRF_IS_FIRSTCALL()) {
+        MemoryContext   oldcontext;
+        funcctx = SRF_FIRSTCALL_INIT();
+        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+        process(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                &result_tuples,
+                &result_count);
+
+        funcctx->max_calls = result_count;
+        funcctx->user_fctx = result_tuples;
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE)
+            ereport(ERROR,
+                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                     errmsg("function returning record called in context "
+                         "that cannot accept type record")));
+        funcctx->tuple_desc = tuple_desc;
+        MemoryContextSwitchTo(oldcontext);
+    }
+
+    funcctx = SRF_PERCALL_SETUP();
+    tuple_desc = funcctx->tuple_desc;
+    result_tuples = (TransitiveClosure_rt*) funcctx->user_fctx;
+
+    if (funcctx->call_cntr < funcctx->max_calls) {
+        HeapTuple   tuple;
+        Datum       result;
+        Datum       *values;
+        bool        *nulls;
+        int16 typlen;
+        size_t      call_cntr = funcctx->call_cntr;
+
+        size_t numb = 3;
+        values =(Datum *)palloc(numb * sizeof(Datum));
+        nulls = palloc(numb * sizeof(bool));
+        size_t i;
+        for (i = 0; i < numb; ++i) {
+            nulls[i] = false;
+        }
+
+        size_t target_array_size =
+            (size_t)result_tuples[call_cntr].target_array_size;
+
+        Datum* target_array_array;
+        target_array_array = (Datum*) palloc(sizeof(Datum) *
+                (size_t)target_array_size);
+
+        for (i = 0; i < target_array_size; ++i) {
+            PGR_DBG("Storing target_array vertex %ld",
+                    result_tuples[call_cntr].target_array[i]);
+            target_array_array[i] =
+                Int64GetDatum(result_tuples[call_cntr].target_array[i]);
+        }
+
+        bool typbyval;
+        char typalign;
+        get_typlenbyvalalign(INT8OID, &typlen, &typbyval, &typalign);
+        ArrayType* arrayType;
+        /*
+         * https://doxygen.postgresql.org/arrayfuncs_8c.html
+
+         ArrayType* construct_array(
+         Datum*     elems,
+         int     nelems,
+         Oid     elmtype, int elmlen, bool elmbyval, char elmalign
+         )
+         */
+        arrayType =  construct_array(
+                target_array_array,
+                (int)target_array_size,
+                INT8OID,  typlen, typbyval, typalign);
+        /*
+           void TupleDescInitEntry(
+           TupleDesc   desc,
+           AttrNumber      attributeNumber,
+           const char *    attributeName,
+           Oid     oidtypeid,
+           int32   typmod,
+           int     attdim
+           )
+           */
+        TupleDescInitEntry(tuple_desc, (AttrNumber) 3, "target_array",
+                INT8ARRAYOID, -1, 0);
+
+        values[0] = Int64GetDatum(result_tuples[call_cntr].vid);
+        values[1] = PointerGetDatum(arrayType);
+
+        tuple = heap_form_tuple(tuple_desc, values, nulls);
+        result = HeapTupleGetDatum(tuple);
+
+        /*
+         *  cleaning up the target_array array
+         */
+        if (result_tuples[funcctx->call_cntr].target_array) {
+            pfree(result_tuples[funcctx->call_cntr].target_array);
+        }
+        SRF_RETURN_NEXT(funcctx, result);
+    } else {
+        SRF_RETURN_DONE(funcctx);
+    }
+}
+PGDLLEXPORT Datum _pgr_transitiveclosure(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_transitiveclosure);
 
 PGDLLEXPORT Datum
 _pgr_transitiveclosure(PG_FUNCTION_ARGS) {

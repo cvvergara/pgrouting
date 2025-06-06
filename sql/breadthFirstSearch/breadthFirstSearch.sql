@@ -6,7 +6,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2019 Gudesa Venkata Sai Akhil
-Mail: gvs.akhil1997@gmail.com
+Mail: gvs.akhil1997 at gmail.com
 
 ------
 
@@ -24,7 +24,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-********************************************************************PGR-GNU*/
+ ********************************************************************PGR-GNU*/
 
 --ONE TO DEPTH
 --v3.0
@@ -32,8 +32,8 @@ CREATE FUNCTION pgr_breadthFirstSearch(
     TEXT,   -- edges_sql (required)
     BIGINT, -- from_vid (required)
 
-    max_depth BIGINT DEFAULT 9223372036854775807,
     directed BOOLEAN DEFAULT true,
+    max_depth BIGINT DEFAULT 9223372036854775807,
 
     OUT seq BIGINT,
     OUT depth BIGINT,
@@ -43,19 +43,18 @@ CREATE FUNCTION pgr_breadthFirstSearch(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
-    IF $3 < 0 THEN
+    IF $4 < 0 THEN
         RAISE EXCEPTION 'Negative value found on ''max_depth'''
-        USING HINT = format('Value found: %s', $3);
+        USING HINT = format('Value found: %s', $4);
     END IF;
 
 
     RETURN QUERY
     SELECT a.seq, a.depth, a.start_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_breadthFirstSearch_v4(_pgr_get_statement($1),  ARRAY[$2]::BIGINT[], max_depth, directed) AS a;
+    FROM _pgr_breadthFirstSearch_v4(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], directed, max_depth) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
@@ -65,10 +64,10 @@ LANGUAGE plpgsql VOLATILE STRICT;
 --v3.0
 CREATE FUNCTION pgr_breadthFirstSearch(
     TEXT,     -- edges_sql (required)
-    ANYARRAY, -- from_vids (required)
+    ANYARRAY, -- root_vids (required)
 
-    max_depth BIGINT DEFAULT 9223372036854775807,
     directed BOOLEAN DEFAULT true,
+    max_depth BIGINT DEFAULT 9223372036854775807,
 
     OUT seq BIGINT,
     OUT depth BIGINT,
@@ -78,46 +77,45 @@ CREATE FUNCTION pgr_breadthFirstSearch(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
-    IF $3 < 0 THEN
+    IF $4 < 0 THEN
         RAISE EXCEPTION 'Negative value found on ''max_depth'''
-        USING HINT = format('Value found: %s', $3);
+        USING HINT = format('Value found: %s', $4);
     END IF;
 
 
     RETURN QUERY
     SELECT a.seq, a.depth, a.start_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_breadthFirstSearch_v4(_pgr_get_statement($1), $2::BIGINT[], max_depth, directed) AS a;
+    FROM _pgr_breadthFirstSearch_v4(_pgr_get_statement($1), $2::BIGINT[], directed, max_depth) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
 
-COMMENT ON FUNCTION pgr_breadthFirstSearch(TEXT, BIGINT, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION pgr_breadthFirstSearch(TEXT, BIGINT, BOOLEAN, BIGINT)
 IS 'pgr_breadthFirstSearch(One to Depth)
 - EXPERIMENTAL
 - Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - From vertex identifier
-- Optional Parameters:
-  - Maximum Depth := 9223372036854775807
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - From root vertex identifier
+- Optional parameters
   - directed := true
+  - max_depth := 9223372036854775807
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_breadthFirstSearch.html
 ';
 
-COMMENT ON FUNCTION pgr_breadthFirstSearch(TEXT, ANYARRAY, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION pgr_breadthFirstSearch(TEXT, ANYARRAY, BOOLEAN, BIGINT)
 IS 'pgr_breadthFirstSearch(Many to Depth)
 - EXPERIMENTAL
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - From ARRAY[vertices identifiers]
-- Optional Parameters
-  - Maximum Depth := 9223372036854775807
-  - directed := true
+  - From ARRAY[root vertices identifiers]
+- Optional parameters
+   - directed := true
+   - max_depth := 9223372036854775807
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_breadthFirstSearch.html
 ';

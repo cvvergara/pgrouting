@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2020 Ashish Kumar
-Mail: ashishkr23438@gmail.com
+Mail: ashishkr23438 at gmail.com
 
 ------
 
@@ -27,16 +27,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---------------------------
--- pgr_depthFirstSearch
---------------------------
-
-
--- SINGLE VERTEX
+--ONE TO DEPTH
 --v3.2
 CREATE FUNCTION pgr_depthFirstSearch(
     TEXT,   -- edges_sql (required)
-    BIGINT, -- root_vid (required)
+    BIGINT, -- from_vid (required)
 
     directed BOOLEAN DEFAULT true,
     max_depth BIGINT DEFAULT 9223372036854775807,
@@ -44,6 +39,7 @@ CREATE FUNCTION pgr_depthFirstSearch(
     OUT seq BIGINT,
     OUT depth BIGINT,
     OUT start_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -58,14 +54,14 @@ BEGIN
 
 
     RETURN QUERY
-    SELECT a.seq, a.depth, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_depthFirstSearch(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], directed, max_depth) AS a;
+    SELECT a.seq, a.depth, a.start_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_depthFirstSearch_v4(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], directed, max_depth) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
 
--- MULTIPLE VERTICES
+--MANY TO DEPTH
 --v3.2
 CREATE FUNCTION pgr_depthFirstSearch(
     TEXT,     -- edges_sql (required)
@@ -77,6 +73,7 @@ CREATE FUNCTION pgr_depthFirstSearch(
     OUT seq BIGINT,
     OUT depth BIGINT,
     OUT start_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -91,38 +88,35 @@ BEGIN
 
 
     RETURN QUERY
-    SELECT a.seq, a.depth, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_depthFirstSearch(_pgr_get_statement($1), $2, directed, max_depth) AS a;
+    SELECT a.seq, a.depth, a.start_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_depthFirstSearch_v4(_pgr_get_statement($1), $2, directed, max_depth) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
-
-
--- COMMENTS
 
 
 COMMENT ON FUNCTION pgr_depthFirstSearch(TEXT, BIGINT, BOOLEAN, BIGINT)
 IS 'pgr_depthFirstSearch(Single Vertex)
 - PROPOSED
 - Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - From root vertex identifier
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - From root vertex identifier
 - Optional parameters
-    - directed := true
-    - max_depth := 9223372036854775807
+  - directed := true
+  - max_depth := 9223372036854775807
 - Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_depthFirstSearch.html
+  - ${PROJECT_DOC_LINK}/pgr_depthFirstSearch.html
 ';
 
 COMMENT ON FUNCTION pgr_depthFirstSearch(TEXT, ANYARRAY, BOOLEAN, BIGINT)
 IS 'pgr_depthFirstSearch(Multiple Vertices)
 - PROPOSED
 - Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-    - From ARRAY[root vertices identifiers]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - From ARRAY[root vertices identifiers]
 - Optional parameters
-    - directed := true
-    - max_depth := 9223372036854775807
+   - directed := true
+   - max_depth := 9223372036854775807
 - Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_depthFirstSearch.html
+  - ${PROJECT_DOC_LINK}/pgr_depthFirstSearch.html
 ';

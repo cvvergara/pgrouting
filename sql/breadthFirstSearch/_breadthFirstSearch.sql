@@ -27,10 +27,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_breadthFirstSearch_v4(
-    edges_sql TEXT,
-    from_vids ANYARRAY,
-    max_depth BIGINT,
-    directed  BOOLEAN,
+    TEXT,     --edges
+    ANYARRAY, -- roots
+    BOOLEAN,  --directed
+    BIGINT,   -- max depth
 
     OUT seq BIGINT,
     OUT depth BIGINT,
@@ -40,10 +40,9 @@ CREATE FUNCTION _pgr_breadthFirstSearch_v4(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c IMMUTABLE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
-COMMENT ON FUNCTION _pgr_breadthFirstSearch_v4(TEXT, ANYARRAY, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION _pgr_breadthFirstSearch_v4(TEXT, ANYARRAY, BOOLEAN, BIGINT)
 IS 'pgRouting internal function';

@@ -7,7 +7,7 @@ Mail: project@pgrouting.org
 
 Function's developer:
 Copyright (c) 2020 Ashish Kumar
-Mail: ashishkr23438@gmail.com
+Mail: ashishkr23438 at gmail.com
 
 ------
 
@@ -27,22 +27,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
----------------------------
--- _pgr_depthFirstSearch
----------------------------
-
-
---v3.2
-CREATE FUNCTION _pgr_depthFirstSearch(
-    edges_sql TEXT,
-    root_vids ANYARRAY,
-
-    directed BOOLEAN,
-    max_depth BIGINT,
+--v4.0
+CREATE FUNCTION _pgr_depthFirstSearch_v4(
+    TEXT,     --edges
+    ANYARRAY, -- roots
+    BOOLEAN,  --directed
+    BIGINT,   -- max depth
 
     OUT seq BIGINT,
     OUT depth BIGINT,
     OUT start_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -51,10 +46,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
 
-
--- COMMENTS
-
-
-COMMENT ON FUNCTION _pgr_depthFirstSearch(TEXT, ANYARRAY, BOOLEAN, BIGINT)
+COMMENT ON FUNCTION _pgr_depthFirstSearch_v4(TEXT, ANYARRAY, BOOLEAN, BIGINT)
 IS 'pgRouting internal function';
-
