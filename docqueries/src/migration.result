@@ -142,13 +142,13 @@ SELECT * FROM pgr_withPoints(
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (4, 3)$$,
   -4, -3,
   details => false);
- seq | path_seq | node | edge | cost | agg_cost
------+----------+------+------+------+----------
-   1 |        1 |   -4 |    6 |  0.7 |        0
-   2 |        2 |    3 |    7 |    1 |      0.7
-   3 |        3 |    7 |   10 |    1 |      1.7
-   4 |        4 |    8 |   12 |  0.6 |      2.7
-   5 |        5 |   -3 |   -1 |    0 |      3.3
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -4 |      -3 |   -4 |    6 |  0.7 |        0
+   2 |        2 |        -4 |      -3 |    3 |    7 |    1 |      0.7
+   3 |        3 |        -4 |      -3 |    7 |   10 |    1 |      1.7
+   4 |        4 |        -4 |      -3 |    8 |   12 |  0.6 |      2.7
+   5 |        5 |        -4 |      -3 |   -3 |   -1 |    0 |      3.3
 (5 rows)
 
 /* --edgesv3 */
@@ -175,7 +175,21 @@ SELECT * FROM pgr_trsp_withPoints(
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (4, 3)$$,
   -4, -3,
   details => false);
-ERROR:  function _pgr_trsp_withpoints(text, text, text, bigint[], bigint[], boolean, boolean, boolean) does not exist at character 76
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -4 |      -3 |   -4 |    6 |  0.7 |        0
+   2 |        2 |        -4 |      -3 |    3 |    7 |    1 |      0.7
+   3 |        3 |        -4 |      -3 |    7 |    8 |    1 |      1.7
+   4 |        4 |        -4 |      -3 |   11 |    9 |    1 |      2.7
+   5 |        5 |        -4 |      -3 |   16 |   16 |    1 |      3.7
+   6 |        6 |        -4 |      -3 |   15 |    3 |    1 |      4.7
+   7 |        7 |        -4 |      -3 |   10 |    2 |    1 |      5.7
+   8 |        8 |        -4 |      -3 |    6 |    4 |    1 |      6.7
+   9 |        9 |        -4 |      -3 |    7 |   10 |    1 |      7.7
+  10 |       10 |        -4 |      -3 |    8 |   12 |  0.6 |      8.7
+  11 |       11 |        -4 |      -3 |   -3 |   -1 |    0 |      9.3
+(11 rows)
+
 /* --edgesv6 */
 SELECT seq, node::INTEGER AS id1, edge::INTEGER AS id2, cost
 FROM pgr_trsp_withPoints(
@@ -185,13 +199,35 @@ FROM pgr_trsp_withPoints(
   -1, -2,
   details => false)
 WHERE edge != -1;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | id1 | id2 | cost
+-----+-----+-----+------
+   1 |  -1 |   6 |  0.7
+   2 |   3 |   7 |    1
+   3 |   7 |   8 |    1
+   4 |  11 |   9 |    1
+   5 |  16 |  16 |    1
+   6 |  15 |   3 |    1
+   7 |  10 |   2 |    1
+   8 |   6 |   4 |    1
+   9 |   7 |  10 |    1
+  10 |   8 |  12 |  0.6
+(10 rows)
+
 /* --edgesv7 */
 /* --viav2 */
 SELECT * FROM pgr_dijkstraVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   ARRAY[6, 3, 6]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost | route_agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------+----------------
+   1 |       1 |        1 |         6 |       3 |    6 |    4 |    1 |        0 |              0
+   2 |       1 |        2 |         6 |       3 |    7 |    7 |    1 |        1 |              1
+   3 |       1 |        3 |         6 |       3 |    3 |   -1 |    0 |        2 |              2
+   4 |       2 |        1 |         3 |       6 |    3 |    7 |    1 |        0 |              2
+   5 |       2 |        2 |         3 |       6 |    7 |    4 |    1 |        1 |              3
+   6 |       2 |        3 |         3 |       6 |    6 |   -2 |    0 |        2 |              4
+(6 rows)
+
 /* --viav3*/
 SELECT row_number() over(ORDER BY seq) AS seq,
   path_id::INTEGER AS id1, node::INTEGER AS id2,
@@ -200,14 +236,37 @@ FROM pgr_dijkstraVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   ARRAY[6, 3, 6])
 WHERE edge != -1;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | id1 | id2 | id3 | cost
+-----+-----+-----+-----+------
+   1 |   1 |   6 |   4 |    1
+   2 |   1 |   7 |   7 |    1
+   3 |   2 |   3 |   7 |    1
+   4 |   2 |   7 |   4 |    1
+   5 |   2 |   6 |  -1 |    0
+(5 rows)
+
 /* --viav4*/
 /* --viav5 */
 SELECT * FROM pgr_trspVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT * FROM new_restrictions$$,
   ARRAY[6, 3, 6]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost | route_agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------+----------------
+   1 |       1 |        1 |         6 |       3 |    6 |    4 |    1 |        0 |              0
+   2 |       1 |        2 |         6 |       3 |    7 |    8 |    1 |        1 |              1
+   3 |       1 |        3 |         6 |       3 |   11 |    9 |    1 |        2 |              2
+   4 |       1 |        4 |         6 |       3 |   16 |   16 |    1 |        3 |              3
+   5 |       1 |        5 |         6 |       3 |   15 |    3 |    1 |        4 |              4
+   6 |       1 |        6 |         6 |       3 |   10 |    5 |    1 |        5 |              5
+   7 |       1 |        7 |         6 |       3 |   11 |    8 |    1 |        6 |              6
+   8 |       1 |        8 |         6 |       3 |    7 |    7 |    1 |        7 |              7
+   9 |       1 |        9 |         6 |       3 |    3 |   -1 |    0 |        8 |              8
+  10 |       2 |        1 |         3 |       6 |    3 |    7 |    1 |        0 |              8
+  11 |       2 |        2 |         3 |       6 |    7 |    4 |    1 |        1 |              9
+  12 |       2 |        3 |         3 |       6 |    6 |   -2 |    0 |        2 |             10
+(12 rows)
+
 /* --viav6*/
 SELECT row_number() over(ORDER BY seq) AS seq,
   path_id::INTEGER AS id1, node::INTEGER AS id2,
@@ -217,21 +276,62 @@ FROM pgr_trspVia(
   $$SELECT * FROM new_restrictions$$,
   ARRAY[6, 3, 6])
 WHERE edge != -1;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | id1 | id2 | id3 | cost
+-----+-----+-----+-----+------
+   1 |   1 |   6 |   4 |    1
+   2 |   1 |   7 |   8 |    1
+   3 |   1 |  11 |   9 |    1
+   4 |   1 |  16 |  16 |    1
+   5 |   1 |  15 |   3 |    1
+   6 |   1 |  10 |   5 |    1
+   7 |   1 |  11 |   8 |    1
+   8 |   1 |   7 |   7 |    1
+   9 |   2 |   3 |   7 |    1
+  10 |   2 |   7 |   4 |    1
+  11 |   2 |   6 |  -1 |    0
+(11 rows)
+
 /* --viav7*/
 SELECT pid, edge_id, fraction, side FROM pointsOfInterest
 WHERE pid IN (3, 4, 6);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ pid | edge_id | fraction | side
+-----+---------+----------+------
+   3 |      12 |      0.6 | l
+   4 |       6 |      0.3 | r
+   6 |       4 |      0.7 | b
+(3 rows)
+
 /* --edgesvia1 */
 SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ pid | edge_id | fraction
+-----+---------+----------
+   3 |      12 |      0.6
+   4 |       6 |      0.3
+   6 |       4 |      0.7
+(3 rows)
+
 /* --edgesvia2 */
 SELECT * FROM pgr_withPointsVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6)$$,
   ARRAY[-4, -3, -6],
   details => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost | route_agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------+----------------
+   1 |       1 |        1 |        -4 |      -3 |   -4 |    6 |  0.7 |        0 |              0
+   2 |       1 |        2 |        -4 |      -3 |    3 |    7 |    1 |      0.7 |            0.7
+   3 |       1 |        3 |        -4 |      -3 |    7 |   10 |    1 |      1.7 |            1.7
+   4 |       1 |        4 |        -4 |      -3 |    8 |   12 |  0.6 |      2.7 |            2.7
+   5 |       1 |        5 |        -4 |      -3 |   -3 |   -1 |    0 |      3.3 |            3.3
+   6 |       2 |        1 |        -3 |      -6 |   -3 |   12 |  0.4 |        0 |            3.3
+   7 |       2 |        2 |        -3 |      -6 |   12 |   13 |    1 |      0.4 |            3.7
+   8 |       2 |        3 |        -3 |      -6 |   17 |   15 |    1 |      1.4 |            4.7
+   9 |       2 |        4 |        -3 |      -6 |   16 |    9 |    1 |      2.4 |            5.7
+  10 |       2 |        5 |        -3 |      -6 |   11 |    8 |    1 |      3.4 |            6.7
+  11 |       2 |        6 |        -3 |      -6 |    7 |    4 |  0.3 |      4.4 |            7.7
+  12 |       2 |        7 |        -3 |      -6 |   -6 |   -2 |    0 |      4.7 |              8
+(12 rows)
+
 /* --edgesvia3 */
 SELECT row_number() over(ORDER BY seq) AS seq,
 path_id::INTEGER AS id1, node::INTEGER AS id2,
@@ -241,7 +341,22 @@ FROM pgr_withPointsVia(
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6)$$,
   ARRAY[-4, -3, -6],
   details => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | id1 | id2 | id3 | cost
+-----+-----+-----+-----+------
+   1 |   1 |  -4 |   6 |  0.7
+   2 |   1 |   3 |   7 |    1
+   3 |   1 |   7 |  10 |    1
+   4 |   1 |   8 |  12 |  0.6
+   5 |   1 |  -3 |  -1 |    0
+   6 |   2 |  -3 |  12 |  0.4
+   7 |   2 |  12 |  13 |    1
+   8 |   2 |  17 |  15 |    1
+   9 |   2 |  16 |   9 |    1
+  10 |   2 |  11 |   8 |    1
+  11 |   2 |   7 |   4 |  0.3
+  12 |   2 |  -6 |  -1 |    0
+(12 rows)
+
 /* --edgesvia4 */
 /* --edgesvia5 */
 SELECT * FROM pgr_trspVia_withPoints(
@@ -250,7 +365,23 @@ SELECT * FROM pgr_trspVia_withPoints(
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6)$$,
   ARRAY[-4, -3, -6],
   details => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost | route_agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------+----------------
+   1 |       1 |        1 |        -4 |      -3 |   -4 |    6 |  0.7 |        0 |              0
+   2 |       1 |        2 |        -4 |      -3 |    3 |    7 |    1 |      0.7 |            0.7
+   3 |       1 |        3 |        -4 |      -3 |    7 |    4 |  0.6 |      1.7 |            1.7
+   4 |       1 |        4 |        -4 |      -3 |    7 |   10 |    1 |      2.3 |            2.3
+   5 |       1 |        5 |        -4 |      -3 |    8 |   12 |  0.6 |      3.3 |            3.3
+   6 |       1 |        6 |        -4 |      -3 |   -3 |   -1 |    0 |      3.9 |            3.9
+   7 |       2 |        1 |        -3 |      -6 |   -3 |   12 |  0.4 |        0 |            3.9
+   8 |       2 |        2 |        -3 |      -6 |   12 |   13 |    1 |      0.4 |            4.3
+   9 |       2 |        3 |        -3 |      -6 |   17 |   15 |    1 |      1.4 |            5.3
+  10 |       2 |        4 |        -3 |      -6 |   16 |    9 |    1 |      2.4 |            6.3
+  11 |       2 |        5 |        -3 |      -6 |   11 |    8 |    1 |      3.4 |            7.3
+  12 |       2 |        6 |        -3 |      -6 |    7 |    4 |  0.3 |      4.4 |            8.3
+  13 |       2 |        7 |        -3 |      -6 |   -6 |   -2 |    0 |      4.7 |            8.6
+(13 rows)
+
 /* --edgesvia6 */
 SELECT row_number() over(ORDER BY seq) AS seq,
 path_id::INTEGER AS id1, node::INTEGER AS id2,
@@ -261,207 +392,685 @@ FROM pgr_trspVia_withPoints(
   $$SELECT * FROM (VALUES (1, 6, 0.3),(2, 12, 0.6),(3, 4, 0.7)) AS t(pid, edge_id, fraction)$$,
   ARRAY[-1, -2, -3],
   details => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | id1 | id2 | id3 | cost
+-----+-----+-----+-----+------
+   1 |   1 |  -1 |   6 |  0.7
+   2 |   1 |   3 |   7 |    1
+   3 |   1 |   7 |   4 |  0.6
+   4 |   1 |   7 |  10 |    1
+   5 |   1 |   8 |  12 |  0.6
+   6 |   1 |  -2 |  -1 |    0
+   7 |   2 |  -2 |  12 |  0.4
+   8 |   2 |  12 |  13 |    1
+   9 |   2 |  17 |  15 |    1
+  10 |   2 |  16 |   9 |    1
+  11 |   2 |  11 |   8 |    1
+  12 |   2 |   7 |   4 |  0.3
+  13 |   2 |  -3 |  -1 |    0
+(13 rows)
+
 /* --edgesvia7 */
 /* --maxcard2 */
 SELECT * FROM pgr_maxCardinalityMatch(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$
 );
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ edge
+------
+    1
+    5
+    6
+   13
+   14
+   16
+   17
+   18
+(8 rows)
+
 /* --maxcard3 */
 /* --dijkstra1 */
 SELECT * FROM pgr_dijkstra(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   6, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --dijkstra2 */
 SELECT * FROM pgr_dijkstra(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   6, ARRAY[3, 10]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |       3 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |       3 |    7 |    7 |    1 |        1
+   3 |        3 |         6 |       3 |    3 |   -1 |    0 |        2
+   4 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   5 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   6 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   7 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   8 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   9 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(9 rows)
+
 /* --dijkstra3 */
 SELECT * FROM pgr_dijkstra(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   ARRAY[3, 6], 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         3 |      10 |    3 |    7 |    1 |        0
+   2 |        2 |         3 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         3 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         3 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         3 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         3 |      10 |   10 |   -1 |    0 |        5
+   7 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   8 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   9 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+  10 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+  11 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+  12 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(12 rows)
+
 /* --dijkstra4 */
 SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_dijkstra(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   6, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | node | edge | cost | agg_cost
+-----+----------+------+------+------+----------
+   1 |        1 |    6 |    4 |    1 |        0
+   2 |        2 |    7 |    8 |    1 |        1
+   3 |        3 |   11 |    9 |    1 |        2
+   4 |        4 |   16 |   16 |    1 |        3
+   5 |        5 |   15 |    3 |    1 |        4
+   6 |        6 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --dijkstra5 */
 /* --astar1 */
 SELECT * FROM pgr_aStar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --astar2 */
 SELECT * FROM pgr_aStar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, ARRAY[3, 10]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |       3 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |       3 |    7 |    7 |    1 |        1
+   3 |        3 |         6 |       3 |    3 |   -1 |    0 |        2
+   4 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   5 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   6 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   7 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   8 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   9 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(9 rows)
+
 /* --astar3 */
 SELECT * FROM pgr_aStar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   ARRAY[3, 6], 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         3 |      10 |    3 |    7 |    1 |        0
+   2 |        2 |         3 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         3 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         3 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         3 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         3 |      10 |   10 |   -1 |    0 |        5
+   7 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   8 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   9 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+  10 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+  11 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+  12 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(12 rows)
+
 /* --astar4 */
 SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_aStar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | node | edge | cost | agg_cost
+-----+----------+------+------+------+----------
+   1 |        1 |    6 |    4 |    1 |        0
+   2 |        2 |    7 |    8 |    1 |        1
+   3 |        3 |   11 |    9 |    1 |        2
+   4 |        4 |   16 |   16 |    1 |        3
+   5 |        5 |   15 |    3 |    1 |        4
+   6 |        6 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --astar5 */
 /* --bdastar1 */
 SELECT * FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --bdastar2 */
 SELECT * FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, ARRAY[3, 10]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |       3 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |       3 |    7 |    7 |    1 |        1
+   3 |        3 |         6 |       3 |    3 |   -1 |    0 |        2
+   4 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   5 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   6 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   7 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   8 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   9 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(9 rows)
+
 /* --bdastar3 */
 SELECT * FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   ARRAY[3, 6], 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         3 |      10 |    3 |    7 |    1 |        0
+   2 |        2 |         3 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         3 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         3 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         3 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         3 |      10 |   10 |   -1 |    0 |        5
+   7 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   8 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   9 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+  10 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+  11 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+  12 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(12 rows)
+
 /* --bdastar4 */
 SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
   6, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | node | edge | cost | agg_cost
+-----+----------+------+------+------+----------
+   1 |        1 |    6 |    4 |    1 |        0
+   2 |        2 |    7 |    8 |    1 |        1
+   3 |        3 |   11 |    9 |    1 |        2
+   4 |        4 |   16 |   16 |    1 |        3
+   5 |        5 |   15 |    3 |    1 |        4
+   6 |        6 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --bdastar5 */
 /* --withpointsdd4 */
 SELECT * FROM pgr_withPointsDD(
   $$SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   -1, 3.3, 'r', details =>true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |        -1 |   -1 |   -1 |   -1 |    0 |        0
+   2 |     1 |        -1 |   -1 |    5 |    1 |  0.4 |      0.4
+   3 |     2 |        -1 |    5 |    6 |    1 |    1 |      1.4
+   4 |     3 |        -1 |    6 |   -6 |    4 |  0.7 |      2.1
+   5 |     4 |        -1 |   -6 |    7 |    4 |  0.3 |      2.4
+(5 rows)
+
 /* --withpointsdd5 */
 SELECT seq, node, edge, cost, agg_cost FROM pgr_withPointsDD(
   $$SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   -1, 3.3, 'r', details => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | node | edge | cost | agg_cost
+-----+------+------+------+----------
+   1 |   -1 |   -1 |    0 |        0
+   2 |    5 |    1 |  0.4 |      0.4
+   3 |    6 |    1 |    1 |      1.4
+   4 |   -6 |    4 |  0.7 |      2.1
+   5 |    7 |    4 |  0.3 |      2.4
+(5 rows)
+
 /* --withpointsdd6 */
 SELECT * FROM pgr_withPointsDD(
   $$SELECT * FROM edges ORDER BY id$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   ARRAY[-1, 16], 3.3, 'l', equicost => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |        -1 |   -1 |   -1 |   -1 |    0 |        0
+   2 |     1 |        -1 |   -1 |    6 |    1 |  0.6 |      0.6
+   3 |     2 |        -1 |    6 |    7 |    4 |    1 |      1.6
+   4 |     2 |        -1 |    6 |    5 |    1 |    1 |      1.6
+   5 |     3 |        -1 |    7 |    3 |    7 |    1 |      2.6
+   6 |     3 |        -1 |    7 |    8 |   10 |    1 |      2.6
+   7 |     4 |        -1 |    8 |   -3 |   12 |  0.6 |      3.2
+   8 |     4 |        -1 |    3 |   -4 |    6 |  0.7 |      3.3
+   9 |     0 |        16 |   16 |   16 |   -1 |    0 |        0
+  10 |     1 |        16 |   16 |   11 |    9 |    1 |        1
+  11 |     1 |        16 |   16 |   15 |   16 |    1 |        1
+  12 |     1 |        16 |   16 |   17 |   15 |    1 |        1
+  13 |     2 |        16 |   15 |   10 |    3 |    1 |        2
+  14 |     2 |        16 |   11 |   12 |   11 |    1 |        2
+(14 rows)
+
 /* --withpointsdd7 */
 SELECT seq, start_vid, node, edge, cost, agg_cost FROM pgr_withPointsDD(
   $$SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   ARRAY[-1, 16], 3.3, 'l', equicost => true) WHERE node >= 0 OR cost = 0;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | start_vid | node | edge | cost | agg_cost
+-----+-----------+------+------+------+----------
+   1 |        -1 |   -1 |   -1 |    0 |        0
+   2 |        -1 |    6 |    1 |  0.6 |      0.6
+   3 |        -1 |    7 |    4 |    1 |      1.6
+   4 |        -1 |    5 |    1 |    1 |      1.6
+   5 |        -1 |    3 |    7 |    1 |      2.6
+   6 |        -1 |    8 |   10 |    1 |      2.6
+   9 |        16 |   16 |   -1 |    0 |        0
+  10 |        16 |   11 |    9 |    1 |        1
+  11 |        16 |   15 |   16 |    1 |        1
+  12 |        16 |   17 |   15 |    1 |        1
+  13 |        16 |   10 |    3 |    1 |        2
+  14 |        16 |   12 |   11 |    1 |        2
+(12 rows)
+
 /* --withpointsdd8 */
 /* --withPointsKSP1 */
 SELECT * FROM pgr_withPointsKSP(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   -1, -2, 2, 'l');
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------
+   1 |       1 |        1 |        -1 |      -2 |   -1 |    1 |  0.6 |        0
+   2 |       1 |        2 |        -1 |      -2 |    6 |    4 |    1 |      0.6
+   3 |       1 |        3 |        -1 |      -2 |    7 |    8 |    1 |      1.6
+   4 |       1 |        4 |        -1 |      -2 |   11 |   11 |    1 |      2.6
+   5 |       1 |        5 |        -1 |      -2 |   12 |   13 |    1 |      3.6
+   6 |       1 |        6 |        -1 |      -2 |   17 |   15 |  0.6 |      4.6
+   7 |       1 |        7 |        -1 |      -2 |   -2 |   -1 |    0 |      5.2
+   8 |       2 |        1 |        -1 |      -2 |   -1 |    1 |  0.6 |        0
+   9 |       2 |        2 |        -1 |      -2 |    6 |    4 |    1 |      0.6
+  10 |       2 |        3 |        -1 |      -2 |    7 |    8 |    1 |      1.6
+  11 |       2 |        4 |        -1 |      -2 |   11 |    9 |    1 |      2.6
+  12 |       2 |        5 |        -1 |      -2 |   16 |   15 |  1.6 |      3.6
+  13 |       2 |        6 |        -1 |      -2 |   -2 |   -1 |    0 |      5.2
+(13 rows)
+
 /* --withPointsKSP2 */
 SELECT seq, path_id, path_seq, node, edge, cost, agg_cost FROM pgr_withPointsKSP(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction, side from pointsOfInterest$$,
   -1, -2, 2, 'l');
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | node | edge | cost | agg_cost
+-----+---------+----------+------+------+------+----------
+   1 |       1 |        1 |   -1 |    1 |  0.6 |        0
+   2 |       1 |        2 |    6 |    4 |    1 |      0.6
+   3 |       1 |        3 |    7 |    8 |    1 |      1.6
+   4 |       1 |        4 |   11 |   11 |    1 |      2.6
+   5 |       1 |        5 |   12 |   13 |    1 |      3.6
+   6 |       1 |        6 |   17 |   15 |  0.6 |      4.6
+   7 |       1 |        7 |   -2 |   -1 |    0 |      5.2
+   8 |       2 |        1 |   -1 |    1 |  0.6 |        0
+   9 |       2 |        2 |    6 |    4 |    1 |      0.6
+  10 |       2 |        3 |    7 |    8 |    1 |      1.6
+  11 |       2 |        4 |   11 |    9 |    1 |      2.6
+  12 |       2 |        5 |   16 |   15 |  1.6 |      3.6
+  13 |       2 |        6 |   -2 |   -1 |    0 |      5.2
+(13 rows)
+
 /* --withPointsKSP3 */
 /* --ksp1 */
 SELECT * FROM pgr_KSP(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   6, 17, 2);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+---------+----------+-----------+---------+------+------+------+----------
+   1 |       1 |        1 |         6 |      17 |    6 |    4 |    1 |        0
+   2 |       1 |        2 |         6 |      17 |    7 |   10 |    1 |        1
+   3 |       1 |        3 |         6 |      17 |    8 |   12 |    1 |        2
+   4 |       1 |        4 |         6 |      17 |   12 |   13 |    1 |        3
+   5 |       1 |        5 |         6 |      17 |   17 |   -1 |    0 |        4
+   6 |       2 |        1 |         6 |      17 |    6 |    4 |    1 |        0
+   7 |       2 |        2 |         6 |      17 |    7 |    8 |    1 |        1
+   8 |       2 |        3 |         6 |      17 |   11 |    9 |    1 |        2
+   9 |       2 |        4 |         6 |      17 |   16 |   15 |    1 |        3
+  10 |       2 |        5 |         6 |      17 |   17 |   -1 |    0 |        4
+(10 rows)
+
 /* --ksp2 */
 SELECT seq, path_id, path_seq, node, edge, cost, agg_cost FROM pgr_KSP(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   6, 17, 2);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_id | path_seq | node | edge | cost | agg_cost
+-----+---------+----------+------+------+------+----------
+   1 |       1 |        1 |    6 |    4 |    1 |        0
+   2 |       1 |        2 |    7 |   10 |    1 |        1
+   3 |       1 |        3 |    8 |   12 |    1 |        2
+   4 |       1 |        4 |   12 |   13 |    1 |        3
+   5 |       1 |        5 |   17 |   -1 |    0 |        4
+   6 |       2 |        1 |    6 |    4 |    1 |        0
+   7 |       2 |        2 |    7 |    8 |    1 |        1
+   8 |       2 |        3 |   11 |    9 |    1 |        2
+   9 |       2 |        4 |   16 |   15 |    1 |        3
+  10 |       2 |        5 |   17 |   -1 |    0 |        4
+(10 rows)
+
 /* --ksp3 */
 /* --drivingdistance1 */
 SELECT * FROM pgr_drivingDistance(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   11, 3.0);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |        11 |   11 |   11 |   -1 |    0 |        0
+   2 |     1 |        11 |   11 |    7 |    8 |    1 |        1
+   3 |     1 |        11 |   11 |   12 |   11 |    1 |        1
+   4 |     1 |        11 |   11 |   16 |    9 |    1 |        1
+   5 |     2 |        11 |    7 |    3 |    7 |    1 |        2
+   6 |     2 |        11 |    7 |    6 |    4 |    1 |        2
+   7 |     2 |        11 |    7 |    8 |   10 |    1 |        2
+   8 |     2 |        11 |   16 |   15 |   16 |    1 |        2
+   9 |     2 |        11 |   16 |   17 |   15 |    1 |        2
+  10 |     3 |        11 |    3 |    1 |    6 |    1 |        3
+  11 |     3 |        11 |    6 |    5 |    1 |    1 |        3
+  12 |     3 |        11 |    8 |    9 |   14 |    1 |        3
+  13 |     3 |        11 |   15 |   10 |    3 |    1 |        3
+(13 rows)
+
 /* --drivingdistance2 */
 SELECT seq, node, edge, cost, agg_cost
 FROM pgr_drivingDistance(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   11, 3.0);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | node | edge | cost | agg_cost
+-----+------+------+------+----------
+   1 |   11 |   -1 |    0 |        0
+   2 |    7 |    8 |    1 |        1
+   3 |   12 |   11 |    1 |        1
+   4 |   16 |    9 |    1 |        1
+   5 |    3 |    7 |    1 |        2
+   6 |    6 |    4 |    1 |        2
+   7 |    8 |   10 |    1 |        2
+   8 |   15 |   16 |    1 |        2
+   9 |   17 |   15 |    1 |        2
+  10 |    1 |    6 |    1 |        3
+  11 |    5 |    1 |    1 |        3
+  12 |    9 |   14 |    1 |        3
+  13 |   10 |    3 |    1 |        3
+(13 rows)
+
 /* --drivingdistance3 */
 SELECT *
 FROM pgr_drivingDistance(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   ARRAY[11, 16], 3.0, equicost => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |        11 |   11 |   11 |   -1 |    0 |        0
+   2 |     1 |        11 |   11 |    7 |    8 |    1 |        1
+   3 |     1 |        11 |   11 |   12 |   11 |    1 |        1
+   4 |     2 |        11 |    7 |    3 |    7 |    1 |        2
+   5 |     2 |        11 |    7 |    6 |    4 |    1 |        2
+   6 |     2 |        11 |    7 |    8 |   10 |    1 |        2
+   7 |     3 |        11 |    3 |    1 |    6 |    1 |        3
+   8 |     3 |        11 |    6 |    5 |    1 |    1 |        3
+   9 |     3 |        11 |    8 |    9 |   14 |    1 |        3
+  10 |     0 |        16 |   16 |   16 |   -1 |    0 |        0
+  11 |     1 |        16 |   16 |   15 |   16 |    1 |        1
+  12 |     1 |        16 |   16 |   17 |   15 |    1 |        1
+  13 |     2 |        16 |   15 |   10 |    3 |    1 |        2
+(13 rows)
+
 /* --drivingdistance4 */
 SELECT seq, start_vid AS from_v, node, edge, cost, agg_cost
 FROM pgr_drivingDistance(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   ARRAY[11, 16], 3.0, equicost => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | from_v | node | edge | cost | agg_cost
+-----+--------+------+------+------+----------
+   1 |     11 |   11 |   -1 |    0 |        0
+   2 |     11 |    7 |    8 |    1 |        1
+   3 |     11 |   12 |   11 |    1 |        1
+   4 |     11 |    3 |    7 |    1 |        2
+   5 |     11 |    6 |    4 |    1 |        2
+   6 |     11 |    8 |   10 |    1 |        2
+   7 |     11 |    1 |    6 |    1 |        3
+   8 |     11 |    5 |    1 |    1 |        3
+   9 |     11 |    9 |   14 |    1 |        3
+  10 |     16 |   16 |   -1 |    0 |        0
+  11 |     16 |   15 |   16 |    1 |        1
+  12 |     16 |   17 |   15 |    1 |        1
+  13 |     16 |   10 |    3 |    1 |        2
+(13 rows)
+
 /* --drivingdistance5 */
 /* --kruskalDD1 */
 SELECT * FROM pgr_kruskalDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   6, 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |         6 |    6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |    6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   10 |   15 |    3 |    1 |        2
+   5 |     3 |         6 |   15 |   16 |   16 |    1 |        3
+(5 rows)
+
 /* --kruskalDD2 */
 SELECT seq, depth, start_vid, node, edge, cost, agg_cost
 FROM pgr_kruskalDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   6, 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+----------
+   1 |     0 |         6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   15 |    3 |    1 |        2
+   5 |     3 |         6 |   16 |   16 |    1 |        3
+(5 rows)
+
 /* --kruskalDD3 */
 SELECT * FROM pgr_kruskalDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   ARRAY[9, 6], 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |         6 |    6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |    6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   10 |   15 |    3 |    1 |        2
+   5 |     3 |         6 |   15 |   16 |   16 |    1 |        3
+   6 |     0 |         9 |    9 |    9 |   -1 |    0 |        0
+   7 |     1 |         9 |    9 |    8 |   14 |    1 |        1
+   8 |     2 |         9 |    8 |    7 |   10 |    1 |        2
+   9 |     3 |         9 |    7 |    3 |    7 |    1 |        3
+  10 |     2 |         9 |    8 |   12 |   12 |    1 |        2
+  11 |     3 |         9 |   12 |   11 |   11 |    1 |        3
+  12 |     3 |         9 |   12 |   17 |   13 |    1 |        3
+(12 rows)
+
 /* --kruskalDD4 */
 SELECT seq, depth, start_vid, node, edge, cost, agg_cost
 FROM pgr_kruskalDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   ARRAY[9, 6], 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+----------
+   1 |     0 |         6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   15 |    3 |    1 |        2
+   5 |     3 |         6 |   16 |   16 |    1 |        3
+   6 |     0 |         9 |    9 |   -1 |    0 |        0
+   7 |     1 |         9 |    8 |   14 |    1 |        1
+   8 |     2 |         9 |    7 |   10 |    1 |        2
+   9 |     3 |         9 |    3 |    7 |    1 |        3
+  10 |     2 |         9 |   12 |   12 |    1 |        2
+  11 |     3 |         9 |   11 |   11 |    1 |        3
+  12 |     3 |         9 |   17 |   13 |    1 |        3
+(12 rows)
+
 /* --kruskalDD5 */
 /* --primDD1 */
 SELECT * FROM pgr_primDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   6, 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |         6 |    6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |    6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   10 |   15 |    3 |    1 |        2
+   5 |     2 |         6 |   10 |   11 |    5 |    1 |        2
+   6 |     3 |         6 |   11 |   16 |    9 |    1 |        3
+   7 |     3 |         6 |   11 |   12 |   11 |    1 |        3
+   8 |     1 |         6 |    6 |    7 |    4 |    1 |        1
+   9 |     2 |         6 |    7 |    3 |    7 |    1 |        2
+  10 |     3 |         6 |    3 |    1 |    6 |    1 |        3
+  11 |     2 |         6 |    7 |    8 |   10 |    1 |        2
+  12 |     3 |         6 |    8 |    9 |   14 |    1 |        3
+(12 rows)
+
 /* --primDD2 */
 SELECT seq, depth, start_vid, node, edge, cost, agg_cost
 FROM pgr_primDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   6, 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+----------
+   1 |     0 |         6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   15 |    3 |    1 |        2
+   5 |     2 |         6 |   11 |    5 |    1 |        2
+   6 |     3 |         6 |   16 |    9 |    1 |        3
+   7 |     3 |         6 |   12 |   11 |    1 |        3
+   8 |     1 |         6 |    7 |    4 |    1 |        1
+   9 |     2 |         6 |    3 |    7 |    1 |        2
+  10 |     3 |         6 |    1 |    6 |    1 |        3
+  11 |     2 |         6 |    8 |   10 |    1 |        2
+  12 |     3 |         6 |    9 |   14 |    1 |        3
+(12 rows)
+
 /* --primDD3 */
 SELECT * FROM pgr_primDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   ARRAY[9, 6], 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | pred | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+------+----------
+   1 |     0 |         6 |    6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |    6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   10 |   15 |    3 |    1 |        2
+   5 |     2 |         6 |   10 |   11 |    5 |    1 |        2
+   6 |     3 |         6 |   11 |   16 |    9 |    1 |        3
+   7 |     3 |         6 |   11 |   12 |   11 |    1 |        3
+   8 |     1 |         6 |    6 |    7 |    4 |    1 |        1
+   9 |     2 |         6 |    7 |    3 |    7 |    1 |        2
+  10 |     3 |         6 |    3 |    1 |    6 |    1 |        3
+  11 |     2 |         6 |    7 |    8 |   10 |    1 |        2
+  12 |     3 |         6 |    8 |    9 |   14 |    1 |        3
+  13 |     0 |         9 |    9 |    9 |   -1 |    0 |        0
+  14 |     1 |         9 |    9 |    8 |   14 |    1 |        1
+  15 |     2 |         9 |    8 |    7 |   10 |    1 |        2
+  16 |     3 |         9 |    7 |    6 |    4 |    1 |        3
+  17 |     3 |         9 |    7 |    3 |    7 |    1 |        3
+(17 rows)
+
 /* --primDD4 */
 SELECT seq, depth, start_vid, node, edge, cost, agg_cost
 FROM pgr_primDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   ARRAY[9, 6], 3.5);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | depth | start_vid | node | edge | cost | agg_cost
+-----+-------+-----------+------+------+------+----------
+   1 |     0 |         6 |    6 |   -1 |    0 |        0
+   2 |     1 |         6 |    5 |    1 |    1 |        1
+   3 |     1 |         6 |   10 |    2 |    1 |        1
+   4 |     2 |         6 |   15 |    3 |    1 |        2
+   5 |     2 |         6 |   11 |    5 |    1 |        2
+   6 |     3 |         6 |   16 |    9 |    1 |        3
+   7 |     3 |         6 |   12 |   11 |    1 |        3
+   8 |     1 |         6 |    7 |    4 |    1 |        1
+   9 |     2 |         6 |    3 |    7 |    1 |        2
+  10 |     3 |         6 |    1 |    6 |    1 |        3
+  11 |     2 |         6 |    8 |   10 |    1 |        2
+  12 |     3 |         6 |    9 |   14 |    1 |        3
+  13 |     0 |         9 |    9 |   -1 |    0 |        0
+  14 |     1 |         9 |    8 |   14 |    1 |        1
+  15 |     2 |         9 |    7 |   10 |    1 |        2
+  16 |     3 |         9 |    6 |    4 |    1 |        3
+  17 |     3 |         9 |    3 |    7 |    1 |        3
+(17 rows)
+
 /* --primDD5 */
 /* --analysis1 */
 SELECT *
 FROM pgr_connectedComponents(
   'SELECT id, source, target, cost, reverse_cost FROM edges'
 );
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | component | node
+-----+-----------+------
+   1 |         1 |    1
+   2 |         1 |    3
+   3 |         1 |    5
+   4 |         1 |    6
+   5 |         1 |    7
+   6 |         1 |    8
+   7 |         1 |    9
+   8 |         1 |   10
+   9 |         1 |   11
+  10 |         1 |   12
+  11 |         1 |   15
+  12 |         1 |   16
+  13 |         1 |   17
+  14 |         2 |    2
+  15 |         2 |    4
+  16 |        13 |   13
+  17 |        13 |   14
+(17 rows)
+
 /* --analysis2 */
 SELECT *
 FROM pgr_degree($$SELECT id, source, target FROM edges$$)
 WHERE degree = 1;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ node | degree
+------+--------
+    9 |      1
+    5 |      1
+    4 |      1
+   14 |      1
+   13 |      1
+    2 |      1
+    1 |      1
+(7 rows)
+
 /* --analysis3*/
 WITH
 deadends AS (
@@ -472,11 +1081,19 @@ results AS (
   FROM deadends)
 SELECT d.id, edge_id, distance, st_AsText(geom) AS point, st_asText(edge) edge
 FROM results JOIN deadends d USING (geom);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ id | edge_id |     distance      |           point           |                 edge
+----+---------+-------------------+---------------------------+--------------------------------------
+  4 |      14 | 1.00008890058e-12 | POINT(1.999999999999 3.5) | LINESTRING(1.999999999999 3.5,2 3.5)
+(1 row)
+
 /* --analysis4*/
 SELECT e1.id AS id1, e2.id AS id2
 FROM edges e1, edges e2 WHERE e1 < e2 AND st_crosses(e1.geom, e2.geom);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ id1 | id2
+-----+-----
+  13 |  18
+(1 row)
+
 /* --analysis5*/
 /* --OneWay1 */
 WITH
@@ -485,18 +1102,33 @@ deadends AS (
   FROM vertices where array_length(in_edges || out_edges, 1) = 1)
 SELECT * FROM edges JOIN deadends  USING (id)
 WHERE cost < 0 OR reverse_cost < 0;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ id | source | target | cost | reverse_cost | capacity | reverse_capacity | x1 | y1 | x2 | y2 | geom
+----+--------+--------+------+--------------+----------+------------------+----+----+----+----+------
+(0 rows)
+
 /* --OneWay2 */
 SELECT id, cost < 0 OR reverse_cost<0 AS is_OneWway
 FROM pgr_bridges('SELECT id, source, target, cost, reverse_cost FROM edges')
 JOIN edges ON (edge = id);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ id | is_onewway
+----+------------
+  1 | f
+  6 | f
+  7 | f
+ 14 | f
+ 17 | f
+ 18 | f
+(6 rows)
+
 /* --OneWay3 */
 SELECT id, cost, reverse_cost
 FROM pgr_bridges('SELECT id, source, target, cost, reverse_cost FROM edges')
 JOIN edges ON (edge = id)
 WHERE cost < 0 OR reverse_cost<0;
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ id | cost | reverse_cost
+----+------+--------------
+(0 rows)
+
 /* --OneWay4 */
 -- withPoints
 /* --withPoints-1-to-1  */
@@ -505,7 +1137,18 @@ SELECT * FROM pgr_withPoints(
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 10,
   details => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      10 |   -1 |    1 |  0.6 |        0
+   2 |        2 |        -1 |      10 |    6 |    4 |  0.7 |      0.6
+   3 |        3 |        -1 |      10 |   -6 |    4 |  0.3 |      1.3
+   4 |        4 |        -1 |      10 |    7 |    8 |    1 |      1.6
+   5 |        5 |        -1 |      10 |   11 |    9 |    1 |      2.6
+   6 |        6 |        -1 |      10 |   16 |   16 |    1 |      3.6
+   7 |        7 |        -1 |      10 |   15 |    3 |    1 |      4.6
+   8 |        8 |        -1 |      10 |   10 |   -1 |    0 |      5.6
+(8 rows)
+
 /* --withPoints-1-to-1-filter  */
 SELECT seq, path_seq, node, edge, cost, agg_cost
 FROM pgr_withPoints(
@@ -513,14 +1156,36 @@ FROM pgr_withPoints(
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 10,
   details => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | node | edge | cost | agg_cost
+-----+----------+------+------+------+----------
+   1 |        1 |   -1 |    1 |  0.6 |        0
+   2 |        2 |    6 |    4 |  0.7 |      0.6
+   3 |        3 |   -6 |    4 |  0.3 |      1.3
+   4 |        4 |    7 |    8 |    1 |      1.6
+   5 |        5 |   11 |    9 |    1 |      2.6
+   6 |        6 |   16 |   16 |    1 |      3.6
+   7 |        7 |   15 |    3 |    1 |      4.6
+   8 |        8 |   10 |   -1 |    0 |      5.6
+(8 rows)
+
 /* --withPoints-1-to-m  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
   directed => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      -3 |   -1 |    1 |  0.6 |        0
+   2 |        2 |        -1 |      -3 |    6 |    4 |    1 |      0.6
+   3 |        3 |        -1 |      -3 |    7 |   10 |    1 |      1.6
+   4 |        4 |        -1 |      -3 |    8 |   12 |  0.6 |      2.6
+   5 |        5 |        -1 |      -3 |   -3 |   -1 |    0 |      3.2
+   6 |        1 |        -1 |       7 |   -1 |    1 |  0.6 |        0
+   7 |        2 |        -1 |       7 |    6 |    4 |    1 |      0.6
+   8 |        3 |        -1 |       7 |    7 |   -1 |    0 |      1.6
+(8 rows)
+
 /* --withPoints-1-to-m-filter  */
 SELECT seq, path_seq, end_vid AS end_pid, node, edge, cost, agg_cost
 FROM pgr_withPoints(
@@ -528,40 +1193,134 @@ FROM pgr_withPoints(
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
   directed => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | end_pid | node | edge | cost | agg_cost
+-----+----------+---------+------+------+------+----------
+   1 |        1 |      -3 |   -1 |    1 |  0.6 |        0
+   2 |        2 |      -3 |    6 |    4 |    1 |      0.6
+   3 |        3 |      -3 |    7 |   10 |    1 |      1.6
+   4 |        4 |      -3 |    8 |   12 |  0.6 |      2.6
+   5 |        5 |      -3 |   -3 |   -1 |    0 |      3.2
+   6 |        1 |       7 |   -1 |    1 |  0.6 |        0
+   7 |        2 |       7 |    6 |    4 |    1 |      0.6
+   8 |        3 |       7 |    7 |   -1 |    0 |      1.6
+(8 rows)
+
 /* --withPoints-m-to-1  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], -3);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      -3 |   -1 |    1 |  0.6 |        0
+   2 |        2 |        -1 |      -3 |    6 |    4 |    1 |      0.6
+   3 |        3 |        -1 |      -3 |    7 |   10 |    1 |      1.6
+   4 |        4 |        -1 |      -3 |    8 |   12 |  0.6 |      2.6
+   5 |        5 |        -1 |      -3 |   -3 |   -1 |    0 |      3.2
+   6 |        1 |         6 |      -3 |    6 |    4 |    1 |        0
+   7 |        2 |         6 |      -3 |    7 |   10 |    1 |        1
+   8 |        3 |         6 |      -3 |    8 |   12 |  0.6 |        2
+   9 |        4 |         6 |      -3 |   -3 |   -1 |    0 |      2.6
+(9 rows)
+
 /* --withPoints-m-to-1-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], -3);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_pid | node | edge | cost | agg_cost
+-----+----------+-----------+------+------+------+----------
+   1 |        1 |        -1 |   -1 |    1 |  0.6 |        0
+   2 |        2 |        -1 |    6 |    4 |    1 |      0.6
+   3 |        3 |        -1 |    7 |   10 |    1 |      1.6
+   4 |        4 |        -1 |    8 |   12 |  0.6 |      2.6
+   5 |        5 |        -1 |   -3 |   -1 |    0 |      3.2
+   6 |        1 |         6 |    6 |    4 |    1 |        0
+   7 |        2 |         6 |    7 |   10 |    1 |        1
+   8 |        3 |         6 |    8 |   12 |  0.6 |        2
+   9 |        4 |         6 |   -3 |   -1 |    0 |      2.6
+(9 rows)
+
 /* --withPoints-m-to-m  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], ARRAY[-3, 1]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      -3 |   -1 |    1 |  0.6 |        0
+   2 |        2 |        -1 |      -3 |    6 |    4 |    1 |      0.6
+   3 |        3 |        -1 |      -3 |    7 |   10 |    1 |      1.6
+   4 |        4 |        -1 |      -3 |    8 |   12 |  0.6 |      2.6
+   5 |        5 |        -1 |      -3 |   -3 |   -1 |    0 |      3.2
+   6 |        1 |        -1 |       1 |   -1 |    1 |  0.6 |        0
+   7 |        2 |        -1 |       1 |    6 |    4 |    1 |      0.6
+   8 |        3 |        -1 |       1 |    7 |    7 |    1 |      1.6
+   9 |        4 |        -1 |       1 |    3 |    6 |    1 |      2.6
+  10 |        5 |        -1 |       1 |    1 |   -1 |    0 |      3.6
+  11 |        1 |         6 |      -3 |    6 |    4 |    1 |        0
+  12 |        2 |         6 |      -3 |    7 |   10 |    1 |        1
+  13 |        3 |         6 |      -3 |    8 |   12 |  0.6 |        2
+  14 |        4 |         6 |      -3 |   -3 |   -1 |    0 |      2.6
+  15 |        1 |         6 |       1 |    6 |    4 |    1 |        0
+  16 |        2 |         6 |       1 |    7 |    7 |    1 |        1
+  17 |        3 |         6 |       1 |    3 |    6 |    1 |        2
+  18 |        4 |         6 |       1 |    1 |   -1 |    0 |        3
+(18 rows)
+
 /* --withPoints-m-to-m-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, end_vid AS end_pid,node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], ARRAY[-3, 1]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_pid | end_pid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      -3 |   -1 |    1 |  0.6 |        0
+   2 |        2 |        -1 |      -3 |    6 |    4 |    1 |      0.6
+   3 |        3 |        -1 |      -3 |    7 |   10 |    1 |      1.6
+   4 |        4 |        -1 |      -3 |    8 |   12 |  0.6 |      2.6
+   5 |        5 |        -1 |      -3 |   -3 |   -1 |    0 |      3.2
+   6 |        1 |        -1 |       1 |   -1 |    1 |  0.6 |        0
+   7 |        2 |        -1 |       1 |    6 |    4 |    1 |      0.6
+   8 |        3 |        -1 |       1 |    7 |    7 |    1 |      1.6
+   9 |        4 |        -1 |       1 |    3 |    6 |    1 |      2.6
+  10 |        5 |        -1 |       1 |    1 |   -1 |    0 |      3.6
+  11 |        1 |         6 |      -3 |    6 |    4 |    1 |        0
+  12 |        2 |         6 |      -3 |    7 |   10 |    1 |        1
+  13 |        3 |         6 |      -3 |    8 |   12 |  0.6 |        2
+  14 |        4 |         6 |      -3 |   -3 |   -1 |    0 |      2.6
+  15 |        1 |         6 |       1 |    6 |    4 |    1 |        0
+  16 |        2 |         6 |       1 |    7 |    7 |    1 |        1
+  17 |        3 |         6 |       1 |    3 |    6 |    1 |        2
+  18 |        4 |         6 |       1 |    1 |   -1 |    0 |        3
+(18 rows)
+
 /* --withPoints-c  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
   driving_side => 'r', details => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      10 |   -1 |    1 |  0.4 |        0
+   2 |        2 |        -1 |      10 |    5 |    1 |    1 |      0.4
+   3 |        3 |        -1 |      10 |    6 |    4 |  0.7 |      1.4
+   4 |        4 |        -1 |      10 |   -6 |    4 |  0.3 |      2.1
+   5 |        5 |        -1 |      10 |    7 |    8 |    1 |      2.4
+   6 |        6 |        -1 |      10 |   11 |    9 |    1 |      3.4
+   7 |        7 |        -1 |      10 |   16 |   16 |    1 |      4.4
+   8 |        8 |        -1 |      10 |   15 |    3 |    1 |      5.4
+   9 |        9 |        -1 |      10 |   10 |   -1 |    0 |      6.4
+  10 |        1 |         6 |      -3 |    6 |    4 |  0.7 |        0
+  11 |        2 |         6 |      -3 |   -6 |    4 |  0.3 |      0.7
+  12 |        3 |         6 |      -3 |    7 |   10 |    1 |        1
+  13 |        4 |         6 |      -3 |    8 |   12 |  0.6 |        2
+  14 |        5 |         6 |      -3 |   -3 |   -1 |    0 |      2.6
+(14 rows)
+
 /* --withPoints-c-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, end_vid AS end_pid,node, edge, cost, agg_cost
 FROM pgr_withPoints(
@@ -569,7 +1328,24 @@ FROM pgr_withPoints(
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
   driving_side => 'r', details => true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_pid | end_pid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |        -1 |      10 |   -1 |    1 |  0.4 |        0
+   2 |        2 |        -1 |      10 |    5 |    1 |    1 |      0.4
+   3 |        3 |        -1 |      10 |    6 |    4 |  0.7 |      1.4
+   4 |        4 |        -1 |      10 |   -6 |    4 |  0.3 |      2.1
+   5 |        5 |        -1 |      10 |    7 |    8 |    1 |      2.4
+   6 |        6 |        -1 |      10 |   11 |    9 |    1 |      3.4
+   7 |        7 |        -1 |      10 |   16 |   16 |    1 |      4.4
+   8 |        8 |        -1 |      10 |   15 |    3 |    1 |      5.4
+   9 |        9 |        -1 |      10 |   10 |   -1 |    0 |      6.4
+  10 |        1 |         6 |      -3 |    6 |    4 |  0.7 |        0
+  11 |        2 |         6 |      -3 |   -6 |    4 |  0.3 |      0.7
+  12 |        3 |         6 |      -3 |    7 |   10 |    1 |        1
+  13 |        4 |         6 |      -3 |    8 |   12 |  0.6 |        2
+  14 |        5 |         6 |      -3 |   -3 |   -1 |    0 |      2.6
+(14 rows)
+
 /* --withPoints-END */
 -- withPointsCost
 /* --withPointsCost-1-to-1  */
@@ -577,21 +1353,34 @@ SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_vid | end_vid | agg_cost
+-----------+---------+----------
+        -1 |      10 |      5.6
+(1 row)
+
 /* --withPointsCost-1-to-1-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 10);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_pid | end_pid | agg_cost
+-----------+---------+----------
+        -1 |      10 |      5.6
+(1 row)
+
 /* --withPointsCost-1-to-m  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
   directed => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_vid | end_vid | agg_cost
+-----------+---------+----------
+        -1 |      -3 |      3.2
+        -1 |       7 |      1.6
+(2 rows)
+
 /* --withPointsCost-1-to-m-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
@@ -599,40 +1388,74 @@ FROM pgr_withPointsCost(
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
   directed => false);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_pid | end_pid | agg_cost
+-----------+---------+----------
+        -1 |      -3 |      3.2
+        -1 |       7 |      1.6
+(2 rows)
+
 /* --withPointsCost-m-to-1  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], -3);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_vid | end_vid | agg_cost
+-----------+---------+----------
+        -1 |      -3 |      3.2
+         6 |      -3 |      2.6
+(2 rows)
+
 /* --withPointsCost-m-to-1-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], -3);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_pid | end_pid | agg_cost
+-----------+---------+----------
+        -1 |      -3 |      3.2
+         6 |      -3 |      2.6
+(2 rows)
+
 /* --withPointsCost-m-to-m  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], ARRAY[-3, 1]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_vid | end_vid | agg_cost
+-----------+---------+----------
+        -1 |      -3 |      3.2
+        -1 |       1 |      3.6
+         6 |      -3 |      2.6
+         6 |       1 |        3
+(4 rows)
+
 /* --withPointsCost-m-to-m-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   ARRAY[-1, 6], ARRAY[-3, 1]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_pid | end_pid | agg_cost
+-----------+---------+----------
+        -1 |      -3 |      3.2
+        -1 |       1 |      3.6
+         6 |      -3 |      2.6
+         6 |       1 |        3
+(4 rows)
+
 /* --withPointsCost-c  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
   driving_side => 'r');
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_vid | end_vid | agg_cost
+-----------+---------+----------
+        -1 |      10 |      6.4
+         6 |      -3 |      2.6
+(2 rows)
+
 /* --withPointsCost-c-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
@@ -640,42 +1463,121 @@ FROM pgr_withPointsCost(
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
   driving_side => 'r');
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ start_pid | end_pid | agg_cost
+-----------+---------+----------
+        -1 |      10 |      6.4
+         6 |      -3 |      2.6
+(2 rows)
+
 /* --withPointsCost-END */
 -- bdDijkstra
 /* --bdDijkstra-1-to-1  */
 SELECT * FROM pgr_bdDijkstra(
   'select id, source, target, cost, reverse_cost from edges',
   6, 10, true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --bdDijkstra-1-to-1-filter  */
 SELECT seq, path_seq, node, edge, cost, agg_cost
 FROM pgr_bdDijkstra(
   'select id, source, target, cost, reverse_cost from edges',
   6, 10, true);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | node | edge | cost | agg_cost
+-----+----------+------+------+------+----------
+   1 |        1 |    6 |    4 |    1 |        0
+   2 |        2 |    7 |    8 |    1 |        1
+   3 |        3 |   11 |    9 |    1 |        2
+   4 |        4 |   16 |   16 |    1 |        3
+   5 |        5 |   15 |    3 |    1 |        4
+   6 |        6 |   10 |   -1 |    0 |        5
+(6 rows)
+
 /* --bdDijkstra-1-to-m  */
 SELECT * FROM pgr_bdDijkstra(
   'select id, source, target, cost, reverse_cost from edges',
   6, ARRAY[10, 17]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         6 |      10 |    6 |    4 |    1 |        0
+   2 |        2 |         6 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |         6 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |         6 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |         6 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |         6 |      10 |   10 |   -1 |    0 |        5
+   7 |        1 |         6 |      17 |    6 |    4 |    1 |        0
+   8 |        2 |         6 |      17 |    7 |    8 |    1 |        1
+   9 |        3 |         6 |      17 |   11 |   11 |    1 |        2
+  10 |        4 |         6 |      17 |   12 |   13 |    1 |        3
+  11 |        5 |         6 |      17 |   17 |   -1 |    0 |        4
+(11 rows)
+
 /* --bdDijkstra-1-to-m-filter  */
 SELECT seq, path_seq, end_vid AS end_pid, node, edge, cost, agg_cost
 FROM pgr_bdDijkstra(
   'select id, source, target, cost, reverse_cost from edges',
   6, ARRAY[10, 17]);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | end_pid | node | edge | cost | agg_cost
+-----+----------+---------+------+------+------+----------
+   1 |        1 |      10 |    6 |    4 |    1 |        0
+   2 |        2 |      10 |    7 |    8 |    1 |        1
+   3 |        3 |      10 |   11 |    9 |    1 |        2
+   4 |        4 |      10 |   16 |   16 |    1 |        3
+   5 |        5 |      10 |   15 |    3 |    1 |        4
+   6 |        6 |      10 |   10 |   -1 |    0 |        5
+   7 |        1 |      17 |    6 |    4 |    1 |        0
+   8 |        2 |      17 |    7 |    8 |    1 |        1
+   9 |        3 |      17 |   11 |   11 |    1 |        2
+  10 |        4 |      17 |   12 |   13 |    1 |        3
+  11 |        5 |      17 |   17 |   -1 |    0 |        4
+(11 rows)
+
 /* --bdDijkstra-m-to-1  */
 SELECT * FROM pgr_bdDijkstra(
     'select id, source, target, cost, reverse_cost from edges',
       ARRAY[6, 1], 17);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
+-----+----------+-----------+---------+------+------+------+----------
+   1 |        1 |         1 |      17 |    1 |    6 |    1 |        0
+   2 |        2 |         1 |      17 |    3 |    7 |    1 |        1
+   3 |        3 |         1 |      17 |    7 |    8 |    1 |        2
+   4 |        4 |         1 |      17 |   11 |   11 |    1 |        3
+   5 |        5 |         1 |      17 |   12 |   13 |    1 |        4
+   6 |        6 |         1 |      17 |   17 |   -1 |    0 |        5
+   7 |        1 |         6 |      17 |    6 |    4 |    1 |        0
+   8 |        2 |         6 |      17 |    7 |    8 |    1 |        1
+   9 |        3 |         6 |      17 |   11 |   11 |    1 |        2
+  10 |        4 |         6 |      17 |   12 |   13 |    1 |        3
+  11 |        5 |         6 |      17 |   17 |   -1 |    0 |        4
+(11 rows)
+
 /* --bdDijkstra-m-to-1-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, node, edge, cost, agg_cost
 FROM pgr_bdDijkstra(
     'select id, source, target, cost, reverse_cost from edges',
       ARRAY[6, 1], 17);
-ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ seq | path_seq | start_pid | node | edge | cost | agg_cost
+-----+----------+-----------+------+------+------+----------
+   1 |        1 |         1 |    1 |    6 |    1 |        0
+   2 |        2 |         1 |    3 |    7 |    1 |        1
+   3 |        3 |         1 |    7 |    8 |    1 |        2
+   4 |        4 |         1 |   11 |   11 |    1 |        3
+   5 |        5 |         1 |   12 |   13 |    1 |        4
+   6 |        6 |         1 |   17 |   -1 |    0 |        5
+   7 |        1 |         6 |    6 |    4 |    1 |        0
+   8 |        2 |         6 |    7 |    8 |    1 |        1
+   9 |        3 |         6 |   11 |   11 |    1 |        2
+  10 |        4 |         6 |   12 |   13 |    1 |        3
+  11 |        5 |         6 |   17 |   -1 |    0 |        4
+(11 rows)
+
 /* --bdDijkstra-END  */
 ROLLBACK;
 ROLLBACK
