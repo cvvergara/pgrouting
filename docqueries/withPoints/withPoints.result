@@ -7,7 +7,7 @@ SET
 /* -- q1 */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   -1, 10, 'r');
  seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
 -----+----------+-----------+---------+------+------+------+----------
@@ -23,7 +23,7 @@ SELECT * FROM pgr_withPoints(
 /* -- q2 */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   -1, ARRAY[-3, 7], 'B', directed => false);
  seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
 -----+----------+-----------+---------+------+------+------+----------
@@ -40,7 +40,7 @@ SELECT * FROM pgr_withPoints(
 /* -- q3 */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[-1, 6], -3, 'R');
  seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
 -----+----------+-----------+---------+------+------+------+----------
@@ -58,7 +58,7 @@ SELECT * FROM pgr_withPoints(
 /* -- q4 */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[-1, 6], ARRAY[-3, 1], 'L');
  seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
 -----+----------+-----------+---------+------+------+------+----------
@@ -85,7 +85,7 @@ SELECT * FROM pgr_withPoints(
 /* -- q5 */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
   'r', details => true);
  seq | path_seq | start_vid | end_vid | node | edge | cost | agg_cost
@@ -190,7 +190,7 @@ SELECT (start_vid || ' -> ' || end_vid ||' at ' || path_seq || 'th step:')::TEXT
   abs(node) as id
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[5, -1], ARRAY[-6, -3, -6, 10, 11], 'r', details => true)
 WHERE node IN (-6, 11);
         path_at        |       status        |  is_a  | id
@@ -220,7 +220,7 @@ SELECT (start_vid || ' => ' || end_vid ||' at ' || path_seq || 'th step')::TEXT 
     abs(node) as id
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[5, -1], ARRAY[-2, -3, -6, 10, 11], 'l', details => true)
 WHERE node IN (-6, 11);
        path_at        |       status        |  is_a  | id
@@ -246,7 +246,7 @@ SELECT * FROM pgr_withPoints(
   $e$ SELECT * FROM edges $e$,
   $p$ SELECT edge_id, round(fraction::numeric, 2) AS fraction, side
       FROM pgr_findCloseEdges(
-        $$SELECT id, geom FROM edges$$,
+        'SELECT id, geom FROM edges',
         (SELECT ST_POINT(2.9, 1.8)),
         0.5, cap => 2)
   $p$,
