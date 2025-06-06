@@ -5,7 +5,7 @@ Copyright (c) 2019 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2019 Gudesa Venkata Sai Akhil
-Mail: gvs.akhil1997@gmail.com
+Mail: gvs.akhil1997 at gmail.com
 
 ------
 
