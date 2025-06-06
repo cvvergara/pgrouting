@@ -68,14 +68,14 @@ SELECT * FROM pgr_withPoints(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (4, 3)$$,
   -4, -3,
-  details => false);
+  'r', details => false);
 /* --edgesv3 */
 SELECT seq, node::INTEGER AS id1, edge::INTEGER AS id2, cost
 FROM pgr_withPoints(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT * FROM (VALUES (1, 6, 0.3),(2, 12, 0.6)) AS t(pid, edge_id, fraction)$$,
   -1, -2,
-  details => false);
+  'r', details => false);
 /* --edgesv4 */
 /* --edgesv5 */
 SELECT * FROM pgr_trsp_withPoints(
@@ -83,7 +83,7 @@ SELECT * FROM pgr_trsp_withPoints(
   $$SELECT * FROM new_restrictions$$,
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (4, 3)$$,
   -4, -3,
-  details => false);
+  'r', details => false);
 /* --edgesv6 */
 SELECT seq, node::INTEGER AS id1, edge::INTEGER AS id2, cost
 FROM pgr_trsp_withPoints(
@@ -91,7 +91,7 @@ FROM pgr_trsp_withPoints(
   $$SELECT * FROM new_restrictions$$,
   $$SELECT * FROM (VALUES (1, 6, 0.3),(2, 12, 0.6)) AS t(pid, edge_id, fraction)$$,
   -1, -2,
-  details => false)
+  'r', details => false)
 WHERE edge != -1;
 /* --edgesv7 */
 /* --viav2 */
@@ -131,7 +131,7 @@ SELECT * FROM pgr_withPointsVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6)$$,
   ARRAY[-4, -3, -6],
-  details => false);
+  'r', details => false);
 /* --edgesvia3 */
 SELECT row_number() over(ORDER BY seq) AS seq,
 path_id::INTEGER AS id1, node::INTEGER AS id2,
@@ -140,7 +140,7 @@ FROM pgr_withPointsVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6)$$,
   ARRAY[-4, -3, -6],
-  details => false);
+  'r', details => false);
 /* --edgesvia4 */
 /* --edgesvia5 */
 SELECT * FROM pgr_trspVia_withPoints(
@@ -148,7 +148,7 @@ SELECT * FROM pgr_trspVia_withPoints(
   $$SELECT * FROM new_restrictions$$,
   $$SELECT pid, edge_id, fraction FROM pointsOfInterest WHERE pid IN (3, 4, 6)$$,
   ARRAY[-4, -3, -6],
-  details => false);
+  'r', details => false);
 /* --edgesvia6 */
 SELECT row_number() over(ORDER BY seq) AS seq,
 path_id::INTEGER AS id1, node::INTEGER AS id2,
@@ -158,7 +158,7 @@ FROM pgr_trspVia_withPoints(
   $$SELECT * FROM new_restrictions$$,
   $$SELECT * FROM (VALUES (1, 6, 0.3),(2, 12, 0.6),(3, 4, 0.7)) AS t(pid, edge_id, fraction)$$,
   ARRAY[-1, -2, -3],
-  details => false);
+  'r', details => false);
 /* --edgesvia7 */
 
 /* --maxcard2 */
@@ -370,62 +370,62 @@ SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 10,
-  details => true);
+  'r', details => true);
 /* --withPoints-1-to-1-filter  */
 SELECT seq, path_seq, node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, 10,
-  details => true);
+  'r', details => true);
 /* --withPoints-1-to-m  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
-  directed => false);
+  'b', directed => false);
 /* --withPoints-1-to-m-filter  */
 SELECT seq, path_seq, end_vid AS end_pid, node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
-  directed => false);
+  'b', directed => false);
 /* --withPoints-m-to-1  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], -3);
+  ARRAY[-1, 6], -3, 'r');
 /* --withPoints-m-to-1-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], -3);
+  ARRAY[-1, 6], -3, 'r');
 /* --withPoints-m-to-m  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], ARRAY[-3, 1]);
+  ARRAY[-1, 6], ARRAY[-3, 1], 'r');
 /* --withPoints-m-to-m-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, end_vid AS end_pid,node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], ARRAY[-3, 1]);
+  ARRAY[-1, 6], ARRAY[-3, 1], 'r');
 /* --withPoints-c  */
 SELECT * FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
-  driving_side => 'r', details => true);
+  'r', details => true);
 /* --withPoints-c-filter  */
 SELECT seq, path_seq, start_vid AS start_pid, end_vid AS end_pid,node, edge, cost, agg_cost
 FROM pgr_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
-  driving_side => 'r', details => true);
+  'r', details => true);
 /* --withPoints-END */
 
 
@@ -434,61 +434,61 @@ FROM pgr_withPoints(
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  -1, 10);
+  -1, 10, 'r');
 /* --withPointsCost-1-to-1-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  -1, 10);
+  -1, 10, 'r');
 /* --withPointsCost-1-to-m  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
-  directed => false);
+  'b', directed => false);
 /* --withPointsCost-1-to-m-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   -1, ARRAY[-3, 7],
-  directed => false);
+  'b', directed => false);
 /* --withPointsCost-m-to-1  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], -3);
+  ARRAY[-1, 6], -3, 'r');
 /* --withPointsCost-m-to-1-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], -3);
+  ARRAY[-1, 6], -3, 'r');
 /* --withPointsCost-m-to-m  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], ARRAY[-3, 1]);
+  ARRAY[-1, 6], ARRAY[-3, 1], 'r');
 /* --withPointsCost-m-to-m-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
-  ARRAY[-1, 6], ARRAY[-3, 1]);
+  ARRAY[-1, 6], ARRAY[-3, 1], 'r');
 /* --withPointsCost-c  */
 SELECT * FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
-  driving_side => 'r');
+  'r');
 /* --withPointsCost-c-filter  */
 SELECT start_vid AS start_pid, end_vid AS end_pid, agg_cost
 FROM pgr_withPointsCost(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT pid, edge_id, fraction, side from pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
-  driving_side => 'r');
+  'r');
 /* --withPointsCost-END */
 
 -- bdDijkstra

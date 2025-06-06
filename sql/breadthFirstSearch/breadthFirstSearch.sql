@@ -26,11 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
-------------------
--- pgr_breadthFirstSearch
-------------------
-
-
 --ONE TO DEPTH
 --v3.0
 CREATE FUNCTION pgr_breadthFirstSearch(
@@ -43,6 +38,7 @@ CREATE FUNCTION pgr_breadthFirstSearch(
     OUT seq BIGINT,
     OUT depth BIGINT,
     OUT start_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -58,8 +54,8 @@ BEGIN
 
 
     RETURN QUERY
-    SELECT a.seq, a.depth, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_breadthFirstSearch(_pgr_get_statement($1),  ARRAY[$2]::BIGINT[], max_depth, directed) AS a;
+    SELECT a.seq, a.depth, a.start_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_breadthFirstSearch_v4(_pgr_get_statement($1),  ARRAY[$2]::BIGINT[], max_depth, directed) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
@@ -77,6 +73,7 @@ CREATE FUNCTION pgr_breadthFirstSearch(
     OUT seq BIGINT,
     OUT depth BIGINT,
     OUT start_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -92,14 +89,12 @@ BEGIN
 
 
     RETURN QUERY
-    SELECT a.seq, a.depth, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_breadthFirstSearch(_pgr_get_statement($1), $2::BIGINT[], max_depth, directed) AS a;
+    SELECT a.seq, a.depth, a.start_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_breadthFirstSearch_v4(_pgr_get_statement($1), $2::BIGINT[], max_depth, directed) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-
--- COMMENTS
 
 COMMENT ON FUNCTION pgr_breadthFirstSearch(TEXT, BIGINT, BIGINT, BOOLEAN)
 IS 'pgr_breadthFirstSearch(One to Depth)

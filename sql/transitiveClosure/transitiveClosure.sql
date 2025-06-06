@@ -34,17 +34,14 @@ CREATE FUNCTION pgr_transitiveClosure(
     TEXT, -- edges_sql (required)
 
     OUT seq INTEGER,
-    OUT vid BIGINT,
-    OUT target_array BIGINT[])
+    OUT node BIGINT,
+    OUT targets BIGINT[])
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, vid, target_array
     FROM _pgr_transitiveClosure(_pgr_get_statement($1));
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
-
-
--- COMMENTS
 
 
 COMMENT ON FUNCTION pgr_transitiveClosure(TEXT)

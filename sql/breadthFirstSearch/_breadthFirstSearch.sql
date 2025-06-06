@@ -24,14 +24,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
--------------------------
--------------------------
--- _breadthFirstSearch
--------------------------
--------------------------
 
---v3.0
-CREATE FUNCTION _pgr_breadthFirstSearch(
+--v4.0
+CREATE FUNCTION _pgr_breadthFirstSearch_v4(
     edges_sql TEXT,
     from_vids ANYARRAY,
     max_depth BIGINT,
@@ -40,6 +35,7 @@ CREATE FUNCTION _pgr_breadthFirstSearch(
     OUT seq BIGINT,
     OUT depth BIGINT,
     OUT start_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -49,8 +45,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE c IMMUTABLE STRICT;
 
-
--- COMMENTS
-
-COMMENT ON FUNCTION _pgr_breadthFirstSearch(TEXT, ANYARRAY, BIGINT, BOOLEAN)
+COMMENT ON FUNCTION _pgr_breadthFirstSearch_v4(TEXT, ANYARRAY, BIGINT, BOOLEAN)
 IS 'pgRouting internal function';
