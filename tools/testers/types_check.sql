@@ -358,8 +358,8 @@ BEGIN
       names = '{"","","","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
       typs = '{text,text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
     ELSE
-      names = '{"","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
-      typs = '{text,text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
+      names = '{"","","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
+      typs = '{text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
     END IF;
 
 
