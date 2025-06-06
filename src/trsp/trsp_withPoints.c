@@ -247,7 +247,7 @@ _pgr_trsp_withpoints(PG_FUNCTION_ARGS) {
     size_t result_count = 0;
 
     ereport(NOTICE, (
-                errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
                 errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
                 errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
                 errhint("Consider upgrade pgRouting")));
