@@ -28,11 +28,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- ONE TO ONE
 --v3.0
 CREATE FUNCTION pgr_bellmanFord(
-    TEXT,   -- edges sql (required)
-    BIGINT, -- from vid (required)
-    BIGINT, -- to vid (required)
+    TEXT,   -- edges_sql (required)
+    BIGINT, -- from_vid (required)
+    BIGINT, -- to_vid (required)
 
     directed BOOLEAN DEFAULT true,
+
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+
+RETURNS SETOF RECORD AS
+$BODY$
+    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+    FROM _pgr_bellmanFord(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], directed, false);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT;
+
+
+--ONE TO MANY
+--v3.0
+CREATE FUNCTION pgr_bellmanFord(
+    TEXT,     -- edges_sql (required)
+    BIGINT,   -- from_vid (required)
+    ANYARRAY, -- to_vids (required)
+
+    directed BOOLEAN DEFAULT true,
+
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -45,17 +72,17 @@ CREATE FUNCTION pgr_bellmanFord(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_bellmanFord(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], directed, false) AS a;
+    FROM _pgr_bellmanFord(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
--- ONE TO MANY
+--MANY TO ONE
 --v3.0
 CREATE FUNCTION pgr_bellmanFord(
-    TEXT,     -- edges sql (required)
-    BIGINT,   -- from vid (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,     -- edges_sql (required)
+    ANYARRAY, -- from_vids (required)
+    BIGINT,   -- to_vid (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -67,20 +94,21 @@ CREATE FUNCTION pgr_bellmanFord(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
+
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_bellmanFord(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed, false) AS a;
+    FROM _pgr_bellmanFord(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed, false);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
--- MANY TO ONE
+--MANY TO MANY
 --v3.0
 CREATE FUNCTION pgr_bellmanFord(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    BIGINT,   -- to vid (required)
+    TEXT,     -- edges_sql (required)
+    ANYARRAY, -- from_vids (required)
+    ANYARRAY, -- to_vids (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -92,40 +120,16 @@ CREATE FUNCTION pgr_bellmanFord(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-$BODY$
-    SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_bellmanFord(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed, false) AS a;
-$BODY$
-LANGUAGE SQL VOLATILE STRICT;
 
-
--- MANY TO MANY
---v3.0
-CREATE FUNCTION pgr_bellmanFord(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    ANYARRAY, -- to vids (required)
-
-    directed BOOLEAN DEFAULT true,
-
-    OUT seq INTEGER,
-    OUT path_seq INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
     FROM _pgr_bellmanFord(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], directed, false );
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT;
 
 
--- COMBINATIONS
+--COMBINATIONS
 --v3.2
 CREATE FUNCTION pgr_bellmanFord(
     TEXT,     -- edges_sql (required)
@@ -141,6 +145,7 @@ CREATE FUNCTION pgr_bellmanFord(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
+
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
@@ -162,6 +167,7 @@ IS 'pgr_bellmanFord(One to One)
   - ${PROJECT_DOC_LINK}/pgr_bellmanFord.html
 ';
 
+
 COMMENT ON FUNCTION pgr_bellmanFord(TEXT, BIGINT, ANYARRAY, BOOLEAN)
 IS 'pgr_bellmanFord(One to Many)
 - EXPERIMENTAL
@@ -174,6 +180,7 @@ IS 'pgr_bellmanFord(One to Many)
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_bellmanFord.html
 ';
+
 
 COMMENT ON FUNCTION pgr_bellmanFord(TEXT, ANYARRAY, BIGINT, BOOLEAN)
 IS 'pgr_bellmanFord(Many to One)
@@ -188,6 +195,7 @@ IS 'pgr_bellmanFord(Many to One)
   - ${PROJECT_DOC_LINK}/pgr_bellmanFord.html
 ';
 
+
 COMMENT ON FUNCTION pgr_bellmanFord(TEXT, ANYARRAY, ANYARRAY, BOOLEAN)
 IS 'pgr_bellmanFord(Many to Many)
 - EXPERIMENTAL
@@ -200,6 +208,7 @@ IS 'pgr_bellmanFord(Many to Many)
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_bellmanFord.html
 ';
+
 
 COMMENT ON FUNCTION pgr_bellmanFord(TEXT, TEXT, BOOLEAN)
 IS 'pgr_bellmanFord(Combinations)

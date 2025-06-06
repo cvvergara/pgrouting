@@ -23,14 +23,15 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
- ********************************************************************PGR-GNU*/
+********************************************************************PGR-GNU*/
+
 
 -- ONE TO ONE
 --v3.0
 CREATE FUNCTION pgr_edwardMoore(
-    TEXT,   -- edges sql (required)
-    BIGINT, -- from vid (required)
-    BIGINT, -- to vid (required)
+    TEXT,   -- edges_sql (required)
+    BIGINT, -- from_vid (required)
+    BIGINT, -- to_vid (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -45,17 +46,17 @@ CREATE FUNCTION pgr_edwardMoore(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edwardMoore(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], directed);
+    FROM _pgr_edwardMoore(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], $4);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT;
 
 
--- ONE TO MANY
+-- ONE to MANY
 --v3.0
 CREATE FUNCTION pgr_edwardMoore(
-    TEXT,     -- edges sql (required)
-    BIGINT,   -- from vid (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,     -- edges_sql (required)
+    BIGINT,   -- from_vid (required)
+    ANYARRAY, -- to_vids (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -70,17 +71,17 @@ CREATE FUNCTION pgr_edwardMoore(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edwardMoore(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed);
+    FROM _pgr_edwardMoore(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT;
 
 
--- MANY TO ONE
+-- MANY to ONE
 --v3.0
 CREATE FUNCTION pgr_edwardMoore(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    BIGINT,   -- to vid (required)
+    TEXT,     -- edges_sql (required)
+    ANYARRAY, -- from_vids (required)
+    BIGINT,   -- to_vid (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -95,17 +96,17 @@ CREATE FUNCTION pgr_edwardMoore(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edwardMoore(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed);
+    FROM _pgr_edwardMoore(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT;
 
 
--- MANY TO MANY
+-- MANY to MANY
 --v3.0
 CREATE FUNCTION pgr_edwardMoore(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,     -- edges_sql (required)
+    ANYARRAY, -- from_vids (required)
+    ANYARRAY, -- to_vids (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -120,9 +121,9 @@ CREATE FUNCTION pgr_edwardMoore(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edwardMoore(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], directed);
+    FROM _pgr_edwardMoore(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], $4);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT;
 
 
 -- COMBINATIONS
@@ -144,7 +145,7 @@ CREATE FUNCTION pgr_edwardMoore(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edwardMoore(_pgr_get_statement($1), _pgr_get_statement($2), directed);
+    FROM _pgr_edwardMoore(_pgr_get_statement($1), _pgr_get_statement($2), $3);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
@@ -153,62 +154,62 @@ COMMENT ON FUNCTION pgr_edwardMoore(TEXT, BIGINT, BIGINT, BOOLEAN)
 IS 'pgr_edwardMoore(One to One)
 - EXPERIMENTAL
 - Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - From vertex identifier
-  - To vertex identifier
-- Optional Parameters:
-  - directed := true
+   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+   - From vertex identifier
+   - To vertex identifier
+- Optional Parameters
+   - directed := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
+   - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
 ';
 
 COMMENT ON FUNCTION pgr_edwardMoore(TEXT, BIGINT, ANYARRAY, BOOLEAN)
 IS 'pgr_edwardMoore(One to Many)
 - EXPERIMENTAL
 - Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - From vertex identifier
-  - To ARRAY[vertices identifiers]
+   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+   - From vertex identifier
+   - To ARRAY[vertices identifiers]
 - Optional Parameters
-  - directed := true
+   - directed := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_bellmanFord.html
+   - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
 ';
 
 COMMENT ON FUNCTION pgr_edwardMoore(TEXT, ANYARRAY, BIGINT, BOOLEAN)
 IS 'pgr_edwardMoore(Many to One)
 - EXPERIMENTAL
 - Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - From ARRAY[vertices identifiers]
-  - To vertex identifier
+   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+   - From ARRAY[vertices identifiers]
+   - To vertex identifier
 - Optional Parameters
-  - directed := true
+   - directed := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
+   - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
 ';
 
 COMMENT ON FUNCTION pgr_edwardMoore(TEXT, ANYARRAY, ANYARRAY, BOOLEAN)
 IS 'pgr_edwardMoore(Many to Many)
 - EXPERIMENTAL
 - Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - From ARRAY[vertices identifiers]
-  - To ARRAY[vertices identifiers]
+   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+   - From ARRAY[vertices identifiers]
+   - To ARRAY[vertices identifiers]
 - Optional Parameters
-  - directed := true
+   - directed := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
+   - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
 ';
 
 COMMENT ON FUNCTION pgr_edwardMoore(TEXT, TEXT, BOOLEAN)
 IS 'pgr_edwardMoore(Combinations)
 - EXPERIMENTAL
 - Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
-  - Combinations SQL with columns: source, target
+   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+   - Combinations SQL with columns: source, target
 - Optional Parameters
-  - directed := true
+   - directed := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
+   - ${PROJECT_DOC_LINK}/pgr_edwardMoore.html
 ';

@@ -30,14 +30,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+-------------------
+-- pgr_withPointsDD
+-------------------
 
 --v3.6
 CREATE FUNCTION _pgr_withPointsDDv4(
-    TEXT,     -- edges
-    TEXT,     -- points
+    TEXT,     -- edges SQL
+    TEXT,     -- points SQL
     ANYARRAY, -- roots
     FLOAT,    -- distance
-    CHAR,     -- driving side
+    CHAR,     -- driving_side,
 
     BOOLEAN,  -- directed
     BOOLEAN,  -- details
@@ -54,8 +57,6 @@ CREATE FUNCTION _pgr_withPointsDDv4(
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
-
--- COMMENTS
 
 COMMENT ON FUNCTION _pgr_withPointsDDv4(TEXT, TEXT, ANYARRAY, FLOAT, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
 IS 'pgRouting internal function';

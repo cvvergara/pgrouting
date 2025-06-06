@@ -78,6 +78,7 @@ IS 'pgr_withPointsVia
   - ${PROJECT_DOC_LINK}/pgr_withPointsVia.html
 ';
 
+/* TODO remove on v5.0 */
 --v3.4
 CREATE FUNCTION pgr_withPointsVia(
   TEXT,     -- edges SQL

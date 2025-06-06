@@ -28,9 +28,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- ONE TO ONE
 --v3.0
 CREATE FUNCTION pgr_edgeDisjointPaths(
-    TEXT,   -- edges sql (required)
-    BIGINT, -- from vid (required)
-    BIGINT, -- to vid (required)
+    TEXT,   --edges_sql (required)
+    BIGINT, -- From_vid (required)
+    BIGINT, -- to_vid (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -46,17 +46,17 @@ CREATE FUNCTION pgr_edgeDisjointPaths(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], directed);
+    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], $4);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
--- ONE TO MANY
+-- ONE to MANY
 --v3.0
 CREATE FUNCTION pgr_edgeDisjointPaths(
-    TEXT,     -- edges sql (required)
-    BIGINT,   -- from vid (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,     --edges_sql (required)
+    BIGINT,   -- From_vid (required)
+    ANYARRAY, -- to_vids (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -72,17 +72,17 @@ CREATE FUNCTION pgr_edgeDisjointPaths(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed);
+    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
--- MANY TO ONE
+-- MANY to ONE
 --v3.0
 CREATE FUNCTION pgr_edgeDisjointPaths(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    BIGINT,   -- to vid (required)
+    TEXT,     --edges_sql (required)
+    ANYARRAY, -- From_vids (required)
+    BIGINT,   -- to_vid (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -98,17 +98,17 @@ CREATE FUNCTION pgr_edgeDisjointPaths(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_id, path_seq, end_vid, start_vid, node, edge, cost, agg_cost
-    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed);
+    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
 
--- MANY TO MANY
+-- MANY to MANY
 --v3.0
 CREATE FUNCTION pgr_edgeDisjointPaths(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,     --edges_sql (required)
+    ANYARRAY, -- From_vids (required)
+    ANYARRAY, -- to_vids (required)
 
     directed BOOLEAN DEFAULT true,
 
@@ -124,7 +124,7 @@ CREATE FUNCTION pgr_edgeDisjointPaths(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], directed);
+    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], $4);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
@@ -149,7 +149,7 @@ CREATE FUNCTION pgr_edgeDisjointPaths(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), _pgr_get_statement($2), directed)
+    FROM _pgr_edgeDisjointPaths(_pgr_get_statement($1), _pgr_get_statement($2), $3)
 $BODY$
 LANGUAGE SQL VOLATILE STRICT;
 
@@ -159,11 +159,12 @@ IS 'pgr_edgeDisjointPaths(One to One)
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - From vertex identifier
   - To vertex identifier
-- Optional Parameters:
+- Optional Parameters
   - directed := true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_edgeDisjointPaths.html
 ';
+
 
 COMMENT ON FUNCTION pgr_edgeDisjointPaths(TEXT, BIGINT, ANYARRAY, BOOLEAN)
 IS 'pgr_edgeDisjointPaths(One to Many)
@@ -177,6 +178,7 @@ IS 'pgr_edgeDisjointPaths(One to Many)
   - ${PROJECT_DOC_LINK}/pgr_edgeDisjointPaths.html
 ';
 
+
 COMMENT ON FUNCTION pgr_edgeDisjointPaths(TEXT, ANYARRAY, BIGINT, BOOLEAN)
 IS 'pgr_edgeDisjointPaths(Many to One)
 - Parameters:
@@ -188,6 +190,7 @@ IS 'pgr_edgeDisjointPaths(Many to One)
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_edgeDisjointPaths.html
 ';
+
 
 COMMENT ON FUNCTION pgr_edgeDisjointPaths(TEXT, ANYARRAY, ANYARRAY, BOOLEAN)
 IS 'pgr_edgeDisjointPaths(Many to Many)

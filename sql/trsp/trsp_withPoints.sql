@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+
 --v4.0
 CREATE FUNCTION pgr_trsp_withPoints(
   TEXT,   -- edges
@@ -300,7 +301,7 @@ FROM _pgr_trsp_withPoints(
   _pgr_get_statement($1),
   _pgr_get_statement($2),
   _pgr_get_statement($3),
-  ARRAY[$4]::BIGINT[], ARRAY[$5]::BIGINT[], $6, directed, details);
+  ARRAY[$4]::BIGINT[], ARRAY[$5]::BIGINT[], $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -330,10 +331,12 @@ CREATE FUNCTION pgr_trsp_withPoints(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-  SELECT seq, path_seq, departure, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_trsp_withPoints(
-    _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-    ARRAY[$4]::BIGINT[], $5::BIGINT[], $6, directed, details);
+SELECT seq, path_seq, departure, end_vid, node, edge, cost, agg_cost
+FROM _pgr_trsp_withPoints(
+  _pgr_get_statement($1),
+  _pgr_get_statement($2),
+  _pgr_get_statement($3),
+  ARRAY[$4]::BIGINT[], $5::BIGINT[], $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -362,10 +365,12 @@ CREATE FUNCTION pgr_trsp_withPoints(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-  SELECT seq, path_seq, departure, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_trsp_withPoints(
-    _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-    $4::BIGINT[], ARRAY[$5]::BIGINT[], $6, directed, details);
+SELECT seq, path_seq, departure, end_vid, node, edge, cost, agg_cost
+FROM _pgr_trsp_withPoints(
+  _pgr_get_statement($1),
+  _pgr_get_statement($2),
+  _pgr_get_statement($3),
+  $4::BIGINT[], ARRAY[$5]::BIGINT[], $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -396,8 +401,10 @@ RETURNS SETOF RECORD AS
 $BODY$
 SELECT seq, path_seq, departure, end_vid, node, edge, cost, agg_cost
 FROM _pgr_trsp_withPoints(
-  _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-  $4::BIGINT[], $5::BIGINT[], $6, directed, details);
+  _pgr_get_statement($1),
+  _pgr_get_statement($2),
+  _pgr_get_statement($3),
+  $4::BIGINT[], $5::BIGINT[], $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -428,9 +435,11 @@ RETURNS SETOF RECORD AS
 $BODY$
 SELECT seq, path_seq, departure, end_vid, node, edge, cost, agg_cost
 FROM _pgr_trsp_withPoints(
-  _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
+  _pgr_get_statement($1),
+  _pgr_get_statement($2),
+  _pgr_get_statement($3),
   _pgr_get_statement($4),
-  $5, $6, directed);
+  $5, $6, $7);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

@@ -1,7 +1,6 @@
 /*PGR-GNU*****************************************************************
 File: _trspVia_withPoints.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 

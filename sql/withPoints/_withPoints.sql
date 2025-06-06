@@ -28,28 +28,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_withPoints_v4(
-  TEXT,     -- edges
-  TEXT,     -- points
+    TEXT, -- edges
+    TEXT, -- points
 
-  ANYARRAY, -- departures
-  ANYARRAY, -- arrivals
+    ANYARRAY, -- departures
+    ANYARRAY, -- arrivals
 
-  BOOLEAN,  -- directed
-  CHAR,     -- driving side
-  BOOLEAN,  -- details
-  BOOLEAN,  -- only_cost
-  BOOLEAN,  -- normal
-  BIGINT,   -- n_goals
-  BOOLEAN,  -- global
+    BOOLEAN, --directed
+    CHAR,    -- driving_side
+    BOOLEAN, -- details
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_vid BIGINT,
-  OUT end_vid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    BOOLEAN, -- only_cost
+    BOOLEAN, -- normal
+
+    BIGINT,  -- n_goals
+    BOOLEAN, -- global
+
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
@@ -60,25 +62,26 @@ IS 'pgRouting internal function';
 
 --v4.0
 CREATE FUNCTION _pgr_withPoints_v4(
-  TEXT,     -- edges
-  TEXT,     -- points
-  TEXT,     -- combinations
+    TEXT, -- edges
+    TEXT, -- points
+    TEXT, -- combinations
 
-  BOOLEAN,  -- directed
-  CHAR,     -- driving_side
-  BOOLEAN,  -- details
-  BOOLEAN,  -- only_cost
-  BIGINT,   -- n_goals
-  BOOLEAN,  -- global
+    BOOLEAN, --directed
+    CHAR,    -- driving_side
+    BOOLEAN, -- details
+    BOOLEAN, -- only_cost
 
-  OUT seq INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_vid BIGINT,
-  OUT end_vid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT)
+    BIGINT,  -- n_goals
+    BOOLEAN, -- global
+
+    OUT seq INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
@@ -87,18 +90,6 @@ COMMENT ON FUNCTION _pgr_withPoints_v4(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN,
 IS 'pgRouting internal function';
 
 /* TODO remove on v5*/
-------------------
-------------------
--- withPoints
-------------------
-------------------
-
-
-------------------
--- _pgr_withPoints
-------------------
-
-
 --v2.6
 CREATE FUNCTION _pgr_withPoints(
     edges_sql TEXT,

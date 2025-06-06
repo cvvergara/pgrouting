@@ -1,12 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: _withPointsKSP.sql
 
-Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project at pgrouting.org
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
-Mail" vicky at erosion.dev
+Mail: vicky at erosion.dev
 
 Copyright (c) 2023 Abhinav Jain
 Mail: this.abhinav at gmail.com
@@ -32,18 +31,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_withPointsKSP_v4(
-  TEXT,     -- edges
-  TEXT,     -- points
+  TEXT, -- edges
+  TEXT, -- points
   ANYARRAY, -- departures
   ANYARRAY, -- destinations
-  INTEGER,  -- k
-  CHAR,     -- driving side
+  INTEGER, -- k
+  CHAR, -- driving side
 
-  BOOLEAN,  -- directed
-   -- KSP parameters
-  BOOLEAN,  -- heaps
-  -- withPoints parameters
-  BOOLEAN,  -- details
+  BOOLEAN, -- directed
+  BOOLEAN, -- heaps
+  BOOLEAN, -- details
 
   OUT seq INTEGER,
   OUT path_id INTEGER,

@@ -214,19 +214,14 @@ IS 'pgr_withPointsCost(Combinations)
   - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
 ';
 
-
-----------------------
--- pgr_withPointsCost
-----------------------
-
-
+/* TODO remove on v5.0 */
 -- ONE TO ONE
---v2.6
+--v3.0
 CREATE FUNCTION pgr_withPointsCost(
-    TEXT, -- edges_sql (required)
-    TEXT, -- points_sql (required)
-    BIGINT, -- end_pid (required)
-    BIGINT, -- end_pid (required)
+    TEXT,   -- edges_sql (required)
+    TEXT,   -- points_sql (required)
+    BIGINT, -- start_vid (required)
+    BIGINT, -- end_vid (required)
 
     directed BOOLEAN DEFAULT true,
     driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
@@ -243,14 +238,13 @@ LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-
 -- ONE TO MANY
---v2.6
+--v3.0
 CREATE FUNCTION pgr_withPointsCost(
-    TEXT, -- edges_sql (required)
-    TEXT, -- points_sql (required)
-    BIGINT, -- end_pid (required)
-    ANYARRAY, -- end_pid (required)
+    TEXT,     -- edges_sql (required)
+    TEXT,     -- points_sql (required)
+    BIGINT,   -- start_vid (required)
+    ANYARRAY, -- end_vid (required)
 
     directed BOOLEAN DEFAULT true,
     driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
@@ -267,14 +261,13 @@ LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-
 -- MANY TO ONE
---v2.6
+--v3.0
 CREATE FUNCTION pgr_withPointsCost(
-    TEXT, -- edges_sql (required)
-    TEXT, -- points_sql (required)
-    ANYARRAY, -- end_pid (required)
-    BIGINT, -- end_pid (required)
+    TEXT,     -- edges_sql (required)
+    TEXT,     -- points_sql (required)
+    ANYARRAY, -- start_vid (required)
+    BIGINT,   -- end_vid (required)
 
     directed BOOLEAN DEFAULT true,
     driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
@@ -291,14 +284,13 @@ LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-
 -- MANY TO MANY
---v2.6
+--v3.0
 CREATE FUNCTION pgr_withPointsCost(
-    TEXT, -- edges_sql (required)
-    TEXT, -- points_sql (required)
-    ANYARRAY, -- end_pid (required)
-    ANYARRAY, -- end_pid (required)
+    TEXT,     -- edges_sql (required)
+    TEXT,     -- points_sql (required)
+    ANYARRAY, -- start_vid (required)
+    ANYARRAY, -- end_vid (required)
 
     directed BOOLEAN DEFAULT true,
     driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
@@ -315,8 +307,7 @@ LANGUAGE sql VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-
--- Combinations SQL signature
+-- Combinations
 --v3.2
 CREATE FUNCTION pgr_withPointsCost(
     TEXT, -- edges_sql (required)
@@ -339,7 +330,6 @@ COST 100
 ROWS 1000;
 
 
--- COMMENTS
 
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR)

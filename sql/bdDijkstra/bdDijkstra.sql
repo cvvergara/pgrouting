@@ -1,11 +1,10 @@
 /*PGR-GNU*****************************************************************
-File: bdDijkstra.sql
 
 Copyright (c) 2017 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright (c) 2017 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+mail: vicky_vergara@hotmail.com
 
 ------
 
@@ -28,9 +27,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- ONE TO ONE
 --v3.0
 CREATE FUNCTION pgr_bdDijkstra(
-    TEXT,   -- edges sql (required)
-    BIGINT, -- from vid (required)
-    BIGINT, -- to vid (required)
+    TEXT,   -- edges_sql (required)
+    BIGINT, -- from_vid
+    BIGINT, -- to_vid
 
     directed BOOLEAN DEFAULT true,
 
@@ -45,19 +44,21 @@ CREATE FUNCTION pgr_bdDijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_bdDijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], directed, false);
+    FROM _pgr_bdDijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], ARRAY[$3]::BIGINT[], $4, false);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT
+COST 100
+ROWS 1000;
 
 
 -- ONE TO MANY
 --v3.0
 CREATE FUNCTION pgr_bdDijkstra(
-    TEXT,     -- edges sql (required)
-    BIGINT,   -- from vid (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,    -- edges_sql (required)
+    BIGINT,   -- from_vid (required)
+    ANYARRAY, -- to_vids (required)
 
-    directed BOOLEAN DEFAULT true,
+    directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -70,19 +71,21 @@ CREATE FUNCTION pgr_bdDijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_bdDijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], directed, false);
+    FROM _pgr_bdDijkstra(_pgr_get_statement($1), ARRAY[$2]::BIGINT[], $3::BIGINT[], $4, false);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT
+COST 100
+ROWS 1000;
 
 
 -- MANY TO ONE
 --v3.0
 CREATE FUNCTION pgr_bdDijkstra(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    BIGINT,   -- to vid (required)
+    TEXT,    -- edges_sql (required)
+    ANYARRAY, -- from_vids (required)
+    BIGINT,   -- to_vid (required)
 
-    directed BOOLEAN DEFAULT true,
+    directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -95,19 +98,22 @@ CREATE FUNCTION pgr_bdDijkstra(
 RETURNS SETOF RECORD AS
 $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-    FROM _pgr_bdDijkstra(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], directed, false);
+    FROM _pgr_bdDijkstra(_pgr_get_statement($1), $2::BIGINT[], ARRAY[$3]::BIGINT[], $4, false);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE sql VOLATILE STRICT
+COST 100
+ROWS 1000;
+
 
 
 -- MANY TO MANY
 --v3.0
 CREATE FUNCTION pgr_bdDijkstra(
-    TEXT,     -- edges sql (required)
-    ANYARRAY, -- from vids (required)
-    ANYARRAY, -- to vids (required)
+    TEXT,     -- edges_sql (required)
+    ANYARRAY, -- from_vids (required)
+    ANYARRAY, -- to_vids (required)
 
-    directed BOOLEAN DEFAULT true,
+    directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -122,7 +128,9 @@ $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
     FROM _pgr_bdDijkstra(_pgr_get_statement($1), $2::BIGINT[], $3::BIGINT[], directed, false);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE SQL VOLATILE STRICT
+COST 100
+ROWS 1000;
 
 
 -- COMBINATIONS
@@ -131,7 +139,7 @@ CREATE FUNCTION pgr_bdDijkstra(
     TEXT,     -- edges_sql (required)
     TEXT,     -- combinations_sql (required)
 
-    directed BOOLEAN DEFAULT true,
+    directed BOOLEAN DEFAULT TRUE,
 
     OUT seq INTEGER,
     OUT path_seq INTEGER,
@@ -146,13 +154,17 @@ $BODY$
     SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
     FROM _pgr_bdDijkstra(_pgr_get_statement($1), _pgr_get_statement($2), directed, false);
 $BODY$
-LANGUAGE SQL VOLATILE STRICT;
+LANGUAGE SQL VOLATILE STRICT
+COST 100
+ROWS 1000;
 
+
+-- COMMENTS
 
 COMMENT ON FUNCTION pgr_bdDijkstra(TEXT, BIGINT, BIGINT, BOOLEAN)
 IS 'pgr_bdDijkstra(One to One)
 - Parameters:
-  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - edges SQL with columns: id, source, target, cost [,reverse_cost]
   - From vertex identifier
   - To vertex identifier
 - Optional Parameters:
