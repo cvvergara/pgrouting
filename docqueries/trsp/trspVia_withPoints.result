@@ -238,34 +238,7 @@ SELECT * FROM  pgr_trspVia_withPoints(
 SELECT * FROM  pgr_withPointsVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id$$,
   $$SELECT pid, edge_id, side, fraction FROM pointsOfInterest$$,
-  ARRAY[6, 7, 6], U_turn_on_edge => false);
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
-WARNING:  A stored procedure is using deprecated C internal function '_pgr_withpointsvia'
-DETAIL:  Library function '_pgr_withpointsvia' was deprecated in pgRouting 4.0.0
-HINT:  Consider upgrade pgRouting
+  ARRAY[6, 7, 6], 'r', U_turn_on_edge => false);
  seq | path_id | path_seq | start_vid | end_vid | node | edge | cost | agg_cost | route_agg_cost
 -----+---------+----------+-----------+---------+------+------+------+----------+----------------
    1 |       1 |        1 |         6 |       7 |    6 |    4 |    1 |        0 |              0

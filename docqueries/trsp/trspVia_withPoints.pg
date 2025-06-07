@@ -99,7 +99,7 @@ SELECT * FROM  pgr_trspVia_withPoints(
 SELECT * FROM  pgr_withPointsVia(
   $$SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id$$,
   $$SELECT pid, edge_id, side, fraction FROM pointsOfInterest$$,
-  ARRAY[6, 7, 6], U_turn_on_edge => false);
+  ARRAY[6, 7, 6], 'r', U_turn_on_edge => false);
 /* -- q12 */
 SELECT 5 AS path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
 FROM  pgr_trsp_withPoints(
