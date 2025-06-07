@@ -64,7 +64,7 @@ FROM  pgr_trsp_withPoints(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
   $$SELECT path, cost FROM restrictions$$,
   $$SELECT pid, edge_id, side, fraction FROM pointsOfInterest$$,
-  -6, 15), 'r';
+  -6, 15, 'r');
 /* -- q9 */
 WITH
 solutions AS (
