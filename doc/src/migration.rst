@@ -612,8 +612,7 @@ functions` are |result-spantree|
 
 to |result-spantree|
 
-Migration of |result-bfs|
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Migration of |result-bfs|
 
 Signatures to be migrated:
 
@@ -622,8 +621,7 @@ Signatures to be migrated:
 
 Before updating pgRouting enumerate the columns: |result-bfs|
 
-Migration of |result-dij-dd|
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Migration of |result-dij-dd|
 
 Signatures to be migrated:
 
@@ -648,8 +646,7 @@ To get the old version column names |result-dij-dd-m|
 * Enumerate |result-dij-dd-m|
 * Rename ``start_vid`` to ``from_v``.
 
-Migration of |result-generic-no-seq|
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. rubric:: Migration of |result-generic-no-seq|
 
 Signatures to be migrated:
 

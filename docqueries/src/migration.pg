@@ -177,11 +177,11 @@ SELECT * FROM pgr_dijkstra(
 /* --dijkstra3 */
 SELECT * FROM pgr_dijkstra(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
-  ARRAY[3, 6], 10);
+  ARRAY[6, 1], 17);
 /* --dijkstra4 */
-SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_dijkstra(
+SELECT seq, path_seq, start_vid, node, edge, cost, agg_cost FROM pgr_dijkstra(
   $$SELECT id, source, target, cost, reverse_cost FROM edges$$,
-  6, 10);
+  ARRAY[6, 1], 17);
 /* --dijkstra5 */
 /* --astar1 */
 SELECT * FROM pgr_aStar(
@@ -207,11 +207,13 @@ SELECT * FROM pgr_bdAstar(
 /* --bdastar2 */
 SELECT * FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
-  6, ARRAY[3, 10]);
+  6, ARRAY[10, 12],
+  heuristic => 3, factor := 3.5);
 /* --bdastar3 */
 SELECT * FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
-  ARRAY[3, 6], 10);
+  6, ARRAY[10, 12],
+  heuristic => 3, factor := 3.5);
 /* --bdastar4 */
 SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_bdAstar(
   $$SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges$$,
@@ -291,25 +293,25 @@ FROM pgr_kruskalDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   6, 3.5);
 /* --kruskalDD3 */
-SELECT * FROM pgr_kruskalDD(
+SELECT * FROM pgr_kruskalDFS(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  ARRAY[9, 6], 3.5);
+  ARRAY[9, 6], max_depth => 3);
 /* --kruskalDD4 */
 SELECT seq, depth, start_vid, node, edge, cost, agg_cost
-FROM pgr_kruskalDD(
+FROM pgr_kruskalDFS(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  ARRAY[9, 6], 3.5);
+  ARRAY[9, 6], max_depth => 3);
 /* --kruskalDD5 */
 
 /* --primDD1 */
-SELECT * FROM pgr_primDD(
+SELECT * FROM pgr_primBFS(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  6, 3.5);
+  6);
 /* --primDD2 */
 SELECT seq, depth, start_vid, node, edge, cost, agg_cost
-FROM pgr_primDD(
+FROM pgr_primBFS(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-  6, 3.5);
+  6);
 /* --primDD3 */
 SELECT * FROM pgr_primDD(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
@@ -522,3 +524,14 @@ FROM pgr_bdDijkstra(
 /* --bdDijkstra-END  */
 
 
+-- DAGshortestPath
+/* --DAGshortestPath-1-to-1  */
+SELECT * FROM pgr_DAGshortestPath(
+  'select id, source, target, cost from edges',
+  5, 11);
+/* --DAGshortestPath-1-to-1-filter  */
+SELECT seq, path_seq, node, edge, cost, agg_cost
+FROM pgr_DAGshortestPath(
+  'select id, source, target, cost from edges',
+  5, 11);
+/* --DAGshortestPath-END */
