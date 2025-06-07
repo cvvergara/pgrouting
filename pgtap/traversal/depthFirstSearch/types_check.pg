@@ -40,19 +40,25 @@ RETURN QUERY SELECT has_function('pgr_depthfirstsearch', ARRAY['text','anyarray'
 RETURN QUERY SELECT function_returns('pgr_depthfirstsearch', ARRAY['text','bigint','boolean','bigint'],  'setof record');
 RETURN QUERY SELECT function_returns('pgr_depthfirstsearch', ARRAY['text','anyarray','boolean','bigint'],  'setof record');
 
-RETURN QUERY
-SELECT function_args_eq('pgr_depthfirstsearch',
-    $$SELECT  '{"","","directed","max_depth","seq","depth","start_vid","node","edge","cost","agg_cost"}'::TEXT[] $$
-);
+IF NOT min_version('4.0.0') THEN
+  RETURN QUERY
+  SELECT skip(1, 'pgr_depthfirstsearch: testing only signatures standardaized in v4.0.0.');
+  RETURN;
+END IF;
 
--- parameter types
-RETURN QUERY
-SELECT function_types_eq('pgr_depthfirstsearch',
+RETURN QUERY SELECT function_args_eq('pgr_depthfirstsearch',
     $$VALUES
-        ('{text,int8,bool,int8,int8,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-        ('{text,anyarray,bool,int8,int8,int8,int8,int8,int8,float8,float8}'::TEXT[])
+        ('{"","",directed,max_depth,seq,depth,start_vid,pred,node,edge,cost,agg_cost}'::TEXT[])
     $$
 );
+
+RETURN QUERY SELECT function_types_eq('pgr_depthfirstsearch',
+    $$VALUES
+        ('{text,int8,    bool,int8,int8,int8,int8,int8,int8,int8,float8,float8}'::TEXT[]),
+        ('{text,anyarray,bool,int8,int8,int8,int8,int8,int8,int8,float8,float8}'::TEXT[])
+    $$
+);
+
 END;
 $BODY$
 LANGUAGE plpgsql;

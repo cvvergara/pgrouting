@@ -32,8 +32,8 @@ BEGIN
   END IF;
 
   -- ONE VIA
-  RETURN QUERY SELECT style_dijkstra('pgr_withPointsVia(', ', $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12])');
-  RETURN QUERY SELECT innerquery_points('pgr_withPointsVia($$SELECT * FROM edges$$,', ', ARRAY[2,9,12])');
+  RETURN QUERY SELECT style_dijkstra('pgr_withPointsVia(', ', $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12], $$r$$)');
+  RETURN QUERY SELECT innerquery_points('pgr_withPointsVia($$SELECT * FROM edges$$,', ', ARRAY[2,9,12], $$r$$)');
 
 END;
 $BODY$

@@ -273,9 +273,17 @@ sub generate_upgrade_script {
                 push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,double precision)");
             }
 
+            if ($old_minor >= "3.4") {
+            push @commands, drop_special_case_function("pgr_edgecoloring(text)");
+            }
+
             if ($old_minor >= "3.2") {
                 # Out parameters changed names on v4.0.0
                 push @commands, drop_special_case_function("pgr_dagshortestpath(text,text)");
+                push @commands, drop_special_case_function("pgr_depthfirstsearch(text,bigint,boolean,bigint)");
+                push @commands, drop_special_case_function("pgr_depthfirstsearch(text,anyarray,boolean,bigint)");
+                push @commands, drop_special_case_function("pgr_sequentialvertexcoloring(text)");
+                push @commands, drop_special_case_function("pgr_bipartite(text)");
             }
 
             # Row type defined by OUT parameters is different.
@@ -303,13 +311,17 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_edwardmoore(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_edwardmoore(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_edwardmoore(text,bigint,anyarray,boolean)");
+
+            push @commands, drop_special_case_function("pgr_topologicalsort(text)");
+            push @commands, drop_special_case_function("pgr_transitiveclosure(text)");
+
         }
     }
 
     if ($old_mayor == 2) {
-        push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult;  DROP TYPE pgr_costresult CASCADE;\n";
-        push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult3; DROP TYPE pgr_costresult3 CASCADE;\n";
-        push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_geomresult;  DROP TYPE pgr_geomresult CASCADE;\n";
+        push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult;  DROP TYPE pgr_costresult;\n";
+        push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult3; DROP TYPE pgr_costresult3;\n";
+        push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_geomresult;  DROP TYPE pgr_geomresult;\n";
     }
 
     write_script(join('', @commands));

@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.4.0') THEN plan(19) ELSE plan(4) END;
+SELECT CASE WHEN min_version('3.4.0') THEN plan(23) ELSE plan(4) END;
 
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edges;
@@ -53,13 +53,15 @@ END IF;
 params = ARRAY[
 '$$SELECT * FROM edges$$',
 '$$SELECT * FROM pointsOfInterest$$',
-'ARRAY[6,7]::BIGINT[]'
+'ARRAY[6,7]::BIGINT[]',
+'$$r$$'
 ]::TEXT[];
 
 subs = ARRAY[
 'NULL',
 'NULL',
-'(SELECT array_agg(id) FROM vertices  WHERE id IN (-1))'
+'(SELECT array_agg(id) FROM vertices  WHERE id IN (-1))',
+'NULL::TEXT'
 ]::TEXT[];
 
 RETURN query SELECT * FROM no_crash_test('pgr_withPointsvia', params, subs);
@@ -67,7 +69,8 @@ RETURN query SELECT * FROM no_crash_test('pgr_withPointsvia', params, subs);
 subs = ARRAY[
 'NULL',
 'NULL',
-'NULL::BIGINT[]'
+'NULL::BIGINT[]',
+'NULL::TEXT'
 ]::TEXT[];
 RETURN query SELECT * FROM no_crash_test('pgr_withPointsvia', params, subs);
 

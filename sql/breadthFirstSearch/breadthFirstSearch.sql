@@ -27,7 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ********************************************************************PGR-GNU*/
 
 --ONE TO DEPTH
---v3.0
+--v4.0
 CREATE FUNCTION pgr_breadthFirstSearch(
     TEXT,   -- edges_sql (required)
     BIGINT, -- from_vid (required)
@@ -61,7 +61,7 @@ LANGUAGE plpgsql VOLATILE STRICT;
 
 
 --MANY TO DEPTH
---v3.0
+--v4.0
 CREATE FUNCTION pgr_breadthFirstSearch(
     TEXT,     -- edges_sql (required)
     ANYARRAY, -- root_vids (required)

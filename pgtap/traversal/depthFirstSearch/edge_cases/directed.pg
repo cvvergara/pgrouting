@@ -46,11 +46,8 @@ RETURN QUERY
 SELECT is_empty('q1', '1: Graph with 0 edge and 0 vertex');
 
 PREPARE depthFirstSearch2 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q1',
-    5
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch('q1', 5);
 
 RETURN QUERY
 SELECT set_eq('depthFirstSearch2',
@@ -75,11 +72,8 @@ SELECT is_empty(
 );
 
 PREPARE depthFirstSearch4 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q3',
-    100
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch('q3', 100);
 
 RETURN QUERY
 SELECT set_eq('depthFirstSearch4',
@@ -92,11 +86,8 @@ SELECT set_eq('depthFirstSearch4',
 -- negative depth test
 
 PREPARE depthFirstSearch5 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q3',
-    4, max_depth => -3
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch('q3', 4, max_depth => -3);
 
 RETURN QUERY
 SELECT throws_ok('depthFirstSearch5',
@@ -120,11 +111,8 @@ SELECT set_eq('q6',
 );
 
 PREPARE depthFirstSearch7 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q6',
-    6, directed => true
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q6', 6, directed => true);
 
 RETURN QUERY
 SELECT set_eq('depthFirstSearch7',
@@ -148,25 +136,16 @@ SELECT set_eq('q8',
 );
 
 PREPARE depthFirstSearch9 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q8',
-    ARRAY[10, 11], directed => true
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q8', ARRAY[10, 11], directed => true);
 
 PREPARE depthFirstSearch10 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q8',
-    ARRAY[10, 11], directed => true, max_depth => 0
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q8', ARRAY[10, 11], directed => true, max_depth => 0);
 
 PREPARE depthFirstSearch11 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q8',
-    ARRAY[10, 11], directed => true, max_depth => 1
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q8', ARRAY[10, 11], directed => true, max_depth => 1);
 
 RETURN QUERY
 SELECT set_eq('depthFirstSearch9',
@@ -230,18 +209,12 @@ SELECT set_eq('q12',
 );
 
 PREPARE depthFirstSearch13 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q12',
-    ARRAY[3, 6, 8], directed => true
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q12', ARRAY[3, 6, 8], directed => true);
 
 PREPARE depthFirstSearch14 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q12',
-    ARRAY[3, 6, 8], directed => true, max_depth => 1
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q12', ARRAY[3, 6, 8], directed => true, max_depth => 1);
 
 
 RETURN QUERY
@@ -296,25 +269,16 @@ SELECT set_eq('q15',
   );
 
 PREPARE depthFirstSearch16 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q15',
-    ARRAY[7, 8, 11, 12], directed => true
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q15', ARRAY[7, 8, 11, 12], directed => true);
 
 PREPARE depthFirstSearch17 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q15',
-    ARRAY[7, 8, 11, 12], directed => true, max_depth => 1
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q15', ARRAY[7, 8, 11, 12], directed => true, max_depth => 1);
 
 PREPARE depthFirstSearch18 AS
-SELECT *
-FROM pgr_depthFirstSearch(
-    'q15',
-    ARRAY[7, 8, 11, 12], directed => true, max_depth => 2
-);
+SELECT seq,depth,start_vid,node,edge,cost,agg_cost
+FROM pgr_depthFirstSearch( 'q15', ARRAY[7, 8, 11, 12], directed => true, max_depth => 2);
 
 RETURN QUERY
 SELECT set_eq('depthFirstSearch16',
