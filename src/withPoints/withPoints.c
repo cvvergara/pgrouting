@@ -196,14 +196,14 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 PG_GETARG_ARRAYTYPE_P(2),
                 PG_GETARG_ARRAYTYPE_P(3),
 
-                PG_GETARG_BOOL(4), //directed
-                PG_GETARG_BOOL(7), // only cost
-                PG_GETARG_BOOL(8), // normal
+                PG_GETARG_BOOL(4),  // directed
+                PG_GETARG_BOOL(7),  // only cost
+                PG_GETARG_BOOL(8),  // normal
 
-                0, true, //n-goals, normal
+                0, true,  // n-goals, normal
 
-                text_to_cstring(PG_GETARG_TEXT_P(5)), // driving side
-                PG_GETARG_BOOL(6), //details
+                text_to_cstring(PG_GETARG_TEXT_P(5)),  // driving side
+                PG_GETARG_BOOL(6),  // details
 
                 101,  // which
                 &result_tuples,

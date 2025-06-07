@@ -42,6 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <string>
 #include <map>
 #include <set>
+#include <utility>
 
 #include "withPoints/withPoints.hpp"
 #include "cpp_common/pgdata_getters.hpp"
@@ -64,11 +65,14 @@ estimate_drivingSide(char driving_side, bool directed, int32_t which) {
         return ' ';
     } else if (which == 1) {
         if (d_side == ' ') {
-            throw std::make_pair(std::string("Invalid value of 'driving side'"), std::string("Valid value are 'r', 'l', 'b'"));
+            throw std::make_pair(std::string("Invalid value of 'driving side'"),
+                    std::string("Valid value are 'r', 'l', 'b'"));
         } else if (directed && !(d_side == 'r' || d_side == 'l')) {
-            throw std::make_pair(std::string("Invalid value of 'driving side'"), std::string("Valid values are for directed graph are: 'r', 'l'"));
+            throw std::make_pair(std::string("Invalid value of 'driving side'"),
+                    std::string("Valid values are for directed graph are: 'r', 'l'"));
         } else if (!directed && !(d_side == 'b')) {
-            throw std::make_pair(std::string("Invalid value of 'driving side'"), std::string("Valid value are for iundirected graph is: 'b'"));
+            throw std::make_pair(std::string("Invalid value of 'driving side'"),
+                    std::string("Valid value are for iundirected graph is: 'b'"));
         }
     } else {
         /* For the moment its old signature of pgr_withPoints */
