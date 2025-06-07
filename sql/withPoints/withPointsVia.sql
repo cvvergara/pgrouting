@@ -55,8 +55,8 @@ RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost, route_agg_cost
   FROM _pgr_withPointsVia_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2), $3, 
-    directed, strict, u_turn_on_edge, $4, details);
+    _pgr_get_statement($1), _pgr_get_statement($2),3,
+    directed, strict, u_turn_on_edge,4, details);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
@@ -75,7 +75,7 @@ IS 'pgr_withPointsVia
   - U_turn_on_edge => true
   - details => false
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_withPointsVia.html
+  -{PROJECT_DOC_LINK}/pgr_withPointsVia.html
 ';
 
 /* TODO remove on v5.0 */
@@ -108,7 +108,7 @@ CREATE FUNCTION pgr_withPointsVia(
 RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost, route_agg_cost
-  FROM _pgr_withPointsVia( _pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
+  FROM _pgr_withPointsVia( _pgr_get_statement($1), _pgr_get_statement($2),3, $4, $5, $6, $7, $8);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100
