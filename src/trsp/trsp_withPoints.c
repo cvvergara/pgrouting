@@ -99,7 +99,7 @@ process(
 
             directed,
 
-            driving_side[0],
+            d_side,
             details,
 
             result_tuples, result_count,
@@ -184,12 +184,11 @@ _pgr_trsp_withpoints_v4(PG_FUNCTION_ARGS) {
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
-                != TYPEFUNC_COMPOSITE)
-            ereport(ERROR,
-                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-                     errmsg("function returning record called in context "
-                         "that cannot accept type record")));
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+            ereport(ERROR, (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                        errmsg("function returning record called in context "
+                            "that cannot accept type record")));
+        }
 
         funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
@@ -298,12 +297,12 @@ _pgr_trsp_withpoints(PG_FUNCTION_ARGS) {
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
-                != TYPEFUNC_COMPOSITE)
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
                          "that cannot accept type record")));
+        }
 
         funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);

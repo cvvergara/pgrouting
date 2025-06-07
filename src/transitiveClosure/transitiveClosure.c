@@ -100,12 +100,12 @@ _pgr_transitiveclosure_v4(PG_FUNCTION_ARGS) {
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
-                != TYPEFUNC_COMPOSITE)
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
                          "that cannot accept type record")));
+        }
         funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
@@ -134,8 +134,7 @@ _pgr_transitiveclosure_v4(PG_FUNCTION_ARGS) {
             (size_t)result_tuples[call_cntr].target_array_size;
 
         Datum* target_array_array;
-        target_array_array = (Datum*) palloc(sizeof(Datum) *
-                (size_t)target_array_size);
+        target_array_array = (Datum*) palloc(sizeof(Datum) * target_array_size);
 
         for (i = 0; i < target_array_size; ++i) {
             PGR_DBG("Storing target_array vertex %ld",
@@ -220,12 +219,12 @@ _pgr_transitiveclosure(PG_FUNCTION_ARGS) {
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
-                != TYPEFUNC_COMPOSITE)
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
                          "that cannot accept type record")));
+        }
         funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
@@ -254,8 +253,7 @@ _pgr_transitiveclosure(PG_FUNCTION_ARGS) {
             (size_t)result_tuples[call_cntr].target_array_size;
 
         Datum* target_array_array;
-        target_array_array = (Datum*) palloc(sizeof(Datum) *
-                (size_t)target_array_size);
+        target_array_array = (Datum*) palloc(sizeof(Datum) * target_array_size);
 
         for (i = 0; i < target_array_size; ++i) {
             PGR_DBG("Storing target_array vertex %ld",
