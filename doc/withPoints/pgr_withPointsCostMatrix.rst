@@ -23,13 +23,14 @@
 
 .. rubric:: Availability
 
-* Version 4.0.0
+.. rubric:: Version 4.0.0
 
-  * Function promoted to official.
+* Output columns standardized to |matrix-result|
+* Function promoted to official.
 
-* Version 2.2.0
+.. rubric:: Version 2.2.0
 
-  * New proposed function.
+* New proposed function.
 
 Description
 -------------------------------------------------------------------------------

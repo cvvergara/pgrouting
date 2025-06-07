@@ -16,49 +16,156 @@ milestone for 4.0.0
 Functions promoted to official
 ...............................................................................
 
+[#2701](https://github.com/pgRouting/pgrouting/issues/2701) Make official
+all the TRSP family of functions
+
 * pgr_trsp
+
+  * Function promoted to official.
+
 * pgr_trspVia
+
+  * Function promoted to official.
+
 * pgr_trspVia_withPoints
+
+  * Function promoted to official.
+
 * pgr_trsp_withPoints
-* [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPoints
+
+  * Function promoted to official.
+
+[#2700](https://github.com/pgRouting/pgrouting/issues/2700) Make official
+the WithPoints family of functions
+
+* pgr_withPoints
 
   * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
   * Function promoted to official.
 
-* [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPointsCost
+* pgr_withPointsCost
 
   * Output columns standardized to ``(start_vid, end_vid, agg_cost)``
   * Function promoted to official.
 
 * pgr_withPointsCostMatrix
+
+  * Output columns standardized to ``(start_vid, end_vid, agg_cost)``
+  * Function promoted to official.
+
 * pgr_withPointsDD
+
+  * Function promoted to official.
+
 * pgr_withPointsKSP
+
+  * Function promoted to official.
+
 * pgr_withPointsVia
 
-**Signatures promoted to official**
+  * Function promoted to official.
+
+[#2718](https://github.com/pgRouting/pgrouting/issues/2718) Make official
+the Combinations signature on the official functions
 
 * pgr_aStar(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_aStarCost(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_bdAstar(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_bdAstarCost(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_bdDijkstra(Combinations)
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Combinations signature promoted to official.
+
 * pgr_bdDijkstraCost(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_dijkstra(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_dijkstraCost(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_KSP(All signatures)
+
+  * All signatures promoted to official.
+
 * pgr_boykovKolmogorov(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_edmondsKarp(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_maxFlow(Combinations)
+
+  * Combinations signature promoted to official.
+
 * pgr_pushRelabel(Combinations)
 
-SQL signatures modification on functions
+  * Combinations signature promoted to official.
+
+
+SQL signatures Standardization
 ...............................................................................
+
+[#2904](https://github.com/pgRouting/pgrouting/issues/2904)
+Standardize output columns of functions with different output columns within overloads
+
+**Standarize to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``**
+
+* [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPoints
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Function promoted to official.
 
 * [#2906](https://github.com/pgRouting/pgrouting/issues/2906) pgr_bdDijkstra
 
   * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
   * Combinations signature promoted to official.
 
+* [#2907](https://github.com/pgRouting/pgrouting/issues/2907) pgr_bellmanFord
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+
+
+* [#2908](https://github.com/pgRouting/pgrouting/issues/2908)
+  pgr_binaryBreadthFirstSearch
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+
+* [#2909](https://github.com/pgRouting/pgrouting/issues/2909) pgr_edwardMoore
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+
+* [#2913](https://github.com/pgRouting/pgrouting/issues/2913)
+  pgr_dagShortestPath
+
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+
+**Standarize to ``(start_vid, end_vid, agg_cost)``**
+
+* [#2905](https://github.com/pgRouting/pgrouting/issues/2905)
+  pgr_withPointsCost
+
+  * Output columns standardized to ``(start_vid, end_vid, agg_cost)``
+  * Function promoted to official.
 
 Removal of SQL deprecated signatures
 ...............................................................................

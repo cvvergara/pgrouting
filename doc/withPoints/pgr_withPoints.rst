@@ -32,7 +32,7 @@ temporary vertices.
 
 * New proposed signature:
 
- * pgr_withPoints(Combinations)
+  * pgr_withPoints(Combinations)
 
 .. rubric:: Version 2.2.0
 

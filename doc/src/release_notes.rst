@@ -46,45 +46,167 @@ milestone for 4.0.0
 Functions promoted to official
 ...............................................................................
 
+`#2701 <https://github.com/pgRouting/pgrouting/issues/2701>`__ Make official
+all the TRSP family of functions
+
 * pgr_trsp
+
+  .. include:: pgr_trsp.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
 * pgr_trspVia
+
+  .. include:: pgr_trspVia.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
 * pgr_trspVia_withPoints
+
+  .. include:: pgr_trspVia_withPoints.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
 * pgr_trsp_withPoints
+
+  .. include:: pgr_trsp_withPoints.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+`#2700 <https://github.com/pgRouting/pgrouting/issues/2700>`__ Make official
+the WithPoints family of functions
+
+* pgr_withPoints
+
+  .. include:: pgr_withPoints.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_withPointsCost
+
+  .. include:: pgr_withPointsCost.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_withPointsCostMatrix
+
+  .. include:: pgr_withPointsCostMatrix.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_withPointsDD
+
+  .. include:: pgr_withPointsDD.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_withPointsKSP
+
+  .. include:: pgr_withPointsKSP.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_withPointsVia
+
+  .. include:: pgr_withPointsVia.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+`#2718 <https://github.com/pgRouting/pgrouting/issues/2718>`__ Make official
+the Combinations signature on the official functions
+
+* pgr_aStar(Combinations)
+
+  .. include:: pgr_aStar.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_aStarCost(Combinations)
+
+  .. include:: pgr_aStarCost.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_bdAstar(Combinations)
+
+  .. include:: pgr_bdAstar.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_bdAstarCost(Combinations)
+
+  .. include:: pgr_bdAstarCost.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_bdDijkstra(Combinations)
+
+  .. include:: pgr_bdDijkstra.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_bdDijkstraCost(Combinations)
+
+  .. include:: pgr_bdDijkstraCost.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_dijkstra(Combinations)
+
+  .. include:: pgr_dijkstra.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_dijkstraCost(Combinations)
+
+  .. include:: pgr_dijkstraCost.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_KSP(All signatures)
+
+  .. include:: pgr_KSP.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_boykovKolmogorov(Combinations)
+
+  .. include:: pgr_boykovKolmogorov.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_edmondsKarp(Combinations)
+
+  .. include:: pgr_edmondsKarp.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_maxFlow(Combinations)
+
+  .. include:: pgr_maxFlow.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+* pgr_pushRelabel(Combinations)
+
+  .. include:: pgr_pushRelabel.rst
+    :start-after: Version 4.0.0
+    :end-before: .. rubric
+
+
+SQL signatures Standardization
+...............................................................................
+
+`#2904 <https://github.com/pgRouting/pgrouting/issues/2904>`__
+Standardize output columns of functions with different output columns within overloads
+
+.. rubric:: Standarize to |short-generic-result|
+
 * `#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__ pgr_withPoints
 
   .. include:: pgr_withPoints.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
-
-* `#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__ pgr_withPointsCost
-
-  .. include:: pgr_withPointsCost.rst
-     :start-after: Version 4.0.0
-     :end-before: .. rubric
-
-* pgr_withPointsCostMatrix
-* pgr_withPointsDD
-* pgr_withPointsKSP
-* pgr_withPointsVia
-
-.. rubric:: Signatures promoted to official
-
-* pgr_aStar(Combinations)
-* pgr_aStarCost(Combinations)
-* pgr_bdAstar(Combinations)
-* pgr_bdAstarCost(Combinations)
-* pgr_bdDijkstra(Combinations)
-* pgr_bdDijkstraCost(Combinations)
-* pgr_dijkstra(Combinations)
-* pgr_dijkstraCost(Combinations)
-* pgr_KSP(All signatures)
-* pgr_boykovKolmogorov(Combinations)
-* pgr_edmondsKarp(Combinations)
-* pgr_maxFlow(Combinations)
-* pgr_pushRelabel(Combinations)
-
-SQL signatures modification on functions
-...............................................................................
 
 * `#2906 <https://github.com/pgRouting/pgrouting/issues/2906>`__ pgr_bdDijkstra
 
@@ -92,6 +214,41 @@ SQL signatures modification on functions
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
+* `#2907 <https://github.com/pgRouting/pgrouting/issues/2907>`__ pgr_bellmanFord
+
+  .. include:: pgr_bellmanFord.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+
+* `#2908 <https://github.com/pgRouting/pgrouting/issues/2908>`__
+  pgr_binaryBreadthFirstSearch
+
+  .. include:: pgr_binaryBreadthFirstSearch.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* `#2909 <https://github.com/pgRouting/pgrouting/issues/2909>`__ pgr_edwardMoore
+
+  .. include:: pgr_edwardMoore.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* `#2913 <https://github.com/pgRouting/pgrouting/issues/2913>`__
+  pgr_dagShortestPath
+
+  .. include:: pgr_dagShortestPath.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+.. rubric:: Standarize to |matrix-result|
+
+* `#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__
+  pgr_withPointsCost
+
+  .. include:: pgr_withPointsCost.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
 
 Removal of SQL deprecated signatures
 ...............................................................................

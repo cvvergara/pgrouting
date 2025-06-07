@@ -24,13 +24,13 @@ points with restrictions.
 
 .. rubric:: Availability
 
-* Version 4.0.0
+.. rubric:: Version 4.0.0
 
-  * Function promoted to official.
+* Function promoted to official.
 
-* Version 3.4.0
+.. rubric:: Version 3.4.0
 
-  * New proposed function.
+* New proposed function.
 
 Description
 -------------------------------------------------------------------------------

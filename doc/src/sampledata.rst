@@ -295,8 +295,7 @@ Adding the restrictions
    :start-after: -- r2
    :end-before: -- r3
 
-Restrictions data
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+.. rubric:: Restrictions data
 
 .. literalinclude:: sampledata.queries
    :start-after: -- r3
