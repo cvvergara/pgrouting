@@ -233,22 +233,32 @@ CREATE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
 $code$
 BEGIN
-  IF NOT min_lib_version('4.0.0') THEN
-    RETURN QUERY SELECT skip(1, 'pgr_tsp new internal code on v4.0.0');
-    RETURN;
+
+  IF min_version('4.0.0') THEN
+    CREATE TEMP TABLE data AS
+    SELECT * FROM pgr_withPointsCostMatrix(
+      'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+      'SELECT pid, edge_id, fraction from pointsOfInterest',
+      array[-1, 10, 7, 11, -6], 'b'::CHAR, directed => false);
+
+    CREATE TEMP TABLE data_directed AS
+    SELECT * FROM pgr_withPointsCostMatrix(
+      'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+      'SELECT pid, edge_id, fraction from pointsOfInterest',
+      array[-1, 10, 7, 11, -6], 'r'::CHAR, directed => true);
+  ELSE
+    CREATE TEMP TABLE data AS
+    SELECT * FROM pgr_withPointsCostMatrix(
+      'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+      'SELECT pid, edge_id, fraction from pointsOfInterest',
+      array[-1, 10, 7, 11, -6], driving_side => 'b'::CHAR, directed => false);
+
+    CREATE TEMP TABLE data_directed AS
+    SELECT * FROM pgr_withPointsCostMatrix(
+      'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+      'SELECT pid, edge_id, fraction from pointsOfInterest',
+      array[-1, 10, 7, 11, -6], driving_side => 'r'::CHAR, directed => true);
   END IF;
-
-  CREATE TEMP TABLE data AS
-  SELECT * FROM pgr_withPointsCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-    'SELECT pid, edge_id, fraction from pointsOfInterest',
-    array[-1, 10, 7, 11, -6], 'b', directed := false);
-
-  CREATE TEMP TABLE data_directed AS
-  SELECT * FROM pgr_withPointsCostMatrix(
-    'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
-    'SELECT pid, edge_id, fraction from pointsOfInterest',
-    array[-1, 10, 7, 11, -6], 'r', directed := true);
 
   RETURN QUERY SELECT tsp_edge_cases('data');
   RETURN QUERY SELECT tsp_edge_cases('data_directed');

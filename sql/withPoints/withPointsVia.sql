@@ -55,8 +55,8 @@ RETURNS SETOF RECORD AS
 $BODY$
   SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost, route_agg_cost
   FROM _pgr_withPointsVia_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2),3,
-    directed, strict, u_turn_on_edge,4, details);
+    _pgr_get_statement($1), _pgr_get_statement($2), $3,
+    directed, strict, u_turn_on_edge, $4, details);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

@@ -92,7 +92,7 @@ msg_end TEXT;
 all_found BOOLEAN;
 allow_u BOOLEAN;
 inc INTEGER = 1;
-drv_side TEXT = '$$b$$';
+drv_side TEXT = '$$b$$, ';
 BEGIN
   IF NOT min_version('3.4.0') THEN
     RETURN QUERY SELECT skip(1, 'Signature added on 3.4.0');
@@ -100,7 +100,8 @@ BEGIN
   END IF;
 
   directed = 'Undirected';
-  IF flag THEN directed = 'Directed'; drv_side = '$$r$$'; END IF;
+  IF flag THEN directed = 'Directed'; drv_side = '$$r$$, '; END IF;
+  IF NOT min_version('4.0.0') THEN drv_side = 'driving_side => ' || drv_side || ' directed => '; END IF;
 
   k := 1;
   with_reverse_cost = quote_literal('SELECT id, source, target, cost, reverse_cost from edges ORDER BY id');
@@ -126,7 +127,7 @@ BEGIN
           withPoints_sql := 'SELECT * FROM pgr_withPointsVia('
             || with_reverse_cost  || ','
             || the_points
-            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || ',' || flag || ',' || all_found || ',' || allow_u || ')';
+            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || flag || ', strict => ' || all_found || ', U_turn_on_edge => ' || allow_u || ')';
 
           msg := '-1- ' || directed || ', with reverse_cost: from 1 to '  || i || ' to ' || j || msg_end || withPoints_sql;
           RETURN query SELECT set_eq(withPoints_sql, dijkstraVia_sql, msg);
@@ -138,7 +139,7 @@ BEGIN
           withPoints_sql := 'SELECT * FROM pgr_withPointsVia('
             || no_reverse_cost  || ','
             || the_points
-            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || ',' || flag || ',' || all_found || ',' || allow_u || ')';
+            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || flag || ', strict => ' || all_found || ', U_turn_on_edge => ' || allow_u || ')';
 
           msg := '-1- ' || directed || ', no reverse_cost: from 1 to '  || i || ' to ' || j || msg_end;
           RETURN query SELECT set_eq(withPoints_sql, dijkstraVia_sql, msg);
@@ -171,7 +172,7 @@ msg_end TEXT;
 all_found BOOLEAN;
 allow_u BOOLEAN;
 inc INTEGER = 1;
-drv_side TEXT = '$$b$$';
+drv_side TEXT = '$$b$$::CHAR, ';
 BEGIN
   IF NOT min_version('3.4.0') THEN
     RETURN QUERY SELECT skip(1, 'Signature added on 3.4.0');
@@ -179,7 +180,8 @@ BEGIN
   END IF;
 
   directed = 'Undirected';
-  IF flag THEN directed = 'Directed'; drv_side = '$$r$$'; END IF;
+  IF flag THEN directed = 'Directed'; drv_side = '$$r$$::CHAR, '; END IF;
+  IF NOT min_version('4.0.0') THEN drv_side = 'driving_side => ' || drv_side || ' directed => '; END IF;
 
   k := 1;
   with_reverse_cost = quote_literal('SELECT id, source, target, cost, reverse_cost from edges ORDER BY id');
@@ -202,13 +204,13 @@ BEGIN
           dijkstraVia_sql := 'SELECT * FROM pgr_withPointsVia( '
             || with_reverse_cost  || ','
             || the_points
-            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || ',' || flag || ',' || all_found || ',' || allow_u || ')';
+            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || flag || ', strict => ' || all_found || ', U_turn_on_edge => ' || allow_u || ')';
 
           withPoints_sql := 'SELECT * FROM pgr_trspVia_withPoints('
             || with_reverse_cost  || ','
             || empty_restrictions || ','
             || the_points
-            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || ',' || flag || ',' || all_found || ',' || allow_u || ')';
+            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || flag || ', strict => ' || all_found || ', U_turn_on_edge => ' || allow_u || ')';
 
           msg := '-1- ' || directed || ', with reverse_cost: from 1 to '  || i || ' to ' || j || msg_end || withPoints_sql;
           RETURN query SELECT set_eq(withPoints_sql, dijkstraVia_sql, msg);
@@ -216,13 +218,13 @@ BEGIN
           dijkstraVia_sql := 'SELECT * FROM pgr_withPointsVia( '
             || no_reverse_cost  || ','
             || the_points
-            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || ',' || flag || ',' || all_found || ',' || allow_u || ')';
+            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || flag || ', strict => ' || all_found || ', U_turn_on_edge => ' || allow_u || ')';
 
           withPoints_sql := 'SELECT * FROM pgr_trspVia_withPoints('
             || no_reverse_cost  || ','
             || empty_restrictions || ','
             || the_points
-            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || ',' || flag || ',' || all_found || ',' || allow_u || ')';
+            || ', ARRAY[1, ' || i || ', ' || j || '], ' || drv_side || flag || ', strict => ' || all_found || ', U_turn_on_edge => ' || allow_u || ')';
 
           msg := '-2- ' || directed || ', no reverse_cost: from 1 to '  || i || ' to ' || j || msg_end;
           RETURN query SELECT set_eq(withPoints_sql, dijkstraVia_sql, msg);
