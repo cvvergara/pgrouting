@@ -40,7 +40,6 @@ BEGIN
     k := ', 2';
   END IF;
 
-
   FOR i IN 1.. cant LOOP
     FOR j IN 1.. cant LOOP
 

@@ -179,6 +179,10 @@ BEGIN
     RETURN;
   END IF;
 
+  IF NOT min_version('4.0.0') AND min_lib_version('4.0.0') THEN
+    SET client_min_messages TO WARNING;
+  END IF;
+
   directed = 'Undirected';
   IF flag THEN directed = 'Directed'; drv_side = '$$r$$::CHAR, '; END IF;
   IF NOT min_version('4.0.0') THEN drv_side = 'driving_side => ' || drv_side || ' directed => '; END IF;

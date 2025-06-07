@@ -69,7 +69,6 @@ process(
             return;
         }
     } else {
-        /* TODO remove on v4 */
         d_side = (char)tolower(driving_side[0]);
         if (!((d_side == 'r') || (d_side == 'l'))) d_side = 'b';
     }
@@ -197,7 +196,13 @@ _pgr_withpointsddv4(PG_FUNCTION_ARGS) {
 }
 
 
-/* TODO remove old code in v4 */
+/* Deprecated code starts here
+ * This code is used on v3.5 and under
+ *
+ * TODO(v4.2) define SHOWMSG
+ * TODO(v4.3) change to WARNING
+ * TODO(v5) Move to legacy
+ */
 PGDLLEXPORT Datum _pgr_withpointsdd(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpointsdd);
 
@@ -209,11 +214,13 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
     MST_rt *result_tuples = 0;
     size_t result_count = 0;
 
+#ifdef SHOWMSG
     ereport(NOTICE, (
                 errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
                 errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
-                errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
+                errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.6.0"),
                 errhint("Consider upgrade pgRouting")));
+#endif
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;

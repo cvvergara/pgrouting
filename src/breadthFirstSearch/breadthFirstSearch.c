@@ -155,6 +155,12 @@ PGDLLEXPORT Datum _pgr_breadthfirstsearch_v4(PG_FUNCTION_ARGS) {
 }
 
 
+/* Deprecated code starts here
+ * This code is used on v3.8 and under
+ * Function is experimental: shows warning
+ *
+ * TODO(v5) Move to legacy
+ */
 PGDLLEXPORT Datum _pgr_breadthfirstsearch(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_breadthfirstsearch);
 PGDLLEXPORT Datum _pgr_breadthfirstsearch(PG_FUNCTION_ARGS) {
@@ -164,7 +170,7 @@ PGDLLEXPORT Datum _pgr_breadthfirstsearch(PG_FUNCTION_ARGS) {
     MST_rt *result_tuples = NULL;
     size_t result_count = 0;
 
-    ereport(NOTICE, (
+    ereport(WARNING, (
                 errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
                 errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
                 errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),

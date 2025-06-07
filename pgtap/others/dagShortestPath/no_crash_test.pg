@@ -29,6 +29,11 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
+
+  IF NOT min_version('4.0.0') AND min_lib_version('4.0.0') THEN
+    SET client_min_messages TO WARNING;
+  END IF;
+
   PREPARE edges AS
   SELECT id, source, target, cost  FROM edges;
 

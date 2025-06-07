@@ -31,6 +31,10 @@ BEGIN
     RETURN;
   END IF;
 
+  IF NOT min_version('4.0.0') AND min_lib_version('4.0.0') THEN
+    SET client_min_messages TO WARNING;
+  END IF;
+
   -- ONE VIA
   RETURN QUERY SELECT style_dijkstra(
     'pgr_trspVia_withPoints(', ', $$SELECT * from restrictions$$, $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12])');

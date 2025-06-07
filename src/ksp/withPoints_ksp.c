@@ -61,6 +61,7 @@ process(
         bool heap_paths,
         bool details,
 
+        bool is_new,
         Path_rt **result_tuples,
         size_t *result_count) {
     if (p_k < 0) {
@@ -70,23 +71,21 @@ process(
 
     size_t k = (size_t)p_k;
 
-    if (start_vid) {
-        driving_side[0] = (char) tolower(driving_side[0]);
-        if (!((driving_side[0] == 'r')
-                    || (driving_side[0] == 'l'))) {
-            driving_side[0] = 'b';
-        }
-    } else {
-        driving_side[0] = (char) tolower(driving_side[0]);
-        if (directed) {
-            if (!((driving_side[0] == 'r') || (driving_side[0] == 'l'))) {
-                pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
-                return;
-            }
-        } else if (!(driving_side[0] == 'b')) {
+    char d_side = estimate_drivingSide(driving_side[0]);
+    if (is_new) {
+        if (d_side == ' ') {
+            pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
+            return;
+        } else if (directed && !(d_side == 'r' || d_side == 'l')) {
+            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
+            return;
+        } else if (!directed && !(d_side == 'b')) {
             pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
             return;
         }
+    } else {
+        d_side = (char)tolower(driving_side[0]);
+        if (!((d_side == 'r') || (d_side == 'l'))) d_side = 'b';
     }
 
     pgr_SPI_connect();
@@ -117,7 +116,7 @@ process(
 
             directed,
             heap_paths,
-            driving_side[0],
+            d_side,
             details,
 
             result_tuples,
@@ -164,6 +163,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 PG_GETARG_BOOL(8),
+                true,
                 &result_tuples,
                 &result_count);
         } else if (PG_NARGS() == 8) {
@@ -178,6 +178,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
+                true,
                 &result_tuples,
                 &result_count);
         }
@@ -246,13 +247,15 @@ PGDLLEXPORT Datum _pgr_withpointsksp_v4(PG_FUNCTION_ARGS) {
     }
 }
 
-/*
- * TODO (v5) v5 remove deprecated code
- * TODO (v4 last micro) warn about deprecated code
+/* Deprecated code starts here
+ * This code is used on v3.8 and under
+ *
+ * TODO(v4.2) define SHOWMSG
+ * TODO(v4.3) change to WARNING
+ * TODO(v5) Move to legacy
  */
 PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpointsksp);
-
 PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
@@ -260,11 +263,13 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
     Path_rt  *result_tuples = 0;
     size_t result_count = 0;
 
+#ifdef SHOWMSG
     ereport(NOTICE, (
                 errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
                 errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
                 errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
                 errhint("Consider upgrade pgRouting")));
+#endif
 
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
@@ -284,6 +289,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 PG_GETARG_BOOL(8),
+                false,
                 &result_tuples,
                 &result_count);
         } else if (PG_NARGS() == 8) {
@@ -298,6 +304,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
+                false,
                 &result_tuples,
                 &result_count);
         } else if (PG_NARGS() == 9) {
@@ -317,6 +324,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                     PG_GETARG_BOOL(5),
                     PG_GETARG_BOOL(6),
                     PG_GETARG_BOOL(8),
+                    false,
                     &result_tuples,
                     &result_count);
         }
