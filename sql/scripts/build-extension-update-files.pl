@@ -273,10 +273,6 @@ sub generate_upgrade_script {
                 push @commands, drop_special_case_function("pgr_kruskaldd(text,anyarray,double precision)");
             }
 
-            if ($old_minor >= "3.4") {
-            push @commands, drop_special_case_function("pgr_edgecoloring(text)");
-            }
-
             if ($old_minor >= "3.2") {
                 # Out parameters changed names on v4.0.0
                 push @commands, drop_special_case_function("pgr_dagshortestpath(text,text)");
@@ -284,6 +280,10 @@ sub generate_upgrade_script {
                 push @commands, drop_special_case_function("pgr_depthfirstsearch(text,anyarray,boolean,bigint)");
                 push @commands, drop_special_case_function("pgr_sequentialvertexcoloring(text)");
                 push @commands, drop_special_case_function("pgr_bipartite(text)");
+            }
+
+            if ($old_minor >= "3.3") {
+                push @commands, drop_special_case_function("pgr_edgecoloring(text)");
             }
 
             # Row type defined by OUT parameters is different.
