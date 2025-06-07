@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION trspVia_VS_dijstraVia(cant INTEGER default 18, flag boolean default true )
+CREATE OR REPLACE FUNCTION trspVia_VS_dijstraVia(quantity INTEGER default 18, flag boolean default true )
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -34,8 +34,8 @@ BEGIN
     inc = 2;
   END IF;
 
-  FOR i IN 1 .. cant BY inc LOOP
-    FOR j IN 1 .. cant LOOP
+  FOR i IN 1 .. quantity BY inc LOOP
+    FOR j IN 1 .. quantity LOOP
       FOR l IN 0 .. 1 LOOP
         FOR m IN 0 .. 1 LOOP
           all_found := (l=1);
@@ -76,7 +76,7 @@ END
 $BODY$
 language plpgsql;
 
-CREATE OR REPLACE FUNCTION withPointsVia_VS_dijstraVia(cant INTEGER default 18, flag boolean default true )
+CREATE OR REPLACE FUNCTION withPointsVia_VS_dijstraVia(quantity INTEGER default 18, flag boolean default true )
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -112,8 +112,8 @@ BEGIN
     inc = 2;
   END IF;
 
-  FOR i IN 1 .. cant BY inc LOOP
-    FOR j IN 1 .. cant LOOP
+  FOR i IN 1 .. quantity BY inc LOOP
+    FOR j IN 1 .. quantity LOOP
       FOR l IN 0 .. 1 LOOP
         FOR m IN 0 .. 1 LOOP
           all_found := (l=1);
@@ -154,7 +154,7 @@ END
 $BODY$
 language plpgsql;
 
-CREATE OR REPLACE FUNCTION trspVia_withPoints_VS_withPointsVia(cant INTEGER default 18, flag boolean default true )
+CREATE OR REPLACE FUNCTION trspVia_withPoints_VS_withPointsVia(quantity INTEGER default 18, flag boolean default true )
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -192,8 +192,8 @@ BEGIN
     inc = 2;
   END IF;
 
-  FOR i IN 1 .. cant BY inc LOOP
-    FOR j IN 1 .. cant LOOP
+  FOR i IN 1 .. quantity BY inc LOOP
+    FOR j IN 1 .. quantity LOOP
       FOR l IN 0 .. 1 LOOP
         FOR m IN 0 .. 1 LOOP
           all_found := (l=1);

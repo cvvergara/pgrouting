@@ -128,7 +128,7 @@ SQL signatures Standardization
 [#2904](https://github.com/pgRouting/pgrouting/issues/2904)
 Standardize output columns of functions with different output columns within overloads
 
-**Standarize to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``**
+**Standardize to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``**
 
 * [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPoints
 
@@ -159,7 +159,7 @@ Standardize output columns of functions with different output columns within ove
 
   * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
 
-**Standarize to ``(start_vid, end_vid, agg_cost)``**
+**Standardize to ``(start_vid, end_vid, agg_cost)``**
 
 * [#2905](https://github.com/pgRouting/pgrouting/issues/2905)
   pgr_withPointsCost

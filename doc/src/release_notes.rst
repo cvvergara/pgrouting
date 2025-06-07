@@ -200,7 +200,7 @@ SQL signatures Standardization
 `#2904 <https://github.com/pgRouting/pgrouting/issues/2904>`__
 Standardize output columns of functions with different output columns within overloads
 
-.. rubric:: Standarize to |short-generic-result|
+.. rubric:: Standardize to |short-generic-result|
 
 * `#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__ pgr_withPoints
 
@@ -241,7 +241,7 @@ Standardize output columns of functions with different output columns within ove
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
-.. rubric:: Standarize to |matrix-result|
+.. rubric:: Standardize to |matrix-result|
 
 * `#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__
   pgr_withPointsCost

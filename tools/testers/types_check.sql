@@ -67,7 +67,7 @@ BEGIN
 
 
   IF NOT min_version(standard_v) THEN
-    RETURN QUERY SELECT skip(1, fn || ': Standarized on ' || standard_v || ', skiping non standardized signatures');
+    RETURN QUERY SELECT skip(1, fn || ': Standardized on ' || standard_v || ', skipping non standardized signatures');
     RETURN;
   END IF;
 

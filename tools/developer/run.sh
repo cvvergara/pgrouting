@@ -39,8 +39,55 @@ GCC=""
 QUERIES_DIRS=$(ls docqueries -1)
 TAP_DIRS=$(ls pgtap -1)
 
-QUERIES_DIRS="dijkstra"
-TAP_DIRS="dijkstra"
+QUERIES_DIRS="
+"
+
+TAP_DIRS="
+trsp/trspVia_withPoints/
+trsp/trspVia_withPoints/compare_dijkstraVia/no_restrictions_directed.pg  (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+trsp/trspVia_withPoints/compare_dijkstraVia/no_restrictions_undirected.pg
+tsp/tsp/edge_cases/edge_cases.pg
+withPoints/withPointsVia/compare_dijkstraVia/directed.pg               (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+withPoints/withPointsVia/compare_dijkstraVia/undirected.pg             (Wstat: 768 (exited 3) Tests: 0 Failed: 0)
+withPoints/withPointsVia/inner_query.pg                                (Wstat: 0 Tests: 84 Failed: 84)
+withPoints/withPointsVia/no_crash_test.pg
+"
+FOO="
+coloring/bipartite/types_check.pg
+coloring/edgeColoring/edge_cases.pg
+coloring/edgeColoring/types_check.pg
+coloring/sequentialVertexColoring/edge_cases.pg
+coloring/sequentialVertexColoring/types_check.pg
+ordering/topologicalSort/no_crash_test.pg
+ordering/topologicalSort/types_check.pg
+others/transitiveClosure/types_check.pg
+traversal/breadthFirstSearch/types_check.pg
+traversal/breadthFirstSearch/no_crash_test.pg
+traversal/breadthFirstSearch/edge_cases.pg
+traversal/depthFirstSearch/types_check.pg
+traversal/depthFirstSearch/edge_cases/directed.pg
+traversal/depthFirstSearch/edge_cases/issue_1348.pg
+traversal/depthFirstSearch/edge_cases/undirected.pg
+trsp/trsp/no_crash_test.pg
+trsp/trspVia_withPoints/compare_dijkstraVia/no_restrictions_directed.pg
+trsp/trspVia_withPoints/compare_dijkstraVia/no_restrictions_undirected.pg
+trsp/trspVia_withPoints/edge_cases.pg
+trsp/trspVia_withPoints/edge_cases/point_in_vertex.pg
+trsp/trspVia_withPoints/inner_query.pg
+trsp/trspVia_withPoints/no_crash_test.pg
+trsp/trsp_withpoints/compare/withpoints/one_to_one.pg
+trsp/trsp_withpoints/no_crash_test.pg
+tsp/tsp/edge_cases/edge_cases.pg
+withPoints/withPoints/edge_cases/empty_combinations_empty_result.pg
+withPoints/withPoints/no_crash_test.pg
+withPoints/withPointsCost/edge_cases/empty_combinations_empty_result.pg
+withPoints/withPointsCost/no_crash_test.pg
+withPoints/withPointsVia/compare_dijkstraVia/directed.pg
+withPoints/withPointsVia/compare_dijkstraVia/undirected.pg
+withPoints/withPointsVia/edge_cases/point_in_vertex.pg
+withPoints/withPointsVia/no_crash_test.pg
+"
+#TAP_DIRS=$(git diff --name-only pgtap | awk -F 'pgtap/' '{print $2}')
 
 function set_cmake {
     # Using all defaults
@@ -58,23 +105,24 @@ function set_cmake {
     # with developers documentation
     #cmake  -DWITH_DOC=ON -DBUILD_DOXY=ON ..
 
-    # using a particular PostgreSQL configuration
-    #cmake -DPOSTGRESQL_PG_CONFIG="/usr/lib/postgresql/${PGVERSION}/bin/pg_config" ..
-
     # Building using clang
-    #CXX=clang++ CC=clang cmake -DPOSTGRESQL_BIN=${PGBIN} -DCMAKE_BUILD_TYPE=Debug  -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=OFF ..
+    #CXX=clang++ CC=clang cmake -DPOSTGRESQL_BIN=${PGBIN} -DCMAKE_BUILD_TYPE=Debug  -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=OFF -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ..
 
     # Building with debug on
     #cmake  -DPOSTGRESQL_BIN=${PGBIN} -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON  -DBUILD_LATEX=ON -DCMAKE_BUILD_TYPE=Debug -DES=ON -DPROJECT_DEBUG=ON ..
 
     # building languages -DES=ON -DJA=ON -DZH_HANS=ON -DDE=ON -DKO=ON and CMAKE_EXPORT_COMPILE_COMMANDS for static analysis tools.
-    #cmake  -DPOSTGRESQL_BIN=${PGBIN} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON  -DBUILD_LATEX=ON -DES=ON  -DCMAKE_BUILD_TYPE=Debug ..
+    #cmake  -DPOSTGRESQL_BIN=${PGBIN} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON  -DBUILD_LATEX=ON -DES=ON -DZH_HANS=ON -DCMAKE_BUILD_TYPE=Debug ..
+    cmake  -DPOSTGRESQL_BIN=${PGBIN} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON -DCMAKE_BUILD_TYPE=Debug ..
+
+    # for 2.6.3
+    #cmake  -DPOSTGRESQL_BIN=${PGBIN} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug ..
 
     # check link in documentation
     #cmake  -DPOSTGRESQL_BIN=${PGBIN} -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DES=ON -DLINKCHECK=ON -DCMAKE_BUILD_TYPE=Release ..
 
     # build only english
-    cmake  -DPOSTGRESQL_BIN=${PGBIN} -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON  -DBUILD_LATEX=ON  -DCMAKE_BUILD_TYPE=Debug ..
+    #cmake  -DPOSTGRESQL_BIN=${PGBIN} -DDOC_USE_BOOTSTRAP=ON -DWITH_DOC=ON -DBUILD_DOXY=ON  -DBUILD_LATEX=ON  -DCMAKE_BUILD_TYPE=Debug ..
 }
 
 function tap_test {
@@ -85,7 +133,7 @@ function tap_test {
     dropdb --if-exists -p $PGPORT ___pgr___test___
     createdb  -p $PGPORT ___pgr___test___
     echo $PGPORT
-    tools/testers/pg_prove_tests.sh "$PGUSER" $PGPORT
+    tools/testers/pg_prove_tests.sh vicky $PGPORT
     dropdb  -p $PGPORT ___pgr___test___
 }
 
@@ -119,14 +167,14 @@ function build_doc {
     pushd build > /dev/null || exit 1
     #rm -rf doc/* ; rm -rf locale/*/*/*.mo
     # Clean only generated files while preserving custom content
-    find doc -type f \( -name "*.html" -o -name "*.pdf" \) -delete
+    #find doc -type f \( -name "*.html" -o -name "*.pdf" \) -delete
     make doc
     #example on how to only build spanish html
     #make html-es
 
     # developers documentation
     #rm -rf doxygen/*
-    make doxy
+    #make doxy
     popd > /dev/null || exit 1
 }
 
@@ -159,7 +207,6 @@ function build {
     set_cmake
     #make  -j 16 VERBOSE=1
     make -j 16
-    #make
     sudo make install
     popd > /dev/null || exit 1
 
@@ -176,11 +223,8 @@ function test_compile {
     echo --------------------------------------------
     for d in ${QUERIES_DIRS}
     do
-        # generate the documentation queries
         #tools/testers/doc_queries_generator.pl  -alg "docqueries/${d}" -documentation  -pgport "${PGPORT}"
-        # Show warnings
-        #tools/testers/doc_queries_generator.pl  -alg "docqueries/${d}" -level WARNING  -pgport "${PGPORT}"
-        # Compare differences on results
+        #tools/testers/doc_queries_generator.pl  -alg "docqueries/${d}" -level DEBUG3  -pgport "${PGPORT}"
         tools/testers/doc_queries_generator.pl  -alg "docqueries/${d}" -pgport "${PGPORT}"
     done
 
@@ -192,10 +236,14 @@ function test_compile {
         time bash taptest.sh  "${d}" "-p ${PGPORT}"
     done
 
-    tap_test
+    #build_doc
+    #check
+    #tap_test
+    #tools/testers/doc_queries_generator.pl -pgport $PGPORT
+    exit 0
     tools/testers/doc_queries_generator.pl -pgport $PGPORT
-
     build_doc
+
     tap_test
     action_tests
 }

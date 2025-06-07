@@ -36,7 +36,7 @@ BEGIN
     $$SELECT id, source, target, cost, reverse_cost FROM four_edges$$,
     ARRAY[$1, $2], true) LIMIT 1;
 
-  -- its a straigh line and one extreme are reachable
+  -- its a straight line and one extreme are reachable
   RETURN QUERY SELECT results_eq($$dijkstra1(5,9)$$, ARRAY[4]::TEXT[]);
   RETURN QUERY SELECT results_eq($$dijkstra1(9,5)$$, ARRAY[4]::TEXT[]);
   /* Points
@@ -166,7 +166,7 @@ BEGIN
     $$SELECT id, source, target, cost, reverse_cost FROM four_edges$$,
     ARRAY[$1, $2], true) LIMIT 1;
 
-  -- its a straigh line and one extreme are reachable
+  -- its a straight line and one extreme are reachable
   RETURN QUERY SELECT results_eq($$dijkstra1(5,9)$$, ARRAY[4]::TEXT[]);
   RETURN QUERY SELECT results_eq($$dijkstra1(9,5)$$, ARRAY[4]::TEXT[]);
 

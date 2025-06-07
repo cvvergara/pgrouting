@@ -51,7 +51,7 @@ vertices can be found using Breadth First Search in :math:`O(|E|)` in an
 unweighted graph, i.e. the distance is the minimal number of edges that you
 need to traverse from the source to another vertex. We can interpret such a
 graph also as a weighted graph, where every edge has the weight :math:`1`.
-If not alledges in graph have the same weight, that we need a more general
+If not all edges in graph have the same weight, that we need a more general
 algorithm, like Dijkstra's Algorithm which runs in :math:`O(|E|log|V|)` time.
 
 However if the weights are more constrained, we can use a faster algorithm.

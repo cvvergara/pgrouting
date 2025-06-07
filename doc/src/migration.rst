@@ -25,7 +25,7 @@ Results can be different because of the changes.
    :depth: 3
 
 
-Migration to standarized columns
+Migration to standardized columns
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. |old-generic-result| replace:: ``(seq, path_seq, [start_vid], [end_vid], node, edge, cost, agg_cost)``
