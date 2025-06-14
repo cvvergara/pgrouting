@@ -123,3 +123,66 @@ IS 'pgr_withPointsDD(Multiple Vertices)
 - Documentation:
     - ${PROJECT_DOC_LINK}/pgr_withPointsDD.html
 ';
+
+/* TODO remove on v5 */
+-- SINGLE
+--v2.6
+CREATE FUNCTION pgr_withPointsDD(
+    TEXT,   --edges_sql (required)
+    TEXT,   -- points_sql (required)
+    BIGINT, -- from_vid (required)
+    FLOAT,  -- distance (required)
+
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b',
+    details BOOLEAN DEFAULT false,
+
+    OUT seq INTEGER,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+$BODY$
+    SELECT seq, node, edge, cost, agg_cost
+    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT
+COST 100
+ROWS 1000;
+
+-- MULTIPLE
+--v2.6
+CREATE FUNCTION pgr_withPointsDD(
+    TEXT,     --edges_sql (required)
+    TEXT,     -- points_sql (required)
+    ANYARRAY, -- from_vid (required)
+    FLOAT,    -- distance (required)
+
+    directed BOOLEAN DEFAULT true,
+    driving_side CHAR DEFAULT 'b',
+    details BOOLEAN DEFAULT false,
+    equicost BOOLEAN DEFAULT false,
+
+    OUT seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+$BODY$
+    SELECT seq, start_vid, node, edge, cost, agg_cost
+    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
+$BODY$
+LANGUAGE SQL VOLATILE STRICT
+COST 100
+ROWS 1000;
+
+COMMENT ON FUNCTION pgr_withPointsDD(TEXT, TEXT, BIGINT, FLOAT, BOOLEAN, CHAR, BOOLEAN)
+IS 'pgr_withPointsDD (multiple) deprecated signature on v3.6.0
+- Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsDD.html';
+
+COMMENT ON FUNCTION pgr_withPointsDD(TEXT, TEXT, ANYARRAY, FLOAT, BOOLEAN, CHAR, BOOLEAN, BOOLEAN)
+IS 'pgr_withPointsDD (single) deprecated signature on v3.6.0
+- Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsDD.html';
