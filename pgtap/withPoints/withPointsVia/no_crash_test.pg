@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.4.0') THEN plan(19) ELSE plan(4) END;
+SELECT CASE WHEN min_version('4.0.0') THEN plan(23) WHEN min_version('3.4.0') THEN plan(19) ELSE plan(4) END;
 
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edges;
@@ -49,6 +49,36 @@ IF NOT min_version('3.4.0') THEN
     RETURN;
 END IF;
 
+IF min_version('4.0.0') THEN
+
+  -- ONE VIA
+  params = ARRAY[
+  '$$SELECT * FROM edges$$',
+  '$$SELECT * FROM pointsOfInterest$$',
+  'ARRAY[6,7]::BIGINT[]',
+  '$$r$$'
+  ]::TEXT[];
+
+  subs = ARRAY[
+  'NULL',
+  'NULL',
+  '(SELECT array_agg(id) FROM vertices  WHERE id IN (-1))',
+  'NULL::TEXT'
+  ]::TEXT[];
+
+  RETURN query SELECT * FROM no_crash_test('pgr_withPointsvia', params, subs);
+
+  subs = ARRAY[
+  'NULL',
+  'NULL',
+  'NULL::BIGINT[]',
+  'NULL::TEXT'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_withPointsvia', params, subs);
+
+ELSE
+
+SET client_min_messages TO WARNING;
 -- ONE VIA
 params = ARRAY[
 '$$SELECT * FROM edges$$',
@@ -70,6 +100,8 @@ subs = ARRAY[
 'NULL::BIGINT[]'
 ]::TEXT[];
 RETURN query SELECT * FROM no_crash_test('pgr_withPointsvia', params, subs);
+
+END IF;
 
 END
 $BODY$
