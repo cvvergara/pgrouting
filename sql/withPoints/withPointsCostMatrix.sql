@@ -90,4 +90,5 @@ ROWS 1000;
 -- COMMENTS
 
 COMMENT ON FUNCTION pgr_withPointsCostMatrix(TEXT, TEXT, ANYARRAY, BOOLEAN, CHAR)
-IS 'pgr_withPointsCostMatrix deprecated signature on v4.0.0';
+IS 'pgr_withPointsCostMatrix deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsCostMatrix.html)';

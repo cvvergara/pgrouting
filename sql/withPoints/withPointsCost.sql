@@ -335,16 +335,21 @@ ROWS 1000;
 
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR)
-IS 'pgr_withPointsCost (One to One) deprecated signature on v4.0.0';
+IS 'pgr_withPointsCost (One to One) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsCost.html';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR)
-IS 'pgr_withPointsCost (One to Many) deprecated signature on v4.0.0';
+IS 'pgr_withPointsCost (One to Many) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsCost.html';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR)
-IS 'pgr_withPointsCost (Many to One) deprecated signature on v4.0.0';
+IS 'pgr_withPointsCost (Many to One) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsCost.html';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR)
-IS 'pgr_withPointsCost (Many to Many) deprecated signature on v4.0.0';
+IS 'pgr_withPointsCost (Many to Many) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsCost.html';
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, TEXT, BOOLEAN, CHAR)
-IS 'pgr_withPointsCost(Combinations) deprecated signature on v4.0.0';
+IS 'pgr_withPointsCost(Combinations) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsCost.html';
