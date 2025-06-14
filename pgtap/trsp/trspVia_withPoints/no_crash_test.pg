@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.4.0') THEN plan(23) ELSE plan(4) END;
+SELECT CASE WHEN min_version('3.4.0') THEN plan(27) WHEN min_version('3.4.0') THEN plan(23) ELSE plan(4) END;
 
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edges;
@@ -49,30 +49,63 @@ IF NOT min_version('3.4.0') THEN
     RETURN;
 END IF;
 
--- ONE VIA
-params = ARRAY[
-'$$SELECT id, source, target, cost, reverse_cost  FROM edges$$',
-'$$SELECT path, cost  FROM restrictions$$',
-'$$SELECT * FROM pointsofinterest$$',
-'ARRAY[5,6]::BIGINT[]'
-]::TEXT[];
+IF min_version('4.0.0') THEN
+  -- ONE VIA
+  params = ARRAY[
+  '$$SELECT id, source, target, cost, reverse_cost  FROM edges$$',
+  '$$SELECT path, cost  FROM restrictions$$',
+  '$$SELECT * FROM pointsofinterest$$',
+  'ARRAY[5,6]::BIGINT[]',
+  '$$r$$'
+  ]::TEXT[];
 
-subs = ARRAY[
-'NULL',
-'NULL',
-'NULL',
-'(SELECT array_agg(id) FROM vertices  WHERE id IN (-1))'
-]::TEXT[];
+  subs = ARRAY[
+  'NULL',
+  'NULL',
+  'NULL',
+  '(SELECT array_agg(id) FROM vertices  WHERE id IN (-1))',
+  'NULL'
+  ]::TEXT[];
 
-RETURN query SELECT * FROM no_crash_test('pgr_trspvia_withPoints', params, subs);
+  RETURN query SELECT * FROM no_crash_test('pgr_trspvia_withPoints', params, subs);
 
-subs = ARRAY[
-'NULL',
-'NULL',
-'NULL',
-'NULL::BIGINT[]'
-]::TEXT[];
-RETURN query SELECT * FROM no_crash_test('pgr_trspvia_withPoints', params, subs);
+  subs = ARRAY[
+  'NULL',
+  'NULL',
+  'NULL',
+  'NULL::BIGINT[]',
+  'NULL'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_trspvia_withPoints', params, subs);
+
+ELSE
+
+  -- ONE VIA
+  params = ARRAY[
+  '$$SELECT id, source, target, cost, reverse_cost  FROM edges$$',
+  '$$SELECT path, cost  FROM restrictions$$',
+  '$$SELECT * FROM pointsofinterest$$',
+  'ARRAY[5,6]::BIGINT[]'
+  ]::TEXT[];
+  
+  subs = ARRAY[
+  'NULL',
+  'NULL',
+  'NULL',
+  '(SELECT array_agg(id) FROM vertices  WHERE id IN (-1))'
+  ]::TEXT[];
+  
+  RETURN query SELECT * FROM no_crash_test('pgr_trspvia_withPoints', params, subs);
+  
+  subs = ARRAY[
+  'NULL',
+  'NULL',
+  'NULL',
+  'NULL::BIGINT[]'
+  ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_trspvia_withPoints', params, subs);
+
+END IF;
 
 END
 $BODY$

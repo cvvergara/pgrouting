@@ -31,13 +31,31 @@ BEGIN
     RETURN;
   END IF;
 
-  -- ONE VIA
-  RETURN QUERY SELECT style_dijkstra(
-    'pgr_trspVia_withPoints(', ', $$SELECT * from restrictions$$, $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12])');
-  RETURN QUERY SELECT innerquery_restrictions(
-    'pgr_trspVia_withPoints($$SELECT * FROM edges$$,', ', $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12])');
-  RETURN QUERY SELECT innerquery_points(
-    'pgr_trspVia_withPoints($$SELECT * FROM edges$$, $$SELECT * from restrictions$$,', ', ARRAY[2,9,12])');
+  IF NOT min_version('4.0.0') AND min_lib_version('4.0.0') THEN
+    SET client_min_messages TO WARNING;
+  END IF;
+
+  IF min_version('4.0.0') THEN
+
+    -- ONE VIA
+    RETURN QUERY SELECT style_dijkstra(
+      'pgr_trspVia_withPoints(', ', $$SELECT * from restrictions$$, $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12], $$r$$)');
+    RETURN QUERY SELECT innerquery_restrictions(
+      'pgr_trspVia_withPoints($$SELECT * FROM edges$$,', ', $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12], $$r$$)');
+    RETURN QUERY SELECT innerquery_points(
+      'pgr_trspVia_withPoints($$SELECT * FROM edges$$, $$SELECT * from restrictions$$,', ', ARRAY[2,9,12], $$r$$)');
+
+  ELSE
+
+    -- ONE VIA
+    RETURN QUERY SELECT style_dijkstra(
+      'pgr_trspVia_withPoints(', ', $$SELECT * from restrictions$$, $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12])');
+    RETURN QUERY SELECT innerquery_restrictions(
+      'pgr_trspVia_withPoints($$SELECT * FROM edges$$,', ', $$SELECT * FROM pointsOfInterest$$, ARRAY[2,9,12])');
+    RETURN QUERY SELECT innerquery_points(
+      'pgr_trspVia_withPoints($$SELECT * FROM edges$$, $$SELECT * from restrictions$$,', ', ARRAY[2,9,12])');
+
+  END IF;
 
 END;
 $BODY$
