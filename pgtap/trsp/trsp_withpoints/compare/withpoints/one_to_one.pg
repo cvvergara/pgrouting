@@ -35,6 +35,8 @@ no_reverse TEXT;
 points_sql TEXT;
 trsp_sql TEXT;
 result_columns TEXT;
+drv_right TEXT;
+drv_both TEXT;
 BEGIN
   IF NOT min_version('3.4.0') THEN
     RETURN QUERY SELECT skip(1, 'Signature added on 3.4.0');
@@ -42,6 +44,16 @@ BEGIN
   END IF;
 
   result_columns := 'seq, path_seq, node, edge, cost, agg_cost';
+
+  IF min_version('4.0.0') THEN
+    drv_right := $$, 'r'$$;
+    drv_both := $$, 'b'$$;
+  ELSE
+    SET client_min_messages TO WARNING;
+    drv_right := $$, driving_side => 'r'$$;
+    drv_both := $$, driving_side => 'b'$$;
+  END IF;
+
   points := 'SELECT * FROM pointsofinterest';
   empty_restrictions := 'SELECT * FROM restrictions WHERE id > 10';
   with_reverse := 'SELECT * FROM edges';
@@ -51,37 +63,37 @@ BEGIN
     FOR j IN 1.. $1 LOOP
 
       points_sql := 'SELECT ' || result_columns || ' FROM pgr_withpoints($$' || with_reverse || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => true)';
+        || i || ', ' || j || drv_right || ', directed => true)';
       trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
         || empty_restrictions || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => true)';
+        || i || ', ' || j || drv_right || ', directed => true)';
       RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
       points_sql := 'SELECT ' || result_columns || ' FROM pgr_withpoints($$' || with_reverse || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => false)';
+        || i || ', ' || j || drv_both || ', directed => false)';
       trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
         || empty_restrictions || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => false)';
+        || i || ', ' || j || drv_both || ', directed => false)';
       RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
       points_sql := 'SELECT ' || result_columns || ' FROM pgr_withpoints($$' || no_reverse || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => true)';
+        || i || ', ' || j || drv_right || ', directed => true)';
       trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
         || empty_restrictions || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => true)';
+        || i || ', ' || j || drv_right || ', directed => true)';
       RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
       points_sql := 'SELECT ' || result_columns || ' FROM pgr_withpoints($$' || no_reverse || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => false)';
+        || i || ', ' || j || drv_both || ', directed => false)';
       trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
         || empty_restrictions || '$$, $$' || points || '$$, '
-        || i || ', ' || j || ', directed => false)';
+        || i || ', ' || j || drv_both || ', directed => false)';
       RETURN query SELECT set_eq(trsp_sql, points_sql, trsp_sql);
 
-      END LOOP;
+    END LOOP;
   END LOOP;
 
-  RETURN;
+RETURN;
 END
 $BODY$
 language plpgsql;
