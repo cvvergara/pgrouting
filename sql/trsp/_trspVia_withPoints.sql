@@ -1,8 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: _trspVia_withPoints.sql
 
-Function's developer:
+Copyright (c) 2015 pgRouting developers
+Mail: project@pgrouting.org
+
 Copyright (c) 2022 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -22,6 +25,39 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+--v4.0
+CREATE FUNCTION _pgr_trspVia_withPoints_v4(
+  TEXT,     -- edges
+  TEXT,     -- restrictions
+  TEXT,     -- points
+  ANYARRAY, -- via
+
+  BOOLEAN,  -- directed
+
+  BOOLEAN,  -- strict
+  BOOLEAN,  -- U_turn_on_edge
+
+  CHAR,     -- driving side
+  BOOLEAN,  -- details
+
+  OUT seq INTEGER,
+  OUT path_id INTEGER,
+  OUT path_seq INTEGER,
+  OUT start_vid BIGINT,
+  OUT end_vid BIGINT,
+  OUT node BIGINT,
+  OUT edge BIGINT,
+  OUT cost FLOAT,
+  OUT agg_cost FLOAT,
+  OUT route_agg_cost FLOAT)
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT;
+
+COMMENT ON FUNCTION _pgr_trspVia_withPoints_v4(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
+IS 'pgRouting internal function';
+
+/* TODO remove on v5*/
 --v3.0
 CREATE FUNCTION _pgr_trspVia_withPoints(
   TEXT,     -- edges
@@ -50,7 +86,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE c VOLATILE STRICT;
 
--- COMMENTS
-
 COMMENT ON FUNCTION _pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting internal function';
+IS 'pgRouting internal function deprecated on v4.0.0';
