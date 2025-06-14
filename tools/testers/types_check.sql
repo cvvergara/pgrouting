@@ -316,6 +316,8 @@ DECLARE
   return_params_names TEXT[] = ARRAY['seq','path_id','path_seq','start_vid','end_vid','node','edge','cost','agg_cost','route_agg_cost'];
   return_params_numbers TEXT[] = '{int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT[];
 
+  names TEXT;
+  typs TEXT;
 BEGIN
   IF fn IN ('pgr_trspvia','pgr_trspvia_withpoints','pgr_withpointsvia') AND NOT min_version('3.4.0') THEN
     RETURN QUERY SELECT skip(1, 'Signature added on 3.4.0');
@@ -349,21 +351,58 @@ BEGIN
   RETURN QUERY SELECT has_function(fn, params_types_words || optional_params_types_words);
   RETURN QUERY SELECT function_returns(fn, params_types_words || optional_params_types_words,'setof record');
 
-  RETURN QUERY SELECT function_args_eq(fn,
-    format(
-      $$VALUES (%1$L::TEXT[])$$,
-      -- one via
-      '{"' || array_to_string(
-        params_names || optional_params_names || return_params_names,'","')
-      || '"}'));
 
-  RETURN QUERY SELECT function_types_eq(fn,
-    format(
-      $$VALUES (%1$L::TEXT[])$$,
-      -- one via
-      '{"' || array_to_string(
-        params_numbers || optional_params_numbers || return_params_numbers,'","')
-      || '"}'));
+  IF min_version('4.0.0') AND fn ILIKE '%withpoints%' THEN
+
+    IF fn ILIKE '%trsp%' THEN
+      names = '{"","","","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
+      typs = '{text,text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
+    ELSE
+      names = '{"","","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
+      typs = '{text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
+    END IF;
+
+
+    RETURN QUERY SELECT function_args_eq(fn,
+      format(
+        $$VALUES
+        (%1$L::TEXT[]),
+        (%2$L::TEXT[])
+        $$,
+        -- one via
+        '{"' || array_to_string(
+          params_names || optional_params_names || return_params_names,'","')
+        || '"}', names));
+
+    RETURN QUERY SELECT function_types_eq(fn,
+      format(
+        $$VALUES
+          (%1$L::TEXT[]),
+        (%2$L::TEXT[])
+        $$,
+        -- one via
+        '{"' || array_to_string(
+          params_numbers || optional_params_numbers || return_params_numbers,'","')
+        || '"}', typs));
+
+  ELSE
+
+    RETURN QUERY SELECT function_args_eq(fn,
+      format(
+        $$VALUES (%1$L::TEXT[])$$,
+        -- one via
+        '{"' || array_to_string(
+          params_names || optional_params_names || return_params_names,'","')
+        || '"}'));
+
+    RETURN QUERY SELECT function_types_eq(fn,
+      format(
+        $$VALUES (%1$L::TEXT[])$$,
+        -- one via
+        '{"' || array_to_string(
+          params_numbers || optional_params_numbers || return_params_numbers,'","')
+        || '"}'));
+  END IF;
 
 
 END;
