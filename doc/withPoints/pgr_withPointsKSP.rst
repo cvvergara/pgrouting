@@ -28,12 +28,10 @@
 
 .. rubric:: Version 3.6.0
 
-* Standardizing output columns to |nksp-result|
-* pgr_withPointsKSP(One to One)
+* Output columns standardized to |nksp-result|
+* **Driving side** parameter is positional unnamed and compulsory.
 
-  * Signature change: ``driving_side`` parameter changed from named optional to
-    unnamed compulsory **driving side**.
-  * Added ``start_vid`` and ``end_vid`` result columns.
+  * Valid values depend on kind of graph
 
 * New proposed signatures:
 
@@ -42,9 +40,9 @@
   * pgr_withPointsKSP(Many to Many)
   * pgr_withPointsKSP(Combinations)
 
-* Deprecated signature
+* Deprecated signatures:
 
-  * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,char,boolean)``
+  * pgr_withpointsksp(text,text,bigint,bigint,integer,boolean,boolean,character,boolean)
 
 .. rubric:: Version 2.2.0
 
@@ -191,39 +189,48 @@ Combinations
 Parameters
 -------------------------------------------------------------------------------
 
-.. list-table::
-   :width: 81
-   :widths: 17 22 44
-   :header-rows: 1
-
-   * - Column
-     - Type
-     - Description
-   * - `Edges SQL`_
-     - ``TEXT``
-     - `Edges SQL`_ query as described.
-   * - `Points SQL`_
-     - ``TEXT``
-     - `Points SQL`_ query as described.
-   * - **start vid**
-     - **ANY-INTEGER**
-     - Identifier of the departure vertex.
-
-       - Negative values represent a point
-   * - **end vid**
-     - **ANY-INTEGER**
-     - Identifier of the destination vertex.
-
-       - Negative values represent a point
+.. list-table::                                                                 
+   :width: 81                                                                   
+   :widths: 14 14 44                                                            
+   :header-rows: 1                                                              
+                                                                                
+   * - Column                                                                   
+     - Type                                                                     
+     - Description                                                              
+   * - `Edges SQL`_                                                             
+     - ``TEXT``                                                                 
+     - `Edges SQL`_ as described below                                          
+   * - `Points SQL`_                                                            
+     - ``TEXT``                                                                 
+     - `Points SQL`_ as described below                                         
+   * - `Combinations SQL`_                                                      
+     - ``TEXT``                                                                 
+     - `Combinations SQL`_ as described below                                   
+   * - **start vid**                                                            
+     - ``BIGINT``                                                               
+     - Identifier of the starting vertex of the path. Negative value is for     
+       point’s identifier.                                                      
+   * - **start vids**                                                           
+     - ``ARRAY[BIGINT]``                                                        
+     - Array of identifiers of starting vertices. Negative values are for       
+       point’s identifiers.                                                     
+   * - **end vid**                                                              
+     - ``BIGINT``                                                               
+     - Identifier of the ending vertex of the path. Negative value is for       
+       point’s identifier.                                                      
+   * - **end vids**                                                             
+     - ``ARRAY[BIGINT]``                                                        
+     - Array of identifiers of ending vertices. Negative values are for point’s 
+       identifiers.                                                             
    * - **K**
      - **ANY-INTEGER**
      - Number of required paths
-   * - **driving_side**
-     - **CHAR**
+   * - **driving side**                                                         
+     - ``CHAR``                                                                 
      - Value in [``r``, ``R``, ``l``, ``L``, ``b``, ``B``] indicating if the driving side is:
-
-       - [``r``, ``R``] for right driving side (for directed graph only)
-       - [``l``, ``L``] for left driving side (for directed graph only)
+                                                                                
+       - [``r``, ``R``] for right driving side (for directed graph only)        
+       - [``l``, ``L``] for left driving side (for directed graph only)         
        - [``b``, ``B``] for both (only for undirected graph)
 
 Where:
