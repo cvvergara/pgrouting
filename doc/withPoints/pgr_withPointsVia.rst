@@ -25,11 +25,14 @@ points.
 
 .. rubric:: Version 4.0.0
 
-* **Driving side** parameters is unnamed and compulsory.
+* Function promoted to official.
+* **Driving side** parameter is positional unnamed and compulsory.
 
   * Valid values depend on kind of graph
 
-* Function promoted to official.
+* Deprecated signatures:
+
+  * pgr_withpointsvia(text,text,anyarray,boolean,boolean,boolean,character,boolean)
 
 .. rubric:: Version 3.4.0
 
@@ -69,14 +72,14 @@ One Via
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPointsVia(`Edges SQL`_, `Points SQL`_, **via vertices**, [**options**])
-   | **options:** ``[directed, strict, U_turn_on_edge]``
+   | pgr_withPointsVia(`Edges SQL`_, `Points SQL`_, **via vertices**, **driving side** [**options**])
+   | **options:** ``[directed, strict, U_turn_on_edge, details]``
 
    | Returns set of |via-result|
    | OR EMPTY SET
 
 :Example: Find the route that visits the vertices :math:`\{ -6, 15, -1\}` in
-          that order on a **directed** graph.
+          that order with right driving side in directed graph..
 
 .. literalinclude:: withPointsVia.queries
     :start-after: -- q0
@@ -106,7 +109,7 @@ Via optional parameters
 With points optional parameters
 ...............................................................................
 
-.. include:: withPoints-family.rst
+.. include:: withPoints-category.rst
    :start-after: withPoints_optionals_start
    :end-before: withPoints_optionals_end
 
