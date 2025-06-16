@@ -25,6 +25,10 @@ points.
 
 .. rubric:: Version 4.0.0
 
+* **Driving side** parameters is unnamed and compulsory.
+
+  * Valid values depend on kind of graph
+
 * Function promoted to official.
 
 .. rubric:: Version 3.4.0
