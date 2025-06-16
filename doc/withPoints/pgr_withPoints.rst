@@ -27,11 +27,6 @@ temporary vertices.
 
 * Output columns standardized to |short-generic-result|
 * Function promoted to official.
-* Signature change: ``driving_side`` parameter changed from named optional to
-  unnamed positional.
-
-  - Directed graph valid values: ``l`` or ``L`` and ``r``, ``R``
-  - Undirected graph valid values: ``b`` or ``B``
 
 .. rubric:: Version 3.2.0
 
@@ -97,12 +92,12 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, **driving side** [**options**])
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, **driving side** [**options**])
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, **driving side** [**options**])
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, **driving side** [**options**])
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, [**options**])
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, [**options**])
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
    | pgr_withPoints(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, [**options**])
-   | **options:** ``[directed, details]``
+   | **options:** ``[directed, driving_side, details])``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -116,8 +111,8 @@ One to One
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, **driving side** [**options**])
-   | **options:** ``[directed, details]``
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vid**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -137,8 +132,8 @@ One to Many
 .. admonition:: \ \
    :class: signatures
 
-  pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, **driving side** [**options**])
-   | **options:** ``[directed, details]``
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vid**, **end vids**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -159,8 +154,8 @@ Many to One
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, **driving side** [**options**])
-   | **options:** ``[directed, details]``
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vid**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -180,8 +175,8 @@ Many to Many
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, **driving side** [**options**])
-   | **options:** ``[directed, details]``
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, **start vids**, **end vids**, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -202,8 +197,8 @@ Combinations
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, **driving side** [**options**])
-   | **options:** ``[directed, details]``
+   | pgr_withPoints(`Edges SQL`_, `Points SQL`_, `Combinations SQL`_, [**options**])
+   | **options:** ``[directed, driving_side, details]``
 
    | Returns set of |short-generic-result|
    | OR EMPTY SET
@@ -267,7 +262,7 @@ Result columns
 
 .. include:: pgRouting-concepts.rst
     :start-after: return_path_complete_start
-    :end-before: return_path_withPoints_end
+    :end-before: return_path_complete_end
 
 Additional Examples
 -------------------------------------------------------------------------------
