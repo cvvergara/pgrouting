@@ -243,9 +243,9 @@ Optional parameters
 With points optional parameters
 ...............................................................................
 
-.. include:: withPoints-family.rst
-    :start-after: withPoints_optionals_start
-    :end-before: withPoints_optionals_end
+.. include:: withPoints-category.rst
+   :start-after: withPoints_optionals_start
+   :end-before: withPoints_optionals_end
 
 Inner Queries
 -------------------------------------------------------------------------------
