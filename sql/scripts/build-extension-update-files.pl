@@ -275,11 +275,18 @@ sub generate_upgrade_script {
 
             if ($old_minor >= "3.2") {
                 # Out parameters changed names on v4.0.0
+                # Experimental functions
                 push @commands, drop_special_case_function("pgr_dagshortestpath(text,text)");
+
                 push @commands, drop_special_case_function("pgr_depthfirstsearch(text,bigint,boolean,bigint)");
                 push @commands, drop_special_case_function("pgr_depthfirstsearch(text,anyarray,boolean,bigint)");
+
                 push @commands, drop_special_case_function("pgr_sequentialvertexcoloring(text)");
                 push @commands, drop_special_case_function("pgr_bipartite(text)");
+
+                # Official functions
+                push @commands, drop_special_case_function("pgr_withpoints(text,text,text,boolean,character,boolean)");
+                push @commands, drop_special_case_function("pgr_withpointscost(text,text,text,boolean,character)");
             }
 
             if ($old_minor >= "3.3") {
@@ -287,13 +294,12 @@ sub generate_upgrade_script {
             }
 
             # Row type defined by OUT parameters is different.
+            # Out parameters changed names on v4.0.0
+            # Experimental functions
+
             push @commands, drop_special_case_function("pgr_bellmanford(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bellmanford(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bellmanford(text,bigint,anyarray,boolean)");
-
-            push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,bigint,boolean)");
-            push @commands, drop_special_case_function("pgr_bddijkstra(text,anyarray,bigint,boolean)");
-            push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,anyarray,boolean)");
 
             push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_binarybreadthfirstsearch(text,anyarray,bigint,boolean)");
@@ -315,6 +321,23 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_topologicalsort(text)");
             push @commands, drop_special_case_function("pgr_transitiveclosure(text)");
 
+            # Official functions
+            push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_bddijkstra(text,anyarray,bigint,boolean)");
+            push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,anyarray,boolean)");
+
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,anyarray,boolean,character,boolean)");
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,bigint,boolean,character,boolean)");
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,bigint,anyarray,boolean,character,boolean)");
+            push @commands, drop_special_case_function("pgr_withpoints(text,text,bigint,bigint,boolean,character,boolean)");
+
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,anyarray,anyarray,boolean,character)");
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,anyarray,bigint,boolean,character)");
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,bigint,anyarray,boolean,character)");
+            push @commands, drop_special_case_function("pgr_withpointscost(text,text,bigint,bigint,boolean,character)");
+
+
+            push @commands, drop_special_case_function("pgr_withpointscostmatrix(text,text,anyarray,boolean,character)");
         }
     }
 

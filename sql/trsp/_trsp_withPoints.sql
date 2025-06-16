@@ -23,7 +23,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-
 --v4.0
 CREATE FUNCTION _pgr_trsp_withPoints_v4(
     TEXT,  -- edges_sql
@@ -128,7 +127,7 @@ LANGUAGE C VOLATILE STRICT;
 
 -- COMMENTS
 COMMENT ON FUNCTION _pgr_trsp_withPoints(TEXT, TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting deprecated internal function';
+IS 'pgRouting internal function deprecated on v4.0.0';
 
 COMMENT ON FUNCTION _pgr_trsp_withPoints(TEXT, TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting deprecated internal function';
+IS 'pgRouting internal function deprecated on v4.0.0';

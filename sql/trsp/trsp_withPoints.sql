@@ -445,18 +445,22 @@ LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- COMMENTS
 COMMENT ON FUNCTION pgr_trsp_withPoints(TEXT, TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_trsp_withPoints (One to One) deprecated signature on v4.0.0';
+IS 'pgr_trsp_withPoints (One to One) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_trsp_withPoints.html';
 
 COMMENT ON FUNCTION pgr_trsp_withPoints(TEXT, TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_trsp_withPoints(One to Many) deprecated signature on v4.0.0';
+IS 'pgr_trsp_withPoints(One to Many) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_trsp_withPoints.html';
 
 COMMENT ON FUNCTION pgr_trsp_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_trsp_withPoints(Many to One) deprecated signature on v4.0.0';
+IS 'pgr_trsp_withPoints(Many to One) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_trsp_withPoints.html';
 
 COMMENT ON FUNCTION pgr_trsp_withPoints(TEXT, TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_trsp_withPoints(Many to Many) deprecated signature on v4.0.0';
+IS 'pgr_trsp_withPoints(Many to Many) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_trsp_withPoints.html';
 
 COMMENT ON FUNCTION pgr_trsp_withPoints(TEXT, TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_trsp_withPoints(Combinations) deprecated signature on v4.0.0';
+IS 'pgr_trsp_withPoints(Combinations) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_trsp_withPoints.html';

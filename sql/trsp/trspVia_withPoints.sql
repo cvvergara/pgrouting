@@ -125,4 +125,5 @@ ROWS 1000;
 -- COMMENTS
 
 COMMENT ON FUNCTION pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_trspVia_withPoints deprecated in v4.0.0';
+IS 'pgr_trspVia_withPoints (one via) deprecated signature in v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_trspVia_withPoints.html';

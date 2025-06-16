@@ -28,7 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-
 --v4.0
 CREATE FUNCTION _pgr_withPointsKSP_v4(
   TEXT, -- edges
@@ -140,10 +139,10 @@ RETURNS SETOF RECORD AS
 LANGUAGE C VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, ANYARRAY, ANYARRAY, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN, BOOLEAN)
-IS 'pgRouting internal function';
+IS 'pgRouting internal function deprecated on v4.0.0';
 
 COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, TEXT, INTEGER, CHAR, BOOLEAN, BOOLEAN, BOOLEAN)
-IS 'pgRouting internal function';
+IS 'pgRouting internal function deprecated on v4.0.0';
 
 --v3.0
 CREATE FUNCTION _pgr_withPointsKSP(
@@ -164,8 +163,6 @@ CREATE FUNCTION _pgr_withPointsKSP(
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C VOLATILE STRICT;
-
--- COMMENTS
 
 COMMENT ON FUNCTION _pgr_withPointsKSP(TEXT, TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
 IS 'pgRouting internal function deprecated on v3.6.0';

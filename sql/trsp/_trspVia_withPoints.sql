@@ -4,6 +4,7 @@ File: _trspVia_withPoints.sql
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2022 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
@@ -87,4 +88,4 @@ RETURNS SETOF RECORD AS
 LANGUAGE c VOLATILE STRICT;
 
 COMMENT ON FUNCTION _pgr_trspVia_withPoints(TEXT, TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting deprecated internal function on v4.0.0';
+IS 'pgRouting internal function deprecated on v4.0.0';

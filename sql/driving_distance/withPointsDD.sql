@@ -144,14 +144,10 @@ CREATE FUNCTION pgr_withPointsDD(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-BEGIN
-    RAISE WARNING 'pgr_withpointsdd(text,text,bigint,double precision,boolean,character,boolean) deprecated signature on 3.6.0';
-    RETURN QUERY
-    SELECT a.seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false) AS a;
-END;
+    SELECT seq, node, edge, cost, agg_cost
+    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), ARRAY[$3]::BIGINT[], $4, $5, $6, $7, false);
 $BODY$
-LANGUAGE plpgsql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
@@ -176,24 +172,17 @@ CREATE FUNCTION pgr_withPointsDD(
     OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-BEGIN
-  RAISE WARNING 'pgr_withpointsdd(text,text,anyarray,double precision,boolean,character,boolean,boolean) deprecated signature on v3.6.0';
-  RETURN QUERY
-    SELECT a.seq, a.start_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8) AS a;
-END;
+    SELECT seq, start_vid, node, edge, cost, agg_cost
+    FROM _pgr_withPointsDD(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
 $BODY$
-LANGUAGE plpgsql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
-
--- COMMENTS
-
 COMMENT ON FUNCTION pgr_withPointsDD(TEXT, TEXT, BIGINT, FLOAT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting deprecated signature on v3.6.0
+IS 'pgr_withPointsDD (multiple) deprecated signature on v3.6.0
 - Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsDD.html';
 
 COMMENT ON FUNCTION pgr_withPointsDD(TEXT, TEXT, ANYARRAY, FLOAT, BOOLEAN, CHAR, BOOLEAN, BOOLEAN)
-IS 'pgRouting deprecated signature on v3.6.0
+IS 'pgr_withPointsDD (single) deprecated signature on v3.6.0
 - Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsDD.html';

@@ -1,9 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: withPoints.sql
 
+Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
@@ -404,16 +406,21 @@ ROWS 1000;
 
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (One to One) deprecated signature on v.4.0.0';
+IS 'pgr_withPoints (One to One) deprecated signature on v.4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPoints.html';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, BIGINT, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (One to Many) deprecated signature on v.4.0.0';
+IS 'pgr_withPoints (One to Many) deprecated signature on v.4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPoints.html';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, BIGINT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (Many to One) deprecated signature on v.4.0.0';
+IS 'pgr_withPoints (Many to One) deprecated signature on v.4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPoints.html';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, ANYARRAY, ANYARRAY, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints (Many to Many) deprecated signature on v.4.0.0';
+IS 'pgr_withPoints (Many to Many) deprecated signature on v.4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPoints.html';
 
 COMMENT ON FUNCTION pgr_withPoints(TEXT, TEXT, TEXT, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPoints(Combinations) deprecated signature on v4.0.0';
+IS 'pgr_withPoints(Combinations) deprecated signature on v4.0.0
+Documentation: ${PROJECT_DOC_LINK}/pgr_withPoints.html';

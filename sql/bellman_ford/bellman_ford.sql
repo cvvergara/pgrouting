@@ -4,6 +4,7 @@ File: bellman_ford.sql
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2018 Sourabh Garg
 Mail: sourabh.garg.mat at gmail.com
 

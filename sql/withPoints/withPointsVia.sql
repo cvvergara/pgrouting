@@ -1,9 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: withPointsVia.sql
 
+Generated with Template by:
 Copyright (c) 2015 pgRouting developers
 Mail: project@pgrouting.org
 
+Function's developer:
 Copyright (c) 2022 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
@@ -30,7 +32,7 @@ CREATE FUNCTION pgr_withPointsVia(
   TEXT,     -- edges
   TEXT,     -- points
   ANYARRAY, -- via vids
-  CHAR,      -- driving side
+  CHAR,     -- driving side
 
   directed BOOLEAN DEFAULT true,
 
@@ -115,4 +117,5 @@ COST 100
 ROWS 1000;
 
 COMMENT ON FUNCTION pgr_withPointsVia(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPointsVia deprecated signature on v4.0.0';
+IS 'pgr_withPointsVia (one via) deprecated signature on v4.0.0
+Documentation: {PROJECT_DOC_LINK}/pgr_withPointsVia.html';

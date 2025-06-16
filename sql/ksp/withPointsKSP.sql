@@ -266,7 +266,7 @@ IS 'pgr_withPointsKSP
     - ${PROJECT_DOC_LINK}/pgr_withPointsKSP.html';
 
 /* TODO remove on v5*/
---v2.6
+--v3.0
 CREATE FUNCTION pgr_withPointsKSP(
     TEXT,    -- edges_sql (required)
     TEXT,    -- points_sql (required)
@@ -284,19 +284,13 @@ CREATE FUNCTION pgr_withPointsKSP(
     OUT cost FLOAT, OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-BEGIN
-    RAISE WARNING 'pgr_withPointsKSP(text,text,bigint,bigint,integer,boolean,boolean,char,boolean) deprecated signature on v3.6.0';
-    RETURN QUERY
-    SELECT a.seq, a.path_id, a.path_seq, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8, $9) AS a;
-END
+    SELECT seq, path_id, path_seq, node, edge, cost, g_cost
+    FROM _pgr_withPointsKSP(_pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8, $9);
 $BODY$
-LANGUAGE plpgsql VOLATILE STRICT
+LANGUAGE SQL VOLATILE STRICT
 COST 100
 ROWS 1000;
 
--- COMMENTS
-
 COMMENT ON FUNCTION pgr_withPointsKSP(TEXT, TEXT, BIGINT, BIGINT, INTEGER, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPointsKSP deprecated signature on v3.6.0
+IS 'pgr_withPointsKSP (one to one) deprecated signature on v3.6.0
 - Documentation: ${PROJECT_DOC_LINK}/pgr_withPointsKSP.html';
