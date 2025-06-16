@@ -84,28 +84,32 @@ Where:
 
 .. list-table::
    :width: 81
-   :widths: 14 20 7 40
+   :widths: auto
    :header-rows: 1
 
    * - Parameter
      - Type
-     - Default
      - Description
    * - `Edges SQL`_
      - ``TEXT``
-     -
      - SQL query as described.
    * - `Points SQL`_
      - ``TEXT``
-     -
      - SQL query as described.
    * - **via vertices**
      - ``ARRAY`` [ **ANY-INTEGER** ]
-     -
      - Array of ordered vertices identifiers that are going to be visited.
 
        * When positive it is considered a vertex identifier
        * When negative it is considered a point identifier
+   * - **driving side**
+     - ``CHAR``
+     - Value in [``r``, ``R``, ``l``, ``L``, ``b``, ``B``] indicating if the driving side is:
+
+       - [``r``, ``R``] for right driving side (for directed graph only)
+       - [``l``, ``L``] for left driving side (for directed graph only)
+       - [``b``, ``B``] for both (only for undirected graph)
+
 
 Where:
 
