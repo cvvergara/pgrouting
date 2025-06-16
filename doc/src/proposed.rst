@@ -39,12 +39,6 @@ Proposed Functions
    :start-after: proposed-start
    :end-before: proposed-end
 
-:doc:`withPoints-family`
-
-.. include:: withPoints-family.rst
-   :start-after: proposed-start
-   :end-before: proposed-end
-
 :doc:`transformation-family`
 
 .. include:: transformation-family.rst
@@ -107,19 +101,12 @@ Proposed Functions
    :start-after: proposed start
    :end-before: proposed end
 
-:doc:`withPoints-category`
-
-.. include:: withPoints-category.rst
-   :start-after: proposed start
-   :end-before: proposed end
 
 .. toctree::
     :hidden:
 
-    withPoints-family
     KSP-category
     via-category
-    withPoints-category
 
 See Also
 -------------------------------------------------------------------------------
