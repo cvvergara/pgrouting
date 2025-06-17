@@ -52,7 +52,7 @@ temporary vertices.
 Description
 -------------------------------------------------------------------------------
 
-Modify the graph to include points defined by points_sql.
+Modify the graph to include points defined by `Points SQL`_.
 Using Dijkstra algorithm, find the shortest path.
 
 The main characteristics are:
@@ -60,8 +60,8 @@ The main characteristics are:
 - Process is done only on edges with positive costs.
 - Vertices of the graph are:
 
-  - **positive** when it belongs to the edges_sql
-  - **negative** when it belongs to the points_sql
+  - **positive** when it belongs to the `Edges SQL`_
+  - **negative** when it belongs to the `Points SQL`_
 
 - Values are returned when there is a path.
 
@@ -73,15 +73,6 @@ The main characteristics are:
     path:
 
     - The `agg_cost` in the non included values `(u, v)` is :math:`\infty`
-
-  - If the values returned are stored in a table, the unique index would be the
-    pair: `(start_vid, end_vid)`.
-
-  - For **undirected** graphs, the results are **symmetric**.
-
-    - The sequence of nodes from `u` to `v` is the reverse sequence of nodes
-      from `v` to `u`
-    - The `agg_cost` of `(u, v)` is the same as for `(v, u)`.
 
 - For optimization purposes, any duplicated value in the input arrays of **start vids** or
   **end vids** or are ignored.
@@ -220,7 +211,7 @@ Combinations
 
 From point :math:`1` to vertex :math:`10`, and from vertex :math:`6` to point
 :math:`3` with right side driving.
-(showing details)
+(with details)
 
 .. literalinclude:: withPoints.queries
    :start-after: -- q5
@@ -311,7 +302,6 @@ Passes in front or visits with right side driving.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 For point :math:`6` and vertex :math:`11`.
-
 
 .. literalinclude:: withPoints.queries
    :start-after: -- q7
