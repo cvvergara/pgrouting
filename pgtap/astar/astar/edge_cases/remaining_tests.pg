@@ -25,7 +25,7 @@ BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT plan(116);
-SET client_min_messages TO ERROR;
+
 
 
 SELECT has_function('pgr_astar',
