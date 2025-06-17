@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 BEGIN;
 
-SET client_min_messages TO ERROR;
+
 SELECT CASE WHEN  min_lib_version('3.2.1') THEN plan(20) ELSE plan(1) END;
 
 CREATE FUNCTION issue()
