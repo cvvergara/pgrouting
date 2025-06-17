@@ -73,8 +73,8 @@ One Via
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_trspVia_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **via vertices**, [**options**])
-   | **options:** ``[directed, strict, U_turn_on_edge]``
+   | pgr_trspVia_withPoints(`Edges SQL`_, `Restrictions SQL`_, `Points SQL`_, **via vertices**, **driving side** [**options**])
+   | **options:** ``[directed, strict, U_turn_on_edge, details]``
 
    | Returns set of |via-result|
    | OR EMPTY SET
@@ -110,9 +110,9 @@ Via optional parameters
 With points optional parameters
 ...............................................................................
 
-.. include:: pgr_trsp_withPoints.rst
-    :start-after: withPoints_parameters_start
-    :end-before: withPoints_parameters_end
+.. include:: withPoints-category.rst
+   :start-after: withPoints_optionals_start
+   :end-before: withPoints_optionals_end
 
 Inner Queries
 -------------------------------------------------------------------------------
