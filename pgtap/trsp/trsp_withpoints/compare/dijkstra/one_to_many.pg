@@ -35,8 +35,9 @@ no_reverse TEXT;
 dijkstra_sql TEXT;
 trsp_sql TEXT;
 result_columns TEXT;
-drv_right TEXT;
-drv_both TEXT;
+result_columns_vid TEXT;
+drv_right TEXT := $$, 'r'$$;
+drv_both TEXT := $$, 'b'$$;
 arr TEXT := 'ARRAY[1,2,3,4,5,6,7,8]';
 BEGIN
   IF NOT min_version('3.4.0') THEN
@@ -44,13 +45,13 @@ BEGIN
     RETURN;
   END IF;
 
+  result_columns := 'seq, start_vid, node, edge, cost, agg_cost';
+  result_columns_vid := 'seq, start_pid AS start_vid, node, edge, cost, agg_cost';
+
   IF min_version('4.0.0') THEN
-    result_columns := 'seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost';
-    drv_right := $$, 'r'$$;
-    drv_both := $$, 'b'$$;
+    result_columns_vid = replace(result_columns_vid, 'pid', 'vid');
   ELSE
     SET client_min_messages TO WARNING;
-    result_columns := 'seq, path_seq, node, edge, cost, agg_cost';
     drv_right := $$, driving_side => 'r'$$;
     drv_both := $$, driving_side => 'b'$$;
   END IF;
