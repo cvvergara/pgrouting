@@ -5,17 +5,14 @@ Copyright (c) 2018  pgRouting developers
 Mail: project@pgrouting.org
 
 ------
-
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
 (at your option) any later version.
-
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
-
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -26,63 +23,61 @@ SELECT CASE WHEN min_version('4.0.0') THEN plan(1156) ELSE plan(1) END;
 SET extra_float_digits = -3;
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
+PREPARE empty_points AS
+SELECT * FROM pointsofinterest WHERE pid IN (-1);
+
+PREPARE empty_restrictions AS
+SELECT * FROM restrictions WHERE id > 10;
+
+PREPARE with_reverse AS
+SELECT id, source, target, cost, reverse_cost FROM edges;
+
+PREPARE no_reverse AS
+SELECT id, source, target, cost FROM edges;
+
 CREATE or REPLACE FUNCTION compareDijkstra(INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-empty_points TEXT;
-empty_restrictions TEXT;
-with_reverse TEXT;
-no_reverse TEXT;
-dijkstra_sql TEXT;
+other_sql TEXT;
 trsp_sql TEXT;
-result_columns TEXT;
+result_columns TEXT := 'seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost';
 drv_right TEXT := $$, 'r'$$;
-drv_both TEXT  := $$, 'b'$$;
+drv_both TEXT := $$, 'b'$$;
 BEGIN
   IF NOT min_version('4.0.0') THEN
     RETURN QUERY SELECT skip(1, 'pgr_trsp_withPoints: official signatures on 4.0.0');
     RETURN;
   END IF;
 
-  result_columns := 'seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost';
-  empty_points := 'SELECT * FROM pointsofinterest WHERE pid IN (-1)';
-  empty_restrictions := 'SELECT * FROM restrictions WHERE id > 10';
-  with_reverse := 'SELECT * FROM edges';
-  no_reverse := 'SELECT id, source, target, cost FROM edges';
-
   FOR i IN 1.. $1 LOOP
-    FOR j IN 1.. $1 LOOP
+  FOR j IN 1.. $1 LOOP
 
-      dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || with_reverse || '$$, '
-        || i || ', ' || j || ', directed => true)';
-      trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
-        || empty_restrictions || '$$, $$' || empty_points || '$$, '
-        || i || ', ' || j || drv_right || ', directed => true)';
-      RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
+    other_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$with_reverse$$, '
+      || i || ', ' || j || ', directed => true)';
+    trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$with_reverse$$, $$empty_restrictions$$, $$empty_points$$, '
+      || i || ', ' || j || drv_right || ', directed => true)';
+    RETURN query SELECT set_eq(trsp_sql, other_sql, trsp_sql);
 
-      dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || with_reverse || '$$, '
-        || i || ', ' || j || ', directed => false)';
-      trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || with_reverse || '$$, $$'
-        || empty_restrictions || '$$, $$' || empty_points || '$$, '
-        || i || ', ' || j || drv_both || ', directed => false)';
-      RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
+    other_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$with_reverse$$, '
+      || i || ', ' || j || ', directed => false)';
+    trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$with_reverse$$, $$empty_restrictions$$, $$empty_points$$, '
+      || i || ', ' || j || drv_both || ', directed => false)';
+    RETURN query SELECT set_eq(trsp_sql, other_sql, trsp_sql);
 
-      dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || no_reverse || '$$, '
-        || i || ', ' || j || ', directed => true)';
-      trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
-        || empty_restrictions || '$$, $$' || empty_points || '$$, '
-        || i || ', ' || j || drv_right || ', directed => true)';
-      RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
+    other_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$no_reverse$$, '
+      || i || ', ' || j || ', directed => true)';
+    trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$no_reverse$$, $$empty_restrictions$$, $$empty_points$$, '
+      || i || ', ' || j || drv_right || ', directed => true)';
+    RETURN query SELECT set_eq(trsp_sql, other_sql, trsp_sql);
 
-      dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || no_reverse || '$$, '
-        || i || ', ' || j || ', directed => false)';
-      trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$' || no_reverse || '$$, $$'
-        || empty_restrictions || '$$, $$' || empty_points || '$$, '
-        || i || ', ' || j || drv_both || ', directed => false)';
-      RETURN query SELECT set_eq(trsp_sql, dijkstra_sql, trsp_sql);
+    other_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$no_reverse$$, '
+      || i || ', ' || j || ', directed => false)';
+    trsp_sql := 'SELECT ' || result_columns || ' FROM pgr_trsp_withPoints($$no_reverse$$, $$empty_restrictions$$, $$empty_points$$, '
+      || i || ', ' || j || drv_both || ', directed => false)';
+    RETURN query SELECT set_eq(trsp_sql, other_sql, trsp_sql);
 
-    END LOOP;
+  END LOOP;
   END LOOP;
 
 RETURN;
@@ -91,8 +86,5 @@ $BODY$
 language plpgsql;
 
 SELECT * from compareDijkstra();
-
-
 SELECT * FROM finish();
 ROLLBACK;
-
