@@ -213,7 +213,7 @@ _pgr_withpoints(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(5)),  // driving side
                 PG_GETARG_BOOL(6),  // details
 
-                101,  // which
+                1,  // which
                 &result_tuples,
                 &result_count);
 
