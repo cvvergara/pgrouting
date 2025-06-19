@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('4.0.0') THEN plan(32) WHEN min_version('3.4.0') THEN plan(6) ELSE plan(2) END;
+SELECT CASE WHEN min_version('4.0.0') THEN plan(32) WHEN min_version('3.4.0') THEN plan(7) ELSE plan(2) END;
 
 PREPARE edges_sql AS
 SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id;
@@ -43,7 +43,7 @@ BEGIN
   END IF;
 
   IF min_version('4.0.0') THEN
-    SET client_min_messages TO WARNING;
+    -- SET client_min_messages TO WARNING;
   END IF;
 
   RETURN QUERY SELECT lives_ok($q$
