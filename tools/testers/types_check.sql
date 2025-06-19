@@ -25,11 +25,6 @@ BEGIN
   IF fn ilike '%withPoints%' THEN
     extra_name := extra_name || '{""}'::TEXT[];
     extra_type := extra_type || '{text}'::TEXT[];
-
-    IF NOT min_version('4.0.0') THEN
-      opt_names := '{directed,driving_side,details}'::TEXT[];
-      opt_types := '{bool,bpchar,bool}'::TEXT[];
-    END IF;
   END IF;
 
   IF fn ilike '%near%' THEN
@@ -319,13 +314,6 @@ DECLARE
   names TEXT;
   typs TEXT;
 BEGIN
-
-  /*
-pgr_dijkstravia       (text,          anyarray,          boolean,boolean,boolean)
-pgr_withpointsvia     (text,     text,anyarray,character,boolean,boolean,boolean,boolean)
-pgr_trspvia           (text,text,     anyarray,          boolean,boolean,boolean)
-pgr_trspvia_withpoints(text,text,text,anyarray,character,boolean,boolean,boolean,boolean)
-*/
 
    IF fn ilike '%withpoints%' AND NOT min_version('4.0.0') THEN
      RETURN QUERY SELECT skip(1, fn || ': New signatures on 4.0.0');
