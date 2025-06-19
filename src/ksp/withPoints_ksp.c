@@ -61,31 +61,24 @@ process(
         bool heap_paths,
         bool details,
 
-        bool is_new,
         Path_rt **result_tuples,
         size_t *result_count) {
     if (p_k < 0) {
-        /* TODO add error message */
-        return;
+        pgr_throw_error("Invalid value of 'K'", "Valid value are greater than 0");
     }
 
     size_t k = (size_t)p_k;
 
     char d_side = estimate_drivingSide(driving_side[0]);
-    if (is_new) {
-        if (d_side == ' ') {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
-            return;
-        } else if (directed && !(d_side == 'r' || d_side == 'l')) {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
-            return;
-        } else if (!directed && !(d_side == 'b')) {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
-            return;
-        }
-    } else {
-        d_side = (char)tolower(driving_side[0]);
-        if (!((d_side == 'r') || (d_side == 'l'))) d_side = 'b';
+    if (d_side == ' ') {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
+        return;
+    } else if (directed && !(d_side == 'r' || d_side == 'l')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
+        return;
+    } else if (!directed && !(d_side == 'b')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
+        return;
     }
 
     pgr_SPI_connect();
@@ -163,7 +156,6 @@ PGDLLEXPORT Datum _pgr_withpointsksp_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 PG_GETARG_BOOL(8),
-                true,
                 &result_tuples,
                 &result_count);
         } else if (PG_NARGS() == 8) {
@@ -178,7 +170,6 @@ PGDLLEXPORT Datum _pgr_withpointsksp_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
-                true,
                 &result_tuples,
                 &result_count);
         }
@@ -289,7 +280,6 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
                 PG_GETARG_BOOL(8),
-                false,
                 &result_tuples,
                 &result_count);
         } else if (PG_NARGS() == 8) {
@@ -304,7 +294,6 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
-                false,
                 &result_tuples,
                 &result_count);
         } else if (PG_NARGS() == 9) {
@@ -324,7 +313,6 @@ PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
                     PG_GETARG_BOOL(5),
                     PG_GETARG_BOOL(6),
                     PG_GETARG_BOOL(8),
-                    false,
                     &result_tuples,
                     &result_count);
         }
