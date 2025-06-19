@@ -24,7 +24,7 @@ SELECT CASE WHEN min_lib_version('4.0.0') AND min_version('3.6.0') THEN plan(147
             WHEN NOT min_lib_version('4.0.0') AND min_version('3.4.0') THEN plan(147)
             ELSE plan(1) END;
 
-
+SET client_min_messages TO ERROR;
 
 PREPARE all_edges AS
 SELECT id, source, target, cost, reverse_cost FROM edges;

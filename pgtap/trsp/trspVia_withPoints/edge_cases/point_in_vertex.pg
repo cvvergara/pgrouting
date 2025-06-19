@@ -91,15 +91,9 @@ RETURN QUERY SELECT results_eq($$expectedCost3(-2,7)$$, $$expectedCost1(7)$$, 'C
 RETURN QUERY SELECT results_eq($$expectedCost3(-2,8)$$, $$expectedCost1(8)$$, 'Cost from midpoint on 1 to 8');
 RETURN QUERY SELECT results_eq($$expectedCost3(-2,9)$$, $$expectedCost1(9)$$, 'Cost from midpoint on 1 to 9');
 
-RETURN QUERY SELECT CASE WHEN min_version('3.7.1')
-THEN
-  collect_tap(
-    set_eq($$expectedCost3(-1,9)$$, $$dijkstra1(7,9)$$, 'Cost from target on 10 (-1 default, aka 7) to 9'),
-    set_eq($$expectedCost3(-1,8)$$, $$dijkstra1(7,8)$$, 'Cost from target on 10 to 8'),
-    set_eq($$expectedCost3(-1,7)$$, ARRAY[0]::TEXT[], 'Cost from target on 10 to 7')
-  )
-ELSE skip('Fix implemented on 3.7.1',3)
-END;
+RETURN QUERY SELECT set_eq($$expectedCost3(-1,9)$$, $$dijkstra1(7,9)$$, 'Cost from target on 10 (-1 default, aka 7) to 9');
+RETURN QUERY SELECT set_eq($$expectedCost3(-1,8)$$, $$dijkstra1(7,8)$$, 'Cost from target on 10 to 8');
+RETURN QUERY SELECT set_eq($$expectedCost3(-1,7)$$, ARRAY[0]::TEXT[], 'Cost from target on 10 to 7');
 
 /* UNION data is sorted
   midpoint of edge 1 (-1 by default)
