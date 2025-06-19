@@ -153,7 +153,7 @@ IS 'pgr_withPointsCost (One to One)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From vertices/point identifier
   - To vertex/point identifier
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
 - Documentation:
@@ -167,7 +167,7 @@ IS 'pgr_withPointsCost (One to Many)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From vertices/point identifier
   - To ARRAY[vertices/points identifiers]
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
 - Documentation:
@@ -181,7 +181,7 @@ IS 'pgr_withPointsCost (Many to One)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From ARRAY[vertices/points identifiers]
   - To vertex/point identifier
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
 - Documentation:
@@ -191,13 +191,13 @@ IS 'pgr_withPointsCost (Many to One)
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, ANYARRAY, ANYARRAY, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost (Many to Many)
-  - Parameters:
+- Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From ARRAY[vertices/points identifiers]
   - To ARRAY[vertices/points identifiers]
   - driving side: directed graph [r,l], undirected graph [b]
-- Optional Parameters
+- Optional Parameters:
   - directed => true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html
@@ -205,12 +205,12 @@ IS 'pgr_withPointsCost (Many to Many)
 
 COMMENT ON FUNCTION pgr_withPointsCost(TEXT, TEXT, TEXT, CHAR, BOOLEAN)
 IS 'pgr_withPointsCost(Combinations)
-  - Parameters:
+- Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - Combinations SQL with columns: source, target
   - driving side: directed graph [r,l], undirected graph [b]
-- Optional Parameters
+- Optional Parameters:
   - directed => true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_withPointsCost.html

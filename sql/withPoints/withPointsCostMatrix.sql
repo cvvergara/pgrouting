@@ -54,8 +54,8 @@ IS'pgr_withPointsCostMatrix
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - ARRAY [vertex/points identifiers],
-  - driving side: directed graph [r,l], undirected graph [b]
-- Optional Parameters
+  - Driving side: directed graph [r,l], undirected graph [b]
+- Optional Parameters:
   - directed => true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_withPointsCostMatrix.html

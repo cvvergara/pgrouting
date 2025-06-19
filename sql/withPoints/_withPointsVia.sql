@@ -28,14 +28,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_withPointsVia_v4(
-  TEXT,     -- edges
-  TEXT,     -- points
-  ANYARRAY, -- via
-
+  TEXT,     -- edges_sql
+  TEXT,     -- points_sql
+  ANYARRAY, -- via vids
   BOOLEAN,  -- directed
   BOOLEAN,  -- strict
   BOOLEAN,  -- U_turn_on_edge
-  CHAR,     -- driving side
+  CHAR,     -- driving_side
   BOOLEAN,  -- details
 
   OUT seq INTEGER,

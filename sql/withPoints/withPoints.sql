@@ -192,7 +192,7 @@ IS 'pgr_withPoints (One to One)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From vertex/point identifier
   - To vertex/point identifier
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - details => false
@@ -207,7 +207,7 @@ IS 'pgr_withPoints (One to Many)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From vertex/point identifier
   - To ARRAY[vertices/points identifiers]
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - details => false
@@ -222,7 +222,7 @@ IS 'pgr_withPoints (Many to One)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From ARRAY[vertices/points identifiers]
   - To vertex/point identifier
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - details => false
@@ -238,7 +238,7 @@ IS 'pgr_withPoints (Many to Many)
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - From ARRAY[vertices/points identifiers]
   - To ARRAY[vertices/points identifiers]
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - details => false
@@ -252,7 +252,7 @@ IS 'pgr_withPoints(Combinations)
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - Combinations SQL with columns: source, target
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - details => false

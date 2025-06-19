@@ -29,8 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION pgr_withPointsVia(
-  TEXT,     -- edges
-  TEXT,     -- points
+  TEXT,     -- edges SQL
+  TEXT,     -- points SQL
   ANYARRAY, -- via vids
   CHAR,     -- driving side
 
@@ -70,7 +70,7 @@ IS 'pgr_withPointsVia
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - ARRAY[via vertices identifiers]
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - strict => false
