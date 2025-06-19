@@ -78,7 +78,7 @@ IF min_version('4.0.0') THEN
 
 ELSE
 
-SET client_min_messages TO WARNING;
+-- SET client_min_messages TO WARNING;
 -- ONE VIA
 params = ARRAY[
 '$$SELECT * FROM edges$$',
