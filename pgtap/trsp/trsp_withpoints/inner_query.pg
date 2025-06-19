@@ -57,7 +57,7 @@ BEGIN
 
   ELSE
 
-    SET client_min_messages TO WARNING;	
+    -- SET client_min_messages TO WARNING;	
     -- ONE TO ONE
     RETURN QUERY SELECT style_dijkstra('pgr_trsp_withPoints(', ', $$SELECT * from restrictions$$, $$SELECT * from pointsOfInterest$$, 2, 3, false)');
     RETURN QUERY SELECT innerquery_restrictions('pgr_trsp_withPoints($$SELECT * FROM edges$$,', ',$$SELECT * from pointsOfInterest$$, 2, 3, false)');

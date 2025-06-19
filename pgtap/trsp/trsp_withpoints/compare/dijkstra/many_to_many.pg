@@ -51,7 +51,7 @@ result_columns_vid := 'seq, start_pid AS start_vid, end_pid AS end_vid, node, ed
   IF min_version('4.0.0') THEN
     result_columns_vid = replace(result_columns_vid, 'pid', 'vid');
   ELSE
-    SET client_min_messages TO WARNING;
+    -- SET client_min_messages TO WARNING;
     drv_right := $$, driving_side => 'r'$$;
     drv_both := $$, driving_side => 'b'$$;
   END IF;
