@@ -218,16 +218,16 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
     MST_rt *result_tuples = 0;
     size_t result_count = 0;
 
-    ereport(WARNING, (
-                errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
-                errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
-                errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.6.0"),
-                errhint("Consider upgrade pgRouting")));
-
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+        ereport(WARNING, (
+                    errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
+                    errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
+                    errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.6.0"),
+                    errhint("Consider upgrade pgRouting")));
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
