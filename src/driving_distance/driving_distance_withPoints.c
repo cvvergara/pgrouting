@@ -202,9 +202,9 @@ _pgr_withpointsddv4(PG_FUNCTION_ARGS) {
 
 /* Deprecated code starts here
  * This code is used on v3.5 and under
- * For consistency with other withPoints functions is kept
- * but it returns a warning
  *
+ * TODO(v4.2) define SHOWMSG
+ * TODO(v4.3) change to WARNING
  * TODO(v5) Move to legacy
  */
 PGDLLEXPORT Datum _pgr_withpointsdd(PG_FUNCTION_ARGS);
@@ -223,11 +223,13 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        ereport(WARNING, (
+#ifdef SHOWMSG
+        ereport(NOTICE, (
                     errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
                     errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
                     errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.6.0"),
                     errhint("Consider upgrade pgRouting")));
+#endif
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
