@@ -80,7 +80,6 @@ BEGIN
   END LOOP;
   END LOOP;
 
-RETURN;
 END
 $BODY$
 language plpgsql;

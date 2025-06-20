@@ -17,7 +17,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
 BEGIN;
-
+SET client_min_messages TO ERROR;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN min_lib_version('3.4.0') THEN plan(108) ELSE PLAN(55) END;
