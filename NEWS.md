@@ -22,31 +22,39 @@ Functions promoted to official
 * pgr_trsp_withPoints
 * [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPoints
 
-  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
   * Function promoted to official.
-  * Signature change: ``driving_side`` parameter changed from named optional to
-    unnamed positional.
-    - Directed graph valid values: ``l`` or ``L`` and ``r``, ``R``
-    - Undirected graph valid values: ``b`` or ``B``
+  * **Driving side** parameter is positional unnamed and compulsory.
+    * Valid values depend on kind of graph
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Deprecated signatures:
+    * pgr_withpoints(text,text,anyarray,anyarray,boolean,character,boolean)
+    * pgr_withpoints(text,text,anyarray,bigint,boolean,character,boolean)
+    * pgr_withpoints(text,text,bigint,anyarray,boolean,character,boolean)
+    * pgr_withpoints(text,text,bigint,bigint,boolean,character,boolean)
+    * pgr_withpoints(text,text,text,boolean,character,boolean)
 
 * [#2905](https://github.com/pgRouting/pgrouting/issues/2905) pgr_withPointsCost
 
   * Function promoted to official.
+  * **Driving side** parameter is unnamed and compulsory.
+    * Valid values depend on kind of graph
   * Output columns standardized to ``(start_vid, end_vid, agg_cost)``
-  * Signature change: ``driving_side`` parameter changed from named optional to
-    unnamed positional.
-    - Directed graph valid values: ``l`` or ``L`` and ``r``, ``R``
-    - Undirected graph valid values: ``b`` or ``B``
+  * Deprecated signatures:
+    * pgr_withpointscost(text,text,anyarray,anyarray,boolean,character)
+    * pgr_withpointscost(text,text,anyarray,bigint,boolean,character)
+    * pgr_withpointscost(text,text,bigint,anyarray,boolean,character)
+    * pgr_withpointscost(text,text,bigint,bigint,boolean,character)
+    * pgr_withpointscost(text,text,text,boolean,character)
 
 * [#2905](https://github.com/pgRouting/pgrouting/issues/2905)
   pgr_withPointsCostMatrix
 
-  * Function promoted to official.
+  * **Driving side** parameter is positional unnamed and compulsory.
+    * Valid values depend on kind of graph
+    * Deprecated signatures:
+      * pgr_withpointscostmatrix(text,text,anyarray,boolean,character)
   * Output columns standardized to ``(start_vid, end_vid, agg_cost)``
-  * Signature change: ``driving_side`` parameter changed from named optional to
-    unnamed positional.
-    - Directed graph valid values: ``l`` or ``L`` and ``r``, ``R``
-    - Undirected graph valid values: ``b`` or ``B``
+  * Function promoted to official.
 
 * pgr_withPointsDD
 * pgr_withPointsKSP
@@ -82,12 +90,16 @@ Standardize output columns of functions with different output columns within ove
 * [#2905](https://github.com/pgRouting/pgrouting/issues/2905) 
    pgr_withPoints
 
-  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
   * Function promoted to official.
-  * Signature change: ``driving_side`` parameter changed from named optional to
-    unnamed positional.
-    - Directed graph valid values: ``l`` or ``L`` and ``r``, ``R``
-    - Undirected graph valid values: ``b`` or ``B``
+  * **Driving side** parameter is positional unnamed and compulsory.
+    * Valid values depend on kind of graph
+  * Output columns standardized to ``(seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost)``
+  * Deprecated signatures:
+    * pgr_withpoints(text,text,anyarray,anyarray,boolean,character,boolean)
+    * pgr_withpoints(text,text,anyarray,bigint,boolean,character,boolean)
+    * pgr_withpoints(text,text,bigint,anyarray,boolean,character,boolean)
+    * pgr_withpoints(text,text,bigint,bigint,boolean,character,boolean)
+    * pgr_withpoints(text,text,text,boolean,character,boolean)
 
 * [#2906](https://github.com/pgRouting/pgrouting/issues/2906) pgr_bdDijkstra
 
