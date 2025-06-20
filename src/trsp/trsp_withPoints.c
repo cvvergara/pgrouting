@@ -55,24 +55,18 @@ process(
         bool directed,
         char *driving_side,
         bool details,
-        bool is_new,
         Path_rt **result_tuples,
         size_t *result_count) {
     char d_side = estimate_drivingSide(driving_side[0]);
-    if (is_new) {
-        if (d_side == ' ') {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
-            return;
-        } else if (directed && !(d_side == 'r' || d_side == 'l')) {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
-            return;
-        } else if (!directed && !(d_side == 'b')) {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
-            return;
-        }
-    } else {
-        d_side = (char)tolower(driving_side[0]);
-        if (!((d_side == 'r') || (d_side == 'l'))) d_side = 'b';
+    if (d_side == ' ') {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
+        return;
+    } else if (directed && !(d_side == 'r' || d_side == 'l')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
+        return;
+    } else if (!directed && !(d_side == 'b')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
+        return;
     }
 
     pgr_SPI_connect();
@@ -159,7 +153,6 @@ _pgr_trsp_withpoints_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 text_to_cstring(PG_GETARG_TEXT_P(6)),
                 PG_GETARG_BOOL(7),
-                true,
                 &result_tuples,
                 &result_count);
 
@@ -177,7 +170,6 @@ _pgr_trsp_withpoints_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(4),
                 text_to_cstring(PG_GETARG_TEXT_P(5)),
                 PG_GETARG_BOOL(6),
-                true,
                 &result_tuples,
                 &result_count);
         }
@@ -279,7 +271,6 @@ _pgr_trsp_withpoints(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 text_to_cstring(PG_GETARG_TEXT_P(6)),
                 PG_GETARG_BOOL(7),
-                false,
                 &result_tuples,
                 &result_count);
 
@@ -297,14 +288,14 @@ _pgr_trsp_withpoints(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(5),
                 text_to_cstring(PG_GETARG_TEXT_P(5)),
                 PG_GETARG_BOOL(6),
-                false,
                 &result_tuples,
                 &result_count);
         }
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "

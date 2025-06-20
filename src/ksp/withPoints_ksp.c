@@ -63,12 +63,6 @@ process(
 
         Path_rt **result_tuples,
         size_t *result_count) {
-    if (p_k < 0) {
-        pgr_throw_error("Invalid value of 'K'", "Valid value are greater than 0");
-    }
-
-    size_t k = (size_t)p_k;
-
     char d_side = estimate_drivingSide(driving_side[0]);
     if (d_side == ' ') {
         pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
@@ -80,6 +74,12 @@ process(
         pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
         return;
     }
+
+    if (p_k < 0) {
+        pgr_throw_error("Invalid value of 'K'", "Valid value are greater than 0");
+    }
+
+    size_t k = (size_t)p_k;
 
     pgr_SPI_connect();
 
@@ -247,6 +247,7 @@ PGDLLEXPORT Datum _pgr_withpointsksp_v4(PG_FUNCTION_ARGS) {
  */
 PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_withpointsksp);
+
 PGDLLEXPORT Datum _pgr_withpointsksp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;

@@ -49,7 +49,6 @@ process(
         bool U_turn_on_edge,
         char *driving_side,
         bool details,
-
         Routes_t **result_tuples,
         size_t *result_count) {
     char d_side = estimate_drivingSide(driving_side[0]);
@@ -234,12 +233,14 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(6)),
                 PG_GETARG_BOOL(7),
 
-                &result_tuples, &result_count);
+                &result_tuples,
+                &result_count);
 
         funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
@@ -282,10 +283,6 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
-
-        pfree(values);
-        pfree(nulls);
-
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
