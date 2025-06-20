@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION single_path_types_check(
   opt_names TEXT[] DEFAULT '{directed}'::TEXT[],
   opt_types TEXT[] DEFAULT '{bool}'::TEXT[],
   created_v TEXT DEFAULT '3.0.0',
-  standard_v TEXT default '4.0.0')
+  standard_v TEXT default '3.0.0')
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
