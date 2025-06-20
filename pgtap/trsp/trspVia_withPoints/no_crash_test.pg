@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.4.0') THEN plan(24) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.0.0') THEN plan(24) ELSE plan(1) END;
 
 PREPARE edges AS
 SELECT id, source, target, cost, reverse_cost  FROM edges;
@@ -39,11 +39,10 @@ params TEXT[];
 subs TEXT[];
 BEGIN
 
-IF NOT min_version('4.0.0') THEN
-    RETURN QUERY SELECT skip(1, 'pgr_trspvia_withPoints: Official signatures on 4.0.0');
+  IF NOT min_version('4.0.0') THEN
+    RETURN QUERY SELECT skip(1, 'pgr_withPoints: New signatures on 4.0.0');
     RETURN;
-END IF;
-
+  END IF;
 
   -- ONE VIA
   params = ARRAY[
@@ -80,6 +79,5 @@ LANGUAGE plpgsql VOLATILE;
 
 
 SELECT * FROM test_function();
-
 SELECT finish();
 ROLLBACK;

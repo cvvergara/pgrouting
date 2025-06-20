@@ -17,6 +17,18 @@ DECLARE
   bounds INTEGER := array_length(opt_names, 1);
 BEGIN
 
+  IF NOT min_version(created_v) THEN
+    RETURN QUERY SELECT skip(1, fn || ': Created on version ' || created_v);
+    RETURN;
+  END IF;
+
+  RETURN QUERY SELECT has_function(fn);
+
+  IF NOT min_version(standard_v) THEN
+    RETURN QUERY SELECT skip(1, fn || ': Standardized on ' || standard_v || ', skipping non standardized signatures');
+    RETURN;
+  END IF;
+
   IF fn ilike '%trsp%' THEN
     extra_name := '{""}'::TEXT[];
     extra_type := '{text}'::TEXT[];
@@ -36,13 +48,6 @@ BEGIN
       'int8', 'bigint'),
     'bpchar', 'character');
 
-  IF NOT min_version(created_v) THEN
-    RETURN QUERY SELECT skip(1, fn || ': Created on version ' || created_v);
-    RETURN;
-  END IF;
-
-  RETURN QUERY SELECT has_function(fn);
-
   IF NOT fn ilike '%near%' THEN
     RETURN QUERY SELECT has_function(fn, extra_type || '{text,bigint,bigint}' || taptypes);
   END IF;
@@ -60,11 +65,6 @@ BEGIN
   RETURN QUERY SELECT function_returns(fn, extra_type || '{text,anyarray,anyarray}' || taptypes, 'setof record');
   IF min_version('3.2.0') THEN RETURN QUERY SELECT function_returns(fn, extra_type || '{text,text}' || taptypes, 'setof record'); END IF;
 
-
-  IF NOT min_version(standard_v) THEN
-    RETURN QUERY SELECT skip(1, fn || ': Standardized on ' || standard_v || ', skipping non standardized signatures');
-    RETURN;
-  END IF;
 
   IF fn ilike '%near%' THEN
 
