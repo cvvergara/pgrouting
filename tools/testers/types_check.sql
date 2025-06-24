@@ -3,7 +3,7 @@ CREATE OR REPLACE FUNCTION single_path_types_check(
   opt_names TEXT[] DEFAULT '{directed}'::TEXT[],
   opt_types TEXT[] DEFAULT '{bool}'::TEXT[],
   created_v TEXT DEFAULT '3.0.0',
-  standard_v TEXT default '4.0.0')
+  standard_v TEXT default '3.0.0')
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -16,6 +16,11 @@ DECLARE
   types TEXT;
   bounds INTEGER := array_length(opt_names, 1);
 BEGIN
+
+  IF NOT min_version(created_v) THEN
+    RETURN QUERY SELECT skip(1, fn || ': Created on version ' || created_v);
+    RETURN;
+  END IF;
 
   IF fn ilike '%trsp%' THEN
     extra_name := '{""}'::TEXT[];
@@ -40,11 +45,6 @@ BEGIN
       'bool', 'boolean'),
       'int8', 'bigint'),
     'bpchar', 'character');
-
-  IF NOT min_version(created_v) THEN
-    RETURN QUERY SELECT skip(1, fn || ': Created on version ' || created_v);
-    RETURN;
-  END IF;
 
   RETURN QUERY SELECT has_function(fn);
 
@@ -305,104 +305,81 @@ RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
   -- edges sql
-  params_types_words TEXT[] = ARRAY['text'];
   params_names TEXT[] = ARRAY[''];
-  params_numbers TEXT[] = ARRAY['text'];
+  params_types_words TEXT[] = ARRAY['text'];
+  params_types TEXT[] = ARRAY['text'];
 
-  optional_params_types_words TEXT[] = ARRAY['boolean','boolean','boolean'];
   optional_params_names TEXT[] = ARRAY['directed','strict','u_turn_on_edge'];
-  optional_params_numbers TEXT[] = '{bool,bool,bool}'::TEXT[];
+  optional_params_types_words TEXT[] = ARRAY['boolean','boolean','boolean'];
+  optional_params_types TEXT[] = '{bool,bool,bool}'::TEXT[];
 
   return_params_names TEXT[] = ARRAY['seq','path_id','path_seq','start_vid','end_vid','node','edge','cost','agg_cost','route_agg_cost'];
-  return_params_numbers TEXT[] = '{int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT[];
+  return_params_types TEXT[] = '{int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT[];
 
   names TEXT;
   typs TEXT;
 BEGIN
-  IF fn IN ('pgr_trspvia','pgr_trspvia_withpoints','pgr_withpointsvia') AND NOT min_version('3.4.0') THEN
+
+   IF fn ilike '%withpoints%' AND NOT min_version('4.0.0') THEN
+     RETURN QUERY SELECT skip(1, fn || ': New signatures on 4.0.0');
+     RETURN;
+   END IF;
+
+  IF fn IN ('pgr_trspvia') AND NOT min_version('3.4.0') THEN
     RETURN QUERY SELECT skip(1, 'Signature added on 3.4.0');
     RETURN;
   END IF;
 
   IF fn LIKE '%trsp%' THEN
     -- restrictions sql
-    params_types_words := params_types_words || 'text'::TEXT;
     params_names := params_names || ARRAY[''];
-    params_numbers := params_numbers || ARRAY['text'];
+    params_types_words := params_types_words || 'text'::TEXT;
+    params_types := params_types || ARRAY['text'];
   END IF;
 
   IF fn LIKE '%withpoints%' THEN
     -- points sql
-    params_types_words := params_types_words || 'text'::TEXT;
     params_names := params_names || ARRAY[''];
-    params_numbers := params_numbers || ARRAY['text'];
+    params_types_words := params_types_words || 'text'::TEXT;
+    params_types := params_types || ARRAY['text'];
     -- points optionals
-    optional_params_types_words := optional_params_types_words || ARRAY['character','boolean'];
-    optional_params_names := optional_params_names || ARRAY['driving_side','details'];
-    optional_params_numbers := optional_params_numbers || '{bpchar,bool}'::TEXT[];
+    optional_params_names := optional_params_names || 'details'::TEXT;
+    optional_params_types_words := optional_params_types_words || 'boolean'::TEXT;
+    optional_params_types := optional_params_types || 'bool'::TEXT;
   END IF;
 
   -- vias
-  params_types_words := params_types_words || 'anyarray'::TEXT;
   params_names := params_names || ARRAY[''];
-  params_numbers := params_numbers || ARRAY['anyarray'];
+  params_types_words := params_types_words || 'anyarray'::TEXT;
+  params_types := params_types || 'anyarray'::TEXT;
+
+  IF fn LIKE '%withpoints%' THEN
+    -- driving side
+    params_names := params_names || ARRAY[''];
+    params_types_words := params_types_words || 'character'::TEXT;
+    params_types := params_types || 'bpchar'::TEXT;
+  END IF;
 
   RETURN QUERY SELECT has_function(fn);
   RETURN QUERY SELECT has_function(fn, params_types_words || optional_params_types_words);
   RETURN QUERY SELECT function_returns(fn, params_types_words || optional_params_types_words,'setof record');
 
 
-  IF min_version('4.0.0') AND fn ILIKE '%withpoints%' THEN
+  RETURN QUERY SELECT function_args_eq(fn,
+    format(
+      $$VALUES (%1$L::TEXT[])$$,
+      -- one via
+      '{"' || array_to_string(
+        params_names || optional_params_names || return_params_names,'","')
+      || '"}'));
 
-    IF fn ILIKE '%trsp%' THEN
-      names = '{"","","","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
-      typs = '{text,text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
-    ELSE
-      names = '{"","","","",directed,strict,u_turn_on_edge,details,seq,path_id,path_seq,start_vid,end_vid,node,edge,cost,agg_cost,route_agg_cost}'::TEXT;
-      typs = '{text,text,anyarray,bpchar,bool,bool,bool,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8,float8}'::TEXT;
-    END IF;
-
-
-    RETURN QUERY SELECT function_args_eq(fn,
-      format(
-        $$VALUES
-        (%1$L::TEXT[]),
-        (%2$L::TEXT[])
-        $$,
-        -- one via
-        '{"' || array_to_string(
-          params_names || optional_params_names || return_params_names,'","')
-        || '"}', names));
-
-    RETURN QUERY SELECT function_types_eq(fn,
-      format(
-        $$VALUES
-          (%1$L::TEXT[]),
-        (%2$L::TEXT[])
-        $$,
-        -- one via
-        '{"' || array_to_string(
-          params_numbers || optional_params_numbers || return_params_numbers,'","')
-        || '"}', typs));
-
-  ELSE
-
-    RETURN QUERY SELECT function_args_eq(fn,
-      format(
-        $$VALUES (%1$L::TEXT[])$$,
-        -- one via
-        '{"' || array_to_string(
-          params_names || optional_params_names || return_params_names,'","')
-        || '"}'));
-
-    RETURN QUERY SELECT function_types_eq(fn,
-      format(
-        $$VALUES (%1$L::TEXT[])$$,
-        -- one via
-        '{"' || array_to_string(
-          params_numbers || optional_params_numbers || return_params_numbers,'","')
-        || '"}'));
-  END IF;
+  RETURN QUERY SELECT function_types_eq(fn,
+    format(
+      $$VALUES (%1$L::TEXT[])$$,
+      -- one via
+      '{"' || array_to_string(
+        params_types || optional_params_types || return_params_types,'","')
+      || '"}'));
 
 
 END;

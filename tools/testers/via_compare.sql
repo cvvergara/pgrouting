@@ -180,7 +180,7 @@ BEGIN
   END IF;
 
   IF NOT min_version('4.0.0') AND min_lib_version('4.0.0') THEN
-    SET client_min_messages TO WARNING;
+    -- SET client_min_messages TO WARNING;
   END IF;
 
   directed = 'Undirected';
