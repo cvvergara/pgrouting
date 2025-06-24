@@ -177,6 +177,7 @@ PGDLLEXPORT Datum _pgr_kruskalv4(PG_FUNCTION_ARGS) {
  * TODO(v4.3) change to WARNING
  * TODO(v5) Move to legacy
  */
+
 PGDLLEXPORT Datum _pgr_kruskal(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_kruskal);
 
@@ -187,19 +188,18 @@ PGDLLEXPORT Datum _pgr_kruskal(PG_FUNCTION_ARGS) {
     MST_rt *result_tuples = NULL;
     size_t result_count = 0;
 
-#ifdef SHOWMSG
-    ereport(WARNING, (
-            errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
-            errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
-            errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.7.0"),
-            errhint("Consider upgrade pgRouting")));
-#endif
-
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+#ifdef SHOWMSG
+        ereport(NOTICE, (
+                    errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
+                    errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
+                    errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.7.0"),
+                    errhint("Consider upgrade pgRouting")));
+#endif
 
         /* Edge sql, tree roots, fn_suffix, max_depth, distance */
         process(

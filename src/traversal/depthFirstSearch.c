@@ -169,6 +169,12 @@ PGDLLEXPORT Datum _pgr_depthfirstsearch(PG_FUNCTION_ARGS) {
     MST_rt *result_tuples = NULL;
     size_t result_count = 0;
 
+    if (SRF_IS_FIRSTCALL()) {
+        MemoryContext   oldcontext;
+        funcctx = SRF_FIRSTCALL_INIT();
+        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+
 #ifdef SHOWMSG
     ereport(NOTICE, (
                 errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
@@ -176,11 +182,6 @@ PGDLLEXPORT Datum _pgr_depthfirstsearch(PG_FUNCTION_ARGS) {
                 errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
                 errhint("Consider upgrade pgRouting")));
 #endif
-
-    if (SRF_IS_FIRSTCALL()) {
-        MemoryContext   oldcontext;
-        funcctx = SRF_FIRSTCALL_INIT();
-        oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),

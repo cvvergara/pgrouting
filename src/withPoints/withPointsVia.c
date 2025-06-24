@@ -51,12 +51,22 @@ process(
         bool details,
         Routes_t **result_tuples,
         size_t *result_count) {
+    char d_side = estimate_drivingSide(driving_side[0]);
+    if (d_side == ' ') {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
+        return;
+    } else if (directed && !(d_side == 'r' || d_side == 'l')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
+        return;
+    } else if (!directed && !(d_side == 'b')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
+        return;
+    }
+
     pgr_SPI_connect();
     char* log_msg = NULL;
     char* notice_msg = NULL;
     char* err_msg = NULL;
-
-    driving_side[0] = estimate_drivingSide(driving_side[0]);
 
     char *edges_of_points_query = NULL;
     char *edges_no_points_query = NULL;
@@ -71,7 +81,7 @@ process(
 
             directed,
 
-            driving_side[0],
+            d_side,
             details,
 
             strict,
@@ -88,6 +98,13 @@ process(
     }
 
     pgr_global_report(&log_msg, &notice_msg, &err_msg);
+
+    if (edges_of_points_query) {
+        pfree(edges_of_points_query); edges_of_points_query = NULL;
+    }
+    if (edges_no_points_query) {
+        pfree(edges_no_points_query); edges_no_points_query = NULL;
+    }
 
     pgr_SPI_finish();
 }
@@ -118,17 +135,14 @@ _pgr_withpointsvia_v4(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(6)),
                 PG_GETARG_BOOL(7),
 
-                &result_tuples,
-                &result_count);
+                &result_tuples, &result_count);
 
         funcctx->max_calls = result_count;
-
         funcctx->user_fctx = result_tuples;
         if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-                     errmsg("function returning record called in context "
-                         "that cannot accept type record")));
+                     errmsg("function returning record called in context that cannot accept type record")));
         }
 
         funcctx->tuple_desc = tuple_desc;
@@ -167,6 +181,10 @@ _pgr_withpointsvia_v4(PG_FUNCTION_ARGS) {
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
+
+        pfree(values);
+        pfree(nulls);
+
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
@@ -190,19 +208,18 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
     Routes_t  *result_tuples = 0;
     size_t result_count = 0;
 
-#ifdef SHOWMSG
-    ereport(NOTICE, (
-                errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
-                errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
-                errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
-                errhint("Consider upgrade pgRouting")));
-#endif
-
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+#ifdef SHOWMSG
+        ereport(NOTICE, (
+                    errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
+                    errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
+                    errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
+                    errhint("Consider upgrade pgRouting")));
+#endif
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -222,7 +239,8 @@ _pgr_withpointsvia(PG_FUNCTION_ARGS) {
         funcctx->max_calls = result_count;
 
         funcctx->user_fctx = result_tuples;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "

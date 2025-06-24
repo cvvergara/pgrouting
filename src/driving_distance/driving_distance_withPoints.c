@@ -52,25 +52,23 @@ process(
         char *driving_side,
         bool details,
         bool equicost,
-        bool is_new,
 
         MST_rt **result_tuples,
         size_t *result_count) {
     char d_side = estimate_drivingSide(driving_side[0]);
-    if (is_new) {
-        if (d_side == ' ') {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
-            return;
-        } else if (directed && !(d_side == 'r' || d_side == 'l')) {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
-            return;
-        } else if (!directed && !(d_side == 'b')) {
-            pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
-            return;
-        }
-    } else {
-        d_side = (char)tolower(driving_side[0]);
-        if (!((d_side == 'r') || (d_side == 'l'))) d_side = 'b';
+    if (d_side == ' ') {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid value are 'r', 'l', 'b'");
+        return;
+    } else if (directed && !(d_side == 'r' || d_side == 'l')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for directed graph are: 'r', 'l'");
+        return;
+    } else if (!directed && !(d_side == 'b')) {
+        pgr_throw_error("Invalid value of 'driving side'", "Valid values are for undirected graph is: 'b'");
+        return;
+    }
+
+    if (distance <= 0) {
+        pgr_throw_error("Invalid value of 'distance'", "Valid values are greater than 0");
     }
 
     pgr_SPI_connect();
@@ -214,18 +212,18 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
     MST_rt *result_tuples = 0;
     size_t result_count = 0;
 
-#ifdef SHOWMSG
-    ereport(NOTICE, (
-                errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
-                errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
-                errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.6.0"),
-                errhint("Consider upgrade pgRouting")));
-#endif
-
     if (SRF_IS_FIRSTCALL()) {
         MemoryContext   oldcontext;
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
+
+#ifdef SHOWMSG
+        ereport(NOTICE, (
+                    errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
+                    errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
+                    errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "3.6.0"),
+                    errhint("Consider upgrade pgRouting")));
+#endif
 
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
@@ -238,7 +236,6 @@ _pgr_withpointsdd(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
 
-                false,
                 &result_tuples, &result_count);
 
         funcctx->max_calls = result_count;
