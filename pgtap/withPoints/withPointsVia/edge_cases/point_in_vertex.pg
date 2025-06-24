@@ -55,6 +55,7 @@ IF min_version('4.0.0') THEN
     $$ SELECT 1 AS edge_id, 0.5::float AS fraction$$,
     ARRAY[-1, $1], 'r', true) WHERE node = $1 and edge < 0;
 ELSE
+  -- SET client_min_messages TO WARNING;
   PREPARE expectedCost1(BIGINT) AS
   SELECT agg_cost::TEXT FROM pgr_withPointsVia(
     $$ SELECT id, source, target, cost, reverse_cost FROM four_edges$$,
