@@ -25,8 +25,14 @@
 
 .. rubric:: Version 4.0.0
 
-* Output columns standardized to |matrix-result|
 * Function promoted to official.
+* **Driving side** parameter is positional unnamed and compulsory.
+
+  * Valid values depend on kind of graph
+* Output columns standardized to |matrix-result|
+* Breaking change, signatures no longer available:
+
+  * pgr_withpointscostmatrix(text,text,anyarray,boolean,character)
 
 .. rubric:: Version 2.2.0
 
@@ -53,8 +59,8 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_withPointsCostMatrix(`Edges SQL`_, `Points SQL`_, **start vids**, [**options**])
-   | **options:** ``[directed, driving_side]``
+   | pgr_withPointsCostMatrix(`Edges SQL`_, `Points SQL`_, **start vids**, **driving side** [**options**])
+   | **options:** ``[directed]``
 
    | Returns set of |matrix-result|
    | OR EMPTY SET
@@ -87,13 +93,6 @@ Optional parameters
     :start-after: dijkstra_optionals_start
     :end-before: dijkstra_optionals_end
 
-With points optional parameters
-...............................................................................
-
-.. include:: withPoints-family.rst
-    :start-after: withPoints_optionals_start
-    :end-before: * - ``details
-
 Inner Queries
 -------------------------------------------------------------------------------
 
@@ -116,10 +115,6 @@ Result columns
 
 .. include:: pgRouting-concepts.rst
     :start-after: return_cost_start
-    :end-before: return_cost_end
-
-.. include:: pgRouting-concepts.rst
-    :start-after: return_cost_withPoints_start
     :end-before: return_cost_withPoints_end
 
 Additional Examples
@@ -140,6 +135,7 @@ locations on the graph of point `(2.9, 1.8)`.
 
 * Point :math:`-1` corresponds to the closest edge from point `(2.9, 1.8)`.
 * Point :math:`-2` corresponds to the next close edge from point `(2.9, 1.8)`.
+* Being close to the graph does not mean have a shorter route.
 
 Use with :doc:`pgr_TSP`.
 ...............................................................................

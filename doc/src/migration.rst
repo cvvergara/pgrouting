@@ -58,44 +58,44 @@ types.
 
    * - Function
      - Migration guide
-   * - .. versionchanged:: 3.6.0 ``pgr_aStar`` [1]_
+   * - .. versionchanged:: 3.5.0 :doc:`pgr_dijkstra` [1]_
      - `Migration of single path functions`_
-   * - .. versionchanged:: 3.6.0 ``pgr_bdAstar`` [1]_
+   * - .. versionchanged:: 3.6.0 :doc:`pgr_aStar` [1]_
      - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_bdDijkstra`` [1]_
+   * - .. versionchanged:: 3.6.0 :doc:`pgr_bdAstar` [1]_
      - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_bellmanFord`` [3]_
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_binaryBreadthFirstSearch`` [3]_
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_dagShortestPath`` [3]_
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 3.5.0 ``pgr_dijkstra`` [1]_
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_edwardMoore`` [1]_
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_withPoints`` [2]_
-     - `Migration of single path functions`_
-   * - .. versionchanged:: 3.6.0 ``pgr_drivingDistance`` [1]_
+   * - .. versionchanged:: 3.6.0 :doc:`pgr_drivingDistance` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.7.0 ``pgr_kruskalBFS`` [1]_
+   * - .. versionchanged:: 3.6.0 :doc:`pgr_withPointsDD` [2]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.7.0 ``pgr_kruskalDD`` [1]_
+   * - .. versionchanged:: 3.7.0 :doc:`pgr_kruskalBFS` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.7.0 ``pgr_kruskalDFS`` [1]_
+   * - .. versionchanged:: 3.7.0 :doc:`pgr_kruskalDD` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.7.0 ``pgr_primBFS`` [1]_
+   * - .. versionchanged:: 3.7.0 :doc:`pgr_kruskalDFS` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.7.0 ``pgr_primDD`` [1]_
+   * - .. versionchanged:: 3.7.0 :doc:`pgr_primBFS` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.7.0 ``pgr_primDFS`` [1]_
+   * - .. versionchanged:: 3.7.0 :doc:`pgr_primDD` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 3.6.0 ``pgr_withPointsDD`` [2]_
+   * - .. versionchanged:: 3.7.0 :doc:`pgr_primDFS` [1]_
      - `Migration of spanning tree functions`_
-   * - .. versionchanged:: 4.0.0 ``pgr_withPointsCost`` [2]_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_bdDijkstra` [1]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_bellmanFord` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_binaryBreadthFirstSearch` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_dagShortestPath` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_edwardMoore` [3]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_withPoints` [2]_
+     - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_withPointsCost` [2]_
      - `Migration of cost functions`_
-
-
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_withPointsCostMatrix` [2]_
+     - `Migration of cost functions`_
 
 .. [1] Official function before v4.0.0
 .. [2] Official function in v4.0.0
@@ -120,6 +120,9 @@ application.
      - Version
      - From
    * - ``pgr_withPointsCost``
+     - v < 4.0
+     - |matrix-pid|
+   * - ``pgr_withPointsCostMatrix``
      - v < 4.0
      - |matrix-pid|
 
@@ -305,17 +308,17 @@ application.
    * - Function
      - Version
      - From
+   * - ``pgr_dijkstra``
+     - v < 3.5
+     - |old-generic-result|
    * - ``pgr_aStar``
      - v < 3.6
-     - |old-generic-result|
-   * - ``pgr_bellmanFord``
-     - v < 4.0
      - |old-generic-result|
    * - ``pgr_bdDijkstra``
      - v < 4.0
      - |old-generic-result|
-   * - ``pgr_dijkstra``
-     - v < 3.5
+   * - ``pgr_bellmanFord``
+     - v < 4.0
      - |old-generic-result|
    * - ``pgr_dagShortestPath``
      - v < 4.0
@@ -843,10 +846,10 @@ To get the old version column names |result-dij-dd-m|: filter out the column
 Migration of deleted functions
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+Functions no longer on pgRouting
+
 .. contents:: Contents
    :local:
-
-TBD
 
 Migration of ``pgr_alphaShape``
 -------------------------------------------------------------------------------
@@ -1251,7 +1254,7 @@ To get the original column names:
 * ``id2`` is the node
 * ``id3`` is the edge
 
-Migration of the rest
+Not yet classified migrations
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Migration of ``pgr_KSP``
@@ -1302,53 +1305,6 @@ columns:
    :start-after: --ksp2
    :end-before: --ksp3
 
-Migration of ``pgr_maxCardinalityMatch``
--------------------------------------------------------------------------------
-
-:doc:`pgr_maxCardinalityMatch` works only for undirected graphs, therefore the
-``directed`` flag has been removed.
-
-Starting from `v3.4.0 <https://docs.pgrouting.org/3.4/en/migration.html>`__
-
-Signature to be migrated:
-
-.. parsed-literal::
-
-  pgr_maxCardinalityMatch(Edges SQL, [directed])
-   RETURNS SETOF (seq, edge, source, target)
-
-Migration is needed, because:
-
-* Use ``cost`` and ``reverse_cost`` on the inner query
-* Results are ordered
-* Works for undirected graphs.
-* New signature
-
-  * ``pgr_maxCardinalityMatch(text)`` returns only ``edge`` column.
-  * The optional flag ``directed`` is removed.
-
-:Before migration:
-
-* Columns used are ``going`` and ``coming`` to represent the existence of an
-  edge.
-* Flag ``directed`` was used to indicate if it was for a **directed** or
-  **undirected** graph.
-
-  * The flag ``directed`` is ignored.
-
-    * Regardless of it's value it gives the result considering the graph as
-      **undirected**.
-
-:Migration:
-
-* Use the columns ``cost`` and ``reverse_cost`` to represent the existence of an
-  edge.
-* Do not use the flag ``directed``.
-* In the query returns only ``edge`` column.
-
-.. literalinclude:: migration.queries
-   :start-after: --maxcard2
-   :end-before: --maxcard3
 
 Migration of ``pgr_withPointsDD``
 -------------------------------------------------------------------------------
@@ -1474,6 +1430,54 @@ To get the original column names:
 
 * ``id1`` is the node
 * ``id2`` is the edge
+
+Migration of ``pgr_maxCardinalityMatch``
+-------------------------------------------------------------------------------
+
+:doc:`pgr_maxCardinalityMatch` works only for undirected graphs, therefore the
+``directed`` flag has been removed.
+
+Starting from `v3.4.0 <https://docs.pgrouting.org/3.4/en/migration.html>`__
+
+Signature to be migrated:
+
+.. parsed-literal::
+
+  pgr_maxCardinalityMatch(Edges SQL, [directed])
+   RETURNS SETOF (seq, edge, source, target)
+
+Migration is needed, because:
+
+* Use ``cost`` and ``reverse_cost`` on the inner query
+* Results are ordered
+* Works for undirected graphs.
+* New signature
+
+  * ``pgr_maxCardinalityMatch(text)`` returns only ``edge`` column.
+  * The optional flag ``directed`` is removed.
+
+:Before migration:
+
+* Columns used are ``going`` and ``coming`` to represent the existence of an
+  edge.
+* Flag ``directed`` was used to indicate if it was for a **directed** or
+  **undirected** graph.
+
+  * The flag ``directed`` is ignored.
+
+    * Regardless of it's value it gives the result considering the graph as
+      **undirected**.
+
+:Migration:
+
+* Use the columns ``cost`` and ``reverse_cost`` to represent the existence of an
+  edge.
+* Do not use the flag ``directed``.
+* In the query returns only ``edge`` column.
+
+.. literalinclude:: migration.queries
+   :start-after: --maxcard2
+   :end-before: --maxcard3
 
 Migration of restrictions
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -26,6 +26,13 @@
 
 * Function promoted to official.
 
+.. Breaking change
+
+* Breaking change, signatures no longer available:
+
+  * pgr_trsp(text,integer,integer,boolean,boolean,text)
+  * pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)
+
 .. rubric:: Version 3.4.0
 
 * New proposed signatures:
@@ -39,7 +46,7 @@
 * Deprecated signatures
 
   * pgr_trsp(text,integer,integer,boolean,boolean,text)
-  * pgr_trsp(text,integer,float,integer,float,boolean,boolean,text)
+  * pgr_trsp(text,integer,double precision,integer,double precision,boolean,boolean,text)
   * pgr_trspViaVertices(text,anyarray,boolean,boolean,text)
   * pgr_trspviaedges(text,integer[],double precision[],boolean,boolean,text)
 

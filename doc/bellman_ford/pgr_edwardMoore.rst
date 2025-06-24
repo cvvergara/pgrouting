@@ -4,7 +4,7 @@
     Copyright(c) pgRouting Contributors
 
     This documentation is licensed under a Creative Commons Attribution-Share
-    Alike 3.0 License: http://creativecommons.org/licenses/by-sa/3.0/
+    Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
    ****************************************************************************
 
 .. index::
@@ -136,8 +136,8 @@ One to Many
    | Returns set of |short-generic-result|
    | OR EMPTY SET
 
-:Example: From vertex :math:`6` to vertices :math:`\{ 10, 17\}` on a
-          **directed** graph
+:Example: From vertex :math:`6` to vertices :math:`\{10, 17\}` on a **directed**
+          graph
 
 .. literalinclude:: edwardMoore.queries
    :start-after: -- q3

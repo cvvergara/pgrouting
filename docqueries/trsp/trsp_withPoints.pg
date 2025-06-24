@@ -1,38 +1,45 @@
 -- CopyRight(c) pgRouting developers
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0/
 SET extra_float_digits=-3;
-/* --e1 */
+/* -- q1 */
 SELECT * FROM pgr_trsp_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT id, path, cost FROM restrictions',
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
-  -1, 10, 'r', details => true);
-/* --e2 */
+  -1, 10, 'r');
+/* -- q2 */
 SELECT * FROM pgr_trsp_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT id, path, cost FROM restrictions',
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   -1, ARRAY[-3, 7], 'B', directed => false);
-/* --e3 */
+/* -- q3 */
 SELECT * FROM pgr_trsp_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT id, path, cost FROM restrictions',
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[-1, 6], -3, 'R');
-/* --e4 */
+/* -- q4 */
 SELECT * FROM pgr_trsp_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT id, path, cost FROM restrictions',
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[-1, 6], ARRAY[-3, 1], 'L');
-/* --e5 */
+/* -- q5 */
 SELECT * FROM pgr_trsp_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT id, path, cost FROM restrictions',
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   'SELECT * FROM (VALUES (-1, 10), (6, -3)) AS combinations(source, target)',
   'r', details => true);
-/* --q1 */
+/* -- q6 */
+SELECT * FROM pgr_trsp_withPoints(
+  'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
+  'SELECT id, path, cost FROM restrictions',
+  'SELECT pid, edge_id, fraction, side from pointsOfInterest',
+  ARRAY[5, -1], ARRAY[-2, -3, -6, 10, 11],
+  'r', details => true);
+/* -- q7 */
 SELECT (start_vid || ' -> ' || end_vid ||' at ' || path_seq || 'th step:')::TEXT AS path_at,
   CASE WHEN edge = -1 THEN ' visits'
       ELSE ' passes in front of'
@@ -47,13 +54,22 @@ FROM pgr_trsp_withPoints(
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
   ARRAY[5, -1], ARRAY[-6, -3, -6, 10, 11], 'r', details => true)
 WHERE node IN (-6, 11);
-/* --q2 */
-SELECT * FROM pgr_trsp_withPoints(
+/* -- q8 */
+SELECT (start_vid || ' => ' || end_vid ||' at ' || path_seq || 'th step')::TEXT AS path_at,
+  CASE WHEN edge = -1 THEN ' visits'
+      ELSE ' passes in front of'
+  END as status,
+  CASE WHEN node < 0 THEN 'Point'
+        ELSE 'Vertex'
+    END as is_a,
+    abs(node) as id
+FROM pgr_trsp_withPoints(
   'SELECT id, source, target, cost, reverse_cost FROM edges ORDER BY id',
   'SELECT id, path, cost FROM restrictions',
   'SELECT pid, edge_id, fraction, side FROM pointsOfInterest',
-  ARRAY[-1, 6], ARRAY[-3, 1], 'l', details => true);
-/* --q3 */
+  ARRAY[5, -1], ARRAY[-2, -3, -6, 10, 11], 'l', details => true)
+WHERE node IN (-6, 11);
+/* -- q9 */
 SELECT * FROM pgr_trsp_withPoints(
   $e$ SELECT * FROM edges $e$,
   $r$ SELECT id, path, cost FROM restrictions $r$,
@@ -64,4 +80,4 @@ SELECT * FROM pgr_trsp_withPoints(
         0.5, cap => 2)
   $p$,
   1, ARRAY[-1, -2], 'B', false);
-/* -- q4 */
+/* -- q10 */
