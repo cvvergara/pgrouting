@@ -30,9 +30,9 @@ DECLARE
 sql_Combinations TEXT;
 sql_Many TEXT;
 BEGIN
+
   IF NOT min_version('3.2.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'Combinations signature is new on 3.2.0');
+    RETURN QUERY SELECT skip(1, 'Combinations signature is new on 3.2.0');
     RETURN;
   END IF;
 
@@ -63,8 +63,14 @@ BEGIN
         ''SELECT id, source, target, cost FROM edges'',
         ''SELECT * FROM (VALUES' || sql_Combinations  ||') AS combinations (source, target)'' ) ');
 
-    RETURN query SELECT set_eq( sql_Many, sql_Combinations );
+  IF min_version('4.0.0') THEN
+    RETURN query SELECT set_eq(sql_Many, sql_Combinations );
+  ELSE
+    RETURN query SELECT throws_ok(sql_Combinations,
+      $$A stored procedure tried to use deprecated C internal function '_pgr_dagshortestpath'$$);
     RETURN;
+  END IF;
+
 END
 $BODY$
 language plpgsql;

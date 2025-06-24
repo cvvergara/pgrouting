@@ -32,12 +32,27 @@ BEGIN
     RETURN;
   END IF;
 
-    RETURN query SELECT is_empty(
-      'SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_dagShortestPath(
-        ''SELECT id, source, target, cost FROM edges'',
-        ''SELECT * FROM combinations WHERE source IN (-1)'' ) '
-    );
-    RETURN;
+  IF min_version('4.0.0') THEN
+
+    RETURN QUERY SELECT is_empty(
+      $$
+      SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_dagShortestPath(
+        'SELECT id, source, target, cost FROM edges',
+        'SELECT * FROM combinations WHERE source IN (-1)')
+      $$);
+
+  ELSE
+
+    RETURN QUERY SELECT throws_ok(
+      $$
+      SELECT seq, path_seq, node, edge, cost, agg_cost FROM pgr_dagShortestPath(
+        'SELECT id, source, target, cost FROM edges',
+        'SELECT * FROM combinations WHERE source IN (-1)')
+      $$,
+      '0A000', $$A stored procedure tried to use deprecated C internal function '_pgr_dagshortestpath'$$);
+
+  END IF;
+
 END
 $BODY$
 language plpgsql;
