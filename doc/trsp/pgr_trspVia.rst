@@ -26,9 +26,18 @@
 
 * Function promoted to official.
 
+.. Breaking change
+
+* Breaking change, signatures no longer available:
+
+  * pgr_trspviavertices(text,anyarray,boolean,boolean,text)
+
 .. rubric:: Version 3.4.0
 
 * New proposed function.
+* Deprecated signatures
+
+  * pgr_trspviavertices(text,anyarray,boolean,boolean,text)
 
 Description
 -------------------------------------------------------------------------------

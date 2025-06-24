@@ -50,15 +50,39 @@ milestone for 4.0.0
 Summary of changes by function
 ...............................................................................
 
-* pgr_contraction
+* pgr_aStar
 
-  .. include:: pgr_contraction.rst
+  .. include:: pgr_aStar.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_aStarCost
+
+  .. include:: pgr_aStarCost.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_bdAstar
+
+  .. include:: pgr_bdAstar.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_bdAstarCost
+
+  .. include:: pgr_bdAstarCost.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
 * pgr_bdDijkstra
 
   .. include:: pgr_bdDijkstra.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_bdDijkstraCost
+
+  .. include:: pgr_bdDijkstraCost.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
@@ -74,7 +98,25 @@ Summary of changes by function
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
+* pgr_boykovKolmogorov
+
+  .. include:: pgr_boykovKolmogorov.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_contraction
+
+  .. include:: pgr_contraction.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
 * pgr_edwardMoore
+
+  .. include:: pgr_edwardMoore.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_edmondsKarp
 
   .. include:: pgr_edwardMoore.rst
      :start-after: Version 4.0.0
@@ -83,6 +125,30 @@ Summary of changes by function
 * pgr_DAGshortestPath
 
   .. include:: pgr_dagShortestPath.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_dijkstraCost
+
+  .. include:: pgr_trsp.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_KSP
+
+  .. include:: pgr_KSP.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_maxFlow
+
+  .. include:: pgr_maxFlow.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_pushRelabel
+
+  .. include:: pgr_pushRelabel.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
@@ -241,6 +307,12 @@ Removal of SQL deprecated signatures
 * `#2683 <https://github.com/pgRouting/pgrouting/issues/2683>`__: pgr_trsp
 
   .. include:: pgr_trsp.rst
+     :start-after: Breaking change
+     :end-before: .. rubric
+
+* `#2683 <https://github.com/pgRouting/pgrouting/issues/2683>`__: pgr_trspVia
+
+  .. include:: pgr_trspVia.rst
      :start-after: Breaking change
      :end-before: .. rubric
 
