@@ -29,8 +29,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION pgr_withPointsVia(
-  TEXT,     -- edges
-  TEXT,     -- points
+  TEXT,     -- edges SQL
+  TEXT,     -- points SQL
   ANYARRAY, -- via vids
   CHAR,     -- driving side
 
@@ -70,7 +70,7 @@ IS 'pgr_withPointsVia
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
   - Points SQL with columns: [pid], edge_id, fraction [,side]
   - ARRAY[via vertices identifiers]
-  - driving side: directed graph [r,l], undirected graph [b]
+  - Driving side: directed graph [r,l], undirected graph [b]
 - Optional Parameters
   - directed => true
   - strict => false
@@ -79,43 +79,3 @@ IS 'pgr_withPointsVia
 - Documentation:
   -{PROJECT_DOC_LINK}/pgr_withPointsVia.html
 ';
-
-/* TODO remove on v5.0 */
---v3.4
-CREATE FUNCTION pgr_withPointsVia(
-  TEXT,     -- edges SQL
-  TEXT,     -- points SQL
-  ANYARRAY, -- via vids
-
-  directed BOOLEAN DEFAULT true,
-
-  -- via parameters
-  strict BOOLEAN DEFAULT false,
-  U_turn_on_edge BOOLEAN DEFAULT true,
-
-  -- withPoints parameters
-  driving_side CHAR DEFAULT 'b', -- 'r'/'l'/'b'/NULL
-  details BOOLEAN DEFAULT false,
-
-  OUT seq INTEGER,
-  OUT path_id INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_vid BIGINT,
-  OUT end_vid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT,
-  OUT route_agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-$BODY$
-  SELECT seq, path_id, path_seq, start_vid, end_vid, node, edge, cost, agg_cost, route_agg_cost
-  FROM _pgr_withPointsVia( _pgr_get_statement($1), _pgr_get_statement($2), $3, $4, $5, $6, $7, $8);
-$BODY$
-LANGUAGE SQL VOLATILE STRICT
-COST 100
-ROWS 1000;
-
-COMMENT ON FUNCTION pgr_withPointsVia(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgr_withPointsVia (one via) deprecated signature on v4.0.0
-Documentation: {PROJECT_DOC_LINK}/pgr_withPointsVia.html';

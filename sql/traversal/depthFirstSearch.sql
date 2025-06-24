@@ -27,11 +27,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
---ONE TO DEPTH
+-- SINGLE VERTEX
 --v3.2
 CREATE FUNCTION pgr_depthFirstSearch(
     TEXT,   -- edges_sql (required)
-    BIGINT, -- from_vid (required)
+    BIGINT, -- root vid (required)
 
     directed BOOLEAN DEFAULT true,
     max_depth BIGINT DEFAULT 9223372036854775807,
@@ -61,11 +61,11 @@ $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
 
---MANY TO DEPTH
+-- MULTIPLE VERTICES
 --v3.2
 CREATE FUNCTION pgr_depthFirstSearch(
-    TEXT,     -- edges_sql (required)
-    ANYARRAY, -- root_vids (required)
+    TEXT,     -- edges sql (required)
+    ANYARRAY, -- root vids (required)
 
     directed BOOLEAN DEFAULT true,
     max_depth BIGINT DEFAULT 9223372036854775807,

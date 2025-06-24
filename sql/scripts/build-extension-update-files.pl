@@ -284,9 +284,6 @@ sub generate_upgrade_script {
                 push @commands, drop_special_case_function("pgr_sequentialvertexcoloring(text)");
                 push @commands, drop_special_case_function("pgr_bipartite(text)");
 
-                # Official functions
-                push @commands, drop_special_case_function("pgr_withpoints(text,text,text,boolean,character,boolean)");
-                push @commands, drop_special_case_function("pgr_withpointscost(text,text,text,boolean,character)");
             }
 
             if ($old_minor >= "3.3") {
@@ -325,19 +322,6 @@ sub generate_upgrade_script {
             push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bddijkstra(text,anyarray,bigint,boolean)");
             push @commands, drop_special_case_function("pgr_bddijkstra(text,bigint,anyarray,boolean)");
-
-            push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,anyarray,boolean,character,boolean)");
-            push @commands, drop_special_case_function("pgr_withpoints(text,text,anyarray,bigint,boolean,character,boolean)");
-            push @commands, drop_special_case_function("pgr_withpoints(text,text,bigint,anyarray,boolean,character,boolean)");
-            push @commands, drop_special_case_function("pgr_withpoints(text,text,bigint,bigint,boolean,character,boolean)");
-
-            push @commands, drop_special_case_function("pgr_withpointscost(text,text,anyarray,anyarray,boolean,character)");
-            push @commands, drop_special_case_function("pgr_withpointscost(text,text,anyarray,bigint,boolean,character)");
-            push @commands, drop_special_case_function("pgr_withpointscost(text,text,bigint,anyarray,boolean,character)");
-            push @commands, drop_special_case_function("pgr_withpointscost(text,text,bigint,bigint,boolean,character)");
-
-
-            push @commands, drop_special_case_function("pgr_withpointscostmatrix(text,text,anyarray,boolean,character)");
         }
     }
 

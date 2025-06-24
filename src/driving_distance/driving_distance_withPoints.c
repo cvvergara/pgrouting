@@ -138,7 +138,6 @@ _pgr_withpointsddv4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(6),
                 PG_GETARG_BOOL(7),
 
-                true,
                 &result_tuples, &result_count);
 
         funcctx->max_calls = result_count;

@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
--- ONE TO ONE
+-- ONE to ONE
 --v3.0
 CREATE FUNCTION pgr_edgeDisjointPaths(
     TEXT,   --edges_sql (required)

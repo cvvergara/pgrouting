@@ -28,36 +28,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 --v4.0
 CREATE FUNCTION _pgr_withPointsVia_v4(
-  TEXT,     -- edges
-  TEXT,     -- points
-  ANYARRAY, -- via
-
-  BOOLEAN,  -- directed
-  BOOLEAN,  -- strict
-  BOOLEAN,  -- U_turn_on_edge
-  CHAR,     -- driving side
-  BOOLEAN,  -- details
-
-  OUT seq INTEGER,
-  OUT path_id INTEGER,
-  OUT path_seq INTEGER,
-  OUT start_vid BIGINT,
-  OUT end_vid BIGINT,
-  OUT node BIGINT,
-  OUT edge BIGINT,
-  OUT cost FLOAT,
-  OUT agg_cost FLOAT,
-  OUT route_agg_cost FLOAT)
-RETURNS SETOF RECORD AS
-'MODULE_PATHNAME'
-LANGUAGE C VOLATILE STRICT;
-
-COMMENT ON FUNCTION _pgr_withPointsVia_v4(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting internal function';
-
-/* TODO remove on v5*/
---v3.4
-CREATE FUNCTION _pgr_withPointsVia(
   TEXT,     -- edges_sql
   TEXT,     -- points_sql
   ANYARRAY, -- via vids
@@ -79,7 +49,7 @@ CREATE FUNCTION _pgr_withPointsVia(
   OUT route_agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
-LANGUAGE c VOLATILE STRICT;
+LANGUAGE C VOLATILE STRICT;
 
-COMMENT ON FUNCTION _pgr_withPointsVia(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
-IS 'pgRouting internal function deprecated on v4.0.0';
+COMMENT ON FUNCTION _pgr_withPointsVia_v4(TEXT, TEXT, ANYARRAY, BOOLEAN, BOOLEAN, BOOLEAN, CHAR, BOOLEAN)
+IS 'pgRouting internal function';
