@@ -1,3 +1,4 @@
+
 /*PGR-GNU*****************************************************************
 
 Copyright (c) 2018  pgRouting developers
@@ -16,7 +17,6 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ********************************************************************PGR-GNU*/
-
 BEGIN;
 
 SELECT CASE WHEN NOT min_version('3.2.0') THEN plan(1) ELSE plan(11) END;

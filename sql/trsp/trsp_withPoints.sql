@@ -115,11 +115,12 @@ CREATE FUNCTION pgr_trsp_withPoints(
   OUT agg_cost FLOAT)
 RETURNS SETOF RECORD AS
 $BODY$
-  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM _pgr_trsp_withPoints_v4(
-    _pgr_get_statement($1), _pgr_get_statement($2), _pgr_get_statement($3),
-    $4::BIGINT[], ARRAY[$5]::BIGINT[],
-    directed, $6, details);
+SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+FROM _pgr_trsp_withPoints_v4(
+  _pgr_get_statement($1),
+  _pgr_get_statement($2),
+  _pgr_get_statement($3),
+  $4::BIGINT[], ARRAY[$5]::BIGINT[], directed, $6, details);
 $BODY$
 LANGUAGE SQL VOLATILE STRICT
 COST 100

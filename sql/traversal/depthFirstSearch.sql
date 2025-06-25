@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- SINGLE VERTEX
 --v3.2
 CREATE FUNCTION pgr_depthFirstSearch(
-    TEXT,   -- edges_sql (required)
+    TEXT,   -- edges sql (required)
     BIGINT, -- root vid (required)
 
     directed BOOLEAN DEFAULT true,

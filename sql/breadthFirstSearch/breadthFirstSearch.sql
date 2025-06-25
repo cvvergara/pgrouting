@@ -77,6 +77,7 @@ CREATE FUNCTION pgr_breadthFirstSearch(
     OUT edge BIGINT,
     OUT cost FLOAT,
     OUT agg_cost FLOAT)
+
 RETURNS SETOF RECORD AS
 $BODY$
 BEGIN

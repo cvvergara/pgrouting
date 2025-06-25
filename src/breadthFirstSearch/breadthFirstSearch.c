@@ -44,8 +44,8 @@ static void
 process(
     char *edges_sql,
     ArrayType *starts,
-    bool directed,
     int64_t max_depth,
+    bool directed,
 
     MST_rt **result_tuples,
     size_t *result_count) {
@@ -99,8 +99,8 @@ PGDLLEXPORT Datum _pgr_breadthfirstsearch_v4(PG_FUNCTION_ARGS) {
         process(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 PG_GETARG_ARRAYTYPE_P(1),
-                PG_GETARG_BOOL(2),
                 PG_GETARG_INT64(3),
+                PG_GETARG_BOOL(2),
                 &result_tuples,
                 &result_count);
 
@@ -110,7 +110,7 @@ PGDLLEXPORT Datum _pgr_breadthfirstsearch_v4(PG_FUNCTION_ARGS) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
                      errmsg("function returning record called in context "
-                         "that cannot accept type record")));
+                            "that cannot accept type record")));
         }
 
         funcctx->tuple_desc = tuple_desc;

@@ -56,6 +56,7 @@ UPDATE parallel AS e
 SET target = v.id, x2 = x, y2 = y
 FROM pvertices AS v
 WHERE ST_EndPoint(e.geom) = v.geom;
+SET client_min_messages=NOTICE;
 
 SELECT PLAN(7);
 

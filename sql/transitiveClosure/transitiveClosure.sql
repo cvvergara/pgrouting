@@ -43,7 +43,7 @@ IS 'pgr_transitiveClosure
 - EXPERIMENTAL
 - Directed graph
 - Parameters:
-  - edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_transitiveClosure.html
 ';
