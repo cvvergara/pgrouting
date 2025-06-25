@@ -26,11 +26,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 ********************************************************************PGR-GNU*/
 
---ONE TO DEPTH
+-- SINGLE VERTEX
 --v4.0
 CREATE FUNCTION pgr_breadthFirstSearch(
     TEXT,   -- edges_sql (required)
-    BIGINT, -- from_vid (required)
+    BIGINT, -- root_vid (required)
 
     directed BOOLEAN DEFAULT true,
     max_depth BIGINT DEFAULT 9223372036854775807,

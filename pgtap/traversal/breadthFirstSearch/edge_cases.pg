@@ -26,10 +26,9 @@ RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
--- TODO I think this test will work for all version
 IF NOT min_version('4.0.0') THEN
   RETURN QUERY
-  SELECT skip(1, 'pgr_topologicalsort: testing only signatures standardaized in v4.0.0.');
+  SELECT skip(1, 'pgr_breadthFirstSearch: testing only signatures standardaized in v4.0.0.');
   RETURN;
 END IF;
 
