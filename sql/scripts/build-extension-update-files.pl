@@ -283,7 +283,6 @@ sub generate_upgrade_script {
 
                 push @commands, drop_special_case_function("pgr_sequentialvertexcoloring(text)");
                 push @commands, drop_special_case_function("pgr_bipartite(text)");
-
             }
 
             if ($old_minor >= "3.3") {

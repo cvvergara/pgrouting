@@ -3,7 +3,7 @@ BEGIN
 SET client_min_messages TO NOTICE;
 SET
 /* --q1 */
-SELECT node,color FROM pgr_bipartite(
+SELECT * FROM pgr_bipartite(
     $$SELECT id, source, target, cost, reverse_cost FROM edges$$
 ) ORDER BY node;
  node | color

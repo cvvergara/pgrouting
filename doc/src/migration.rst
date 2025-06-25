@@ -34,6 +34,8 @@ Migration to standardized columns
 .. |pid-m-1| replace:: ``(seq, path_seq, start_pid, node, edge, cost, agg_cost)``
 .. |pid-m-m| replace:: ``(seq, path_seq, start_pid, end_pid, node, edge, cost, agg_cost)``
 .. |matrix-pid| replace:: ``(start_pid, end_pid, agg_cost)``
+.. |old-edge-color| replace:: ``(edge_id, color_id)``
+.. |old-node-color| replace:: ``(vertex_id, color_id)``
 .. |result-dij-dd| replace:: ``(seq, [from_v,] node, edge, cost, agg_cost)``
 .. |result-dij-dd-m| replace:: ``(seq, from_v, node, edge, cost, agg_cost)``
 
@@ -86,10 +88,16 @@ types.
      - `Migration of single path functions`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_binaryBreadthFirstSearch` [3]_
      - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_bipartite` [3]_
+     - `Migration of output column name change`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_dagShortestPath` [3]_
      - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_edgeColoring` [3]_
+     - `Migration of output column name change`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_edwardMoore` [3]_
      - `Migration of single path functions`_
+   * - .. versionchanged:: 4.0.0 :doc:`pgr_sequentialVertexColoring` [3]_
+     - `Migration of output column name change`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_withPoints` [2]_
      - `Migration of single path functions`_
    * - .. versionchanged:: 4.0.0 :doc:`pgr_withPointsCost` [2]_
@@ -843,6 +851,31 @@ To get the old version column names |result-dij-dd-m|: filter out the column
    :start-after: --drivingdistance4
    :end-before: --drivingdistance5
 
+Migration of output column name change
+-------------------------------------------------------------------------------
+
+.. rubric:: :doc:`pgr_edgeColoring`
+
+From: |old-edge-color|
+To: |result_edge_color|
+
+Before update:
+
+* Rename ``edge_id`` to ``edge`` and ``color_id`` to ``color``.
+* To get the old version column names: in the ``SELECT`` clause use ``edge AS
+  edge_id`` and ``color AS color_id``
+
+.. rubric:: :doc:`pgr_bipartite` and :doc:`pgr_sequentialVertexColoring`
+
+From: |old-node-color|
+To: |result_node_color|
+
+Before update:
+
+* Rename ``vertex_id`` to ``node`` and ``color_id`` to ``color``.
+* To get the old version column names: in the ``SELECT`` clause use ``node AS
+  vertex_id`` and ``color AS color_id``
+
 Migration of deleted functions
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -1304,39 +1337,6 @@ columns:
 .. literalinclude:: migration.queries
    :start-after: --ksp2
    :end-before: --ksp3
-
-
-Migration of ``pgr_withPointsDD``
--------------------------------------------------------------------------------
-
-
-``pgr_withPointsDD`` (Single vertex)
-...............................................................................
-
-
-``pgr_withPointsDD`` (Multiple vertices)
-...............................................................................
-
-Using
-`this <https://docs.pgrouting.org/3.5/en/pgr_withPointsDD.html#multiple-vertices>`__
-example.
-
-To migrate, use an unnamed valid value for **driving side** after the
-**distance** parameter:
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd6
-   :end-before: --withpointsdd7
-
-To get results from previous versions:
-
-* Filter out the additional columns
-* When ``details => false``, the default, remove the points by using
-  ``WHERE node >= 0 OR cost = 0``
-
-.. literalinclude:: migration.queries
-   :start-after: --withpointsdd7
-   :end-before: --withpointsdd8
 
 Migration of ``pgr_withPointsKSP``
 -------------------------------------------------------------------------------

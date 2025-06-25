@@ -98,6 +98,12 @@ Summary of changes by function
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
+* pgr_bipartite
+
+  .. include:: pgr_bipartite.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
 * pgr_boykovKolmogorov
 
   .. include:: pgr_boykovKolmogorov.rst
@@ -110,27 +116,39 @@ Summary of changes by function
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
-* pgr_edwardMoore
-
-  .. include:: pgr_edwardMoore.rst
-     :start-after: Version 4.0.0
-     :end-before: .. rubric
-
-* pgr_edmondsKarp
-
-  .. include:: pgr_edwardMoore.rst
-     :start-after: Version 4.0.0
-     :end-before: .. rubric
-
-* pgr_DAGshortestPath
+* pgr_dagShortestPath
 
   .. include:: pgr_dagShortestPath.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
+* pgr_dijkstra
+
+  .. include:: pgr_dijkstra.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
 * pgr_dijkstraCost
 
-  .. include:: pgr_trsp.rst
+  .. include:: pgr_dijkstraCost.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_edgeColoring
+
+  .. include:: pgr_edgeColoring.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_edmondsKarp
+
+  .. include:: pgr_edmondsKarp.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_edwardMoore
+
+  .. include:: pgr_edwardMoore.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
@@ -149,6 +167,12 @@ Summary of changes by function
 * pgr_pushRelabel
 
   .. include:: pgr_pushRelabel.rst
+     :start-after: Version 4.0.0
+     :end-before: .. rubric
+
+* pgr_sequentialVertexColoring
+
+  .. include:: pgr_sequentialVertexColoring.rst
      :start-after: Version 4.0.0
      :end-before: .. rubric
 
@@ -293,6 +317,18 @@ Standardize output columns of functions with different output columns within ove
   pgr_withPointsCost
 * `#2905 <https://github.com/pgRouting/pgrouting/issues/2905>`__
   pgr_withPointsCostMatrix
+
+.. rubric:: Standardized to |result_edge_color|
+
+* `#2924 <https://github.com/pgRouting/pgrouting/issues/2924>`__
+  pgr_edgeColoring
+
+.. rubric:: Standardized to |result_node_color|
+
+* `#2924 <https://github.com/pgRouting/pgrouting/issues/2924>`__
+  pgr_bipartite
+* `#2927 <https://github.com/pgRouting/pgrouting/issues/2927>`__
+  pgr_sequentialVertexColoring
 
 Removal of SQL deprecated signatures
 ...............................................................................
