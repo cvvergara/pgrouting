@@ -154,8 +154,10 @@ function check {
 }
 
 function tidy_with_clang {
+    # Needs the following gist:
+    # https://gist.github.com/cvvergara/dd38ca93e2484e553b82e0f81e8a6657
     local base_branch=${1:-"upstream/develop"}
-    .github/scripts/tidy-vs-commit.sh "$base_branch" || {
+    bash tidy-vs-commit.sh "$base_branch" || {
         echo "clang-tidy checks failed"
         return 1
     }
