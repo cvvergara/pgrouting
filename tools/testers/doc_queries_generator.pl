@@ -250,7 +250,6 @@ sub run_test {
 
     # refresh the database each time it enters a new directory
     mysystem("$psql $connopts -A -t -q -f tools/testers/sampledata.sql $DBNAME >> $TMP2 2>\&1 ");
-    mysystem("$psql $connopts -A -t -q -f tools/testers/vroomdata.sql $DBNAME >> $TMP2 2>\&1 ");
     mysystem("$psql $connopts -A -t -q -f tools/testers/matrix_new_values.sql $DBNAME >> $TMP2 2>\&1 ");
     mysystem("$psql $connopts -A -t -q -f tools/testers/functions.sql $DBNAME >> $TMP2 2>\&1 ");
     mysystem("$psql $connopts -A -t -q -f tools/testers/solomon_100_rc101.data.sql $DBNAME >> $TMP2 2>\&1 ");

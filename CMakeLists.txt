@@ -298,20 +298,6 @@ endif()
 
 
 #-------------------
-# Add the VROOM library and dependencies
-#-------------------
-
-if(NOT VROOM_INSTALL_PATH)
-  message(FATAL_ERROR "VROOM installation path not specified. Please specify the vroom root directory in -DVROOM_INSTALL_PATH")
-endif()
-
-message(STATUS "VROOM_INSTALL_PATH ${VROOM_INSTALL_PATH}")
-
-include_directories(SYSTEM ${VROOM_INSTALL_PATH}/src)
-link_libraries(${VROOM_INSTALL_PATH}/lib/libvroom.a)
-link_libraries(glpk)
-
-#-------------------
 # add the subdirectories that have the C/C++ code
 #-------------------
 

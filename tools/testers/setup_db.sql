@@ -22,14 +22,8 @@ CREATE EXTENSION IF NOT EXISTS plpython3u;
 BEGIN;
 
     \i sampledata.sql
-    \i matrix_new_values.sql
-    \i vrppdtw_data.sql
-    \i solomon_100_rc101.data.sql
     \i no_crash_test.sql
     \i general_pgtap_tests.sql
-    \i vroomdata.sql
     \i ortoolsdata.sql
-    \i functions.sql
-    \i solomon_100_rc101.data.sql
 
 END;

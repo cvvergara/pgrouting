@@ -44,14 +44,12 @@ Experimental Functions
 
 .. rubric:: categories
 
-:doc:`pgr-category`
+:doc:`or_tools-category`
 
 
 .. toctree::
   :maxdepth: 2
 
-  pgr-category
-  vroom-category
   or_tools-category
 
 .. rubric:: See Also

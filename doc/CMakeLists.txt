@@ -6,6 +6,11 @@
 # Daniel Kastl 03/2013
 #
 
+if (NOT WITH_DOC)
+  message(STATUS "no doc")
+  return()
+endif()
+
 #---------------------------------------------
 # Kind of sphinx output
 #---------------------------------------------
@@ -47,9 +52,6 @@ if (LOCALE)
     set(WITH_DOC ON)
 endif()
 
-if (NOT WITH_DOC)
-    return()
-endif()
 
 foreach(opt BUILD_HTML BUILD_LATEX BUILD_MAN SINGLEHTML EPUB DUMMY LINKCHECK)
     if (${${opt}} OR WITH_ALL_DOC)

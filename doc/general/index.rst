@@ -66,13 +66,6 @@ Pgrouting Concepts
 * :doc:`vrp_version` - Get vrpRouting's version information.
 * :doc:`vrp_full_version` - Get vrpRouting's details of version.
 
-.. toctree::
-   :hidden:
-
-   vrp_version
-   vrp_full_version
-
-
 Official functions
 ===============================================================================
 
