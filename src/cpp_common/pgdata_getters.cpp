@@ -1,6 +1,6 @@
 /*PGR-GNU*****************************************************************
 
-File: pgdata_getters.cpp
+FILE: pgdata_getters.cpp
 
 Copyright (c) 2024 pgRouting developers
 Mail: pgrouting-dev@discourse.osgeo.org

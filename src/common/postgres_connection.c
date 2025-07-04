@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: postgres_connection.c
+FILE: postgres_connection.c
 
 Copyright (c) 2015 Celia Virginia Vergara Castillo
 vicky_vergara@hotmail.com

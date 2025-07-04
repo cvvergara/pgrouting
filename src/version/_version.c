@@ -1,6 +1,6 @@
 /*PGR-GNU*****************************************************************
 
-File: _version.c
+FILE: _version.c
 
 Function's developer:
 Copyright (c) 2015 Celia Virginia Vergara Castillo

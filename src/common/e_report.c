@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: e_report.c
+FILE: e_report.c
 
 Function's developer:
 Copyright (c) 2016 Celia Virginia Vergara Castillo
