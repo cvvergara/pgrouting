@@ -10,6 +10,8 @@ set -e
 
 DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+tar -xf largetbl.tar.gz
+
 psql -p "$1" -U "$3"  -d "$2" -X -q --set client_min_messages=WARNING --set ON_ERROR_STOP=1 --pset pager=off \
     -c "CREATE EXTENSION IF NOT EXISTS pgtap; CREATE EXTENSION IF NOT EXISTS pgrouting WITH VERSION '${4}' CASCADE;"
 
@@ -33,4 +35,5 @@ psql -p "$1" -U "$3"  -d "$2" -X -q --set client_min_messages=WARNING --set ON_E
     -f "${DIR}/via_compare.pg" \
     -f "${DIR}/compare_dijkstra.pg" \
     -f "${DIR}/contraction_tapfuncs.pg" \
+    -f "${DIR}/largetbl.pg" \
     -f "${DIR}/spanningtree.pg"
