@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 BEGIN;
 
 SELECT CASE WHEN min_version('3.6.0') AND min_version('4.0.0') THEN PLAN(32)
-            WHEN min_version('3.6.0') plan(20) ELSE plan(1) END;
+            WHEN min_version('3.6.0') THEN plan(20) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION test_cases()
 RETURNS SETOF TEXT AS
