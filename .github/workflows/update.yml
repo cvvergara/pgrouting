@@ -8,7 +8,12 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - '.github/workflows/update.yml'
+      - '.github/workflows/ubuntu.yml'
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - 'tools/testers/**'
+      - 'CMakeLists.txt'
 
     branches-ignore:
       - 'gh-pages'
