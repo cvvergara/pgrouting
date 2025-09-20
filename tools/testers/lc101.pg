@@ -146,10 +146,3 @@ SELECT
 INTO c_lc101
 FROM deliveries as d JOIN lc101_c as p ON (d.pindex = p.id);
 SELECT * FROM c_lc101 LIMIT 1;
-/* -- q4 */
-SELECT travel_time, 828.94 AS best
-FROM pgr_pickDeliverEuclidean(
-  $$SELECT * FROM c_lc101 $$,
-  $$SELECT * FROM v_lc101 $$,
-  max_cycles => 2, initial_sol => 4) WHERE vehicle_seq = -2;
-/* -- q5 */
