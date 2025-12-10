@@ -143,13 +143,13 @@ msgid "Identifier of the edge."
 msgstr "Identifierare av kanten."
 
 msgid "``source``"
-msgstr "``Källa``"
+msgstr "``source``"
 
 msgid "Identifier of the first end point vertex of the edge."
 msgstr "Identifierare för den första slutpunktsvertexen på kanten."
 
 msgid "``target``"
-msgstr "``mål``"
+msgstr "``target``"
 
 msgid "Identifier of the second end point vertex of the edge."
 msgstr "Identifierare för den andra slutpunktsvertexen på kanten."
@@ -164,7 +164,7 @@ msgid "Weight of the edge (``source``, ``target``)"
 msgstr "Kantvikt (``källa``, ``mål``)"
 
 msgid "``reverse_cost``"
-msgstr "``omvända_kostnader``"
+msgstr "``reverse_cost``"
 
 msgid "-1"
 msgstr "-1"
@@ -1036,7 +1036,7 @@ msgid "Maiximum capacity units"
 msgstr "Enheter med maximal kapacitet"
 
 msgid "``start_open``"
-msgstr "``start_öppna``"
+msgstr "``start_open``"
 
 msgid "The time, relative to 0, when the starting location opens."
 msgstr "Tidpunkten, relativt 0, när startplatsen öppnas."
@@ -1164,7 +1164,7 @@ msgid "Sequential value starting from **1**."
 msgstr "Sekventiellt värde med början från **1**."
 
 msgid "``vehicle_seq``"
-msgstr "``fordon_seq``"
+msgstr "``vehicle_seq``"
 
 msgid ""
 "Sequential value starting from **1** for current vehicles. The :math:`n_{th}"
@@ -1177,7 +1177,7 @@ msgid "Value :math:`-2` indicates it is the summary row."
 msgstr "Värdet :math:`-2` anger att det är den sammanfattande raden."
 
 msgid "``vehicle_id``"
-msgstr "``fordon_id``"
+msgstr "``vehicle_id``"
 
 msgid "BIGINT"
 msgstr "BIGINT"
@@ -1195,7 +1195,7 @@ msgstr ""
 "underlastas."
 
 msgid "``stop_seq``"
-msgstr "``stopp_seq``"
+msgstr "``stop_seq``"
 
 msgid "INTEGER"
 msgstr "INTEGER"
@@ -1217,7 +1217,7 @@ msgstr ""
 "har stängt."
 
 msgid "``stop_type``"
-msgstr "``stopp_typ``"
+msgstr "``stop_type``"
 
 msgid "Kind of stop location the vehicle is at"
 msgstr "Typ av stopplats som fordonet befinner sig på"
@@ -1259,7 +1259,7 @@ msgid "Value :math:`-1` on solution summary row."
 msgstr "Värde :math:`-1` på raden för lösningssammanfattning."
 
 msgid "``travel_time``"
-msgstr "``resetid``"
+msgstr "``travel_time``"
 
 msgid "Travel time from previous ``stop_seq`` to current ``stop_seq``."
 msgstr "Restid från föregående ``stop_seq`` till aktuell ``stop_seq``."
@@ -1271,7 +1271,7 @@ msgid "The sum of all the ``travel_time``."
 msgstr "Summan av alla ``travel_time``."
 
 msgid "``arrival_time``"
-msgstr "ankomsttid"
+msgstr "``arrival_time``"
 
 msgid "Time spent waiting for current location to open."
 msgstr "Tidsåtgång för att vänta på att den aktuella platsen ska öppnas."
@@ -1283,7 +1283,7 @@ msgid ":math:`0`: at the starting location."
 msgstr ":math:`0`: at the starting location."
 
 msgid "``wait_time``"
-msgstr "``Vänta_tid``"
+msgstr "``wait_time``"
 
 msgid "Summary row has the **total waiting time**:"
 msgstr "Sammanfattning rad har **total väntetid**:"
@@ -1292,7 +1292,7 @@ msgid "The sum of all the ``wait_time``."
 msgstr "Summan av alla ``wait_time``."
 
 msgid "``service_time``"
-msgstr "``service_tid``"
+msgstr "``service_time``"
 
 msgid "Service duration at current location."
 msgstr "Servicens varaktighet på den aktuella platsen."
@@ -3234,7 +3234,7 @@ msgstr ""
 "Värde i <0,1> som anger den relativa positionen från kantens första ändpunkt."
 
 msgid "``side``"
-msgstr "``sida``"
+msgstr "``side``"
 
 msgid "``CHAR``"
 msgstr "``CHAR``"
@@ -3879,7 +3879,7 @@ msgid ":doc:`pgr_boykovKolmogorov`"
 msgstr ":doc:`pgr_boykovKolmogorov`"
 
 msgid "``reverse_capacity``"
-msgstr "``omvänd_kapacitet``"
+msgstr "``reverse_capacity``"
 
 msgid "Capacity-Cost edges"
 msgstr "Kanter mellan kapacitet och kostnad"
@@ -5807,7 +5807,7 @@ msgid "From"
 msgstr "Från"
 
 msgid "``pgr_withPointsCost``"
-msgstr "``pgr_medPointsCost``"
+msgstr "``pgr_withPointsCost``"
 
 msgid "v < 4.0"
 msgstr "v < 4.0"
@@ -5944,7 +5944,7 @@ msgid ":ref:`from_ksp_result`"
 msgstr ":ref:`from_ksp_result`"
 
 msgid "``pgr_edgeDisjointPaths``"
-msgstr "``pgr_kantDisjunktaStigar``"
+msgstr "``pgr_edgeDisjointPaths``"
 
 msgid ":ref:`from_result_disjoint`"
 msgstr ":ref:`from_result_disjoint`"
@@ -6217,7 +6217,7 @@ msgid ":ref:`from_result_dij_dd`"
 msgstr ":ref:`from_result_dij_dd`"
 
 msgid "``pgr_withPointsDD``"
-msgstr "``pgr_medPointsDD``"
+msgstr "``pgr_withPointsDD``"
 
 msgid ":ref:`from_result_generic_no_seq`"
 msgstr ":ref:`from_result_generic_no_seq`"
@@ -6247,13 +6247,13 @@ msgid "``pgr_primDFS``"
 msgstr "``pgr_primDFS``"
 
 msgid "``pgr_breadthFisrtSearch``"
-msgstr "``pgr_breddFisrtSearch``"
+msgstr "``pgr_breadthFisrtSearch``"
 
 msgid "v < 4.0.0"
 msgstr "v < 4.0.0"
 
 msgid "``pgr_depthFisrtSearch``"
-msgstr "``pgr_djupFisrtSearch``"
+msgstr "``pgr_depthFisrtSearch``"
 
 msgid "to |result-spantree|"
 msgstr "till |result-spantree|"
@@ -7084,7 +7084,7 @@ msgid "Column ``rid`` is ignored"
 msgstr "Kolumnen ``rid`` ignoreras"
 
 msgid "``via_path``"
-msgstr "``via_väg``"
+msgstr "``via_path``"
 
 msgid "Must be in reverse order."
 msgstr "Måste vara i omvänd ordning."
@@ -7096,7 +7096,7 @@ msgid "When more than one via edge must be separated with ``,``."
 msgstr "När mer än en via edge måste separeras med ``,``."
 
 msgid "``target_id``"
-msgstr "``mål_id``"
+msgstr "``target_id``"
 
 msgid "Is the last edge of the forbidden path."
 msgstr "Är den sista kanten av den förbjudna vägen."
@@ -7105,7 +7105,7 @@ msgid "Is of type ``INTEGER``."
 msgstr "Är av typen ``INTEGER``."
 
 msgid "``to_cost``"
-msgstr "``till_kostnad``"
+msgstr "``to_cost``"
 
 msgid "Is of type ``FLOAT``."
 msgstr "Är av typen ``FLOAT``."
@@ -8496,7 +8496,7 @@ msgid "When ``false`` the graph is considered as Undirected."
 msgstr "När ``false`` betraktas grafen som Undirected."
 
 msgid "``strict``"
-msgstr "``strikt``"
+msgstr "``strict``"
 
 msgid "``false``"
 msgstr "``false``"
@@ -8509,7 +8509,7 @@ msgstr ""
 "När ``false`` ignorerar saknade sökvägar returneras alla sökvägar som hittats"
 
 msgid "``U_turn_on_edge``"
-msgstr "``U_vändning_på_kanten``"
+msgstr "``U_turn_on_edge``"
 
 msgid ""
 "When ``true`` departing from a visited vertex will not try to avoid using "
@@ -10210,7 +10210,7 @@ msgid "Returns a bigint ``(pgr_bandwidth)``"
 msgstr "Returnerar en bigint ``(pgr_bandwidth)``"
 
 msgid "``pgr_bandwidth``"
-msgstr "``pgr_bandbredd``"
+msgstr "``pgr_bandwidth``"
 
 msgid "gives the bandwidth of the graph."
 msgstr "ger grafens bandbredd."
@@ -11117,7 +11117,7 @@ msgstr ""
 "wiki/Breadth-first_search>`__"
 
 msgid "``pgr_bridges``"
-msgstr "``pgr_bryggor``"
+msgstr "``pgr_bridges``"
 
 msgid "``pgr_bridges`` - Return the bridges of an undirected graph."
 msgstr "``pgr_bridges`` - Returnerar broarna i en odränerad graf."
@@ -11411,7 +11411,7 @@ msgid "The function returns a single row. The columns of the row are:"
 msgstr "Funktionen returnerar en enda rad. Kolumnerna i raden är:"
 
 msgid "``type``"
-msgstr "``typ``"
+msgstr "``type``"
 
 msgid "Type of the row."
 msgstr "Typ av rad."
@@ -14215,7 +14215,7 @@ msgid "Ignored columns:"
 msgstr "Ignorerade kolumner:"
 
 msgid "``startpoint``"
-msgstr "``startpunkt``"
+msgstr "``startpoint``"
 
 msgid "``endpoint``"
 msgstr "``endpoint``"
@@ -16359,7 +16359,7 @@ msgid "pgr_pushRelabel(`Edges SQL`_, `Combinations SQL`_)"
 msgstr "pgr_pushRelabel(`Kanter SQL`_, `Combinations SQL`_)"
 
 msgid "``pgr_separateCrossing``"
-msgstr "``pgr_separeraKorsning``"
+msgstr "``pgr_separateCrossing``"
 
 msgid ""
 "``pgr_separateCrossing`` - From crossing geometries generates geometries "
@@ -16384,7 +16384,7 @@ msgid "Get the segments of the crossing geometries"
 msgstr "Hämta segmenten för korsningsgeometrierna"
 
 msgid "``tolerance``"
-msgstr "\"Tolerans"
+msgstr "``tolerance``"
 
 msgid "0.01"
 msgstr "0.01"
@@ -16815,7 +16815,7 @@ msgid "Identifier of the source of the edges"
 msgstr "Identifierare av källan till kanterna"
 
 msgid "``target_array``"
-msgstr "``Målgrupp``"
+msgstr "``target_array``"
 
 msgid "Identifiers of the targets of the edges"
 msgstr "Identifierare av målen för kanterna"
@@ -17455,7 +17455,7 @@ msgid "Special optional parameters"
 msgstr "Särskilda valfria parametrar"
 
 msgid "``stop_on_first``"
-msgstr "``stopp_på_första``"
+msgstr "``stop_on_first``"
 
 msgid ""
 "When ``true`` stops on first path found that dos not violate restrictions"
@@ -18010,7 +18010,7 @@ msgstr ""
 "math:`1` till punkt :math:`2` med högbanor och detaljer."
 
 msgid "``pgr_withPointsVia``"
-msgstr "``pgr_medPointsVia``"
+msgstr "``pgr_withPointsVia``"
 
 msgid ""
 "``pgr_withPointsVia`` - Route that goes through a list of vertices and/or "
