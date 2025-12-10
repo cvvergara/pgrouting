@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-05 23:37+0000\n"
+"POT-Creation-Date: 2025-12-10 19:55+0000\n"
 "PO-Revision-Date: 2025-12-10 20:03+0000\n"
 "Last-Translator: Celia Virginia Vergara Castillo <vicky@erosion.dev>\n"
 "Language-Team: Spanish <https://weblate.osgeo.org/projects/pgrouting/pgrouting-develop/es/>\n"
@@ -4746,9 +4746,7 @@ msgstr "Migrando ejemplo `de v3.8 <https://docs.pgrouting.org/3.8/en/pgr_withPoi
 msgid "Migration of multiple paths functions"
 msgstr "Migración de funciones de múltiples rutas"
 
-msgid ""
-"The standardized :ref:`pgRouting-concepts:Result columns for single path "
-"functions` are |nksp-result|"
+msgid "The standardized :ref:`pgRouting-concepts:Result columns for single path functions` are |nksp-result|"
 msgstr "Las columnas estandarizadas :ref:`pgRouting-concepts:Result columns for single path functions` son |nksp-result|"
 
 msgid "``pgr_KSP``"
@@ -4934,12 +4932,8 @@ msgstr "Migrando ejemplo `de v3.8 <https://docs.pgrouting.org/3.8/en/pgr_withPoi
 msgid "|pid-1-m|"
 msgstr ""
 
-msgid ""
-"To get the old signature column names: filter out the column ``start_vid`` "
-"and rename ``end_vid`` to ``end_pid``."
-msgstr ""
-"Para obtener los nombres de columna de la firma antigua: filtrar la columna "
-"``start_vid`` y cambiar el nombre de ``end_vid`` a ``end_pid``."
+msgid "To get the old signature column names: filter out the column ``start_vid`` and rename ``end_vid`` to ``end_pid``."
+msgstr "Para obtener los nombres de columna de la firma antigua: filtrar la columna ``start_vid`` y cambiar el nombre de ``end_vid`` a ``end_pid``."
 
 msgid "Examples for Many to One with one route result"
 msgstr ""
@@ -5077,7 +5071,7 @@ msgstr ""
 
 #, fuzzy
 msgid "To get the old version column names |result-dij-dd-m|:"
-msgstr "Para obtener los nombres originales de las columnas:"
+msgstr "Para obtener los nombres de columna de la versión antigua |result-dij-dd-m|:"
 
 msgid "filter out the column ``pred`` and ``depth`` and"
 msgstr "filtrar las columnas ``pred`` y ``depth`` y"
@@ -5127,9 +5121,8 @@ msgstr "Enumerar las columnas |result-m-1-no-seq|"
 msgid "Default value of **driving side** parameter"
 msgstr "Valor por defecto del parámetro **lado conductor**"
 
-#, fuzzy
 msgid "**driving side** parameter is unnamed, and valid values differ for directed and undirected graphs."
-msgstr "El parámetro **lado de manjeo** es obligatorio sin nombre, y los valores válidos difieren para grafos dirigidos y no dirigidos."
+msgstr "El parámetro **lado conductor** no tiene nombre, y los valores válidos difieren para grafos dirigidos y no dirigidos."
 
 msgid "In directed graph: valid values are [``r``, ``R``, ``l``, ``L``]"
 msgstr "En grafos dirigidos: Los valores válidos son [``r``, ``R``, ``l``, ``L``]"
@@ -5581,13 +5574,8 @@ msgstr "|ksp-result|"
 msgid "|generic-result|"
 msgstr "|generic-result|"
 
-msgid ""
-"And ``driving side`` parameter changed from named optional to unnamed "
-"**driving side** and its validity differ for directed and undirected graphs."
-msgstr ""
-"Y el parámetro ``driving side`` ha cambiado de opcional con nombre a **lado "
-"conductor** sin nombre y su validez difiere para grafos dirigidos y no "
-"dirigidos."
+msgid "And ``driving side`` parameter changed from named optional to unnamed **driving side** and its validity differ for directed and undirected graphs."
+msgstr "Y el parámetro ``driving side`` ha cambiado de opcional con nombre a **lado conductor** sin nombre y su validez difiere para grafos dirigidos y no dirigidos."
 
 msgid "``pgr_withPointsKSP`` (`One to One`)"
 msgstr "``pgr_withPointsKSP`` (`Uno a Uno`)"
@@ -6367,9 +6355,8 @@ msgstr ""
 msgid "Update other values"
 msgstr "Actualizar la topología"
 
-#, fuzzy
 msgid "In this example only ``cost`` and ``reverse_cost`` are updated, where they are based on the length of the geometry and the directionality is kept using the ``sign`` function."
-msgstr "Para este ejemplo los valores ``coste`` y ``coste_inverso`` van a ser el doble de la longitud de la geometría."
+msgstr "En este ejemplo sólo se actualizan ``cost`` y ``reverse_cost``, donde se basan en la longitud de la geometría y se mantiene la direccionalidad mediante la función ``sign``."
 
 msgid "Update the topology"
 msgstr "Actualizar la topología"
@@ -6399,9 +6386,7 @@ msgstr ""
 msgid "Maybe there is a small barrier for vehicles but not for pedestrians."
 msgstr ""
 
-msgid ""
-"Once analyzed one by one the touchings, for the ones that need a local fix, "
-"the edges need to be `split <https://postgis.net/docs/ST_Split.html>`__."
+msgid "Once analyzed one by one the touchings, for the ones that need a local fix, the edges need to be `split <https://postgis.net/docs/ST_Split.html>`__."
 msgstr "Una vez analizados uno a uno los toques, para los que necesiten un arreglo local, hay que separar las aristas con `split <https://postgis.net/docs/ST_Split.html>`__."
 
 msgid "Fixing a gap"
@@ -6821,9 +6806,8 @@ msgstr "Identificador de la arista utilizado para ir del ``node`` al siguiente n
 msgid "Cost to traverse from ``node`` using ``edge`` to the next node in the path sequence."
 msgstr "Costo para atravesar desde ``node`` usando ``edge`` hasta el siguiente nodo en la secuencia de la ruta."
 
-#, fuzzy
 msgid "When ``start_vid`` or ``end_vid`` columns have negative values, the identifier is for a Point."
-msgstr "Cuando las columnas del vértice inicial o del destino continen valores negativos, el identificador es para un Punto."
+msgstr "Cuando las columnas ``start_vid`` o ``end_vid`` tienen valores negativos, el identificador corresponde a un Punto."
 
 #, fuzzy
 msgid "Result columns for multiple paths functions"
@@ -6926,19 +6910,14 @@ msgstr "Agregando Funcionalidad a pgRouting"
 msgid "Consult the `developer's documentation <https://docs.pgrouting.org/doxy/2.4/index.html>`__"
 msgstr "Consultar la `documentation de desarrolladores <https://docs.pgrouting.org/doxygen/>`__"
 
-#, fuzzy
-msgid "See also"
-msgstr "Ver también"
-
 msgid "Installation"
 msgstr "Instalación"
 
 msgid "Instructions for downloading and installing binaries for different operating systems, additional notes and corrections not included in this documentation can be found in `Installation wiki <https://github.com/pgRouting/pgrouting/wiki/Notes-on-Download%2C-Installation-and-building-pgRouting>`__"
 msgstr "Las instrucciones para descargar e instalar los binarios para diferentes sistemas operativos, notas adicionales y correcciones no incluidas en esta documentación se pueden encontrar en `Installation wiki <https://github.com/pgRouting/pgrouting/wiki/Notes-on-Download%2C-Installation-and-building-pgRouting>`__"
 
-#, fuzzy
 msgid "To use pgRouting, PostGIS needs to be installed, please read the information about installation in this `Install Guide <https://www.postgis.us/presentations/postgis_install_guide_22.html>`__"
-msgstr "Para utilizar pgRouting postGIS necesita ser instalado, por favor lea la información sobre la instalación en esta `Guía de instalacoón <https://www.postgis.us/presentations/postgis_install_guide_22.html>`__"
+msgstr "Para utilizar pgRouting, PostGIS necesita ser instalado, por favor lea la información sobre la instalación en esta `Guía de Instalación <https://www.postgis.us/presentations/postgis_install_guide_22.html>`__"
 
 msgid "Short Version"
 msgstr "Versión corta"
@@ -6988,9 +6967,8 @@ msgstr "Comprobación de la versión de PostGIS y pgRouting después de habilita
 msgid "Upgrading the database"
 msgstr "Actualización de la base de datos"
 
-#, fuzzy
 msgid "To upgrade pgRouting in the database to version 4.1.0 use the following command:"
-msgstr "Para actualizar pgRouting en la base de datos a la versión 4.0.0 utilice el siguiente comando:"
+msgstr "Para actualizar pgRouting en la base de datos a la versión 4.1.0 utilice el siguiente comando:"
 
 msgid "More information can be found in https://www.postgresql.org/docs/current/sql-createextension.html"
 msgstr "Puede hallar más información en https://www.postgresql.org/docs/current/sql-createextension.html"
@@ -7280,20 +7258,7 @@ msgstr "Colaboradores, Pasado y Presente:"
 msgid "Individuals (in alphabetical order)"
 msgstr "Personas (en orden alfabético)"
 
-msgid ""
-"Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio "
-"Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf "
-"Hossain, Ashish Kumar, Aurélie Bousquet, Bipasha Gayary, Cayetano Benavent, "
-"Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, "
-"Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Fan Wu, Florian Thurkow, "
-"Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu "
-"Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko "
-"Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim "
-"Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish "
-"Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Saloni "
-"Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen "
-"Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, "
-"Vidhan Jain, Virginia Vergara, Yige Huang"
+msgid "Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf Hossain, Ashish Kumar, Aurélie Bousquet, Bipasha Gayary, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Fan Wu, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
 msgstr "Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf Hossain, Ashish Kumar, Aurélie Bousquet, Bipasha Gayary, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Fan Wu, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
 
 msgid "Corporate Sponsors (in alphabetical order)"
@@ -7560,9 +7525,7 @@ msgstr "todos los costos de viaje en los segmentos vumplen con la desigualdad de
 msgid "When ``start_vid = 0 OR end_vid = 0``"
 msgstr "Cuando ``start_vid = 0 Ó end_vid = 0``"
 
-msgid ""
-"The solutions generated are guaranteed to be *twice as long as the optimal "
-"tour in the worst case*"
+msgid "The solutions generated are guaranteed to be *twice as long as the optimal tour in the worst case*"
 msgstr "Se garantiza que las soluciones generadas sean *en el peor de los casos el doble de largas que el recorrido óptimo*"
 
 msgid "When ``start_vid != 0 AND end_vid != 0 AND start_vid != end_vid``"
@@ -7574,9 +7537,7 @@ msgstr "No está **garantizado** que la solución sea, en el peor de los casos, 
 msgid "With ``directed => true``"
 msgstr "Con ``directed => true``"
 
-msgid ""
-"It is **not guaranteed** that the solution will be, in the worst case, twice "
-"as long as the optimal tour"
+msgid "It is **not guaranteed** that the solution will be, in the worst case, twice as long as the optimal tour"
 msgstr "No está **garantizado** que la solución sea, en el peor de los casos, dos veces más larga que el recorrido óptimo"
 
 msgid "is directed"
@@ -7786,10 +7747,7 @@ msgstr "Obtener una geometría del recorrido"
 msgid "Visual results"
 msgstr "Resultados visuales"
 
-msgid ""
-"Visually, The first image is the `optimal solution <https://www.math."
-"uwaterloo.ca/tsp/world/witour.html>`__ and the second image is the solution "
-"obtained with ``pgr_TSPeuclidean``."
+msgid "Visually, The first image is the `optimal solution <https://www.math.uwaterloo.ca/tsp/world/witour.html>`__ and the second image is the solution obtained with ``pgr_TSPeuclidean``."
 msgstr "Visualmente, la primera imagen es la `solución óptima <https://www.math.uwaterloo.ca/tsp/world/witour.html>`__ y la segunda imagen es la solución obtenida con ``pgr_TSPeuclidean``."
 
 msgid "``pgr_aStar`` — Shortest path using the A* algorithm."
@@ -7900,9 +7858,7 @@ msgstr "pgr_aStarCost(Combinaciones)"
 msgid "New proposed function."
 msgstr "Nueva función propuesta."
 
-msgid ""
-"The ``pgr_aStarCost`` function summarizes the cost of the shortest path "
-"using the A* algorithm."
+msgid "The ``pgr_aStarCost`` function summarizes the cost of the shortest path using the A* algorithm."
 msgstr "La función ``pgr_aStarCost`` suma el coste del camino más corto utilizando el algoritmo A*."
 
 msgid "Let be the case the values returned are stored in a table, so the unique index would be the pair: `(start_vid, end_vid)`"
@@ -16528,6 +16484,9 @@ msgstr "pgr_withPointsDD es pgr_drivingDistance **con puntos**"
 
 msgid "pgr_withPointsvia is pgr_dijkstraVia **with points**"
 msgstr "pgr_withPoints es pgr_dijkstraVia **con puntos**"
+
+#~ msgid "See also"
+#~ msgstr "Ver también"
 
 #~ msgid "``pgr_bellmanFord - Experimental``"
 #~ msgstr "``pgr_bellmanFord`` - Experimental"
