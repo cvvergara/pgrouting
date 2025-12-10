@@ -16442,7 +16442,10 @@ msgid ""
 msgstr ""
 
 msgid "``pgr_lineGraph``"
-msgstr "``pgr_lineGraph``"
+msgstr ""
+
+msgid "Code enhancement"
+msgstr ""
 
 msgid ""
 "`#2599 <https://github.com/pgRouting/pgrouting/issues/2599>`__: Driving "
