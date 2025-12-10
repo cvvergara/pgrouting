@@ -7,20 +7,8 @@
 # Celia Virginia Vergara Castillo <vicky@erosion.dev>, 2023, 2024, 2025.
 # DeepL <noreply-mt-deepl@weblate.org>, 2024, 2025.
 msgid ""
-msgstr ""
-"Project-Id-Version: pgRouting v4.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-10 19:55+0000\n"
-"PO-Revision-Date: 2025-12-10 20:25+0000\n"
-"Last-Translator: DeepL <noreply-mt-deepl@weblate.org>\n"
-"Language-Team: Spanish <https://weblate.osgeo.org/projects/pgrouting/pgrouting-develop/es/>\n"
-"Language: es\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.4.3\n"
-"Generated-By: Babel 2.10.3\n"
+
+msgstr "Project-Id-Version: pgRouting v4.1\nReport-Msgid-Bugs-To: \nPOT-Creation-Date: 2025-12-05 23:37+0000\nPO-Revision-Date: 2025-12-10 17:35+0000\nLast-Translator: Celia Virginia Vergara Castillo <vicky@erosion.dev>\nLanguage-Team: Spanish <https://weblate.osgeo.org/projects/pgrouting/pgrouting-develop/es/>\nLanguage: es\nMIME-Version: 1.0\nContent-Type: text/plain; charset=UTF-8\nContent-Transfer-Encoding: 8bit\nPlural-Forms: nplurals=2; plural=n != 1;\nX-Generator: Weblate 5.4.3\nGenerated-By: Babel 2.10.3\n"
 
 msgid "BFS - Category"
 msgstr "BFS - Categoría"
@@ -4747,7 +4735,7 @@ msgid "Migration of multiple paths functions"
 msgstr "Migración de funciones de múltiples rutas"
 
 msgid "The standardized :ref:`pgRouting-concepts:Result columns for single path functions` are |nksp-result|"
-msgstr "Las columnas estandarizadas :ref:`pgRouting-concepts:Result columns for single path functions` son |nksp-result|"
+msgstr "Las columnas estandarizadas :ref:`pgRouting-concepts:Result para funciones de ruta única` son |nksp-result|"
 
 msgid "``pgr_KSP``"
 msgstr "``pgr_KSP``"
@@ -5597,7 +5585,7 @@ msgstr "Tener en cuenta la existencia de las columnas adicionales de resultados.
 
 #, fuzzy
 msgid "New output columns are |generic-result|"
-msgstr "Las nuevas columnas de salida son |nksp-result|"
+msgstr "Las nuevas columnas de salida son |generic-result|"
 
 msgid "Using `this <https://docs.pgrouting.org/3.5/en/pgr_withPointsKSP.html#signatures>`__ example."
 msgstr "Usando `este <https://docs.pgrouting.org/3.5/en/pgr_withPointsKSP.html#signatures>`__ ejemplo."
