@@ -5394,19 +5394,19 @@ msgid ""
 msgstr ""
 
 msgid ":ref:`pgRouting-concepts:Result columns for cost functions`"
-msgstr ""
+msgstr ":ref:`pgRouting-concepts:Result columns for cost functions`"
 
 msgid "|matrix-result|"
 msgstr ""
 
 msgid ":ref:`pgRouting-concepts:Result columns for single path functions`"
-msgstr ""
+msgstr ":ref:`pgRouting-concepts:Result columns for single path functions`"
 
 msgid "|short-generic-result|"
 msgstr ""
 
 msgid ":ref:`pgRouting-concepts:Result columns for spanning tree functions`"
-msgstr ""
+msgstr ":ref:`pgRouting-concepts:Result columns for spanning tree functions`"
 
 msgid "|result-spantree|"
 msgstr ""
@@ -5633,13 +5633,13 @@ msgid "v < 3.6"
 msgstr ""
 
 msgid ":ref:`from_ksp_result`"
-msgstr ""
+msgstr ":ref:`from_ksp_result`"
 
 msgid "``pgr_edgeDisjointPaths``"
 msgstr ""
 
 msgid ":ref:`from_result_disjoint`"
-msgstr ""
+msgstr ":ref:`from_result_disjoint`"
 
 #, fuzzy
 msgid "Migration of |ksp-result|"
@@ -5897,13 +5897,13 @@ msgid "``pgr_drivingDistance``"
 msgstr ""
 
 msgid ":ref:`from_result_dij_dd`"
-msgstr ""
+msgstr ":ref:`from_result_dij_dd`"
 
 msgid "``pgr_withPointsDD``"
 msgstr ""
 
 msgid ":ref:`from_result_generic_no_seq`"
-msgstr ""
+msgstr ":ref:`from_result_generic_no_seq`"
 
 msgid "``pgr_kruskalDD``"
 msgstr ""
@@ -5912,7 +5912,7 @@ msgid "v < 3.7"
 msgstr ""
 
 msgid ":ref:`from_result_bfs`"
-msgstr ""
+msgstr ":ref:`from_result_bfs`"
 
 msgid "``pgr_kruskalBFS``"
 msgstr ""
@@ -6112,14 +6112,14 @@ msgid "``pgr_edgeColoring``"
 msgstr "pgr_TSP"
 
 msgid ":ref:`from_old_edge_color`"
-msgstr ""
+msgstr ":ref:`from_old_edge_color`"
 
 #, fuzzy
 msgid "``pgr_bipartite``"
 msgstr "pgr_TSP"
 
 msgid ":ref:`from_old_node_color`"
-msgstr ""
+msgstr ":ref:`from_old_node_color`"
 
 #, fuzzy
 msgid "``pgr_sequentialVertexColoring``"
@@ -6130,14 +6130,14 @@ msgid "``pgr_topologicalSort``"
 msgstr "pgr_TSP"
 
 msgid ":ref:`from_toposort`"
-msgstr ""
+msgstr ":ref:`from_toposort`"
 
 #, fuzzy
 msgid "``pgr_transitiveClosure``"
 msgstr "pgr_TSP"
 
 msgid ":ref:`from_old_closure`"
-msgstr ""
+msgstr ":ref:`from_old_closure`"
 
 #, fuzzy
 msgid "Migration from |result-old-closure|"
