@@ -65,12 +65,22 @@ kingOrdering(pgrouting::UndirectedGraph &graph) {
     std::vector<V> inv_permutation(n);
 
     CHECK_FOR_INTERRUPTS();
+    try {
     boost::king_ordering(
         graph.graph,
         inv_permutation.rbegin(),
         color_map,
         degree_map,
         index_map);
+    } catch (boost::exception const& ex) {
+        (void)ex;
+        throw;
+    } catch (std::exception &e) {
+        (void)e;
+        throw;
+    } catch (...) {
+        throw;
+    }
 
     size_t j = 0;
     for (auto i = inv_permutation.begin(); i != inv_permutation.end(); ++i, ++j) {
