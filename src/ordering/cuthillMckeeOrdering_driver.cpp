@@ -34,6 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/to_postgres.hpp"
 #include "c_types/ii_t_rt.h"
 
 #include "ordering/cuthillMckeeOrdering.hpp"
@@ -59,7 +60,7 @@ namespace {
  */
 
 template <class G>
-std::vector <int64_t>
+std::vector<typename G::V>
 cuthillMckeeOrdering(G &graph) {
     pgrouting::functions::CuthillMckeeOrdering <G> fn_cuthillMckeeOrdering;
     auto results = fn_cuthillMckeeOrdering.cuthillMckeeOrdering(graph);
@@ -114,7 +115,9 @@ void pgr_do_cuthillMckeeOrdering(
 >();
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
-        results = cuthillMckeeOrdering(undigraph);
+        auto results1 = cuthillMckeeOrdering(undigraph);
+        pgrouting::to_postgres::get_vertexId(undigraph, results1, *return_count, return_tuples);
+        return;
 
         auto count = results.size();
 

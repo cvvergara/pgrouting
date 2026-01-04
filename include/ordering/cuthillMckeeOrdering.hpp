@@ -86,7 +86,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
       * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
       */
 
-        std::vector<int64_t>
+        std::vector<V>
         cuthillMckeeOrdering(G &graph) {
         std::vector<int64_t>results;
 
@@ -120,9 +120,10 @@ class CuthillMckeeOrdering : public Pgr_messages {
              throw;
          }
 
+#if 0
          results = get_results(inv_perm, graph);
-
-         return results;
+#endif
+         return inv_perm;
      }
 
       //@}
