@@ -31,79 +31,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_ORDERING_CUTHILLMCKEEORDERING_HPP_
 #pragma once
 
-#include <vector>
-#include <cstdint>
-
-#include <boost/config.hpp>
 #include "cpp_common/base_graph.hpp"
-#include "cpp_common/interruption.hpp"
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/cuthill_mckee_ordering.hpp>
-
-
-/** @file cuthillMckeeOrdering.hpp
- * @brief The main file which calls the respective boost function.
- *
- * Contains actual implementation of the function and the calling
- * of the respective boost function.
- */
 
 
 namespace pgrouting {
 namespace functions {
 
-
-/** @brief cuthillMckeeOrdering function
- *
- * It does all the processing and returns the results.
- *
- * @param graph      the graph containing the edges
- *
- * @returns results, when results are found
- *
- * @see [boost::cuthill_mckee_ordering]
- * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
- */
-
 std::vector<pgrouting::UndirectedGraph::V>
-cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph) {
-    using V = typename pgrouting::UndirectedGraph::V;
-
-    /* number of vertices */
-    size_t n = boost::num_vertices(graph.graph);
-
-    /* map which store the indices with their nodes. */
-    auto index_map = boost::get(boost::vertex_index, graph.graph);
-
-    /* vector which will store the order of the indices. */
-    std::vector<V> inv_permutation(n);
-
-    /* vector which will store the color of all the vertices in the graph */
-    std::vector<boost::default_color_type> colors(n);
-
-    /* An iterator property map which records the color of each vertex */
-    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map, colors[0]);
-
-    /* map which store the degree of each vertex. */
-    auto degree_map = boost::make_out_degree_map(graph.graph);
-
-
-    CHECK_FOR_INTERRUPTS();
-
-    try {
-        boost::cuthill_mckee_ordering(graph.graph, inv_permutation.rbegin(), color_map, degree_map);
-    } catch (boost::exception const& ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
-    } catch (...) {
-        throw;
-    }
-
-    return inv_permutation;
-}
+cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph);
 
 }  // namespace functions
 }  // namespace pgrouting
