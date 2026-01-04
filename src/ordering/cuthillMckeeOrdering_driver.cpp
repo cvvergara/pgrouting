@@ -49,6 +49,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  ***********************************************************************/
 
+#if 0
 namespace {
 
 /** @brief Calls the main function defined in the C++ Header file.
@@ -66,7 +67,7 @@ cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph) {
 }
 
 }  // namespace
-
+#endif
 
 void pgr_do_cuthillMckeeOrdering(
     const char *edges_sql,
@@ -82,6 +83,7 @@ void pgr_do_cuthillMckeeOrdering(
     using pgrouting::pgr_free;
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
+    using pgrouting::functions::cuthillMckeeOrdering;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -115,27 +117,15 @@ void pgr_do_cuthillMckeeOrdering(
         undigraph.insert_edges(edges);
         auto results1 = cuthillMckeeOrdering(undigraph);
         pgrouting::to_postgres::get_vertexId(undigraph, results1, *return_count, return_tuples);
-        return;
 
-        auto count = results.size();
-
-        if (count == 0) {
+        if ((*return_count) == 0) {
             *notice_msg = to_pg_msg("No results found");
-            *err_msg = to_pg_msg(err);
             *return_tuples = nullptr;
             *return_count = 0;
             return;
         }
 
-        (*return_tuples) = pgr_alloc(count, (*return_tuples));
-
-        for (size_t i = 0; i < count; ++i) {
-              (*return_tuples)[i] = results[i];
-        }
-
-        (*return_count) = count;
-
-        pgassert(*err_msg == NULL);
+        pgassert(*err_msg == nullptr);
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
     } catch (AssertFailedException &except) {

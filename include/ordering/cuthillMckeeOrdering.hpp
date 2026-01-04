@@ -62,10 +62,8 @@ namespace functions {
 
 #if 0
 template <class G>
-#endif
 class CuthillMckeeOrdering : public Pgr_messages {
  public:
-#if 0
     typedef typename G::V V;
     typedef typename G::E E;
     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
@@ -131,9 +129,9 @@ class CuthillMckeeOrdering : public Pgr_messages {
          return inv_perm;
      }
 
+#if 0
       //@}
 
-#if 0
  private:
      /** @brief to get the results
       *
@@ -151,8 +149,8 @@ class CuthillMckeeOrdering : public Pgr_messages {
          }
          return results;
      }
-#endif
 };
+#endif
 }  // namespace functions
 }  // namespace pgrouting
 
