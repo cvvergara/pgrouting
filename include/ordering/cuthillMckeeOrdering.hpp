@@ -60,14 +60,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
+#if 0
 template <class G>
+#endif
 class CuthillMckeeOrdering : public Pgr_messages {
  public:
+#if 0
     typedef typename G::V V;
     typedef typename G::E E;
     typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::undirectedS> Graph;
     typedef boost::graph_traits<Graph>::vertices_size_type size_type;
     typedef boost::graph_traits<Graph>::vertex_descriptor Vertex;
+#endif
 
     /** @name CuthillMckeeOrdering
       * @{
@@ -86,15 +90,16 @@ class CuthillMckeeOrdering : public Pgr_messages {
       * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
       */
 
-        std::vector<V>
-        cuthillMckeeOrdering(G &graph) {
+        std::vector<pgrouting::UndirectedGraph::V>
+        cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph) {
+    typedef typename pgrouting::UndirectedGraph::V V;
         std::vector<int64_t>results;
 
         // map which store the indices with their nodes.
         auto i_map = boost::get(boost::vertex_index, graph.graph);
 
         // vector which will store the order of the indices.
-        std::vector<Vertex> inv_perm(boost::num_vertices(graph.graph));
+        std::vector<V> inv_perm(boost::num_vertices(graph.graph));
 
         // vector which will store the color of all the vertices in the graph
         std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
@@ -128,6 +133,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
 
       //@}
 
+#if 0
  private:
      /** @brief to get the results
       *
@@ -145,6 +151,7 @@ class CuthillMckeeOrdering : public Pgr_messages {
          }
          return results;
      }
+#endif
 };
 }  // namespace functions
 }  // namespace pgrouting
