@@ -54,24 +54,29 @@ std::vector<int64_t>
 kingOrdering(pgrouting::UndirectedGraph &graph) {
     using V = typename pgrouting::UndirectedGraph::V;
 
+    /* number of vertices */
     size_t n = boost::num_vertices(graph.graph);
-    std::vector<int64_t> results(n);
 
+    /* map which store the indices with their nodes. */
     auto index_map = boost::get(boost::vertex_index, graph.graph);
 
-    std::vector<V> colors(n);
-    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
-    auto degree_map = boost::make_degree_map(graph.graph);
+    /* vector which will store the order of the indices. */
     std::vector<V> inv_permutation(n);
 
+    /* vector which will store the color of all the vertices in the graph */
+    std::vector<V> colors(n);
+
+    /* An iterator property map which records the color of each vertex */
+    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
+
+    /* map which store the degree of each vertex. */
+    auto degree_map = boost::make_degree_map(graph.graph);
+
+
     CHECK_FOR_INTERRUPTS();
+
     try {
-    boost::king_ordering(
-        graph.graph,
-        inv_permutation.rbegin(),
-        color_map,
-        degree_map,
-        index_map);
+    boost::king_ordering(graph.graph, inv_permutation.rbegin(), color_map, degree_map, index_map);
     } catch (boost::exception const& ex) {
         (void)ex;
         throw;
@@ -81,6 +86,9 @@ kingOrdering(pgrouting::UndirectedGraph &graph) {
     } catch (...) {
         throw;
     }
+
+
+    std::vector<int64_t> results(n);
 
     size_t j = 0;
     for (auto i = inv_permutation.begin(); i != inv_permutation.end(); ++i, ++j) {

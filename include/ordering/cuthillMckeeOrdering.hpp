@@ -67,28 +67,31 @@ namespace functions {
 
 std::vector<pgrouting::UndirectedGraph::V>
 cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph) {
-    typedef typename pgrouting::UndirectedGraph::V V;
+    using V = typename pgrouting::UndirectedGraph::V;
 
-    // map which store the indices with their nodes.
+    /* number of vertices */
+    size_t n = boost::num_vertices(graph.graph);
+
+    /* map which store the indices with their nodes. */
     auto index_map = boost::get(boost::vertex_index, graph.graph);
 
-    // vector which will store the order of the indices.
-    std::vector<V> inv_permutation(boost::num_vertices(graph.graph));
+    /* vector which will store the order of the indices. */
+    std::vector<V> inv_permutation(n);
 
-    // vector which will store the color of all the vertices in the graph
-    std::vector <boost::default_color_type> colors(boost::num_vertices(graph.graph));
+    /* vector which will store the color of all the vertices in the graph */
+    std::vector<boost::default_color_type> colors(n);
 
-    // An iterator property map which records the color of each vertex
-    auto color_map = boost::make_iterator_property_map(&colors[0], index_map, colors[0]);
+    /* An iterator property map which records the color of each vertex */
+    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map, colors[0]);
 
-    // map which store the degree of each vertex.
-    auto out_deg = boost::make_out_degree_map(graph.graph);
+    /* map which store the degree of each vertex. */
+    auto degree_map = boost::make_out_degree_map(graph.graph);
 
-    /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+
     CHECK_FOR_INTERRUPTS();
 
     try {
-        boost::cuthill_mckee_ordering(graph.graph, inv_permutation.rbegin(), color_map, out_deg);
+        boost::cuthill_mckee_ordering(graph.graph, inv_permutation.rbegin(), color_map, degree_map);
     } catch (boost::exception const& ex) {
         (void)ex;
         throw;
