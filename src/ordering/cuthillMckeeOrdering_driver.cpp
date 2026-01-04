@@ -49,25 +49,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  ***********************************************************************/
 
-#if 0
-namespace {
-
-/** @brief Calls the main function defined in the C++ Header file.
- *
- * @param graph      the graph containing the edges
- *
- * @returns results, when results are found
- */
-
-std::vector<typename pgrouting::UndirectedGraph::V>
-cuthillMckeeOrdering(pgrouting::UndirectedGraph &graph) {
-    pgrouting::functions::CuthillMckeeOrdering fn_cuthillMckeeOrdering;
-    auto results = fn_cuthillMckeeOrdering.cuthillMckeeOrdering(graph);
-    return results;
-}
-
-}  // namespace
-#endif
 
 void pgr_do_cuthillMckeeOrdering(
     const char *edges_sql,
@@ -111,8 +92,10 @@ void pgr_do_cuthillMckeeOrdering(
         std::vector<int64_t> results;
 
         int which = 1;
-        auto vertices = which == 0 || which == 2? pgrouting::extract_vertices(edges) : std::vector<pgrouting::Basic_vertex
->();
+        auto vertices = which == 0 || which == 2?
+            pgrouting::extract_vertices(edges)
+            : std::vector<pgrouting::Basic_vertex>();
+
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
         auto results1 = cuthillMckeeOrdering(undigraph);

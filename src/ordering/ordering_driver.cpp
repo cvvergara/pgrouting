@@ -100,15 +100,17 @@ do_ordering(
 
         std::vector<int64_t> results;
 
-        auto vertices = which == 0 || which == 2? pgrouting::extract_vertices(edges) : std::vector<pgrouting::Basic_vertex
->();
+        auto vertices = which == 0 || which == 2?
+            pgrouting::extract_vertices(edges)
+            : std::vector<pgrouting::Basic_vertex>();
+
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
 
         switch (which) {
             case 0:
             results = sloanOrdering(undigraph);
-            break; 
+            break;
             case 2:
             results = kingOrdering(undigraph);
             break;
