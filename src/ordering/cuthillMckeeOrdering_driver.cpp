@@ -64,6 +64,8 @@ void pgr_do_cuthillMckeeOrdering(
     using pgrouting::pgr_free;
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
+    using pgrouting::to_postgres::get_vertexId;
+
     using pgrouting::functions::cuthillMckeeOrdering;
 
     std::ostringstream log;
@@ -99,7 +101,7 @@ void pgr_do_cuthillMckeeOrdering(
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
         auto results1 = cuthillMckeeOrdering(undigraph);
-        pgrouting::to_postgres::get_vertexId(undigraph, results1, *return_count, return_tuples);
+        get_vertexId(undigraph, results1, *return_count, return_tuples);
 
         if ((*return_count) == 0) {
             *notice_msg = to_pg_msg("No results found");
