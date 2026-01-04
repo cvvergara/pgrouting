@@ -47,12 +47,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/king_ordering.hpp>
 
 
-namespace pgrouting  {
+namespace pgrouting {
+namespace functions {
 
-template <class G>
 std::vector<int64_t>
-kingOrdering(G &graph) {
-    using V = typename G::V;
+kingOrdering(pgrouting::UndirectedGraph &graph) {
+    using V = typename pgrouting::UndirectedGraph::V;
 
     size_t n = boost::num_vertices(graph.graph);
     std::vector<int64_t> results(n);
@@ -80,6 +80,7 @@ kingOrdering(G &graph) {
     return results;
 }
 
+}  // namespace functions
 }  // namespace pgrouting
 
 #endif  // INCLUDE_ORDERING_KINGORDERING_HPP_

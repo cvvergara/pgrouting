@@ -71,7 +71,8 @@ do_ordering(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
-    using pgrouting::kingOrdering;
+    using pgrouting::functions::kingOrdering;
+
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
 
