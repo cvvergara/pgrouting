@@ -32,18 +32,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <vector>
-#include <limits>
-#include <iterator>
-#include <utility>
-#include <string>
+#include <cstdint>
 
 #include <boost/config.hpp>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/property_map/property_map.hpp>
-
 
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
+
+#include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/king_ordering.hpp>
 
 
@@ -64,10 +60,10 @@ kingOrdering(pgrouting::UndirectedGraph &graph) {
     std::vector<V> inv_permutation(n);
 
     /* vector which will store the color of all the vertices in the graph */
-    std::vector<V> colors(n);
+    std::vector<boost::default_color_type> colors(n);
 
     /* An iterator property map which records the color of each vertex */
-    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map);
+    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map, colors[0]);
 
     /* map which store the degree of each vertex. */
     auto degree_map = boost::make_degree_map(graph.graph);
