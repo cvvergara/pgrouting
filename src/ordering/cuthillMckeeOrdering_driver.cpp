@@ -59,7 +59,7 @@ namespace {
  */
 
 template <class G>
-std::vector <II_t_rt>
+std::vector <int64_t>
 cuthillMckeeOrdering(G &graph) {
     pgrouting::functions::CuthillMckeeOrdering <G> fn_cuthillMckeeOrdering;
     auto results = fn_cuthillMckeeOrdering.cuthillMckeeOrdering(graph);
@@ -72,7 +72,7 @@ cuthillMckeeOrdering(G &graph) {
 void pgr_do_cuthillMckeeOrdering(
     const char *edges_sql,
 
-    II_t_rt **return_tuples,
+    int64_t **return_tuples,
     size_t *return_count,
 
     char **log_msg,
@@ -81,11 +81,13 @@ void pgr_do_cuthillMckeeOrdering(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::pgget::get_edges;
+    using pgrouting::UndirectedGraph;
 
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
-    const char *hint = nullptr;
+    std::string hint = "";
 
     try {
         pgassert(!(*log_msg));
@@ -95,41 +97,46 @@ void pgr_do_cuthillMckeeOrdering(
         pgassert(*return_count == 0);
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(edges_sql, true, false);
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+            *log_msg = to_pg_msg(hint);
+            *return_tuples = nullptr;
+            *return_count = 0;
             return;
         }
-        hint = nullptr;
+        hint = "";
 
-        std::vector<II_t_rt>results;
-        pgrouting::UndirectedGraph undigraph;
+        std::vector<int64_t> results;
+
+        int which = 1;
+        auto vertices = which == 0 || which == 2? pgrouting::extract_vertices(edges) : std::vector<pgrouting::Basic_vertex
+>();
+        UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
         results = cuthillMckeeOrdering(undigraph);
 
         auto count = results.size();
 
         if (count == 0) {
-            (*return_tuples) = NULL;
-            (*return_count) = 0;
-            notice << "No results found";
-            *log_msg = to_pg_msg(log);
+            *notice_msg = to_pg_msg("No results found");
+            *err_msg = to_pg_msg(err);
+            *return_tuples = nullptr;
+            *return_count = 0;
+            return;
         }
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
-        for (size_t i = 0; i < count; i++) {
-            *((*return_tuples) + i) = results[i];
+
+        for (size_t i = 0; i < count; ++i) {
+              (*return_tuples)[i] = results[i];
         }
+
         (*return_count) = count;
 
         pgassert(*err_msg == NULL);
-        *log_msg = log.str().empty() ?
-        *log_msg :
-        to_pg_msg(log);
-        *notice_msg = notice.str().empty() ?
-        *notice_msg :
-        to_pg_msg(notice);
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -138,7 +145,7 @@ void pgr_do_cuthillMckeeOrdering(
         *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        *log_msg = hint.empty()? to_pg_msg(hint) : to_pg_msg(log);
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -148,8 +155,7 @@ void pgr_do_cuthillMckeeOrdering(
     } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
-        err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
+        *err_msg = to_pg_msg("Caught unknown exception");
         *log_msg = to_pg_msg(log);
     }
 }

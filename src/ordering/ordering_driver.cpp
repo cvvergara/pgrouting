@@ -88,9 +88,10 @@ do_ordering(
         pgassert(*return_count == 0);
 
         hint = edges_sql;
-        auto edges = get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(edges_sql, true, false);
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
+            *log_msg = to_pg_msg(hint);
             *return_tuples = nullptr;
             *return_count = 0;
             return;
@@ -99,20 +100,24 @@ do_ordering(
 
         std::vector<int64_t> results;
 
-        auto vertices(pgrouting::extract_vertices(edges));
+        auto vertices = which == 0 || which == 2? pgrouting::extract_vertices(edges) : std::vector<pgrouting::Basic_vertex
+>();
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
 
-        if (which == 0) {
+        switch (which) {
+            case 0:
             results = sloanOrdering(undigraph);
-        } else if (which == 2) {
+            break; 
+            case 2:
             results = kingOrdering(undigraph);
+            break;
         }
 
         auto count = results.size();
 
         if (count == 0) {
-            *notice_msg = to_pg_msg("No results found \n");
+            *notice_msg = to_pg_msg("No results found");
             *err_msg = to_pg_msg(err);
             *return_tuples = nullptr;
             *return_count = 0;

@@ -86,9 +86,9 @@ class CuthillMckeeOrdering : public Pgr_messages {
       * (https://www.boost.org/libs/graph/doc/cuthill_mckee_ordering.html)
       */
 
-        std::vector<II_t_rt>
+        std::vector<int64_t>
         cuthillMckeeOrdering(G &graph) {
-        std::vector<II_t_rt>results;
+        std::vector<int64_t>results;
 
         // map which store the indices with their nodes.
         auto i_map = boost::get(boost::vertex_index, graph.graph);
@@ -137,21 +137,13 @@ class CuthillMckeeOrdering : public Pgr_messages {
       *
       * @returns `results` vector
       */
-     std::vector <II_t_rt> get_results(
-            std::vector <size_type> & inv_perm,
-            const G &graph) {
-            std::vector <II_t_rt> results;
-
-        for (std::vector<Vertex>::const_iterator i = inv_perm.begin();
-             i != inv_perm.end(); ++i) {
-            log << inv_perm[*i] << " ";
-            auto seq = graph[*i].id;
-            results.push_back({{seq}, {static_cast<int64_t>(graph.graph[*i].id)}});
-            seq++;
-            }
-
-            return results;
-        }
+     std::vector<int64_t> get_results( std::vector<size_type> &inv_perm, const G &graph) {
+         std::vector <int64_t> results;
+         for (auto const e : inv_perm) {
+             results.push_back(graph.graph[e].id);
+         }
+         return results;
+     }
 };
 }  // namespace functions
 }  // namespace pgrouting

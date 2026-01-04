@@ -52,7 +52,7 @@ void
 pgr_do_cuthillMckeeOrdering(
         const char*,
 
-        II_t_rt**,  size_t*,
+        int64_t**,  size_t*,
         char **, char **, char **);
 
 
