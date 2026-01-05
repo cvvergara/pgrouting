@@ -31,68 +31,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_ORDERING_KINGORDERING_HPP_
 #pragma once
 
-#include <vector>
-#include <cstdint>
-
-#include <boost/config.hpp>
-
 #include "cpp_common/base_graph.hpp"
-#include "cpp_common/interruption.hpp"
-
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/king_ordering.hpp>
 
 
 namespace pgrouting {
 namespace functions {
 
-std::vector<int64_t>
-kingOrdering(pgrouting::UndirectedGraph &graph) {
-    using V = typename pgrouting::UndirectedGraph::V;
-
-    /* number of vertices */
-    size_t n = boost::num_vertices(graph.graph);
-
-    /* map which store the indices with their nodes. */
-    auto index_map = boost::get(boost::vertex_index, graph.graph);
-
-    /* vector which will store the order of the indices. */
-    std::vector<V> inv_permutation(n);
-
-    /* vector which will store the color of all the vertices in the graph */
-    std::vector<boost::default_color_type> colors(n);
-
-    /* An iterator property map which records the color of each vertex */
-    auto color_map = boost::make_iterator_property_map(colors.begin(), index_map, colors[0]);
-
-    /* map which store the degree of each vertex. */
-    auto degree_map = boost::make_degree_map(graph.graph);
-
-
-    CHECK_FOR_INTERRUPTS();
-
-    try {
-    boost::king_ordering(graph.graph, inv_permutation.rbegin(), color_map, degree_map, index_map);
-    } catch (boost::exception const& ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
-    } catch (...) {
-        throw;
-    }
-
-
-    std::vector<int64_t> results(n);
-
-    size_t j = 0;
-    for (auto i = inv_permutation.begin(); i != inv_permutation.end(); ++i, ++j) {
-        results[j] = static_cast<int64_t>(graph.graph[index_map[*i]].id);
-    }
-
-    return results;
-}
+std::vector<pgrouting::UndirectedGraph::V>
+kingOrdering(pgrouting::UndirectedGraph &graph);
 
 }  // namespace functions
 }  // namespace pgrouting
