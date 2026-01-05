@@ -27,6 +27,7 @@ pgRouting 4
    :local:
    :depth: 1
 
+
 pgRouting 4.0
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -36,7 +37,19 @@ pgRouting 4.0
 
 .. current
 
-pgRouting 4.0.0-alpha1 Release Notes
+pgRouting 4.0.1 Release Notes
+-------------------------------------------------------------------------------
+
+To see all issues & pull requests closed by this release see the
+:milestone:`4.0.1`
+
+Bug Fixes
+...............................................................................
+
+* :issue:`2966`: pgr_withPoints does not pick optimal route when fraction = 1
+
+
+pgRouting 4.0.0 Release Notes
 -------------------------------------------------------------------------------
 
 To see all issues & pull requests closed by this release see the
