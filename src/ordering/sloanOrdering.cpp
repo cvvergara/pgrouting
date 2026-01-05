@@ -27,6 +27,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
+#include "ordering/sloanOrdering.hpp"
+
 #include <vector>
 #include <cstdint>
 
@@ -43,6 +45,7 @@ namespace functions {
 
 std::vector<pgrouting::UndirectedGraph::V>
 sloanOrdering(pgrouting::UndirectedGraph &graph) {
+    using V = typename pgrouting::UndirectedGraph::V;
 
     /* number of vertices */
     size_t n = boost::num_vertices(graph.graph);
@@ -66,7 +69,7 @@ sloanOrdering(pgrouting::UndirectedGraph &graph) {
     std::vector<int> priorities(n);
 
     /* Iterator over priorities */
-    auto priority_map = boost::make_iterator_property_map(&priorities[0], i_map, priorities[0]);
+    auto priority_map = boost::make_iterator_property_map(&priorities[0], index_map, priorities[0]);
 
     CHECK_FOR_INTERRUPTS();
 
@@ -87,5 +90,3 @@ sloanOrdering(pgrouting::UndirectedGraph &graph) {
 
 }  // namespace functions
 }  // namespace pgrouting
-
-#endif  // INCLUDE_ORDERING_SLOANORDERING_HPP_

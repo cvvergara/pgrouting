@@ -46,16 +46,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/sloanOrdering.hpp"
 #include "ordering/kingOrdering.hpp"
-
-namespace {
-template <class G>
-std::vector <int64_t>
-sloanOrdering(G &graph) {
-        pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
-        auto results = fn_sloanOrdering.sloanOrdering(graph);
-        return results;
-}
-}
+#include "ordering/cuthillMckeeOrdering.hpp"
 
 void
 do_ordering(
@@ -77,6 +68,7 @@ do_ordering(
 
     using pgrouting::functions::sloanOrdering;
     using pgrouting::functions::kingOrdering;
+    using pgrouting::functions::cuthillMckeeOrdering;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -101,7 +93,6 @@ do_ordering(
         }
         hint = "";
 
-        std::vector<int64_t> results;
 
         auto vertices = which == 0 || which == 2?
             pgrouting::extract_vertices(edges)
@@ -110,18 +101,24 @@ do_ordering(
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
 
+        std::vector<UndirectedGraph::V> results;
         switch (which) {
-            case 0:
-                results = sloanOrdering(undigraph);
-                break;
-            case 1:
-                break;
+            case 0:{
+                        results = sloanOrdering(undigraph);
+                        break;
+                   }
+            case 1:{
+                        results = cuthillMckeeOrdering(undigraph);
+                        break;
+                   }
             case 2: {
-                        auto results1 = kingOrdering(undigraph);
-                        get_vertexId(undigraph, results1, *return_count, return_tuples);
+                        results = kingOrdering(undigraph);
                         break;
                     }
         }
+
+        get_vertexId(undigraph, results, *return_count, return_tuples);
+        return;
 
         if (which==1 || which ==2) return;
         auto count = results.size();

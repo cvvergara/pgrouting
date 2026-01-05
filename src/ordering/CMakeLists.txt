@@ -8,4 +8,5 @@ ADD_LIBRARY(ordering OBJECT
 
     cuthillMckeeOrdering.cpp
     kingOrdering.cpp
-    )
+    sloanOrdering.cpp
+)
