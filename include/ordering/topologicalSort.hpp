@@ -61,7 +61,6 @@ topologicalSort(const pgrouting::DirectedGraph &graph ) {
     typedef typename std::vector< V > container;
     container c;
 
-    /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
     CHECK_FOR_INTERRUPTS();
 
     try {
@@ -70,10 +69,10 @@ topologicalSort(const pgrouting::DirectedGraph &graph ) {
         throw std::string("Graph is not DAG");
     }
 
-    typename std::vector< V >::reverse_iterator ii;
-    for (ii = c.rbegin(); ii != c.rend(); ++ii) {
-        auto t = *ii;
-        results.push_back(graph.graph[t].id);
+    std::reverse(c.begin(), c.end());
+
+    for (const auto e : c ) {
+        results.push_back(graph.graph[e].id);
     }
 
     return results;
