@@ -1,5 +1,6 @@
 /*PGR-GNU*****************************************************************
 File: ordering_driver.cpp
+
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
@@ -38,23 +39,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <string>
 
-
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/to_postgres.hpp"
 
 #include "ordering/sloanOrdering.hpp"
 #include "ordering/kingOrdering.hpp"
-
-namespace {
-template <class G>
-std::vector <int64_t>
-sloanOrdering(G &graph) {
-        pgrouting::functions::SloanOrdering <G> fn_sloanOrdering;
-        auto results = fn_sloanOrdering.sloanOrdering(graph);
-        return results;
-}
-}
+#include "ordering/cuthillMckeeOrdering.hpp"
 
 void
 do_ordering(
@@ -67,13 +59,16 @@ do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
-
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
-    using pgrouting::kingOrdering;
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
+    using pgrouting::to_postgres::get_vertexId;
+
+    using pgrouting::functions::sloanOrdering;
+    using pgrouting::functions::kingOrdering;
+    using pgrouting::functions::cuthillMckeeOrdering;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -88,46 +83,50 @@ do_ordering(
         pgassert(*return_count == 0);
 
         hint = edges_sql;
-        auto edges = get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(edges_sql, true, false);
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
+            *log_msg = to_pg_msg(hint);
             *return_tuples = nullptr;
             *return_count = 0;
             return;
         }
         hint = "";
 
-        std::vector<int64_t> results;
 
-        auto vertices(pgrouting::extract_vertices(edges));
+        auto vertices = which == 0 || which == 2?
+            pgrouting::extract_vertices(edges)
+            : std::vector<pgrouting::Basic_vertex>();
+
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
 
-        if (which == 0) {
-            results = sloanOrdering(undigraph);
-        } else if (which == 2) {
-            results = kingOrdering(undigraph);
+        std::vector<UndirectedGraph::V> results;
+        switch (which) {
+            case 0:{
+                        results = sloanOrdering(undigraph);
+                        break;
+                   }
+            case 1:{
+                        results = cuthillMckeeOrdering(undigraph);
+                        break;
+                   }
+            case 2: {
+                        results = kingOrdering(undigraph);
+                        break;
+                    }
         }
 
-        auto count = results.size();
+        get_vertexId(undigraph, results, *return_count, return_tuples);
 
-        if (count == 0) {
-            *notice_msg = to_pg_msg("No results found \n");
-            *err_msg = to_pg_msg(err);
+        if ((*return_count) == 0) {
+            *notice_msg = to_pg_msg("No results found");
             *return_tuples = nullptr;
             *return_count = 0;
             return;
         }
 
-        (*return_tuples) = pgr_alloc(count, (*return_tuples));
-
-        for (size_t i = 0; i < count; ++i) {
-              (*return_tuples)[i] = results[i];
-        }
-
-        (*return_count) = count;
-
-        pgassert(*err_msg == NULL);
+        pgassert(*err_msg == nullptr);
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
     } catch (AssertFailedException &except) {
