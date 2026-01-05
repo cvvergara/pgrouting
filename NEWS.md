@@ -3,7 +3,6 @@ To read all history of releases go to the latest [release notes](https://docs.pg
 # pgRouting 4
 
 
-
 ## pgRouting 4.0
 
 
