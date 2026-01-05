@@ -48,7 +48,7 @@ void
 pgr_do_topologicalSort(
         const char *edges_sql,
 
-        I_rt **return_tuples,
+        int64_t **return_tuples,
         size_t *return_count,
         char ** log_msg,
         char ** notice_msg,
@@ -79,10 +79,9 @@ pgr_do_topologicalSort(
         }
         hint = nullptr;
 
-        std::vector<I_rt> results;
         pgrouting::DirectedGraph digraph;
         digraph.insert_edges(edges);
-        results = topologicalSort(digraph);
+        auto results = topologicalSort(digraph);
 
         auto count = results.size();
 

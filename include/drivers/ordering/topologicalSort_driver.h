@@ -33,10 +33,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #ifdef __cplusplus
 #   include <cstddef>
-using I_rt = struct I_rt;
+#   include <cstdint>
 #else
 #   include <stddef.h>
-typedef struct I_rt I_rt;
+#   include <stdint.h>
 #endif
 
 #ifdef __cplusplus
@@ -46,7 +46,7 @@ extern "C" {
 void pgr_do_topologicalSort(
         const char*,
 
-        I_rt**, size_t*,
+        int64_t**, size_t*,
         char**, char**, char**);
 
 #ifdef __cplusplus

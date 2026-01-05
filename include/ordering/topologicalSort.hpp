@@ -50,13 +50,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
-std::vector<I_rt>
+std::vector<int64_t>
 topologicalSort(const pgrouting::DirectedGraph &graph ) {
 
     using G = pgrouting::DirectedGraph;
     using V = typename G::V;
 
-    std::vector< I_rt > results;
+    std::vector<int64_t> results;
 
     typedef typename std::vector< V > container;
     container c;
@@ -73,9 +73,7 @@ topologicalSort(const pgrouting::DirectedGraph &graph ) {
     typename std::vector< V >::reverse_iterator ii;
     for (ii = c.rbegin(); ii != c.rend(); ++ii) {
         auto t = *ii;
-        I_rt tmp;
-        tmp.id = graph.graph[t].id;
-        results.push_back(tmp);
+        results.push_back(graph.graph[t].id);
     }
 
     return results;

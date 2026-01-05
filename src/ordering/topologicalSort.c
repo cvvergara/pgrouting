@@ -44,7 +44,7 @@ static
 void
 process(
         char* edges_sql,
-        I_rt **result_tuples,
+        int64_t **result_tuples,
         size_t *result_count) {
     pgr_SPI_connect();
     char* log_msg = NULL;
@@ -78,7 +78,7 @@ _pgr_topologicalsort(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
 
-    I_rt *result_tuples = NULL;
+    int64_t *result_tuples = NULL;
     size_t result_count = 0;
 
     if (SRF_IS_FIRSTCALL()) {
@@ -108,7 +108,7 @@ _pgr_topologicalsort(PG_FUNCTION_ARGS) {
 
     funcctx = SRF_PERCALL_SETUP();
     tuple_desc = funcctx->tuple_desc;
-    result_tuples = (I_rt*) funcctx->user_fctx;
+    result_tuples = (int64_t*) funcctx->user_fctx;
 
     if (funcctx->call_cntr < funcctx->max_calls) {
         HeapTuple    tuple;
@@ -127,7 +127,7 @@ _pgr_topologicalsort(PG_FUNCTION_ARGS) {
         }
 
         values[0] = Int32GetDatum((int32_t)call_cntr + 1);
-        values[1] = Int64GetDatum(result_tuples[call_cntr].id);
+        values[1] = Int64GetDatum(result_tuples[call_cntr]);
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);
         result = HeapTupleGetDatum(tuple);
