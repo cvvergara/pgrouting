@@ -44,6 +44,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "ordering/cuthillMckeeOrdering.hpp"
 #include "ordering/topologicalSort.hpp"
 
+template <typename G, typename Func>
+void
+process(const std::vector<Edge_t> &edges, G &graph, Func ordering,
+        size_t &return_count,
+        int64_t **return_tuples){
+    using pgrouting::to_postgres::get_vertexId;
+    graph.insert_edges(edges);
+    auto results = ordering(graph);
+    get_vertexId(graph, results, return_count, return_tuples);
+}
+
+
 
 void
 pgr_do_topologicalSort(
@@ -122,10 +134,8 @@ pgr_do_topologicalSort(
             get_vertexId(undigraph, results, *return_count, return_tuples);
 
         } else {
-            digraph.insert_edges(edges);
 
-            auto results = topologicalSort(digraph);
-            get_vertexId(digraph, results, *return_count, return_tuples);
+            process(edges, digraph, &topologicalSort, *return_count, return_tuples);
         }
 
         if ((*return_count) == 0) {
