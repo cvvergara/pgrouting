@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/base_graph.hpp"
 #include "cpp_common/interruption.hpp"
 #include <boost/graph/adjacency_list.hpp>
+
 #include <boost/graph/cuthill_mckee_ordering.hpp>
 
 

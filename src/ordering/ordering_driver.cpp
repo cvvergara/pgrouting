@@ -1,5 +1,6 @@
 /*PGR-GNU*****************************************************************
 File: ordering_driver.cpp
+
 Generated with Template by:
 Copyright (c) 2025 pgRouting developers
 Mail: project@pgrouting.org
@@ -38,10 +39,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <string>
 
-
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/to_postgres.hpp"
 
 #include "ordering/sloanOrdering.hpp"
 #include "ordering/kingOrdering.hpp"
@@ -67,14 +68,14 @@ do_ordering(
     char **log_msg,
     char **notice_msg,
     char **err_msg) {
-
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
-    using pgrouting::functions::kingOrdering;
-
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
+    using pgrouting::to_postgres::get_vertexId;
+
+    using pgrouting::functions::kingOrdering;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -110,22 +111,27 @@ do_ordering(
 
         switch (which) {
             case 0:
-            results = sloanOrdering(undigraph);
-            break;
-            case 2:
-            results = kingOrdering(undigraph);
-            break;
+                results = sloanOrdering(undigraph);
+                break;
+            case 1:
+                break;
+            case 2: {
+                        auto results1 = kingOrdering(undigraph);
+                        get_vertexId(undigraph, results1, *return_count, return_tuples);
+                        break;
+                    }
         }
 
+        if (which==1 || which ==2) return;
         auto count = results.size();
 
         if (count == 0) {
             *notice_msg = to_pg_msg("No results found");
-            *err_msg = to_pg_msg(err);
             *return_tuples = nullptr;
             *return_count = 0;
             return;
         }
+
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
 
