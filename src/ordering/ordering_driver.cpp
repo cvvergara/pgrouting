@@ -38,6 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <cstdint>
 
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
