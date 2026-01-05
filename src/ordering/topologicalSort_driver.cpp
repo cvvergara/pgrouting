@@ -111,7 +111,7 @@ pgr_do_topologicalSort(
 
         UndirectedGraph undigraph = which < 11? UndirectedGraph(vertices) : UndirectedGraph();
 
-        pgrouting::DirectedGraph digraph = which >= 11? DirectedGraph(vertices) : DirectedGraph();;
+        DirectedGraph digraph = which >= 11? DirectedGraph(vertices) : DirectedGraph();;
 
         if ( which < 11) {
             undigraph.insert_edges(edges);

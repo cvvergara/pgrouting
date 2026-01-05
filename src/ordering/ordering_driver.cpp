@@ -47,6 +47,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "ordering/sloanOrdering.hpp"
 #include "ordering/kingOrdering.hpp"
 #include "ordering/cuthillMckeeOrdering.hpp"
+#include "ordering/topologicalSort.hpp"
+
+template <typename G, typename Func>
+void
+process(const std::vector<Edge_t> &edges, G &graph, Func ordering,
+        size_t &return_count,
+        int64_t **return_tuples){
+    using pgrouting::to_postgres::get_vertexId;
+    graph.insert_edges(edges);
+    auto results = ordering(graph);
+    get_vertexId(graph, results, return_count, return_tuples);
+}
 
 void
 do_ordering(
@@ -64,11 +76,13 @@ do_ordering(
     using pgrouting::pgr_free;
     using pgrouting::pgget::get_edges;
     using pgrouting::UndirectedGraph;
+    using pgrouting::DirectedGraph;
     using pgrouting::to_postgres::get_vertexId;
 
     using pgrouting::functions::sloanOrdering;
     using pgrouting::functions::kingOrdering;
     using pgrouting::functions::cuthillMckeeOrdering;
+    using pgrouting::functions::topologicalSort;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -98,26 +112,33 @@ do_ordering(
             pgrouting::extract_vertices(edges)
             : std::vector<pgrouting::Basic_vertex>();
 
-        UndirectedGraph undigraph(vertices);
-        undigraph.insert_edges(edges);
+        UndirectedGraph undigraph = which < 11? UndirectedGraph(vertices) : UndirectedGraph();
+        DirectedGraph digraph = which >= 11? DirectedGraph(vertices) : DirectedGraph();;
 
-        std::vector<UndirectedGraph::V> results;
+
         switch (which) {
             case 0:{
-                        results = sloanOrdering(undigraph);
+                        process(edges, undigraph, &sloanOrdering, *return_count, return_tuples);
+
+
                         break;
                    }
             case 1:{
-                        results = cuthillMckeeOrdering(undigraph);
+                        process(edges, undigraph, &cuthillMckeeOrdering, *return_count, return_tuples);
+
                         break;
                    }
             case 2: {
-                        results = kingOrdering(undigraph);
+                        process(edges, undigraph, &kingOrdering, *return_count, return_tuples);
+
                         break;
                     }
+            case 11:{
+                        process(edges, digraph, &topologicalSort, *return_count, return_tuples);
+                     break;
+                     }
         }
 
-        get_vertexId(undigraph, results, *return_count, return_tuples);
 
         if ((*return_count) == 0) {
             *notice_msg = to_pg_msg("No results found");
