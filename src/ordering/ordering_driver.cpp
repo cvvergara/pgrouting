@@ -75,6 +75,7 @@ do_ordering(
     using pgrouting::UndirectedGraph;
     using pgrouting::to_postgres::get_vertexId;
 
+    using pgrouting::functions::sloanOrdering;
     using pgrouting::functions::kingOrdering;
 
     std::ostringstream log;

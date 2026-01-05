@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
-File: kingOrdering.cpp
+File: sloanOrdering.hpp
 
 Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright (c) 2022 pgRouting developers
 Mail: project@pgrouting.org
 
 Developer:
-Copyright (c) 2025 Fan Wu
-Mail: wifiblack0131 at gmail.com
+Copyright (c) 2025 Bipasha Gayary
+Mail: bipashagayary at gmail.com
 
 ------
 
@@ -36,14 +36,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/interruption.hpp"
 #include <boost/graph/adjacency_list.hpp>
 
-#include <boost/graph/king_ordering.hpp>
+#include <boost/graph/sloan_ordering.hpp>
 
 namespace pgrouting {
 namespace functions {
 
 std::vector<pgrouting::UndirectedGraph::V>
-kingOrdering(pgrouting::UndirectedGraph &graph) {
-    using V = typename pgrouting::UndirectedGraph::V;
+sloanOrdering(pgrouting::UndirectedGraph &graph) {
 
     /* number of vertices */
     size_t n = boost::num_vertices(graph.graph);
@@ -61,13 +60,18 @@ kingOrdering(pgrouting::UndirectedGraph &graph) {
     auto color_map = boost::make_iterator_property_map(colors.begin(), index_map, colors[0]);
 
     /* map which store the degree of each vertex. */
-    auto degree_map = boost::make_degree_map(graph.graph);
+    auto degree_map = boost::make_out_degree_map(graph.graph);
 
+    /* store the priority of each vertex. */
+    std::vector<int> priorities(n);
+
+    /* Iterator over priorities */
+    auto priority_map = boost::make_iterator_property_map(&priorities[0], i_map, priorities[0]);
 
     CHECK_FOR_INTERRUPTS();
 
     try {
-        boost::king_ordering(graph.graph, inv_permutation.rbegin(), color_map, degree_map, index_map);
+        boost::sloan_ordering(graph.graph, inv_permutation.begin(), color_map, degree_map, priority_map);
     } catch (boost::exception const& ex) {
         (void)ex;
         throw;
@@ -83,3 +87,5 @@ kingOrdering(pgrouting::UndirectedGraph &graph) {
 
 }  // namespace functions
 }  // namespace pgrouting
+
+#endif  // INCLUDE_ORDERING_SLOANORDERING_HPP_
