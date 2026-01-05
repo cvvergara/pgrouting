@@ -29,11 +29,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/ordering/topologicalSort_driver.h"
 
 #include <sstream>
-#include <string>
 #include <deque>
 #include <vector>
 #include <algorithm>
-#include <limits>
+#include <string>
+#include <cstdint>
 
 #include "ordering/topologicalSort.hpp"
 
@@ -44,23 +44,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 void
 pgr_do_topologicalSort(
-        const char *edges_sql,
+    const char *edges_sqlc,
 
-        int64_t **return_tuples,
-        size_t *return_count,
-        char ** log_msg,
-        char ** notice_msg,
-        char ** err_msg) {
+    int64_t **return_tuples,
+    size_t *return_count,
+
+    char **log_msg,
+    char **notice_msg,
+    char **err_msg) {
+    std::string edges_sql = std::string(edges_sqlc);
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::pgget::get_edges;
+    using pgrouting::DirectedGraph;
     using pgrouting::to_postgres::get_vertexId;
+
     using pgrouting::functions::topologicalSort;
 
     std::ostringstream log;
     std::ostringstream err;
     std::ostringstream notice;
-    const char *hint = nullptr;
+    std::string hint = "";
 
     try {
         pgassert(!(*log_msg));
@@ -70,20 +75,31 @@ pgr_do_topologicalSort(
         pgassert(*return_count == 0);
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(edges_sql, true, false);
         if (edges.empty()) {
             *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+            *log_msg = to_pg_msg(hint);
+            *return_tuples = nullptr;
+            *return_count = 0;
             return;
         }
-        hint = nullptr;
+        hint = "";
 
         pgrouting::DirectedGraph digraph;
         digraph.insert_edges(edges);
         auto results = topologicalSort(digraph);
         get_vertexId(digraph, results, *return_count, return_tuples);
 
-        return;
+        if ((*return_count) == 0) {
+            *notice_msg = to_pg_msg("No results found");
+            *return_tuples = nullptr;
+            *return_count = 0;
+            return;
+        }
+
+        pgassert(*err_msg == nullptr);
+        *log_msg = to_pg_msg(log);
+        *notice_msg = to_pg_msg(notice);
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
@@ -92,18 +108,17 @@ pgr_do_topologicalSort(
         *log_msg = to_pg_msg(log);
     } catch (const std::string &ex) {
         *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        *log_msg = hint.empty()? to_pg_msg(hint) : to_pg_msg(log);
     } catch (std::exception &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
         err << except.what();
         *err_msg = to_pg_msg(err);
         *log_msg = to_pg_msg(log);
-    } catch(...) {
+    } catch (...) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;
-        err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
+        *err_msg = to_pg_msg("Caught unknown exception");
         *log_msg = to_pg_msg(log);
     }
 }
