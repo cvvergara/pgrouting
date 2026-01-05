@@ -91,7 +91,6 @@ void pgr_do_cuthillMckeeOrdering(
         }
         hint = "";
 
-        std::vector<int64_t> results;
 
         int which = 1;
         auto vertices = which == 0 || which == 2?
@@ -100,8 +99,24 @@ void pgr_do_cuthillMckeeOrdering(
 
         UndirectedGraph undigraph(vertices);
         undigraph.insert_edges(edges);
-        auto results1 = cuthillMckeeOrdering(undigraph);
-        get_vertexId(undigraph, results1, *return_count, return_tuples);
+
+        std::vector<UndirectedGraph::V> results;
+        switch (which) {
+            case 0:{
+                        
+                        break;
+                   }
+            case 1:{
+                        results = cuthillMckeeOrdering(undigraph);
+                        break;
+                   }
+            case 2: {
+                        
+                        break;
+                    }
+        }
+
+        get_vertexId(undigraph, results, *return_count, return_tuples);
 
         if ((*return_count) == 0) {
             *notice_msg = to_pg_msg("No results found");
