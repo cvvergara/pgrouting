@@ -46,53 +46,42 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/interruption.hpp"
 #include "c_types//i_rt.h"
 
-// user's functions
-// for development
 
-//******************************************
-
-class Pgr_topologicalSort {
- public:
-     using G = pgrouting::DirectedGraph;
-     using V = typename G::V;
-
-     std::vector<I_rt> topologicalSort(
-                 G &graph);
-
- private:
-     std::vector< I_rt >
-     generatetopologicalSort(
-        const G &graph ) {
-        std::vector< I_rt > results;
-
-        typedef typename std::vector< V > container;
-        container c;
-
-        /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
-        CHECK_FOR_INTERRUPTS();
-
-        try {
-        boost::topological_sort(graph.graph, std::back_inserter(c));
-        } catch (...) {
-            throw std::string("Graph is not DAG");
-        }
-
-        typename std::vector< V >::reverse_iterator ii;
-        for (ii = c.rbegin(); ii != c.rend(); ++ii) {
-            auto t = *ii;
-            I_rt tmp;
-            tmp.id = graph.graph[t].id;
-            results.push_back(tmp);
-        }
-
-        return results;
-     }
-};
+namespace pgrouting {
+namespace functions {
 
 std::vector<I_rt>
-Pgr_topologicalSort::topologicalSort(pgrouting::DirectedGraph &graph) {
-      return generatetopologicalSort(graph);
+topologicalSort(const pgrouting::DirectedGraph &graph ) {
+
+    using G = pgrouting::DirectedGraph;
+    using V = typename G::V;
+
+    std::vector< I_rt > results;
+
+    typedef typename std::vector< V > container;
+    container c;
+
+    /* abort in case of an interruption occurs (e.g. the query is being cancelled) */
+    CHECK_FOR_INTERRUPTS();
+
+    try {
+        boost::topological_sort(graph.graph, std::back_inserter(c));
+    } catch (...) {
+        throw std::string("Graph is not DAG");
+    }
+
+    typename std::vector< V >::reverse_iterator ii;
+    for (ii = c.rbegin(); ii != c.rend(); ++ii) {
+        auto t = *ii;
+        I_rt tmp;
+        tmp.id = graph.graph[t].id;
+        results.push_back(tmp);
+    }
+
+    return results;
 }
 
+}
+}
 
 #endif  // INCLUDE_ORDERING_TOPOLOGICALSORT_HPP_

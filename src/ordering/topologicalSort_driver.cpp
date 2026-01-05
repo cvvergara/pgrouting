@@ -42,17 +42,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-namespace {
-
-std::vector<I_rt>
-pgr_topologicalSort(
-        pgrouting::DirectedGraph &graph) {
-    Pgr_topologicalSort fn_topologicalSort;
-    return fn_topologicalSort.topologicalSort(graph);
-}
-
-}  // namespace
-
 // CREATE OR REPLACE FUNCTION pgr_topologicalSort(
 // sql text,
 void
@@ -67,6 +56,7 @@ pgr_do_topologicalSort(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::functions::topologicalSort;
 
     std::ostringstream log;
     std::ostringstream err;
@@ -92,8 +82,7 @@ pgr_do_topologicalSort(
         std::vector<I_rt> results;
         pgrouting::DirectedGraph digraph;
         digraph.insert_edges(edges);
-        results = pgr_topologicalSort(
-                digraph);
+        results = topologicalSort(digraph);
 
         auto count = results.size();
 
