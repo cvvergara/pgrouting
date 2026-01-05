@@ -39,6 +39,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_types/i_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/to_postgres.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
@@ -56,6 +57,7 @@ pgr_do_topologicalSort(
     using pgrouting::pgr_alloc;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
+    using pgrouting::to_postgres::get_vertexId;
     using pgrouting::functions::topologicalSort;
 
     std::ostringstream log;
@@ -82,7 +84,10 @@ pgr_do_topologicalSort(
         pgrouting::DirectedGraph digraph;
         digraph.insert_edges(edges);
         auto results = topologicalSort(digraph);
+        get_vertexId(digraph, results, *return_count, return_tuples);
 
+        return;
+#if 0
         auto count = results.size();
 
         if (count == 0) {
@@ -94,7 +99,7 @@ pgr_do_topologicalSort(
         }
 
         (*return_tuples) = pgr_alloc(count, (*return_tuples));
-        for (size_t i = 0; i < count; i++) {
+         for (size_t i = 0; i < count; i++) {
             *((*return_tuples) + i) = results[i];
         }
         (*return_count) = count;
@@ -102,6 +107,7 @@ pgr_do_topologicalSort(
         pgassert(*err_msg == NULL);
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
+#endif
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;

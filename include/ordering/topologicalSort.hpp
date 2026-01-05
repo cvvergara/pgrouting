@@ -50,7 +50,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
-std::vector<int64_t>
+std::vector<pgrouting::DirectedGraph::V>
 topologicalSort(const pgrouting::DirectedGraph &graph ) {
 
     using G = pgrouting::DirectedGraph;
@@ -70,12 +70,15 @@ topologicalSort(const pgrouting::DirectedGraph &graph ) {
     }
 
     std::reverse(c.begin(), c.end());
+    return c;
 
+#if 0
     for (const auto e : c ) {
         results.push_back(graph.graph[e].id);
     }
 
     return results;
+#endif
 }
 
 }
