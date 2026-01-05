@@ -51,10 +51,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 //******************************************
 
-template < class G >
 class Pgr_topologicalSort {
  public:
-     typedef typename G::V V;
+     using G = pgrouting::DirectedGraph;
+     using V = typename G::V;
 
      std::vector<I_rt> topologicalSort(
                  G &graph);
@@ -89,12 +89,9 @@ class Pgr_topologicalSort {
      }
 };
 
-template < class G >
 std::vector<I_rt>
-Pgr_topologicalSort< G >::topologicalSort(
-                G &graph) {
-      return generatetopologicalSort(
-                             graph);
+Pgr_topologicalSort::topologicalSort(pgrouting::DirectedGraph &graph) {
+      return generatetopologicalSort(graph);
 }
 
 

@@ -44,11 +44,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
-template < class G >
 std::vector<I_rt>
 pgr_topologicalSort(
-        G &graph) {
-    Pgr_topologicalSort< G > fn_topologicalSort;
+        pgrouting::DirectedGraph &graph) {
+    Pgr_topologicalSort fn_topologicalSort;
     return fn_topologicalSort.topologicalSort(graph);
 }
 
