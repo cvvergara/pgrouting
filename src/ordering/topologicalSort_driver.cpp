@@ -37,14 +37,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "ordering/topologicalSort.hpp"
 
-#include "c_types/i_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/to_postgres.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-// CREATE OR REPLACE FUNCTION pgr_topologicalSort(
-// sql text,
 void
 pgr_do_topologicalSort(
         const char *edges_sql,
@@ -87,27 +84,6 @@ pgr_do_topologicalSort(
         get_vertexId(digraph, results, *return_count, return_tuples);
 
         return;
-#if 0
-        auto count = results.size();
-
-        if (count == 0) {
-            (*return_tuples) = NULL;
-            (*return_count) = 0;
-            notice <<
-                "No vertices";
-            return;
-        }
-
-        (*return_tuples) = pgr_alloc(count, (*return_tuples));
-         for (size_t i = 0; i < count; i++) {
-            *((*return_tuples) + i) = results[i];
-        }
-        (*return_count) = count;
-
-        pgassert(*err_msg == NULL);
-        *log_msg = to_pg_msg(log);
-        *notice_msg = to_pg_msg(notice);
-#endif
     } catch (AssertFailedException &except) {
         (*return_tuples) = pgr_free(*return_tuples);
         (*return_count) = 0;

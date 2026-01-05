@@ -72,13 +72,6 @@ topologicalSort(const pgrouting::DirectedGraph &graph ) {
     std::reverse(c.begin(), c.end());
     return c;
 
-#if 0
-    for (const auto e : c ) {
-        results.push_back(graph.graph[e].id);
-    }
-
-    return results;
-#endif
 }
 
 }
