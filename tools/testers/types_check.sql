@@ -1,3 +1,6 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0
+
 CREATE OR REPLACE FUNCTION traversal_types_check(
   fn TEXT,
   opt_names TEXT[] DEFAULT '{directed,max_depth}'::TEXT[],

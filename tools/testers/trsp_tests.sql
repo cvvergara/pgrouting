@@ -1,3 +1,6 @@
+-- CopyRight(c) pgRouting developers
+-- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0
+
 CREATE OR REPLACE FUNCTION compare_trsp_dijkstra_new(lim INTEGER, flag boolean, restrictions_sql TEXT)
 RETURNS SETOF TEXT AS
 $BODY$
