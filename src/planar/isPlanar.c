@@ -2,7 +2,7 @@
 File: isPlanar.c
 
 Generated with Template by:
-Copyright (c) 2020 pgRouting developers
+Copyright(c) 2020-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
