@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright(c) pgRouting Contributors - Version v4.1
+# Copyright(c) pgRouting developers - Version v4.1
 # This file is distributed under the same license as the pgRouting package.
 # Regina Obe <regina@arrival3d.com>, 2023.
 # Wangdapeng <wangdapeng20191008@gmail.com>, 2023, 2025.

@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright(c) pgRouting Contributors - Version v4.1
+# Copyright(c) pgRouting developers - Version v4.1
 # This file is distributed under the same license as the pgRouting package.
 # Celia Virginia Vergara Castillo <Vicky@erosion.dev>, 2025.
 # Daniel Nylander <daniel@danielnylander.se>, 2025.
