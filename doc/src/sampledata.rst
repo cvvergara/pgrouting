@@ -1,7 +1,7 @@
 ..
    ****************************************************************************
     pgRouting Manual
-    Copyright(c) pgRouting developers
+    Copyright(c) 2013-2026 pgRouting developers
 
     License: Creative Commons Attribution-Share Alike 3.0
     https://creativecommons.org/licenses/by-sa/3.0/
