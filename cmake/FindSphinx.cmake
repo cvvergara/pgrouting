@@ -8,10 +8,10 @@
 
 #=============================================================================
 #
-# Copyright (C) 2018 Vicky Vergara
+# Copyright(C) 2018 Vicky Vergara
 # Modification for python3
 #
-# Copyright (C) 2011 Marie Rognes and Johannes Ring
+# Copyright(C) 2011 Marie Rognes and Johannes Ring
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
