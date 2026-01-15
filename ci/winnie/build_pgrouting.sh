@@ -1,7 +1,7 @@
 #!/bin/sh.exe
 # /*PGR-GNU*****************************************************************
 # File: build_pgrouting.sh
-# Copyright (c) 2016 pgRouting developers
+# Copyright(c) 2013-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify
