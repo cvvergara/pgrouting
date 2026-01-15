@@ -2,7 +2,7 @@
 # CHANGE THESE TO SUIT YOUR PROJECT
 # /*PGR-GNU*****************************************************************
 # File: package_pgrouting.sh
-# Copyright(c) 2013-2026 pgRouting developers
+# Copyright(C) 2013-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify
