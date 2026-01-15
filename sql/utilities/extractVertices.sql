@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
 
-Copyright (c) 2019 ~ pgRouting developers
+Copyright(C) 2018-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2019 ~ Celia Virginia Vergara Castillo
+Copyright(C) 2019 Celia Virginia Vergara Castillo
 mail: vicky@georepublic.de
 
 ------

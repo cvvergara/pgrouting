@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: withPointsKSP.sql
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
+Copyright(C) 2015 Celia Virginia Vergara Castillo
 vicky at erosion.dev
 
-Copyright (c) 2023 Abhinav Jain
+Copyright(C) 2023 Abhinav Jain
 this.abhinav at gmail.com
 
 ------

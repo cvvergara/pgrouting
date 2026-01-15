@@ -2,7 +2,7 @@
 
 File: pgr_parameter_check.sql
 
-Copyright (c) 2014 Celia Virginia Vergara Castillo
+Copyright(C) 2014 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
 ------

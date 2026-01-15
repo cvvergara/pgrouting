@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: degree.sql
 
-Copyright (c) 2022 ~ Celia Virginia Vergara Castillo
+Copyright(C) 2022 Celia Virginia Vergara Castillo
 mail: vicky at georepublic.de
 
 ------

@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2018 Sourabh Garg
+Copyright(C) 2018 Sourabh Garg
 Mail: sourabh.garg.mat@gmail.com
 
 ------

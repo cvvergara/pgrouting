@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: _checkcolumn.sql
 
-Copyright (c) 2022 ~ Celia Virginia Vergara Castillo
+Copyright(C) 2022 Celia Virginia Vergara Castillo
 mail: vicky@georepublic.de
 
 ------

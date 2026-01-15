@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: primDD.sql
 
-Copyright (c) 2018 Vicky Vergara
+Copyright(C) 2018 Vicky Vergara
 Mail: vicky at vicky at erosion dot dev
 
 ------

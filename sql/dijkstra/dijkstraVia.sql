@@ -2,10 +2,10 @@
 File: dijkstraVia.sql
 
 Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 
 Function's developer:
-Copyright (c) 2015 Celia Virginia Vergara Castillo
+Copyright(C) 2015 Celia Virginia Vergara Castillo
 
 ------
 

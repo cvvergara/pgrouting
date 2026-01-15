@@ -2,11 +2,11 @@
 File: cuthillMckeeOrdering.sql
 
 Generated with Template by:
-Copyright (c) 2022 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2022 Shobhit Chaurasia
+Copyright(C) 2022 Shobhit Chaurasia
 Mail: 000shobhitchaurasia at gmail.com
 
 ------

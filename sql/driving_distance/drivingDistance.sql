@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 FILE: drivingDistance.sql
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
+Copyright(C) 2015 Celia Virginia Vergara Castillo
 Mail: vicky AT erosion.dev
 
-Copyright (c) 2023 Aryan Gupta
+Copyright(C) 2023 Aryan Gupta
 Mail: guptaaryan1010 AT gmail.com
 
 ------

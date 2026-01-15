@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: boyerMyrvold_1.sql
 
-Copyright (c) 2020 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2020 Himanshu Raj
+Copyright(C) 2020 Himanshu Raj
 Mail: raj.himanshu2@gmail.com
 
 ------

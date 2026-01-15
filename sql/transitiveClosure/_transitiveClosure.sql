@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2019 Hang Wu
+Copyright(C) 2019 Hang Wu
 mail: nike0good@gmail.com
 ------
 

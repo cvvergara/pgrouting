@@ -2,7 +2,7 @@
 
  _get_statement.sql
 
- Copyright (c) 2014 Celia Virginia Vergara Castillo
+ Copyright(C) 2014 Celia Virginia Vergara Castillo
  mail: vicky at erosion.dev
 
 ------

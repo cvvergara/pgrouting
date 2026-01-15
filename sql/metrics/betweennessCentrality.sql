@@ -3,11 +3,11 @@
 File: betweennessCentrality.sql
 
 Template:
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function developer:
-Copyright (c) 2024 Arun Thakur
+Copyright(C) 2024 Arun Thakur
 Mail: bedupako12mas at gmail.com
 
 ------

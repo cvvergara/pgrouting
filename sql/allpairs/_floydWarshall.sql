@@ -3,11 +3,11 @@
 File: _floydWarshall.sql
 
 Template:
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function developer:
-Copyright (c) 2015 Vicky Vergara
+Copyright(C) 2015 Vicky Vergara
 vicky_vergara@hotmail.com
 
 ------

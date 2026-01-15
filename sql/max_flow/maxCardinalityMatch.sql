@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 FILE: maxCardinalityMatch.sql
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2016 Andrea Nardelli
+Copyright(C) 2016 Andrea Nardelli
 mail: nrd.nardelli at gmail.com
 
 ------

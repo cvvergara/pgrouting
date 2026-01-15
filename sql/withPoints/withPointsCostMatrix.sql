@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: withPointsCost.sql
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2025 Celia Virginia Vergara Castillo
+Copyright(C) 2025 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
 ------

@@ -2,11 +2,11 @@
 File: pgr_maxFlowMinCost_Cost.sql
 
 Generated with Template by:
-Copyright (c) 2016 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2018 Maoguang Wang
+Copyright(C) 2018 Maoguang Wang
 Mail: xjtumg1007@gmail.com
 
 ------

@@ -2,11 +2,11 @@
 File: kruskalDD.sql
 
 Generated with Template by:
-Copyright (c) 2016 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2018 Aditya Pratap Singh
+Copyright(C) 2018 Aditya Pratap Singh
 Mail: adityapratap.singh28@gmail.com
 
 ------
