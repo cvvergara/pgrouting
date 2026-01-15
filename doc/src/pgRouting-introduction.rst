@@ -1,7 +1,7 @@
 ..
    ****************************************************************************
     pgRouting Manual
-    Copyright(C) pgRouting Contributors
+    Copyright(c) pgRouting developers
 
     License: Creative Commons Attribution-Share Alike 3.0
     https://creativecommons.org/licenses/by-sa/3.0/
@@ -20,7 +20,7 @@ Individuals in this release |release| (in alphabetical order)
 
 Mohit Rawat,
 Regina Obe,
-Vicky Vergara
+Celia Virginia Vergara Castillo
 
 
 And all the people that give us a little of their time making comments, finding
@@ -36,7 +36,7 @@ Chinese:
 
 Spanish:
 
-- Vicky Vergara
+- Celia Virginia Vergara Castillo
 
 Swedish:
 
