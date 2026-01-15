@@ -1,9 +1,9 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright(C) pgRouting Contributors - Version v4.1
+# Copyright(c) pgRouting Contributors - Version v4.1
 # This file is distributed under the same license as the pgRouting package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 # Translators:
-# Vicky Vergara <vicky@georepublic.de>, 2020
+# Celia Virginia Vergara Castillo <Vicky@georepublic.de>, 2020
 # Daniel Kastl, 2022
 # Ko Nagase <nagase@georepublic.co.jp>, 2022
 # Taro Matsuzawa <taro@georepublic.co.jp>, 2022
@@ -14,15 +14,15 @@
 # Taro Matsuzawa <taro@georepublic.co.jp>, 2020
 # Jin Igarashi <wushilan0623@gmail.com>, 2021
 # Ko Nagase <nagase@georepublic.co.jp>, 2021
-# Celia Virginia Vergara Castillo <vicky@georepublic.de>, 2022.
-# Celia Virginia Vergara Castillo <vicky@erosion.dev>, 2024, 2025.
+# Celia Virginia Vergara Castillo <Vicky@georepublic.de>, 2022.
+# Celia Virginia Vergara Castillo <Vicky@erosion.dev>, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-10 19:55+0000\n"
 "PO-Revision-Date: 2025-09-22 16:27+0000\n"
-"Last-Translator: Celia Virginia Vergara Castillo <vicky@erosion.dev>\n"
+"Last-Translator: Celia Virginia Vergara Castillo <Vicky@erosion.dev>\n"
 "Language-Team: Japanese <https://weblate.osgeo.org/projects/pgrouting/pgrouting-develop/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
@@ -7299,7 +7299,7 @@ msgstr "このリリースに対する貢献者"
 msgid "Individuals in this release v4.0.0 (in alphabetical order)"
 msgstr "個人(アルファベット順)"
 
-msgid "Bipasha Gayary, Fan Wu, Regina Obe, Saloni kumari, Vicky Vergara"
+msgid "Bipasha Gayary, Fan Wu, Regina Obe, Saloni Kumari, Celia Virginia Vergara Castillo"
 msgstr ""
 
 msgid "And all the people that give us a little of their time making comments, finding issues, making pull requests etc. in any of our products: osm2pgrouting, pgRouting, pgRoutingLayer, workshop."
@@ -7318,7 +7318,7 @@ msgstr ""
 msgid "Spanish:"
 msgstr ""
 
-msgid "Vicky Vergara"
+msgid "Celia Virginia Vergara Castillo"
 msgstr ""
 
 msgid "Swedish:"

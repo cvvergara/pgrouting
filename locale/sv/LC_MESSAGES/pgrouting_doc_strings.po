@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright(C) pgRouting Contributors - Version v4.1
+# Copyright(c) pgRouting Contributors - Version v4.1
 # This file is distributed under the same license as the pgRouting package.
-# Celia Virginia Vergara Castillo <vicky@erosion.dev>, 2025.
+# Celia Virginia Vergara Castillo <Vicky@erosion.dev>, 2025.
 # Daniel Nylander <daniel@danielnylander.se>, 2025.
 msgid ""
 msgstr ""
@@ -7149,8 +7149,8 @@ msgstr "Medverkande i denna utgåva"
 msgid "Individuals in this release v4.0.0 (in alphabetical order)"
 msgstr "Personer i denna utgåva v4.0.0 (i alfabetisk ordning)"
 
-msgid "Bipasha Gayary, Fan Wu, Regina Obe, Saloni kumari, Vicky Vergara"
-msgstr "Bipasha Gayary, Fan Wu, Regina Obe, Saloni kumari, Vicky Vergara"
+msgid "Bipasha Gayary, Fan Wu, Regina Obe, Saloni Kumari, Celia Virginia Vergara Castillo"
+msgstr "Bipasha Gayary, Fan Wu, Regina Obe, Saloni Kumari, Celia Virginia Vergara Castillo"
 
 msgid "And all the people that give us a little of their time making comments, finding issues, making pull requests etc. in any of our products: osm2pgrouting, pgRouting, pgRoutingLayer, workshop."
 msgstr "Och alla de människor som ger oss lite av sin tid genom att kommentera, hitta problem, göra pull requests etc. i någon av våra produkter: osm2pgrouting, pgRouting, pgRoutingLayer, workshop."
@@ -7167,8 +7167,8 @@ msgstr "Dapeng Wang"
 msgid "Spanish:"
 msgstr "Spanska:"
 
-msgid "Vicky Vergara"
-msgstr "Vicky Vergara"
+msgid "Celia Virginia Vergara Castillo"
+msgstr "Celia Virginia Vergara Castillo"
 
 msgid "Swedish:"
 msgstr "Svenska:"
@@ -17130,8 +17130,8 @@ msgstr "pgr_withPointsvia is pgr_dijkstraVia **with points**"
 #~ msgid "Individuals in this release v3.8.x (in alphabetical order)"
 #~ msgstr "Individer i denna utgåva v3.8.x (i alfabetisk ordning)"
 
-#~ msgid "Aurélie Bousquet, Regina Obe, Vicky Vergara"
-#~ msgstr "Aurélie Bousquet, Regina Obe, Vicky Vergara"
+#~ msgid "Aurélie Bousquet, Regina Obe, Celia Virginia Vergara Castillo"
+#~ msgstr "Aurélie Bousquet, Regina Obe, Celia Virginia Vergara Castillo"
 
 #~ msgid "Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf Hossain, Ashish Kumar, Aurélie Bousquet, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
 #~ msgstr "Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf Hossain, Ashish Kumar, Aurélie Bousquet, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
@@ -17560,8 +17560,8 @@ msgstr "pgr_withPointsvia is pgr_dijkstraVia **with points**"
 #~ msgstr "E-postlista för användare: https://lists.osgeo.org/mailman/listinfo/pgrouting-users"
 
 #, fuzzy
-#~ msgid "Regina Obe, Saloni kumari, Vicky Vergara"
-#~ msgstr "Aurélie Bousquet, Regina Obe, Vicky Vergara"
+#~ msgid "Regina Obe, Saloni Kumari, Celia Virginia Vergara Castillo"
+#~ msgstr "Aurélie Bousquet, Regina Obe, Celia Virginia Vergara Castillo"
 
 #, fuzzy
 #~ msgid "Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf Hossain, Ashish Kumar, Aurélie Bousquet, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
@@ -17572,8 +17572,8 @@ msgstr "pgr_withPointsvia is pgr_dijkstraVia **with points**"
 #~ msgstr ":doc:`pgr_cuthillMckeeOrdering` - Return reverse Cuthill-McKee ordering of an undirected graph."
 
 #, fuzzy
-#~ msgid "Fan Wu Regina Obe, Saloni kumari, Vicky Vergara"
-#~ msgstr "Aurélie Bousquet, Regina Obe, Vicky Vergara"
+#~ msgid "Fan Wu Regina Obe, Saloni Kumari, Celia Virginia Vergara Castillo"
+#~ msgstr "Aurélie Bousquet, Regina Obe, Celia Virginia Vergara Castillo"
 
 #, fuzzy
 #~ msgid "Aasheesh Tiwari, Abhinav Jain, Aditya Pratap Singh, Adrien Berchet, Akio Takubo, Andrea Nardelli, Anthony Tasca, Anton Patrushev, Aryan Gupta, Ashraf Hossain, Ashish Kumar, Aurélie Bousquet, Cayetano Benavent, Christian Gonzalez, Daniel Kastl, Dapeng Wang, Dave Potts, David Techer, Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Fan Wu, Florian Thurkow, Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"

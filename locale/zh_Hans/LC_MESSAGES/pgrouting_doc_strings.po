@@ -1,10 +1,10 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright(C) pgRouting Contributors - Version v4.1
+# Copyright(c) pgRouting Contributors - Version v4.1
 # This file is distributed under the same license as the pgRouting package.
 # Regina Obe <regina@arrival3d.com>, 2023.
 # Wangdapeng <wangdapeng20191008@gmail.com>, 2023, 2025.
 # Zuochenwei <zuochenwei5@gmail.com>, 2023, 2024, 2025.
-# Celia Virginia Vergara Castillo <vicky@erosion.dev>, 2023, 2024, 2025.
+# Celia Virginia Vergara Castillo <Vicky@erosion.dev>, 2023, 2024, 2025.
 # Wang Dapeng <wangdapeng20191008@gmail.com>, 2023.
 # DeepL <noreply-mt-deepl@weblate.org>, 2024, 2025.
 # Dapeng Wang <wangdapeng20191008@gmail.com>, 2025.
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-12-10 19:55+0000\n"
 "PO-Revision-Date: 2025-09-22 16:28+0000\n"
-"Last-Translator: Celia Virginia Vergara Castillo <vicky@erosion.dev>\n"
+"Last-Translator: Celia Virginia Vergara Castillo <Vicky@erosion.dev>\n"
 "Language-Team: Chinese (Simplified) <https://weblate.osgeo.org/projects/pgrouting/pgrouting-develop/zh_Hans/>\n"
 "Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
@@ -7562,8 +7562,8 @@ msgid "Individuals in this release v4.0.0 (in alphabetical order)"
 msgstr "本次 v3.8.x 版本发布的个人贡献者（按字母顺序排列）"
 
 #, fuzzy
-msgid "Bipasha Gayary, Fan Wu, Regina Obe, Saloni kumari, Vicky Vergara"
-msgstr "Aurélie Bousquet, Regina Obe, Vicky Vergara"
+msgid "Bipasha Gayary, Fan Wu, Regina Obe, Saloni Kumari, Celia Virginia Vergara Castillo"
+msgstr "Aurélie Bousquet, Regina Obe, Celia Virginia Vergara Castillo"
 
 msgid "And all the people that give us a little of their time making comments, finding issues, making pull requests etc. in any of our products: osm2pgrouting, pgRouting, pgRoutingLayer, workshop."
 msgstr "还有所有为我们的产品（osm2pgrouting、pgRouting、pgRoutingLayer、workshop）提供意见、发现问题、提出拉取请求等帮助的开发者。"
@@ -7580,7 +7580,7 @@ msgstr "Dapeng Wang"
 msgid "Spanish:"
 msgstr ""
 
-msgid "Vicky Vergara"
+msgid "Celia Virginia Vergara Castillo"
 msgstr ""
 
 msgid "Swedish:"

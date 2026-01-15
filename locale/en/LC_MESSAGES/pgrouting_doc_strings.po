@@ -1,5 +1,5 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright(C) pgRouting Contributors - Version v4.1
+# Copyright(c) pgRouting Contributors - Version v4.1
 # This file is distributed under the same license as the pgRouting package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
 #
@@ -8326,7 +8326,7 @@ msgstr ""
 msgid "Individuals in this release |release| (in alphabetical order)"
 msgstr ""
 
-msgid "Mohit Rawat, Regina Obe, Vicky Vergara"
+msgid "Mohit Rawat, Regina Obe, Celia Virginia Vergara Castillo"
 msgstr ""
 
 msgid ""
@@ -8347,7 +8347,7 @@ msgstr ""
 msgid "Spanish:"
 msgstr ""
 
-msgid "Vicky Vergara"
+msgid "Celia Virginia Vergara Castillo"
 msgstr ""
 
 msgid "Swedish:"
