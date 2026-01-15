@@ -2,7 +2,7 @@
 # ------------------------------------------------------------------------------
 # /*PGR-GNU*****************************************************************
 # File: setup_db.sh
-# Copyright(C) 2021-2026 pgRouting developers
+# Copyright(c) 2021-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # ********************************************************************PGR-GNU*/
 # Travis CI scripts
-# Copyright(C) pgRouting Contributors
+# Copyright(c) pgRouting Contributors
 #
 # Test pgRouting
 # ------------------------------------------------------------------------------

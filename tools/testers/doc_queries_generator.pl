@@ -3,7 +3,7 @@
 =pod
 File: doc_queries_generator.pl
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 
 Function contributors:
   	Celia Virginia Vergara Castillo

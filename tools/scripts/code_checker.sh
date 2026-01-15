@@ -4,10 +4,10 @@
 #
 #  Project:  pgRouting
 #  Purpose:  (Interactive) script to lint C and C++ code
-#  Author:   Vicky Vergara <vicky_vergara@hotmail.com>
+#  Author:   Celia Virginia Vergara Castillo <Vicky_vergara@hotmail.com>
 #
 ###############################################################################
-#  Copyright(C) 2016, Vicky Vergara <vicky_vergara@hotmail.com>
+#  Copyright(c) 2016, Celia Virginia Vergara Castillo <Vicky_vergara@hotmail.com>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a
 #  copy of this software and associated documentation files (the "Software"),
