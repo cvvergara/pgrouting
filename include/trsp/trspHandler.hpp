@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: trspHandler.hpp
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------

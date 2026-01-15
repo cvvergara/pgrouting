@@ -2,15 +2,15 @@
 File: ordering_driver.hpp
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Developers:
 
-Copyright(C) 2025 Bipasha Gayary
+Copyright(c) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
 
-Copyright(C) 2025 Fan Wu
+Copyright(c) 2025 Fan Wu
 Mail: wifiblack0131 at gmail.com
 
 ------

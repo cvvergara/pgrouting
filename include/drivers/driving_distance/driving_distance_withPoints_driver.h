@@ -1,14 +1,14 @@
 /*PGR-GNU*****************************************************************
 File: withPoints_driver.h
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project at pgrouting.org
 
 Function's developer:
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
-Copyright(C) 2023 Yige Huang
+Copyright(c) 2023 Yige Huang
 Mail: square1ge at gmail.com
 
 ------

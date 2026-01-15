@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
 File: trsp_driver.h
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2011 Stephen Woodbridge
-Copyright(C) 2017 Vicky Vergara
+Copyright(c) 2011 Stephen Woodbridge
+Copyright(c) 2017 Celia Virginia Vergara Castillo
 * Rewrite for cleanup
-Copyright(C) 2022 Vicky Vergara
+Copyright(c) 2022 Celia Virginia Vergara Castillo
 * Rewrite for new signatures
 
 ------

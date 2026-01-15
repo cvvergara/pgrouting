@@ -2,11 +2,11 @@
 File: circuits_driver.h
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2022 Nitish Chauhan
+Copyright(c) 2022 Nitish Chauhan
 Mail: nitishchauhan0022 at gmail.com
 
 ------

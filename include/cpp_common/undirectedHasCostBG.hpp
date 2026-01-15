@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: undirectedHasCostBG.hpp
 
-Copyright(C) 2021-2026 pgRouting developers
+Copyright(c) 2021-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2025 Celia Virginia Vergara Castillo
-Email: vicky at erosion.dev
+Copyright(c) 2025 Celia Virginia Vergara Castillo
+Email: Vicky at erosion.dev
 
 ------
 

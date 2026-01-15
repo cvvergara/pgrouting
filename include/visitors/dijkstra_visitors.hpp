@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: dijkstra_visitors.hpp
 
-Copyright(C) 2023-2026 pgRouting developers
+Copyright(c) 2023-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2023 Celia Virginia Vergara Castillo
-Copyright(C) 2018 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2023 Celia Virginia Vergara Castillo
+Copyright(c) 2018 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 ------
 

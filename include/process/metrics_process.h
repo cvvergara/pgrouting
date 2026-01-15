@@ -2,7 +2,7 @@
 File: bandwidth_process.h
 
 Function's developer:
-Copyright(C) 2025 Saloni kumari
+Copyright(c) 2025 Saloni Kumari
 Mail: chaudharysaloni2510 at gmail.com
 
 ------

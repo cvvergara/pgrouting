@@ -2,11 +2,11 @@
 File: line_graph_full_rt.h
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2018 Anthony Tasca
+Copyright(c) 2018 Anthony Tasca
 Mail: atasca10@gmail.com
 
 ------

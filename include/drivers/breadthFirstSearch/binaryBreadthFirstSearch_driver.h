@@ -2,11 +2,11 @@
 File: binaryBreadthFirstSearch_driver.h
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2019 Gudesa Venkata Sai Akhil
+Copyright(c) 2019 Gudesa Venkata Sai Akhil
 Mail: gvs.akhil1997@gmail.com
 
 ------

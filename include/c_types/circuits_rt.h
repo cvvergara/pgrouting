@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: circuits_rt.h
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2022 Nitish Chauhan
+Copyright(c) 2022 Nitish Chauhan
 mail: nitishchauhan002@gmail.com
 
 ------

@@ -2,11 +2,11 @@
 File: identifiers.hpp
 
 Generated with Template by:
-Copyright(C) 2016-2026 pgRouting developers
+Copyright(c) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2016 Rohith Reddy
+Copyright(c) 2016 Rohith Reddy
 Mail:
 
 ------
@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <iostream>
 #include <stdexcept>
 
-/* TODO(vicky)
+/* TODO(Vicky)
  * compiler check that type T is a integral type
  */
 namespace pgrouting {

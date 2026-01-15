@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: bdAstar.hpp
 
-Copyright(C) 2016-2026 pgRouting developers
+Copyright(c) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 ------
 

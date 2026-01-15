@@ -2,11 +2,11 @@
 File: edge_disjoint_paths_many_to_one_driver.h
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2016 Andrea Nardelli
+Copyright(c) 2016 Andrea Nardelli
 Mail: nrd.nardelli@gmail.com
 
 ------

@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: sequentialVertexColoring.hpp
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2020 Ashish Kumar
+Copyright(c) 2020 Ashish Kumar
 Mail: ashishkr23438@gmail.com
 
 ------

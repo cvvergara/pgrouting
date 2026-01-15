@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: components.hpp
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2017 Maoguang Wang
+Copyright(c) 2017 Maoguang Wang
 Mail: xjtumg1007@gmail.com
 
 ------

@@ -1,16 +1,16 @@
 /*PGR-GNU*****************************************************************
 File: ksp.hpp
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-Mail: vicky AT erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Mail: Vicky AT erosion.dev
 
-Copyright(C) 2023 Aniket Agarwal
+Copyright(c) 2023 Aniket Agarwal
 Mail: aniketgarg187 AT gmail.com
 
-Copyright(C) 2023 Abhinav Jain
+Copyright(c) 2023 Abhinav Jain
 Mail: this.abhinav AT gmail.com
 ------
 

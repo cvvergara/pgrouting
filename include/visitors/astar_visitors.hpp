@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: astar_visitors.hpp
 
-Copyright(C) 2023 Celia Virginia Vergara Castillo
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-vicky at erosion.dev
+Copyright(c) 2023 Celia Virginia Vergara Castillo
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Vicky at erosion.dev
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------

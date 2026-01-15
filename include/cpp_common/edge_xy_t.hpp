@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: edge_xy_t.hpp
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2017 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Copyright(c) 2017 Celia Virginia Vergara Castillo
+Mail: Vicky_vergara@hotmail.com
 
 ------
 

@@ -2,8 +2,8 @@
 File: e_report.h
 
 Function's developer:
-Copyright(C) 2016 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Copyright(c) 2016 Celia Virginia Vergara Castillo
+Mail: Vicky_vergara@hotmail.com
 
 ------
 

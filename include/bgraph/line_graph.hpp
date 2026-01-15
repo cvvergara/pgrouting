@@ -2,8 +2,8 @@
 File: line_graph.hpp
 
 Function's developer:
-Copyright(C) 2024 Vicky Vergara
-Mail: vicky at gmail.com
+Copyright(c) 2024 Celia Virginia Vergara Castillo
+Mail: Vicky at gmail.com
 
 ------
 

@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: withPoints.hpp
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2015 Celia Virginia Vergara Castillo
+Copyright(c) 2015 Celia Virginia Vergara Castillo
 Mail:
 
 ------

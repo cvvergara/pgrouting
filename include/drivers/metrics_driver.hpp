@@ -1,15 +1,15 @@
 /*PGR-GNU*****************************************************************
 File: metrics_driver.hpp
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Developer:
-Copyright(C) 2025 Saloni Kumari
+Copyright(c) 2025 Saloni Kumari
 Mail: chaudharysaloni2510 at gmail.com
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------

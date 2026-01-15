@@ -2,11 +2,11 @@
 File: cuthillMckeeOrdering.hpp
 
 Generated with Template by:
-Copyright(C) 2022-2026 pgRouting developers
+Copyright(c) 2022-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2022 Shobhit Chaurasia
+Copyright(c) 2022 Shobhit Chaurasia
 Mail: 000shobhitchaurasia at gmail.com
 
 ------

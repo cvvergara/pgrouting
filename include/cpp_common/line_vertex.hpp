@@ -2,11 +2,11 @@
 File: line_vertex.hpp
 
 Generated with Template by:
-Copyright(C) 2017-2026 pgRouting developers
+Copyright(c) 2017-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2017 Vidhan Jain
+Copyright(c) 2017 Vidhan Jain
 Mail: vidhanj1307@gmail.com
 
 ------

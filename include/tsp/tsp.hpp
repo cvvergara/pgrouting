@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: tsp.hpp
 
-Copyright(C) 2021-2026 pgRouting developers
+Copyright(c) 2021-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2021 Celia Virginia Vergara Castillo
+Copyright(c) 2021 Celia Virginia Vergara Castillo
 
 ------
 

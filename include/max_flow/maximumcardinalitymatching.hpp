@@ -1,15 +1,15 @@
 /*PGR-GNU*****************************************************************
 File: maximumcardinalitymatching.hpp
 
-Copyright(C) 2016-2026 pgRouting developers
+Copyright(c) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Ignoring directed flag & works only for undirected graph
-Copyright(C) 2022 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2022 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 Function's developer:
-Copyright(C) 2016 Andrea Nardelli
+Copyright(c) 2016 Andrea Nardelli
 Mail: nrd.nardelli at gmail.com
 
 ------

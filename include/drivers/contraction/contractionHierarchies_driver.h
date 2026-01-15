@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: contractionHierarchies_driver.h
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) Aurélie Bousquet - 2024
+Copyright(c) Aurélie Bousquet - 2024
 Mail: aurelie.bousquet at oslandia.com
 ------
 

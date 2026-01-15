@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: astar.hpp
 
-Copyright(C) 2023-2026 pgRouting developers
+Copyright(c) 2023-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2023 Vicky Vergara
-Copyright(C) 2015 Vicky Vergara
-Mail: vicky at erosion.dev
+Copyright(c) 2023 Celia Virginia Vergara Castillo
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 ------
 

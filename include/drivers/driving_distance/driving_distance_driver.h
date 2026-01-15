@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
 File: drivedist_driver.h
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-vicky at erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Vicky at erosion.dev
 
-Copyright(C) 2023 Aryan Gupta
+Copyright(c) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com
 ------
 

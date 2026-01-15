@@ -3,11 +3,11 @@
 File: topologicalSort.hpp
 
 Generated with Template by:
-Copyright(C) 2019-2026 pgRouting developers
+Copyright(c) 2019-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2019 Hang Wu
+Copyright(c) 2019 Hang Wu
 mail: nike0good@gmail.com
 
 ------

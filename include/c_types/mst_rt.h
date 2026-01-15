@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: mst_rt.h
 
-Copyright(C) 2015 Aditya Pratap Singh
+Copyright(c) 2015 Aditya Pratap Singh
 Mail: adityapratap.singh28@gmail.com
 ------
 
