@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: postgres_connection.c
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-vicky_vergara@hotmail.com
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Vicky_vergara@hotmail.com
 
 ------
 

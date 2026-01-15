@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: pickDeliver.cpp
 
-Copyright(C) 2016-2026 pgRouting developers
+Copyright(c) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -58,14 +58,14 @@ Pgr_pickDeliver::solve() {
         for (int i = 1; i < 7; ++i) {
             initial_sols.push_back(Initial_solution((Initials_code)i, m_orders.size()));
             msg.log << "solution " << i << "\n" << initial_sols.back().tau();
-            // TODO(vicky) calculate the time it takes
+            // TODO(Vicky) calculate the time it takes
             msg.log << "Initial solution " << i
                 << " duration: " << initial_sols.back().duration();
         }
     } else {
         msg.log << "only trying " << m_initial_id << "\n";
         initial_sols.push_back(Initial_solution((Initials_code)m_initial_id, m_orders.size()));
-        // TODO(vicky) calculate the time it takes
+        // TODO(Vicky) calculate the time it takes
         msg.log << "Initial solution " << m_initial_id
             << " duration: " << initial_sols[0].duration();
     }

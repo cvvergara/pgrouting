@@ -1,17 +1,17 @@
 /*PGR-GNU*****************************************************************
 File: shortestPath_driver.cpp
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Design of one process & driver file by
-Copyright(C) 2025 Celia Virginia Vergara Castillo
-Mail: vicky_vergara at erosion.dev
+Copyright(c) 2025 Celia Virginia Vergara Castillo
+Mail: Vicky_vergara at erosion.dev
 
 Copying this file (or a derivative) within pgRouting code add the following:
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------
@@ -54,7 +54,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 namespace {
 
-// TODO(vicky) This should be in its own file
+// TODO(Vicky) This should be in its own file
 char
 estimate_drivingSide(char driving_side, int32_t which) {
     char d_side = static_cast<char>(tolower(driving_side));

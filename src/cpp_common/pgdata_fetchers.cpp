@@ -1,20 +1,20 @@
 /*PGR-GNU*****************************************************************
 File: pgdata_fetchers.cpp
 
-Copyright(C) 2023-2026 pgRouting developers
+Copyright(c) 2023-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2024 Celia Virginia Vergara Castillo
+Copyright(c) 2024 Celia Virginia Vergara Castillo
 - Return (C++) structure
-Copyright(C) 2023 Celia Virginia Vergara Castillo
+Copyright(c) 2023 Celia Virginia Vergara Castillo
 - cat into one file
-Copyright(C) 2020 Mahmoud SAKR and Esteban ZIMANYI
+Copyright(c) 2020 Mahmoud Zakr and Esteban Zimányi
 mail: m_attia_sakrcw at yahoo.com, estebanzimanyicw at gmail.com
-Copyright(C) 2016 Rohith Reddy
-Copyright(C) 2016 Andrea Nardelli
+Copyright(c) 2016 Rohith Reddy
+Copyright(c) 2016 Andrea Nardelli
 mail: nrd.nardelli at gmail.com
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-mail: vicky at erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+mail: Vicky at erosion.dev
 
 
 ------

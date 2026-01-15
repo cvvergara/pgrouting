@@ -2,12 +2,12 @@
 File: turnRestrictedPath.c
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2018 vicky Vergara
-Mail: vicky at erosion.dev
+Copyright(c) 2018 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 ------
 

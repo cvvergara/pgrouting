@@ -2,12 +2,12 @@
 File: trsp_withPoints.c
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2022 Celia Virginia Vergara Castillo
-Mail: vicky at georepublic.de
+Copyright(c) 2022 Celia Virginia Vergara Castillo
+Mail: Vicky at georepublic.de
 
 ------
 

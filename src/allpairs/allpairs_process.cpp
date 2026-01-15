@@ -1,17 +1,17 @@
 /*PGR-GNU*****************************************************************
 File: allpairs_process.cpp
 
-Copyright(C) 2025-2026 pgRouting developers
+Copyright(c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Design of one process & driver file by
-Copyright(C) 2025 Celia Virginia Vergara Castillo
-Mail: vicky_vergara at erosion.dev
+Copyright(c) 2025 Celia Virginia Vergara Castillo
+Mail: Vicky_vergara at erosion.dev
 
 Copying this file (or a derivative) within pgRouting code add the following:
 
 Generated with Template by:
-Copyright(C) 2025-2026 pgRouting developers
+Copyright(c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------

@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
 File: trspHandler.cpp
 
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
-Copyright(C) 2022 Vicky Vergara
+Copyright(c) 2022 Celia Virginia Vergara Castillo
 * Added functionality to handle map of combinations
 
 ------

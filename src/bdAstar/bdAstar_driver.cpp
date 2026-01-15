@@ -2,13 +2,13 @@
 File: bdAstar_driver.cpp
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2023 Celia Virginia Vergara Castillo
-Copyright(C) 2016 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2023 Celia Virginia Vergara Castillo
+Copyright(c) 2016 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 ------
 

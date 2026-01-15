@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: mst_common.cpp
 
-Copyright(C) 2018-2026 pgRouting developers
+Copyright(c) 2018-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2018 Vicky Vergara
-Mail: vicky at georepublic dot de
+Copyright(c) 2018 Celia Virginia Vergara Castillo
+Mail: Vicky at georepublic dot de
 
 ------
 

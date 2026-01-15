@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: details.cpp
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2018 Vicky Vergara
+Copyright(c) 2018 Celia Virginia Vergara Castillo
 
 
 ------

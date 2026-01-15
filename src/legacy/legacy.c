@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: legacy.c
 
-Copyright(C) 2024-2026 pgRouting developers
+Copyright(c) 2024-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2018-2020 Regina Obe <lr@pcorp.us>
+Copyright(c) 2018-2020 Regina Obe <lr@pcorp.us>
 ------
 
 This program is free software; you can redistribute it and/or modify

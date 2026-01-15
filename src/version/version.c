@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: version.c
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-Mail: vicky_vergara@hotmail.com
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Mail: Vicky_vergara@hotmail.com
 
 ------
 

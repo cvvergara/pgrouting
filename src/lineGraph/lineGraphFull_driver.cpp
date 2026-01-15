@@ -2,11 +2,11 @@
 File: lineGraphFull_driver.cpp
 
 Generated with Template by:
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2017 Anthony Nicola Tasca
+Copyright(c) 2017 Anthony Nicola Tasca
 Mail: atasca10 at gmail.com
 
 ------

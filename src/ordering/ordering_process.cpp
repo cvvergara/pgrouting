@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: ordering_process.cpp
 
-Copyright(C) 2025-2026 pgRouting developers
+Copyright(c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Developers:
-Copyright(C) 2025-2026 pgRouting developers
+Copyright(c) 2025-2026 pgRouting developers
 Mail: bipashagayary at gmail.com
 Mail: wifiblack0131 at gmail.com
 
