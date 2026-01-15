@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # ********************************************************************PGR-GNU*/
 # Travis CI scripts
-# Copyright(c) pgRouting Contributors
+# Copyright(c) pgRouting developers
 #
 # Test pgRouting
 # ------------------------------------------------------------------------------
