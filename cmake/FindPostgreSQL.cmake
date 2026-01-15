@@ -7,7 +7,7 @@
 #  POSTGRESQL_EXECUTABLE
 #  POSTGRESQL_VERSION_STRING
 #
-# Copyright(C) 2006, Jaroslaw Staniek, <js@iidea.pl>
+# Copyright(c) 2006, Jaroslaw Staniek, <js@iidea.pl>
 #
 # Redistribution and use is allowed according to the terms of the BSD license.
 # For details see the accompanying COPYING-CMAKE-SCRIPTS file.
