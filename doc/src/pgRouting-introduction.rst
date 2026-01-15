@@ -3,56 +3,8 @@
     pgRouting Manual
     Copyright(c) pgRouting Contributors
 
-    This documentation is licensed under a Creative Commons Attribution-Share
-    Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
-   ****************************************************************************
-
-|
-
-
-Introduction
-===============================================================================
-
-pgRouting is an extension of `PostGIS <https://postgis.net>`__ and `PostgreSQL
-<https://www.postgresql.org>`__ geospatial database and adds routing and other
-network analysis functionality. A predecessor of pgRouting – pgDijkstra, written
-by Sylvain Pasche from `Camptocamp <https://camptocamp.com>`__, was later
-extended by Orkney and renamed to pgRouting. The project is
-now supported and maintained by `Georepublic <https://georepublic.info>`__,
-`Paragon Corporation <https://www.paragoncorporation.com/>`__ and a broad user
-community.
-
-pgRouting is part of `OSGeo Community Projects
-<https://wiki.osgeo.org/wiki/OSGeo_Community_Projects>`__ from the `OSGeo
-Foundation <https://www.osgeo.org>`__ and included on `OSGeoLive
-<http://live.osgeo.org/>`__.
-
-
-.. _license:
-
-Licensing
--------------------------------------------------------------------------------
-
-The following licenses can be found in pgRouting:
-
-.. list-table::
-   :widths: 250 500
-
-   * - **License**
-     -
-   * - GNU General Public License v2.0 or later
-     - Most features of pgRouting are available under `GNU General Public
-       License v2.0 or later
-       <https://spdx.org/licenses/GPL-2.0-or-later.html>`_.
-   * - Boost Software License - Version 1.0
-     - Some Boost extensions are available under `Boost Software License -
-       Version 1.0 <https://www.boost.org/LICENSE_1_0.txt>`_.
-   * - MIT-X License
-     - Some code contributed by iMaptools.com is available under MIT-X license.
-   * - Creative Commons Attribution-Share Alike 3.0 License
-     - The pgRouting Manual is licensed under a `Creative Commons
-       Attribution-Share Alike 3.0 License
-       <https://creativecommons.org/licenses/by-sa/3.0/>`_.
+    License: Creative Commons Attribution-Share Alike 3.0
+    https://creativecommons.org/licenses/by-sa/3.0/
 
 In general license information should be included in the header of each source
 file.

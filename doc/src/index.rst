@@ -3,29 +3,8 @@
     pgRouting Manual
     Copyright(c) pgRouting Contributors
 
-    This documentation is licensed under a Creative Commons Attribution-Share
-    Alike 3.0 License: https://creativecommons.org/licenses/by-sa/3.0/
-   ****************************************************************************
-
-|
-
-
-*******************************************************************************
-Table of Contents
-*******************************************************************************
-
-pgRouting extends the `PostGIS <https://postgis.net>`__/`PostgreSQL
-<https://www.postgresql.org>`__ geospatial database to provide geospatial
-routing and other network analysis functionality.
-
-This is the manual for pgRouting |release|.
-
-.. image:: _static/images/ccbysa.png
-    :align: left
-    :alt: Creative Commons Attribution-Share Alike 3.0 License
-
-The pgRouting Manual is licensed under a `Creative Commons Attribution-Share
-Alike 3.0 License <https://creativecommons.org/licenses/by-sa/3.0/>`_.
+    License: Creative Commons Attribution-Share Alike 3.0
+    https://creativecommons.org/licenses/by-sa/3.0/
 Feel free to use this material any way you like, but we ask that you attribute
 credit to the pgRouting Project and wherever possible, a link back to
 https://pgrouting.org.
