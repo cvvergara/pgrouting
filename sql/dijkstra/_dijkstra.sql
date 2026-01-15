@@ -1,14 +1,14 @@
 /*PGR-GNU*****************************************************************
 File: _dijkstra.sql
 
-Copyright(C) 2017-2026 pgRouting developers
+Copyright(c) 2017-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-mail: vicky at erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+mail: Vicky at erosion.dev
 
-Copyright(C) 2020 The combinations_sql signature is added by Mahmoud SAKR
-and Esteban ZIMANYI
+Copyright(c) 2020 The combinations_sql signature is added by Mahmoud Zakr
+and Esteban Zimányi
 mail: m_attia_sakr at yahoo.com, estebanzimanyi at gmail.com
 
 ------

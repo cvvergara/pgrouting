@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-mail: vicky_vergara@hotmail.com
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+mail: Vicky_vergara@hotmail.com
 
 ------
 

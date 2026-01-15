@@ -1,8 +1,8 @@
 /*PGR-GNU*****************************************************************
 File: primBFS.sql
 
-Copyright(C) 2018 Vicky Vergara
-Mail: vicky at erosion dot dev
+Copyright(c) 2018 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion dot dev
 
 ------
 

@@ -2,11 +2,11 @@
 File: depthFirstSearch.sql
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2020 Ashish Kumar
+Copyright(c) 2020 Ashish Kumar
 Mail: ashishkr23438 at gmail.com
 
 ------

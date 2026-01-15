@@ -2,11 +2,11 @@
 File: _stoerWagner.sql
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2018 Aditya Pratap Singh
+Copyright(c) 2018 Aditya Pratap Singh
 Mail: adityapratap.singh28@gmail.com
 
 ------

@@ -2,11 +2,11 @@
 File: _pickDeliver.sql
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2017 Celia Virginia Vergara Castillo
+Copyright(c) 2017 Celia Virginia Vergara Castillo
 Mail:
 
 ------

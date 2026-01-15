@@ -1,13 +1,13 @@
 /*PGR-GNU*****************************************************************
 File: _withPointsKSP.sql
 
-Copyright(C) 2017-2026 pgRouting developers
+Copyright(c) 2017-2026 pgRouting developers
 Mail: project at pgrouting.org
 
-Copyright(C) 2015 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2015 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
-Copyright(C) 2023 Abhinav Jain
+Copyright(c) 2023 Abhinav Jain
 Mail: this.abhinav at gmail.com
 
 ------

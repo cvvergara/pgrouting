@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: trsp.sql
 
-Copyright(C) 2016-2026 pgRouting developers
+Copyright(c) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2022 Vicky Vergara
+Copyright(c) 2022 Celia Virginia Vergara Castillo
 - Complete rewrite of one to one
 - New: one to many, many to one, many to many, combinations
 

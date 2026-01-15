@@ -2,11 +2,11 @@
 File: _bipartite.sql
 
 Generated with Template by:
-Copyright(C) 2013-2026 pgRouting developers
+Copyright(c) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2020 Prakash Tiwari
+Copyright(c) 2020 Prakash Tiwari
 Mail: 85prakash2017@gmail.com
 
 ------

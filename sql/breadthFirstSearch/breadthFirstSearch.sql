@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: breadthFirstSearch.sql
 
-Copyright(C) 2015-2026 pgRouting developers
+Copyright(c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2019 Gudesa Venkata Sai Akhil
+Copyright(c) 2019 Gudesa Venkata Sai Akhil
 Mail: gvs.akhil1997 at gmail.com
 
 ------

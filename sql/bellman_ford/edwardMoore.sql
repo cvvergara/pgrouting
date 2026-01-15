@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: edwardMoore.sql
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2019 Gudesa Venkata Sai Akhil
+Copyright(c) 2019 Gudesa Venkata Sai Akhil
 Mail: gvs.akhil1997 at gmail.com
 
 ------

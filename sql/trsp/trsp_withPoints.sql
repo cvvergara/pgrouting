@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
 File: trsp_withPoints.sql
 
-Copyright(C) 2022-2026 pgRouting developers
+Copyright(c) 2022-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2022 Celia Virginia Vergara Castillo
-Mail: vicky at erosion.dev
+Copyright(c) 2022 Celia Virginia Vergara Castillo
+Mail: Vicky at erosion.dev
 
 ------
 

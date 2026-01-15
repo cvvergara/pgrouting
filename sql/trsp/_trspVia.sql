@@ -2,7 +2,7 @@
 File: _trspVia.sql
 
 Function's developer:
-Copyright(C) 2022 Celia Virginia Vergara Castillo
+Copyright(c) 2022 Celia Virginia Vergara Castillo
 
 ------
 

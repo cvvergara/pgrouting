@@ -2,11 +2,11 @@
 File: _sloanOrdering.sql
 
 Generated with Template by:
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2025 Bipasha Gayary
+Copyright(c) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
 
 ------

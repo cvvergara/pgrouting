@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: makeConnected.sql
 
-Copyright(C) 2007-2026 pgRouting developers
+Copyright(c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright(C) 2020 Himanshu Raj
+Copyright(c) 2020 Himanshu Raj
 Mail: raj.himanshu2@gmail.com
 
 ------

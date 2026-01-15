@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 FILE: _edgeDisjointPaths.sql
 
-Copyright(C) 2017-2026 pgRouting developers
+Copyright(c) 2017-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright(C) 2016 Andrea Nardelli
+Copyright(c) 2016 Andrea Nardelli
 mail: nrd.nardelli@gmail.com
 
 ------

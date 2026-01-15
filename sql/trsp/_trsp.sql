@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
 File: _trsp.sql
 
-Copyright(C) 2017-2026 pgRouting developers
+Copyright(c) 2017-2026 pgRouting developers
 Mail: project@pgrouting.org
-Copyright(C) 2022 Vicky Vergara
+Copyright(c) 2022 Celia Virginia Vergara Castillo
 * Added combinations internal function
 
 ------
