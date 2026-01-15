@@ -1,4 +1,4 @@
-# Copyright (c) pgRouting developers
+# Copyright(C) 2013-2026 pgRouting developers
 # This file is part of the pgRouting project.
 # License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 # Do not use extensions
