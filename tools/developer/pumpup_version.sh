@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 # pgRouting Scripts
-# Copyright(c) pgRouting developers
+# Copyright(c) 2020-2026 pgRouting developers
 #
 # Pump up version
 # ------------------------------------------------------------------------------
