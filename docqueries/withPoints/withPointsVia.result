@@ -2,6 +2,8 @@ BEGIN;
 BEGIN
 SET client_min_messages TO NOTICE;
 SET
+/* Copyright(c) 2022-2026 pgRouting developers
+License: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
 SET extra_float_digits=-3;
 SET
 /* -- q0 */

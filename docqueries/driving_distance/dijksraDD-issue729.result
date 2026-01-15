@@ -2,6 +2,9 @@ BEGIN;
 BEGIN
 SET client_min_messages TO NOTICE;
 SET
+/* Copyright(c) 2017-2026 pgRouting developers
+License: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+-- TODO move to pgtap
 ALTER TABLE edges
 DROP COLUMN IF EXISTS node_count,
 ADD COLUMN node_count INTEGER;

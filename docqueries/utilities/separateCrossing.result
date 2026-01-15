@@ -2,6 +2,10 @@ BEGIN;
 BEGIN
 SET client_min_messages TO NOTICE;
 SET
+/* Copyright(c) 2025-2026 pgRouting developers
+License: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+--                pgr_nodeNetwork
+--------------------------------------------------------------------------------
 /* --q1 */
 SELECT id, sub_id, ST_AsText(geom)
 FROM pgr_separateCrossing('SELECT id, geom FROM edges')
