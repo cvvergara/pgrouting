@@ -1,4 +1,4 @@
--- Copyright(c) pgRouting developers
+-- Copyright(c) 2022-2026 pgRouting developers
 -- Creative Commons Attribution-Share Alike 3.0 License : https://creativecommons.org/licenses/by-sa/3.0
 
 CREATE OR REPLACE FUNCTION trspVia_VS_dijstraVia(quantity INTEGER default 18, flag boolean default true )
