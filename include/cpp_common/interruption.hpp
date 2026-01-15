@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: interruption.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2020 Mohamed Bakli, Esteban Zimányi, Mahmoud Sakr
+Copyright(C) 2020 Mohamed Bakli, Esteban Zimányi, Mahmoud Sakr
 mohamed_bakli@ulb.ac.be, estebanzimanyi@gmail.com, m_attia_sakr@yahoo.com
 
 ------

@@ -2,11 +2,11 @@
 File: breadthFirstSearch_driver.h
 
 Generated with Template by:
-Copyright (c) 2019 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2019 Gudesa Venkata Sai Akhil
+Copyright(C) 2019 Gudesa Venkata Sai Akhil
 Mail: gvs.akhil1997@gmail.com
 
 ------

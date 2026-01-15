@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: pickDeliver.hpp
 
-Copyright (c) 2017 pgRouting developers
+Copyright(C) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 ------

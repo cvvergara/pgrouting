@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: stoerWagner_t.h
 
-Copyright (c) 2015 Aditya Pratap Singh
+Copyright(C) 2015 Aditya Pratap Singh
 Mail: adityapratap.singh28@gmail.com
 ------
 

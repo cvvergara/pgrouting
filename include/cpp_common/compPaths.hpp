@@ -1,11 +1,11 @@
 /*PGR-GNU*****************************************************************
 File: compPaths.hpp
 
-Copyright (c) 2018 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Class's developer:
-Copyright (c) 2018 Celia Virginia Vergara Castillo
+Copyright(C) 2018 Celia Virginia Vergara Castillo
 Mail: vicky@georepublic.de
 
 ------

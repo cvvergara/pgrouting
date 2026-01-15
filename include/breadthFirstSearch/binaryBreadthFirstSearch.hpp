@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: binaryBreadthFirstSearch.hpp
 
-Copyright (c) 2019 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2019 Gudesa Venkata Sai AKhil
+Copyright(C) 2019 Gudesa Venkata Sai AKhil
 Mail: gvs.akhil1997@gmail.com
 
 ------

@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: bellman_ford.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2018-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2018 Sourabh Garg
+Copyright(C) 2018 Sourabh Garg
 Mail to: sourabh.garg.mat14@gmail.com
 
 ------

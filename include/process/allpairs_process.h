@@ -2,7 +2,7 @@
 File: allpairs_process.h
 
 Function's developer:
-Copyright (c) 2025 Celia Virginia Vergara Castillo
+Copyright(C) 2025 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
 ------

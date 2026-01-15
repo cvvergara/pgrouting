@@ -1,18 +1,18 @@
 /*PGR-GNU*****************************************************************
 File: drivingDist.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2023-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2022 Celia Virginia Vergara Castillo
-Copyright (c) 2015 Celia Virginia Vergara Castillo
+Copyright(C) 2022 Celia Virginia Vergara Castillo
+Copyright(C) 2015 Celia Virginia Vergara Castillo
 vicky at erosion.dev
 
-Copyright (c) 2020 The combinations_sql signature is added by Mahmoud SAKR
+Copyright(C) 2020 The combinations_sql signature is added by Mahmoud SAKR
 and Esteban ZIMANYI
 mail: m_attia_sakri at yahoo.com, estebanzimanyi at gmail.com
 
-Copyright (c) 2023 Aryan Gupta
+Copyright(C) 2023 Aryan Gupta
 guptaaryan1010 AT gmail.com
 
 ------

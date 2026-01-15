@@ -2,11 +2,11 @@
 File: turnRestrictedPath.hpp
 
 Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2018-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2017 Vidhan Jain
+Copyright(C) 2017 Vidhan Jain
 Mail: vidhanj1307@gmail.com
 
 ------

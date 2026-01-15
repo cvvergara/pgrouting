@@ -2,7 +2,7 @@
 File: line_graph.hpp
 
 Function's developer:
-Copyright (c) 2024 Vicky Vergara
+Copyright(C) 2024 Vicky Vergara
 Mail: vicky at gmail.com
 
 ------

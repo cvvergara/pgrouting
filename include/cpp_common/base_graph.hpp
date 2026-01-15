@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: base_graph.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
+Copyright(C) 2015 Celia Virginia Vergara Castillo
 vicky_vergara@hotmail.com
 ------
 

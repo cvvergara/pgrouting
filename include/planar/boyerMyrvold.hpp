@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: boyerMyrvold.hpp
 
-Copyright (c) 2020 pgRouting developers
+Copyright(C) 2019-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2020 Himanshu Raj
+Copyright(C) 2020 Himanshu Raj
 Mail: raj.himanshu2@gmail.com
 
 ------

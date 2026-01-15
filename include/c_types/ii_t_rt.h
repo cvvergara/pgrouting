@@ -2,11 +2,11 @@
 File: ii_t_rt.h
 
 
-Copyright (c) 2021 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Type developer:
-Copyright (c) Celia Virginia Vergara Castillo
+Copyright(C) Celia Virginia Vergara Castillo
 Mail: vicky at georepublic dot de
 
 ------

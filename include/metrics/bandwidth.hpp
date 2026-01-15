@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: bandwidth.hpp
 
-Copyright (c) 2025 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2025 Saloni Kumari
+Copyright(C) 2025 Saloni Kumari
 Mail: chaudharysaloni2510 at gmail.com
 
 ------

@@ -2,11 +2,11 @@
 File: depthFirstSearch_driver.h
 
 Generated with Template by:
-Copyright (c) 2020 pgRouting developers
+Copyright(C) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2020 Ashish Kumar
+Copyright(C) 2020 Ashish Kumar
 Mail: ashishkr23438@gmail.com
 
 ------

@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: minCostMaxFlow.hpp
 
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2018-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2018 Maoguang Wang
+Copyright(C) 2018 Maoguang Wang
 Mail: xjtumg1007@gmail.com
 
 ------

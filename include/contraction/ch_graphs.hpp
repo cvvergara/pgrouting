@@ -2,11 +2,11 @@
 File: ch_graphs.hpp
 
 Generated with Template by:
-Copyright (c) 2015 pgRouting developers
+Copyright(C) 2016-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2016 Rohith Reddy
+Copyright(C) 2016 Rohith Reddy
 Mail:
 
 ------

@@ -2,9 +2,9 @@
 File: ordering_process.h
 
 Function's developer:
-Copyright (c) 2025 Bipasha Gayary
+Copyright(C) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
-Copyright (c) 2025 Fan Wu
+Copyright(C) 2025 Fan Wu
 Mail: wifiblack0131 at gmail.com
 
 ------
