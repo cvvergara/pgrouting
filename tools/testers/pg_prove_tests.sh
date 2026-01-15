@@ -2,7 +2,7 @@
 # ------------------------------------------------------------------------------
 # /*PGR-GNU*****************************************************************
 # File: pg_prove_tests.sh
-# Copyright (c) 2016 pgRouting developers
+# Copyright(C) 2016-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify
@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 # ********************************************************************PGR-GNU*/
 # Travis CI scripts
-# Copyright(c) pgRouting Contributors
+# Copyright(C) pgRouting Contributors
 #
 # Test pgRouting
 # ------------------------------------------------------------------------------

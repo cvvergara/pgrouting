@@ -1,7 +1,7 @@
 #!/bin/bash
 # /*PGR-GNU*****************************************************************
 # File: run.sh
-# Copyright (c) 2017 pgRouting developers
+# Copyright(C) 2017-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify

@@ -8,7 +8,7 @@
 #  Author:   Even Rouault <even.rouault at spatialys.com>
 #
 ###############################################################################
-#  Copyright (c) 2016, Even Rouault <even.rouault at spatialys.com>
+#  Copyright(C) 2016, Even Rouault <even.rouault at spatialys.com>
 #
 #  Permission is hereby granted, free of charge, to any person obtaining a
 #  copy of this software and associated documentation files (the "Software"),

@@ -1,7 +1,7 @@
 #!/bin/bash
 # /*PGR-GNU*****************************************************************
 # File: tapest.sh
-# Copyright (c) 2018 pgRouting developers
+# Copyright(C) 2018-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify

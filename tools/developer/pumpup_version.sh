@@ -2,7 +2,7 @@
 
 # ------------------------------------------------------------------------------
 # pgRouting Scripts
-# Copyright(c) pgRouting Contributors
+# Copyright(C) pgRouting Contributors
 #
 # Pump up version
 # ------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # /*PGR-GNU*****************************************************************
 # File: test_license.sh
-# Copyright (c) 2020 pgRouting developers
+# Copyright(C) 2020-2026 pgRouting developers
 # Mail: project@pgrouting.org
 # ------
 # This program is free software; you can redistribute it and/or modify
