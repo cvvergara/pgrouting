@@ -1,7 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: assert.cpp
 
-Copyright(c) 2015-2026 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Copyright 2015~  Vicky Vergara <vicky_vergara@hotmail.com>

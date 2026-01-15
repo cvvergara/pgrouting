@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: flowgraph.cpp
 
-Copyright(c) 2013-2026 pgRouting developers
+Copyright(C) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2016 Andrea Nardelli
+Copyright(C) 2016 Andrea Nardelli
 Mail: nrd.nardelli@gmail.com
 
 ------

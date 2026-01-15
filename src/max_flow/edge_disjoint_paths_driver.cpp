@@ -2,11 +2,11 @@
 File: edge_disjoint_paths_driver.cpp
 
 Generated with Template by:
-Copyright(c) 2015-2026 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2016 Andrea Nardelli
+Copyright(C) 2016 Andrea Nardelli
 Mail: nrd.nardelli@gmail.com
 
 ------

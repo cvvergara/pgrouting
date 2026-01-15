@@ -1,9 +1,9 @@
 /*PGR-GNU*****************************************************************
 File: trsp.c
 
-Copyright(c) 2013-2026 pgRouting developers
+Copyright(C) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
-Copyright (c) 2017 Vicky Vergara
+Copyright(C) 2017 Vicky Vergara
 Mail: vicky at erosion.dev
 
 

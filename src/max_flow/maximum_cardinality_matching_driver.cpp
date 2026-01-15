@@ -2,15 +2,15 @@
 File: maximum_cardinality_matching_driver.cpp
 
 Generated with Template by:
-Copyright(c) 2015-2026 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Ignoring directed flag & works only for undirected graph
-Copyright (c) 2022 Celia Vriginia Vergara Castillo
+Copyright(C) 2022 Celia Vriginia Vergara Castillo
 Mail: vicky at erosion.dev
 
 Function's developer:
-Copyright (c) 2016 Andrea Nardelli
+Copyright(C) 2016 Andrea Nardelli
 Mail: nrd.nardelli at gmail.com
 
 ------

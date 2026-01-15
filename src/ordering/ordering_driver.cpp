@@ -1,15 +1,15 @@
 /*PGR-GNU*****************************************************************
 File: ordering_driver.cpp
 Generated with Template by:
-Copyright(c) 2015-2026 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Developers:
 
-Copyright (c) 2025 Bipasha Gayary
+Copyright(C) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
 
-Copyright (c) 2025 Fan Wu
+Copyright(C) 2025 Fan Wu
 Mail: wifiblack0131 at gmail.com
 
 ------

@@ -2,7 +2,7 @@
 File: e_report.c
 
 Function's developer:
-Copyright (c) 2016 Celia Virginia Vergara Castillo
+Copyright(C) 2016 Celia Virginia Vergara Castillo
 Mail: vicky_vergara@hotmail.com
 
 ------

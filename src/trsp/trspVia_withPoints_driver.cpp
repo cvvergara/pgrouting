@@ -2,7 +2,7 @@
 File: trspVia_withPoints_driver.cpp
 
 Function's developer:
-Copyright (c) 2022 Celia Virginia Vergara Castillo
+Copyright(C) 2022 Celia Virginia Vergara Castillo
 
 ------
 

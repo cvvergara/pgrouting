@@ -3,11 +3,11 @@ File: lineGraphFull.c
 
 
 Generated with Template by:
-Copyright(c) 2015-2026 pgRouting developers
+Copyright(C) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) 2017 Anthony Nicola Tasca
+Copyright(C) 2017 Anthony Nicola Tasca
 Mail: atasca10@gmail.com
 
 ------

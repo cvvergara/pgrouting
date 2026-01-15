@@ -2,11 +2,11 @@
 File: sloanOrdering.cpp
 
 Generated with Template by:
-Copyright(c) 2026-2026 pgRouting developers
+Copyright(C) 2026-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Developer:
-Copyright (c) 2025 Bipasha Gayary
+Copyright(C) 2025 Bipasha Gayary
 Mail: bipashagayary at gmail.com
 
 ------

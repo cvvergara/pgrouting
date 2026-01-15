@@ -1,15 +1,15 @@
 /*PGR-GNU*****************************************************************
 File:maximumcardinalitymatching.cpp
 
-Copyright(c) 2025-2026 pgRouting developers
+Copyright(C) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Refactoring
-Copyright (c) 2022 Celia Vriginia Vergara Castillo
+Copyright(C) 2022 Celia Vriginia Vergara Castillo
 Mail: vicky at erosion.dev
 
 Function's developer:
-Copyright (c) 2016 Andrea Nardelli
+Copyright(C) 2016 Andrea Nardelli
 Mail: nrd.nardelli at gmail.com
 
 ------

@@ -2,11 +2,11 @@
 File: contractionHierarchies_driver.cpp
 
 Generated with Template by:
-Copyright(c) 2013-2026 pgRouting developers
+Copyright(C) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
-Copyright (c) Aurélie Bousquet - 2024
+Copyright(C) Aurélie Bousquet - 2024
 Mail: aurelie.bousquet at oslandia.com
 
 ------

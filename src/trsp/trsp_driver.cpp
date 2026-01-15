@@ -1,10 +1,10 @@
 /*PGR-GNU*****************************************************************
 File: trsp_driver.cpp
 
-Copyright(c) 2013-2026 pgRouting developers
+Copyright(C) 2013-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2022 Celia Virginia Vergara Castillo
+Copyright(C) 2022 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 * Added combinations functionality
 
