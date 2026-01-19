@@ -1,7 +1,8 @@
 /*PGR-GNU*****************************************************************
 File: i_rt.h
 
-Copyright (c) 2015 pgRouting developers
+Generated with Template by:
+Copyright (c) 2019-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Function's developer:
@@ -20,8 +21,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-********************************************************************PGR-GNU*/
-/*! @file */
+
+ ********************************************************************PGR-GNU*/
 
 #ifndef INCLUDE_C_TYPES_I_RT_H_
 #define INCLUDE_C_TYPES_I_RT_H_
