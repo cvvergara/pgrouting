@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('3.4.0') THEN plan(3) ELSE PLAN(2) END;
+SELECT plan(3);
 
 -- Create network table
 CREATE TABLE railroad (
@@ -78,7 +78,7 @@ SELECT set_eq('between2nodes', $$VALUES
   (4, 4, -2,-1, 0,                  2.664213562373095)
   $$, 'expected withPoints');
 
-SELECT CASE WHEN min_version('3.2.0') THEN
+SELECT CASE WHEN min_version('3.4.0') THEN
   collect_tap(
 
   set_eq(
