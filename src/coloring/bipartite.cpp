@@ -75,7 +75,7 @@ std::vector<II_t_rt> get_bipartition(pgrouting::UndirectedGraph &graph) {
 namespace pgrouting {
 namespace functions {
 
-std::vector<II_t_rt> pgr_bipartite(pgrouting::UndirectedGraph &graph ){
+std::vector<II_t_rt> pgr_bipartite(pgrouting::UndirectedGraph &graph ) {
     bool bipartite = boost::is_bipartite(graph.graph);
     return (bipartite)? get_bipartition(graph) : std::vector<II_t_rt>();
 }

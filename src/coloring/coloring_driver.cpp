@@ -117,7 +117,6 @@ void do_coloring(
             return_tuples[i] = results[i];
         }
         return_count = count;
-
     } catch (AssertFailedException &except) {
         err << except.what();
     } catch (const std::pair<std::string, std::string>& ex) {

@@ -82,7 +82,7 @@ edgeColoring(pgrouting::UndirectedGraph g) {
          * Sometimes it returns a color with outsatnding large value
          * When that happens changing color to: colors + 1
          */
-        results[i].d2.value = get(color_map, *ei) < colors? get(color_map, *ei) + 1 : colors + 1 ;
+        results[i].d2.value = get(color_map, *ei) < colors? get(color_map, *ei) + 1 : colors + 1;
     }
 
     return results;
