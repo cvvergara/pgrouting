@@ -43,7 +43,7 @@ collect_tap(
 )
 ELSE
 collect_tap(
-  is_empty($$SELECT * FROM pgr_edgeColoring('q2')$$, 'q2: One vertex self-loop graph is empty')
+  skip(1, 'pgr_edgecoloring: graph building fixed on v4.1.0.')
 )
 END;
 
@@ -219,7 +219,7 @@ collect_tap(
 )
 ELSE
   collect_tap(
-    is((SELECT count(DISTINCT color)::INTEGER FROM pgr_edgeColoring('q13')), 2, 'q13: Two colors are expected')
+    skip(1, 'pgr_edgecoloring: graph building fixed on v4.1.0.')
   )
 END;
 
@@ -235,10 +235,16 @@ FROM (VALUES
 AS t(id, source, target, cost, reverse_cost) ORDER BY id ASC;
 
 RETURN QUERY
-SELECT is((SELECT count(*) FROM pgr_edgeColoring('q14'))::INTEGER, 2, 'q14: two rows');
-
-RETURN QUERY
-SELECT is((SELECT count(DISTINCT color)::INTEGER FROM pgr_edgeColoring('q14')), 2, 'q14: Two colors are used');
+SELECT CASE WHEN min_lib_version('4.1.0') THEN
+collect_tap(
+ is((SELECT count(*) FROM pgr_edgeColoring('q14'))::INTEGER, 2, 'q14: two rows are expected'),
+ is((SELECT count(DISTINCT color)::INTEGER FROM pgr_edgeColoring('q14')), 2, 'q14: Two colors are used')
+)
+ELSE
+  collect_tap(
+    skip(2, 'pgr_edgecoloring: graph building fixed on v4.1.0.')
+  )
+END;
 
 -- 4 vertices disconnected graph
 
