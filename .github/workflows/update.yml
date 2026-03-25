@@ -50,7 +50,7 @@ jobs:
         fail-fast: true
         matrix:
           boost_minor: [56]
-            old_pgr: [4.0.1, 4.0.0, 3.8.0]
+          old_pgr: [4.0.1, 4.0.0, 3.8.0]
 
     steps:
       - uses: actions/checkout@v6
