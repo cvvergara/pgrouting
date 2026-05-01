@@ -41,7 +41,6 @@ concurrency:
 permissions:
   contents: read
 
-# Create a helper variable to detect if it's a PR
 
 jobs:
   update-ver:
@@ -52,6 +51,8 @@ jobs:
         fail-fast: false
         matrix:
           boost_minor: [56]
+
+          # Create a helper variable to detect if it's a PR
           isPR:
             - ${{ github.event_name == 'pull_request' }}
 
