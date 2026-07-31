@@ -1,0 +1,96 @@
+name: Build all tags
+# This file is part of the pgRouting project.
+# Copyright (c) 2026 pgRouting developers
+# License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
+
+# Checks that a pgRouting release tag compiles against PostgreSQL.
+# Build only — no tests.
+# Starting point: pgRouting 3.0.0 with the minimum boost version it
+# requires (1.53), built against every PostgreSQL version 14 to 19.
+# Boost headers are taken from a downloaded tarball via -DBOOST_INCLUDEDIR;
+# the apt libboost-graph-dev still provides the compiled boost libraries.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: v3.0.0 psql ${{ matrix.psql }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        psql: ['14', '15', '16', '17', '18', '19']
+
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v7
+        with:
+          repository: 'pgRouting/pgrouting'
+          ref: 'v3.0.0'
+
+      - name: Raise priority for apt.postgresql.org
+        run: |
+          cat << EOF > ./pgdg.pref
+          Package: *
+          Pin: release o=apt.postgresql.org
+          Pin-Priority: 600
+          EOF
+          sudo mv ./pgdg.pref /etc/apt/preferences.d/
+          sudo apt update
+
+      - name: Add PostgreSQL APT repository
+        env:
+          PGSQL: ${{ matrix.psql }}
+        run: |
+          sudo apt-get -y purge postgresql-*
+          PGDG_REPO="pgdg"
+          if [ "${PGSQL}" -ge 18 ]; then
+            PGDG_REPO="pgdg-testing"
+          fi
+          sudo sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt \$(lsb_release -cs)-${PGDG_REPO} main ${PGSQL}\" > /etc/apt/sources.list.d/pgdg.list"
+          curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null
+
+      - name: Install dependencies
+        env:
+          PGSQL: ${{ matrix.psql }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libboost-graph-dev \
+            postgresql-${PGSQL} \
+            postgresql-server-dev-${PGSQL}
+
+      - name: Download boost 1.53
+        run: |
+          wget https://archives.boost.io/release/1.53.0/source/boost_1_53_0.tar.bz2
+          tar --bzip2 -xf boost_1_53_0.tar.bz2 -C ${HOME}
+
+      - name: Configure
+        env:
+          PGSQL: ${{ matrix.psql }}
+        run: |
+          export PATH=/usr/lib/postgresql/${PGSQL}/bin:$PATH
+          mkdir build
+          cd build
+          cmake \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.12 \
+            -DPOSTGRESQL_VERSION=${PGSQL} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_HTML=OFF \
+            -DBUILD_DOXY=OFF \
+            -DBOOST_INCLUDEDIR=${HOME}/boost_1_53_0 \
+            ..
+
+      - name: Build
+        run: |
+          cd build
+          make -j $(nproc)
