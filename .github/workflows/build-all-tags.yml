@@ -5,8 +5,10 @@ name: Build all tags
 
 # Checks that a pgRouting release tag compiles against PostgreSQL.
 # Build only — no tests.
-# Starting point: pgRouting 3.0.0 with the minimum boost version it
-# requires (1.53), built against every PostgreSQL version 14 to 19.
+# Starting point: pgRouting 3.0.0 with boost 1.56, built against every
+# PostgreSQL version 14 to 19.
+# v3.0.0 declares a minimum boost of 1.53, but its vendored bgeometry needs
+# boost/core/ignore_unused.hpp, added in 1.56, so 1.56 is the real minimum.
 # Boost headers are taken from a downloaded tarball via -DBOOST_INCLUDEDIR;
 # the apt libboost-graph-dev still provides the compiled boost libraries.
 
@@ -69,10 +71,10 @@ jobs:
             postgresql-${PGSQL} \
             postgresql-server-dev-${PGSQL}
 
-      - name: Download boost 1.53
+      - name: Download boost 1.56
         run: |
-          wget https://archives.boost.io/release/1.53.0/source/boost_1_53_0.tar.bz2
-          tar --bzip2 -xf boost_1_53_0.tar.bz2 -C ${HOME}
+          wget https://archives.boost.io/release/1.56.0/source/boost_1_56_0.tar.bz2
+          tar --bzip2 -xf boost_1_56_0.tar.bz2 -C ${HOME}
 
       - name: Configure
         env:
@@ -88,7 +90,7 @@ jobs:
             -DBUILD_HTML=OFF \
             -DBUILD_DOXY=OFF \
             -DBoost_NO_BOOST_CMAKE=ON \
-            -DBOOST_INCLUDEDIR=${HOME}/boost_1_53_0 \
+            -DBOOST_INCLUDEDIR=${HOME}/boost_1_56_0 \
             ..
 
       - name: Build
