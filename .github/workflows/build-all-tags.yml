@@ -5,15 +5,14 @@ name: Build all tags
 
 # Checks that a pgRouting release tag compiles against PostgreSQL.
 # Build only — no tests.
-# Starting point: pgRouting 3.0.0 with boost 1.56, built against every
-# PostgreSQL version 14 to 19.
-# v3.0.0 declares a minimum boost of 1.53, but its vendored bgeometry needs
-# boost/core/ignore_unused.hpp, added in 1.56, so 1.56 is the real minimum.
+# Tags built against every PostgreSQL version 14 to 19:
+#   - v3.3.0 and v3.4.1, both at boost 1.75.
+# Boost >= 1.75 makes these tags switch from C++11 to C++14 automatically.
 # Boost headers are taken from a downloaded tarball via -DBOOST_INCLUDEDIR;
 # the apt libboost-graph-dev still provides the compiled boost libraries.
 
 on:
-  workflow_dispatch:
+  push:
 
 permissions:
   contents: read
@@ -24,12 +23,13 @@ concurrency:
 
 jobs:
   build:
-    name: v3.0.0 psql ${{ matrix.psql }}
+    name: ${{ matrix.tag }} psql ${{ matrix.psql }}
     runs-on: ubuntu-latest
 
     strategy:
       fail-fast: false
       matrix:
+        tag: ['v3.3.0', 'v3.4.1']
         psql: ['14', '15', '16', '17', '18', '19']
 
     steps:
@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: 'pgRouting/pgrouting'
-          ref: 'v3.0.0'
+          ref: '${{ matrix.tag }}'
 
       - name: Raise priority for apt.postgresql.org
         run: |
@@ -71,10 +71,10 @@ jobs:
             postgresql-${PGSQL} \
             postgresql-server-dev-${PGSQL}
 
-      - name: Download boost 1.56
+      - name: Download boost 1.75
         run: |
-          wget https://archives.boost.io/release/1.56.0/source/boost_1_56_0.tar.bz2
-          tar --bzip2 -xf boost_1_56_0.tar.bz2 -C ${HOME}
+          wget https://archives.boost.io/release/1.75.0/source/boost_1_75_0.tar.bz2
+          tar --bzip2 -xf boost_1_75_0.tar.bz2 -C ${HOME}
 
       - name: Configure
         env:
@@ -90,7 +90,7 @@ jobs:
             -DBUILD_HTML=OFF \
             -DBUILD_DOXY=OFF \
             -DBoost_NO_BOOST_CMAKE=ON \
-            -DBOOST_INCLUDEDIR=${HOME}/boost_1_56_0 \
+            -DBOOST_INCLUDEDIR=${HOME}/boost_1_75_0 \
             ..
 
       - name: Build
