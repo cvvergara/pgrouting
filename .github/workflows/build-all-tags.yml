@@ -1,0 +1,139 @@
+name: Build all tags
+# This file is part of the pgRouting project.
+# Copyright (c) 2026 pgRouting developers
+# License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
+
+# Checks that each release tag compiles against non-EOL PostgreSQL versions.
+# Build only — no tests.
+# Rotates weekly: PG 14 → 15 → 16 → 17 → 18 → repeat.
+
+on:
+  workflow_dispatch:
+    inputs:
+      psql:
+        description: 'PostgreSQL version to test (14-18). Leave empty for auto-rotation.'
+        required: false
+        type: choice
+        options:
+          - ''
+          - '14'
+          - '15'
+          - '16'
+          - '17'
+          - '18'
+
+  schedule:
+    - cron: '0 6 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  set-matrix:
+    name: Determine PostgreSQL version
+    runs-on: ubuntu-latest
+    outputs:
+      psql: ${{ steps.set.outputs.psql }}
+    steps:
+      - id: set
+        run: |
+          if [ -n "${{ github.event.inputs.psql }}" ]; then
+            echo "psql=${{ github.event.inputs.psql }}" >> "$GITHUB_OUTPUT"
+          else
+            WEEK=$(( ($(date +%-u -d 'last monday') / 7) % 5 ))
+            PSQS=(14 15 16 17 18)
+            echo "psql=${PSQS[$WEEK]}" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    name: v${{ matrix.pgr }} psql ${{ needs.set-matrix.outputs.psql }}
+    needs: set-matrix
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # First and last mivro version
+        pgr:
+          - '3.0.0'
+          - '3.0.6'
+          - '3.1.0'
+          - '3.1.4'
+          - '3.2.0'
+          - '3.2.2'
+          - '3.3.0'
+          - '3.3.5'
+          - '3.4.0'
+          - '3.4.2'
+          - '3.5.0'
+          - '3.5.1'
+          - '3.6.0'
+          - '3.6.3'
+          - '3.7.0'
+          - '3.7.3'
+          - '3.8.0'
+          - '4.0.0'
+          - '4.0.1'
+
+    steps:
+      - name: Checkout tag
+        uses: actions/checkout@v7
+        with:
+          repository: 'pgRouting/pgrouting'
+          ref: 'v${{ matrix.pgr }}'
+
+      - name: Raise priority for apt.postgresql.org
+        run: |
+          cat << EOF > ./pgdg.pref
+          Package: *
+          Pin: release o=apt.postgresql.org
+          Pin-Priority: 600
+          EOF
+          sudo mv ./pgdg.pref /etc/apt/preferences.d/
+          sudo apt update
+
+      - name: Add PostgreSQL APT repository
+        env:
+          PGSQL: ${{ needs.set-matrix.outputs.psql }}
+        run: |
+          sudo apt-get -y purge postgresql-*
+          PGDG_REPO="pgdg"
+          if [ "${PGSQL}" -eq 18 ]; then
+            PGDG_REPO="pgdg-testing"
+          fi
+          sudo sh -c "echo \"deb http://apt.postgresql.org/pub/repos/apt \$(lsb_release -cs)-${PGDG_REPO} main ${PGSQL}\" > /etc/apt/sources.list.d/pgdg.list"
+          curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null
+
+      - name: Install dependencies
+        env:
+          PGSQL: ${{ needs.set-matrix.outputs.psql }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libboost-graph-dev \
+            postgresql-${PGSQL} \
+            postgresql-server-dev-${PGSQL}
+
+      - name: Configure
+        env:
+          PGSQL: ${{ needs.set-matrix.outputs.psql }}
+        run: |
+          export PATH=/usr/lib/postgresql/${PGSQL}/bin:$PATH
+          mkdir build
+          cd build
+          cmake \
+            -DCMAKE_POLICY_VERSION_MINIMUM=3.12 \
+            -DPOSTGRESQL_VERSION=${PGSQL} \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DBUILD_HTML=OFF \
+            -DBUILD_DOXY=OFF \
+            ..
+
+      - name: Build
+        run: |
+          cd build
+          make -j $(nproc)
