@@ -87,6 +87,7 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DBUILD_HTML=OFF \
             -DBUILD_DOXY=OFF \
+            -DBoost_NO_BOOST_CMAKE=ON \
             -DBOOST_INCLUDEDIR=${HOME}/boost_1_53_0 \
             ..
 
