@@ -214,6 +214,17 @@ class Pgr_binaryBreadthFirstSearch {
         }
     }
 };
+
+
+template <class G> std::deque<pgrouting::Path> binaryBreadthFirstSearch(
+        G &graph,
+        std::map<int64_t, std::set<int64_t>> &combinations) {
+    pgrouting::functions::Pgr_binaryBreadthFirstSearch< G > fn_binaryBreadthFirstSearch;
+    auto paths = fn_binaryBreadthFirstSearch.binaryBreadthFirstSearch(graph, combinations);
+
+    return paths;
+}
+
 }  // namespace functions
 }  // namespace pgrouting
 

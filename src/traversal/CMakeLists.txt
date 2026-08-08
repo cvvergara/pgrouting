@@ -4,4 +4,6 @@
 
 ADD_LIBRARY(traversal OBJECT
     depthFirstSearch.c
+    binaryBreadthFirstSearch.c
+    breadthFirstSearch.c
 )

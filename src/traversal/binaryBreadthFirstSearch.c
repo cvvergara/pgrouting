@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 #include "c_types/path_rt.h"
-#include "process/binaryBFS_process.h"
+#include "process/shortestPath_process.h"
 
 PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_binarybreadthfirstsearch);
@@ -52,7 +52,8 @@ PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS) {
             /*
              * many to many
              */
-            pgr_process_binaryBFS(
+
+            pgr_process_shortestPath(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 NULL,
                 NULL,
@@ -76,7 +77,7 @@ PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS) {
             /*
              * combinations
              */
-            pgr_process_binaryBFS(
+            pgr_process_shortestPath(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 NULL,
                 text_to_cstring(PG_GETARG_TEXT_P(1)),

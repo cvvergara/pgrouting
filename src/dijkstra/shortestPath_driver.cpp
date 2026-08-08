@@ -57,6 +57,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dagShortestPath/dagShortestPath.hpp"
 #include "bellman_ford/bellman_ford.hpp"
 #include "max_flow/maxflow.hpp"
+#include "breadthFirstSearch/binaryBreadthFirstSearch.hpp"
 
 namespace {
 
@@ -106,6 +107,38 @@ post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, si
                     return e1.start_id() < e2.start_id();
                 });
     }
+}
+
+
+template < class G >
+bool
+costCheck(G &graph)  {
+    typedef typename G::E E;
+    typedef typename G::E_i E_i;
+
+    const size_t max_unique_edge_costs = 2;
+    auto edges = boost::edges(graph.graph);
+    E e;
+    E_i out_i;
+    E_i out_end;
+    std::set<double> cost_set;
+    for (boost::tie(out_i, out_end) = edges;
+            out_i != out_end; ++out_i) {
+        e = *out_i;
+        cost_set.insert(graph[e].cost);
+
+        if (cost_set.size() > max_unique_edge_costs) {
+            return false;
+        }
+    }
+
+    if (cost_set.size() == 2) {
+        if (*cost_set.begin() != 0.0) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
 }  // namespace
@@ -159,6 +192,7 @@ do_shortestPath(
         using pgrouting::algorithms::dagShortestPath;
         using pgrouting::functions::bellmanFord;
         using pgrouting::functions::edgeDisjoint;
+        using functions::binaryBreadthFirstSearch;
 
         hint = combinations_sql;
         auto combinations = get_combinations(combinations_sql, starts, ends, normal, is_matrix);
@@ -255,6 +289,14 @@ do_shortestPath(
                 case BELLMANFORD:
                     paths = bellmanFord(digraph, combinations, only_cost);
                     break;
+                case BINARYBFS:
+                    if (!(costCheck(digraph))) {
+                        err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs.";
+                        log << "If there are exactly two distinct edge costs, one of them must equal zero";
+                        return;
+                    }
+                    paths = binaryBreadthFirstSearch(digraph, combinations);
+                    break;
                 default:
                     err << "INTERNAL: wrong function call: " << which;
                     return;
@@ -277,9 +319,17 @@ do_shortestPath(
                 case BELLMANFORD:
                     paths =  bellmanFord(undigraph, combinations, only_cost);
                     break;
+                case BINARYBFS:
+                   if (!(costCheck(undigraph))) {
+                       err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs.";
+                       log << "If there are exactly two distinct edge costs, one of them must equal zero";
+                       return;
+                   }
+                   paths = binaryBreadthFirstSearch(undigraph, combinations);
+                   break;
                 default:
-                    err << "INTERNAL: wrong function call: " << which;
-                    return;
+                   err << "INTERNAL: wrong function call: " << which;
+                   return;
             }
         }
 
