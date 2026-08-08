@@ -1,6 +1,7 @@
 /*PGR-GNU*****************************************************************
 File: binaryBFS_driver.cpp
 
+Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
@@ -8,11 +9,6 @@ Design of one process & driver file by
 Copyright (c) 2025 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
 
-Copying this file (or a derivative) within pgRouting code add the following:
-
-Generated with Template by:
-Copyright (c) 2015-2026 pgRouting developers
-Mail: project@pgrouting.org
 
 ------
 
@@ -57,6 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dagShortestPath/dagShortestPath.hpp"
 #include "bellman_ford/bellman_ford.hpp"
 #include "max_flow/maxflow.hpp"
+#include "breadthFirstSearch/binaryBreadthFirstSearch.hpp"
 
 namespace {
 
@@ -106,6 +103,47 @@ post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, si
                     return e1.start_id() < e2.start_id();
                 });
     }
+}
+
+
+template < class G >
+bool
+costCheck(G &graph)  {
+    typedef typename G::E E;
+    typedef typename G::E_i E_i;
+
+    const size_t max_unique_edge_costs = 2;
+    auto edges = boost::edges(graph.graph);
+    E e;
+    E_i out_i;
+    E_i out_end;
+    std::set<double> cost_set;
+    for (boost::tie(out_i, out_end) = edges;
+            out_i != out_end; ++out_i) {
+        e = *out_i;
+        cost_set.insert(graph[e].cost);
+
+        if (cost_set.size() > max_unique_edge_costs) {
+            return false;
+        }
+    }
+
+    if (cost_set.size() == 2) {
+        if (*cost_set.begin() != 0.0) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+template <class G> std::deque<pgrouting::Path> binaryBreadthFirstSearch(
+        G &graph,
+        std::map<int64_t, std::set<int64_t>> &combinations) {
+    pgrouting::functions::Pgr_binaryBreadthFirstSearch< G > fn_binaryBreadthFirstSearch;
+    auto paths = fn_binaryBreadthFirstSearch.binaryBreadthFirstSearch(graph, combinations);
+
+    return paths;
 }
 
 }  // namespace
@@ -255,6 +293,14 @@ do_binaryBFS(
                 case BELLMANFORD:
                     paths = bellmanFord(digraph, combinations, only_cost);
                     break;
+                case BINARYBFS:
+                    if (!(costCheck(digraph))) {
+                        err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs ";
+                        log << "If there are exactly two distinct edge costs, one of them must equal zero";
+                        return;
+                    }
+                    paths = binaryBreadthFirstSearch(digraph, combinations);
+                    break;
                 default:
                     err << "INTERNAL: wrong function call: " << which;
                     return;
@@ -277,9 +323,17 @@ do_binaryBFS(
                 case BELLMANFORD:
                     paths =  bellmanFord(undigraph, combinations, only_cost);
                     break;
+                case BINARYBFS:
+                   if (!(costCheck(undigraph))) {
+                       err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs";
+                       log << "If there are exactly two distinct edge costs, one of them must equal zero";
+                       return;
+                   }
+                   paths = binaryBreadthFirstSearch(undigraph, combinations);
+                   break;
                 default:
-                    err << "INTERNAL: wrong function call: " << which;
-                    return;
+                   err << "INTERNAL: wrong function call: " << which;
+                   return;
             }
         }
 
