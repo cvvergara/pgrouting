@@ -1,0 +1,84 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2017-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+BEGIN;
+
+SELECT plan(4);
+
+-- https://github.com/pgRouting/pgrouting/issues/729
+-- After an UPDATE that uses pgr_drivingDistance, the following
+-- ALTER TABLE on the same table must not fail.
+
+ALTER TABLE edges
+DROP COLUMN IF EXISTS node_count,
+ADD COLUMN node_count INTEGER;
+
+UPDATE edges AS edge_table
+SET node_count=count.sum
+FROM (
+    SELECT start_vid, sum(node) AS sum
+    FROM pgr_drivingDistance(
+        'SELECT id, source, target, ST_Length(geom) AS cost FROM edges',
+        ARRAY(SELECT DISTINCT source FROM edges),
+        1,
+        false)
+    GROUP BY start_vid) AS count
+WHERE edge_table.source=count.start_vid;
+
+ALTER TABLE edges
+DROP COLUMN IF EXISTS another_column,
+ADD COLUMN another_column INTEGER;
+
+DROP TABLE IF EXISTS network;
+CREATE TABLE network AS
+SELECT *
+from (
+    VALUES
+    (1::int, 1::int, 2::int, 100::int),
+    (2::int, 2::int, 3::int, 100::int),
+    (3::int, 3::int, 4::int, 100::int),
+    (4::int, 5::int, 6::int, 100::int)
+) as t (id, source,target,cost);
+
+ALTER TABLE network
+DROP COLUMN IF EXISTS node_count,
+ADD COLUMN node_count INTEGER;
+
+UPDATE network AS network
+SET node_count=count.sum
+FROM (
+    SELECT start_vid, sum(node) AS sum
+    FROM pgr_drivingDistance(
+        'SELECT id, source, target, cost FROM network',
+        ARRAY(SELECT DISTINCT source FROM network),
+        1,
+        false)
+    GROUP BY start_vid) AS count
+WHERE network.source=count.start_vid;
+
+ALTER TABLE network
+DROP COLUMN IF EXISTS another_column,
+ADD COLUMN another_column INTEGER;
+
+CREATE OR REPLACE FUNCTION test_function() RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+    RETURN QUERY SELECT is_empty(
+        'SELECT * FROM edges WHERE node_count IS NULL',
+        '1: node_count computed on every edge');
+    RETURN QUERY SELECT set_eq(
+        'SELECT source, node_count FROM network ORDER BY source',
+        'SELECT * FROM (VALUES (1, 1), (2, 2), (3, 3), (5, 5)) AS t(source, node_count)',
+        '2: node_count is the sum of reachable node ids');
+    RETURN QUERY SELECT has_column('network', 'another_column',
+        '3: ALTER TABLE succeeds on a table updated with pgr_drivingDistance');
+    RETURN QUERY SELECT has_column('edges', 'another_column',
+        '4: ALTER TABLE succeeds on edges updated with pgr_drivingDistance');
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT * FROM test_function();
+SELECT * FROM finish();
+ROLLBACK;
