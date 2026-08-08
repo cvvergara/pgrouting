@@ -295,7 +295,7 @@ do_binaryBFS(
                     break;
                 case BINARYBFS:
                     if (!(costCheck(digraph))) {
-                        err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs ";
+                        err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs.";
                         log << "If there are exactly two distinct edge costs, one of them must equal zero";
                         return;
                     }
@@ -325,7 +325,7 @@ do_binaryBFS(
                     break;
                 case BINARYBFS:
                    if (!(costCheck(undigraph))) {
-                       err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs";
+                       err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs.";
                        log << "If there are exactly two distinct edge costs, one of them must equal zero";
                        return;
                    }
