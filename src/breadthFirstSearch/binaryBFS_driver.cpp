@@ -53,7 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dagShortestPath/dagShortestPath.hpp"
 #include "bellman_ford/bellman_ford.hpp"
 #include "max_flow/maxflow.hpp"
-#include "breadthFirstSearch/binaryBreadthFirstSearch.hpp"
+#include "traversal/binaryBreadthFirstSearch.hpp"
 
 namespace {
 
