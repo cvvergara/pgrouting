@@ -55,7 +55,7 @@ typedef struct ArrayType ArrayType;
 extern "C" {
 #endif
 
-void pgr_process_binarybfs(
+void pgr_process_binaryBFS(
         const char*, const char*, const char*,
         ArrayType*, ArrayType*,
         bool, bool, bool,

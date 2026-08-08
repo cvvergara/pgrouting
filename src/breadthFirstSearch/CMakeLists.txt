@@ -7,4 +7,6 @@ ADD_LIBRARY(breadthFirstSearch OBJECT
     binaryBreadthFirstSearch.c
 
     binaryBreadthFirstSearch_driver.cpp
+    binaryBFS_process.cpp
+    binaryBFS_driver.cpp
 )

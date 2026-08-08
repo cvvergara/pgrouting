@@ -49,7 +49,7 @@ using ArrayType = struct ArrayType;
 namespace pgrouting {
 namespace drivers {
 
-void do_binarybfs(
+void do_binaryBFS(
         const std::string&, const std::string&, const std::string&,
         ArrayType*, ArrayType*,
 
