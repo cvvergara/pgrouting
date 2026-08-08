@@ -30,11 +30,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <deque>
 #include <algorithm>
-#include <cmath>
 #include <limits>
 #include <vector>
 #include <set>
 #include <map>
+#include <utility>
+#include <string>
 #include <cstdint>
 
 #include "cpp_common/path.hpp"
@@ -248,7 +249,7 @@ template <class G>
 std::deque<pgrouting::Path> binaryBreadthFirstSearch(
         G &graph,
         std::map<int64_t, std::set<int64_t>> &combinations) {
-    if (! costCheck(graph)) {
+    if (!costCheck(graph)) {
         throw std::make_pair(std::string(
         "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs."),
         std::string("If there are exactly two distinct edge costs, one of them must equal zero"));
