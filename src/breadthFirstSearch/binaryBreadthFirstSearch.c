@@ -35,11 +35,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/debug_macro.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
-#include "drivers/breadthFirstSearch/binaryBreadthFirstSearch_driver.h"
+#include "process/binaryBFS_process.h"
 
 PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_binarybreadthfirstsearch);
 
+#if 0
 static void
 process(
     char *edges_sql,
@@ -84,6 +85,7 @@ process(
 
     pgr_SPI_finish();
 }
+#endif
 
 PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
@@ -100,7 +102,7 @@ PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS) {
             /*
              * many to many
              */
-            process(
+            pgr_process_binaryBFS(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 NULL,
                 PG_GETARG_ARRAYTYPE_P(1),
@@ -113,7 +115,7 @@ PGDLLEXPORT Datum _pgr_binarybreadthfirstsearch(PG_FUNCTION_ARGS) {
             /*
              * combinations
              */
-            process(
+            pgr_process_binaryBFS(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 NULL,
