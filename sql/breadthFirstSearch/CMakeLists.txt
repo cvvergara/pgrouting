@@ -3,10 +3,6 @@
 # License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
 set(LOCAL_FILES
-	_breadthFirstSearch.sql
-	_binaryBreadthFirstSearch.sql
-    breadthFirstSearch.sql
-    binaryBreadthFirstSearch.sql
     )
 
 foreach (f ${LOCAL_FILES})
