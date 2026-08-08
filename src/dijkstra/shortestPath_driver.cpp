@@ -109,38 +109,6 @@ post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, si
     }
 }
 
-
-template < class G >
-bool
-costCheck(G &graph)  {
-    typedef typename G::E E;
-    typedef typename G::E_i E_i;
-
-    const size_t max_unique_edge_costs = 2;
-    auto edges = boost::edges(graph.graph);
-    E e;
-    E_i out_i;
-    E_i out_end;
-    std::set<double> cost_set;
-    for (boost::tie(out_i, out_end) = edges;
-            out_i != out_end; ++out_i) {
-        e = *out_i;
-        cost_set.insert(graph[e].cost);
-
-        if (cost_set.size() > max_unique_edge_costs) {
-            return false;
-        }
-    }
-
-    if (cost_set.size() == 2) {
-        if (*cost_set.begin() != 0.0) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 }  // namespace
 
 namespace pgrouting {
@@ -290,11 +258,6 @@ do_shortestPath(
                     paths = bellmanFord(digraph, combinations, only_cost);
                     break;
                 case BINARYBFS:
-                    if (!(costCheck(digraph))) {
-                        err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs.";
-                        log << "If there are exactly two distinct edge costs, one of them must equal zero";
-                        return;
-                    }
                     paths = binaryBreadthFirstSearch(digraph, combinations);
                     break;
                 default:
@@ -320,11 +283,6 @@ do_shortestPath(
                     paths =  bellmanFord(undigraph, combinations, only_cost);
                     break;
                 case BINARYBFS:
-                   if (!(costCheck(undigraph))) {
-                       err << "Graph Condition Failed: Graph should have at most two distinct non-negative edge costs.";
-                       log << "If there are exactly two distinct edge costs, one of them must equal zero";
-                       return;
-                   }
                    paths = binaryBreadthFirstSearch(undigraph, combinations);
                    break;
                 default:
