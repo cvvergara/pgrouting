@@ -1,0 +1,127 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2017-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+BEGIN;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+/**
+edges ids are multiples of 100
+vertices ids are multiples of 1000
+*/
+UPDATE edges SET id = id * 100, source = 1000 * source, target = 1000 * target;
+UPDATE vertices SET id = id * 1000;
+
+SELECT plan(9);
+
+-- 5000 -> 6000 [label=100]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost FROM edges WHERE id = 100$$)$q$,
+  $q$VALUES (5000, 6000, 1, 100)$q$,
+  '1: single directed edge, no reverse_cost');
+
+-- 10000 -> 6000 [label=-200]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id = 200$$)$q$,
+  $q$VALUES (10000, 6000, 1, -200)$q$,
+  '2: single edge with reverse_cost, edge result negative because it comes from reverse edges');
+
+-- 11000 -> 12000 [label=1100]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id = 1100$$)$q$,
+  $q$VALUES (11000, 12000, 1, 1100)$q$,
+  '3: single edge, reverse_cost negative');
+
+
+-- 5000 -> 6000 [label=100]; 6000 -> 5000 [label=-100]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id = 100$$)$q$,
+  $q$VALUES
+  (-1, 6000, 1, 100),
+  (-2, 5000, 1, -100),
+  (5000, -1, 0, 0),
+  (6000, -2, 0, 0)
+  $q$,
+  '4: single edge, both directions');
+
+-- same id used for both directions: 5000 -> 6000 and 6000 -> 5000
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull($$
+    SELECT id, source, target, cost FROM edges WHERE id = 100
+    UNION
+    SELECT id, target, source, reverse_cost AS cost FROM edges WHERE id = 100
+    $$)$q$,
+  $q$VALUES
+  (5000, 6000, 1, 100),
+  (6000, 6000, 1, 100),
+  (6000, 5000, 1, 100),
+  (5000, 5000, 1, 100)$q$,
+  '5: two edges with same id for both directions');
+
+-- 5000 -> 6000 [label=100] ; 6000 -> 5000 [label=-100]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull($$
+    SELECT -id AS id, target, source, reverse_cost AS cost FROM edges WHERE id = 100
+    UNION
+    SELECT id, source, target, cost FROM edges WHERE id = 100
+    $$)$q$,
+  $q$VALUES
+  (-1, 6000, 1, -100),
+  (-2, 5000, 1, 100),
+  (5000, -1, 0, 0),
+  (6000, -2, 0, 0)
+  $q$,
+  '6: two edges with negative id for reverse direction');
+
+-- edges 200 and 300: cost is negative, so only the reverse edges are added
+-- 10000 -> 6000 [label=-200]; 15000 -> 10000 [label=-300]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (200, 300)$$)$q$,
+  $q$VALUES
+  (-1, 6000, 1, -200),
+  (15000, 10000, 1, -300),
+  (10000, -1, 0, 0)$q$,
+  '7: two edges (200, 300)');
+
+-- edges 600 and 700 are bidirectional:
+-- 1000 -> 3000 [label=600] ; 3000 -> 1000 [label=-600] ; 3000 -> 7000 [label=700] ; 7000 -> 3000 [label=-700]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (600, 700)$$)$q$,
+  $q$VALUES
+  (-1, 3000, 1, 600),
+  (-2, 1000, 1, -600),
+  (-3, 7000, 1, 700),
+  (-4, -2, 0, 0),
+  (-4, -3, 0, 0),
+  (-5, -4, 1, -700),
+  (1000, -1, 0, 0),
+  (3000, -3, 0, 0),
+  (7000, -5, 0, 0),
+  (3000, -2, 0, 0)
+  $q$,
+  '8: two edges (600, 700)');
+
+-- 10000 -> 11000 [label=500]; 11000 -> 12000 [label=1100]; 11000 -> 16000 [label=900]; 16000 -> 11000 [label=-900]
+SELECT set_eq(
+  $q$SELECT source, target, cost, edge FROM pgr_lineGraphFull(
+    $$SELECT id, source, target, cost, reverse_cost FROM edges WHERE id IN (500, 900, 1100)$$)$q$,
+  $q$VALUES
+  (-1, 12000, 1, 1100),
+  (-2, 16000, 1, 900),
+  (-3, -1, 0, 0),
+  (-3, -2, 0, 0),
+  (-4, -3, 1, -900),
+  (10000, 11000, 1, 500),
+  (11000, -1, 0, 0),
+  (11000, -2, 0, 0),
+  (16000, -4, 0, 0)$q$,
+  '9: three edges (500, 900, 1100)');
+
+SELECT finish();
+ROLLBACK;
