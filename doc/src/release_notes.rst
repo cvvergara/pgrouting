@@ -65,6 +65,7 @@ To see all issues & pull requests closed by this release see the
 * Planar
 
   * pgr_makeMaximalPlanar
+  * pgr_makeBiconnectedPlanar
 
 .. rubric:: Summary of changes by function
 
@@ -73,12 +74,6 @@ To see all issues & pull requests closed by this release see the
   .. include:: pgr_edgeColoring.rst
      :start-after: Version 4.1.0
      :end-before: .. rubric
-
-* pgr_makeMaximalPlanar
-
-  .. include:: pgr_makeMaximalPlanar.rst
-     :start-after: Version 4.1.0
-     :end-before: Description
 
 pgRouting 4.0
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

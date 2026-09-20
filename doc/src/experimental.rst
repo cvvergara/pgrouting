@@ -135,6 +135,12 @@ Experimental Functions
   pgr_edwardMoore
 
 
+- :doc:`planar-family`
+
+.. toctree::
+  :hidden:
+
+  planar-family
 
 .. rubric:: Miscellaneous Algorithms
 

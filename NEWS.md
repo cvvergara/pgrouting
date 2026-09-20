@@ -40,16 +40,13 @@ To see all issues & pull requests closed by this release see the
 * Planar
 
   * pgr_makeMaximalPlanar
+  * pgr_makeBiconnectedPlanar
 
 **Summary of changes by function**
 
 * pgr_edgeColoring
 
   * Fix the way it builds the graph
-
-* pgr_makeMaximalPlanar
-
-  * New experimental function.
 
 ## pgRouting 4.0
 

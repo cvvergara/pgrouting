@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: makeMaximalPlanar.c
+File: makeBiconnectedPlanar.c
 
 Generated with Template by:
 Copyright (c) 2015-2026 pgRouting developers
@@ -32,10 +32,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/ii_t_rt.h"
 #include "process/coloring_process.h"
 
-PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_makemaximalplanar);
+PGDLLEXPORT Datum _pgr_makebiconnectedplanar(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_makebiconnectedplanar);
 
-PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_makebiconnectedplanar(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
@@ -51,7 +51,7 @@ PGDLLEXPORT Datum _pgr_makemaximalplanar(PG_FUNCTION_ARGS) {
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 false,
 
-                MAXIMALPLANAR,
+                BICONNECTEDPLANAR,
                 &result_tuples,
                 &result_count);
 

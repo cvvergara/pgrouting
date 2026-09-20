@@ -6,6 +6,7 @@ set(LOCAL_FILES
     boyerMyrvold
     isPlanar
     makeMaximalPlanar
+    makeBiconnectedPlanar
     )
 
 foreach (f ${LOCAL_FILES})
