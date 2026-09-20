@@ -62,14 +62,14 @@ class Pgr_planarFaces : public pgrouting::Pgr_messages {
          const G &m_graph;
          std::vector<IID_t_rt> &m_results;
          std::map<E, int> &m_visit_count;
-         int64_t face_id;
-         int64_t seq;
+         int64_t face_id {0};
+         int64_t seq {0};
 
          FaceVisitor(const G &graph,
                      std::vector<IID_t_rt> &results,
                      std::map<E, int> &visit_count)
              : m_graph(graph), m_results(results),
-               m_visit_count(visit_count), face_id(0), seq(0) {}
+               m_visit_count(visit_count) {}
 
          void begin_face() { ++face_id; }
 
