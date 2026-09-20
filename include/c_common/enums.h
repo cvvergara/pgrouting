@@ -57,7 +57,9 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     BICONNECTEDPLANAR,
     /* For components */
     CONNECTEDCOMPONENTS, BICONNECTEDCOMPONENTS, STRONGCOMPONENTS, ARTICULATIONPOINTS,
-    BRIDGES, MAKECONNECTED
+    BRIDGES, MAKECONNECTED,
+    /* For metrics */
+    CORENUMBERS
 };
 
 #endif  // INCLUDE_C_COMMON_ENUMS_H_
