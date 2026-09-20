@@ -53,11 +53,12 @@ The latest documentation: https://docs.pgrouting.org/latest
 
 * perl
 * C and C++ compilers
-  * Compiling with Boost 1.56 up to Boost 1.74 requires C++ Compiler with C++03 or C++11 standard support
-  * Compiling with Boost 1.75 requires C++ Compiler with C++14 standard support
+  * Compiling with Boost 1.74 requires C++ Compiler with C++03 or C++11 standard support
+  * Compiling with Boost 1.75+ requires C++ Compiler with C++14 standard support
+  * pgRouting requires C++17
 * Postgresql = Supported [version](https://www.postgresql.org/support/versioning/) by PostgreSQL
-  * Not supporting v12 & under
-* The Boost Graph Library (BGL) >= 1.56
+  * Not supporting v13 & under
+* The Boost Graph Library (BGL) >= 1.74
 * CMake >= 3.12
 * 4.0.0 <= Sphinx < 7.0
 

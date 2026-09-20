@@ -51,7 +51,7 @@ To see all issues & pull requests closed by this release see the
   process
 * :issue:`3100`: Coloring: create and use a process & driver
 * :issue:`3113`: Components: Integrate into existing process/driver pair
-* :issue:`3120`: Up requirements of Boost to 1.75
+* :issue:`3120`: Up requirements of Boost to 1.74
 * :issue:`3129`: breadthFirstSearch: Reorganize into traversal
 * :issue:`3131`: binaryBreadthFirstSearch: Integrate into existing
   process/driver pair
