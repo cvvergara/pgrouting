@@ -59,6 +59,11 @@ To see all issues & pull requests closed by this release see the
 
 * :issue:`3101`: pgr_edgeColoring not building graph correctly
 
+.. rubric:: New experimental functions.
+
+* Flow
+
+  * :issue:3136: pgr_maxWeightedMatching
 
 .. rubric:: New experimental functions.
 
@@ -70,6 +75,12 @@ To see all issues & pull requests closed by this release see the
   * pgr_planarFaces
 
 .. rubric:: Summary of changes by function
+
+* pgr_maxWeightedMatching
+
+  .. include:: pgr_maxWeightedMatching.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
 
 * pgr_edgeColoring
 
