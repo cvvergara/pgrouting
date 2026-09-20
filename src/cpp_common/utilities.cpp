@@ -130,6 +130,8 @@ get_name(Which which) {
             break;
         case CORENUMBERS:
             return "pgr_coreNumbers";
+        case PLANARFACES:
+            return "pgr_planarFaces";
             break;
         default:
             return "unknown";

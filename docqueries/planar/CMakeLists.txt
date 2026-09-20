@@ -7,7 +7,8 @@ set(LOCAL_FILES
     isPlanar
     makeMaximalPlanar
     makeBiconnectedPlanar
-    )
+    planarFaces
+)
 
 foreach (f ${LOCAL_FILES})
     configure_file("${f}.result" "${PGR_DOCUMENTATION_SOURCE_DIR}/${f}.queries")

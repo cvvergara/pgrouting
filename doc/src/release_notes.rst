@@ -66,14 +66,10 @@ To see all issues & pull requests closed by this release see the
 
   * pgr_makeMaximalPlanar
   * pgr_makeBiconnectedPlanar
+  * pgr_coreNumbers
+  * pgr_planarFaces
 
 .. rubric:: Summary of changes by function
-
-* pgr_coreNumbers
-
-  .. include:: pgr_coreNumbers.rst
-     :start-after: Version 4.1.0
-     :end-before: Description
 
 * pgr_edgeColoring
 

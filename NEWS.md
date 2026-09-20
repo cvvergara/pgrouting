@@ -41,12 +41,10 @@ To see all issues & pull requests closed by this release see the
 
   * pgr_makeMaximalPlanar
   * pgr_makeBiconnectedPlanar
+  * pgr_coreNumbers
+  * pgr_planarFaces
 
 **Summary of changes by function**
-
-* pgr_coreNumbers
-
-  * New experimental function.
 
 * pgr_edgeColoring
 

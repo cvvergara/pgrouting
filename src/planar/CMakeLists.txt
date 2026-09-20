@@ -6,4 +6,8 @@ ADD_LIBRARY(planar OBJECT
     isPlanar_driver.cpp
     makeMaximalPlanar.c
     makeBiconnectedPlanar.c
+    planarFaces.c
+
+    planar_driver.cpp
+    planar_process.cpp
 )

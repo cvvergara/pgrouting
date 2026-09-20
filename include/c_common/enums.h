@@ -55,6 +55,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     /* For planar */
     MAXIMALPLANAR,
     BICONNECTEDPLANAR,
+    PLANARFACES,
     /* For components */
     CONNECTEDCOMPONENTS, BICONNECTEDCOMPONENTS, STRONGCOMPONENTS, ARTICULATIONPOINTS,
     BRIDGES, MAKECONNECTED,

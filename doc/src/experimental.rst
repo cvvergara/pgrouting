@@ -135,7 +135,11 @@ Experimental Functions
   pgr_edwardMoore
 
 
-- :doc:`planar-family`
+:doc:`planar-family`
+
+.. include:: planar-family.rst
+   :start-after: experimental-start
+   :end-before: experimental-end
 
 .. toctree::
   :hidden:
