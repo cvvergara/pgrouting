@@ -64,24 +64,16 @@ To see all issues & pull requests closed by this release see the
 
 * Flow
 
-  * :issue:3136: pgr_maxWeightedMatching
-
-.. rubric:: New experimental functions.
+  * :issue:`3136`: pgr_maxWeightedMatching
 
 * Planar
 
-  * pgr_makeMaximalPlanar
-  * pgr_makeBiconnectedPlanar
-  * pgr_coreNumbers
-  * pgr_planarFaces
+  * :issue:`3140`:pgr_makeBiconnectedPlanar
+  * :issue:`3141`:pgr_makeMaximalPlanar
+  * :issue:`3142`:pgr_coreNumbers
+  * :issue:`3143`:pgr_planarFaces
 
 .. rubric:: Summary of changes by function
-
-* pgr_maxWeightedMatching
-
-  .. include:: pgr_maxWeightedMatching.rst
-     :start-after: Version 4.1.0
-     :end-before: Description
 
 * pgr_edgeColoring
 

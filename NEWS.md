@@ -39,22 +39,16 @@ To see all issues & pull requests closed by this release see the
 
 * Flow
 
-  * :issue:3136: pgr_maxWeightedMatching
-
-**New experimental functions.**
+  * [#3136](https://github.com/pgRouting/pgrouting/issues/3136): pgr_maxWeightedMatching
 
 * Planar
 
-  * pgr_makeMaximalPlanar
-  * pgr_makeBiconnectedPlanar
-  * pgr_coreNumbers
-  * pgr_planarFaces
+  * [#3140](https://github.com/pgRouting/pgrouting/issues/3140):pgr_makeBiconnectedPlanar
+  * [#3141](https://github.com/pgRouting/pgrouting/issues/3141):pgr_makeMaximalPlanar
+  * [#3142](https://github.com/pgRouting/pgrouting/issues/3142):pgr_coreNumbers
+  * [#3143](https://github.com/pgRouting/pgrouting/issues/3143):pgr_planarFaces
 
 **Summary of changes by function**
-
-* pgr_maxWeightedMatching
-
-  * New experimental function.
 
 * pgr_edgeColoring
 
