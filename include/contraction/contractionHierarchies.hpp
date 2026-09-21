@@ -291,6 +291,10 @@ void contractionHierarchies(
         } else {
             std::pair< int64_t, typename G::V > contracted_vertex;
             auto u = graph.vertices_map[graph[ordered_vertex.second].id];
+
+            contracted_vertex.second = ordered_vertex.second;
+            log << "  Vertex endly contracted in the queue" << std::endl;
+
             if (count > 15) {
                 log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
                 log << "                count " << count << std::endl;
@@ -305,8 +309,7 @@ void contractionHierarchies(
                     shortcuts,
                     log,
                     err);
-            log << "  Vertex endly contracted in the queue" << std::endl;
-            contracted_vertex.second = ordered_vertex.second;
+
             priority_queue.push(contracted_vertex);
         }
     }
