@@ -289,14 +289,14 @@ void contractionHierarchies(
             log << "++++++++++++    minPQ.size() " << minPQ.size() << std::endl;
             log << "                count " << count << std::endl;
         } else {
+            std::pair< int64_t, typename G::V > contracted_vertex;
+            auto u = graph.vertices_map[graph[ordered_vertex.second].id];
             if (count > 15) {
                 log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
                 log << "                count " << count << std::endl;
                 break;
             }
 
-            std::pair< int64_t, typename G::V > contracted_vertex;
-            auto u = graph.vertices_map[graph[ordered_vertex.second].id];
             contracted_vertex.first = detail::vertex_contraction(
                     graph_copy,
                     directed,
