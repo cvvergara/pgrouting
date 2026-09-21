@@ -186,7 +186,7 @@ int64_t vertex_contraction(
         n_old_edges = static_cast<int64_t>(adjacent_in_vertices.size());
     }
 
-    log << ">> Contraction of node " << graph[v].id << std::endl
+    log << ">>B Contraction of node " << graph[v].id << std::endl
         << num_vertices(graph.graph) << " vertices and "
         << num_edges(graph.graph) << " edges " << std::endl;
 
@@ -258,6 +258,7 @@ void contractionHierarchies(
     }
 
 
+    int count = 0;
     while (!minPQ.empty()) {
         std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
         minPQ.pop();
@@ -297,7 +298,7 @@ void contractionHierarchies(
             contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
         }
-        return;
+        if (count++ > 1) break;
     }
     log << std::endl << "Copy shortcuts" << std::endl;
     graph.copy_shortcuts(shortcuts, log);
