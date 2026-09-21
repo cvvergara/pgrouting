@@ -79,7 +79,7 @@ jobs:
           mkdir build
           cd build
           cmake -DPOSTGRESQL_VERSION=${{ matrix.psql }} \
-             -DCMAKE_BUILD_TYPE=${{ matrix.release }} -DBUILD_HTML=OFF -DBUILD_DOXY=OFF ..
+             -DCMAKE_BUILD_TYPE=${{ matrix.release }} ..
 
       - name: Build
         run: |
