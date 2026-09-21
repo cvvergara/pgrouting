@@ -310,7 +310,6 @@ void contractionHierarchies(
                 log << "                count " << count << std::endl;
                 break;
             }
-
         }
     }
     log << std::endl << "Copy shortcuts" << std::endl;
