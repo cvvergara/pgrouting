@@ -264,7 +264,7 @@ void contractionHierarchies(
         auto ordered_vertex = minPQ.top();
         minPQ.pop();
         log << "************    minPQ.size() " << minPQ.size() << std::endl;
-        log << "                count " << count << std::endl;
+        log << "                count " << ++count << std::endl;
 
         auto corrected_metric =
             detail::vertex_contraction(
@@ -283,24 +283,25 @@ void contractionHierarchies(
             << ordered_vertex.first << ", new order "
             << corrected_metric << std::endl;
 
+        log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
+        log << "                count " << count << std::endl;
+        if (count > 15) break;
         if (minPQ.top().first < corrected_metric) {
             log << "   Vertex reinserted in the queue" << std::endl;
             minPQ.push(std::make_pair(corrected_metric, ordered_vertex.second));
             log << "++++++++++++    minPQ.size() " << minPQ.size() << std::endl;
             log << "                count " << count << std::endl;
-            if (count++ > 15) break;
         } else {
             std::pair< int64_t, typename G::V > contracted_vertex;
             auto u = graph.vertices_map[graph[ordered_vertex.second].id];
-            if (count++ > 15) break;
             contracted_vertex.first = detail::vertex_contraction(
-                graph_copy,
-                directed,
-                u,
-                false,
-                shortcuts,
-                log,
-                err);
+                    graph_copy,
+                    directed,
+                    u,
+                    false,
+                    shortcuts,
+                    log,
+                    err);
             log << "  Vertex endly contracted in the queue" << std::endl;
             contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
