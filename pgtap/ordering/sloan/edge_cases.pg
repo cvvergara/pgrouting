@@ -19,9 +19,6 @@ IF NOT min_version('4.0.0') THEN
   RETURN;
 END IF;
 
-RETURN QUERY
-SELECT skip(1, 'pgr_sloanOrdering is new on 4.0.0');
-RETURN;
 -- 0 edge, 0 vertex test
 
 PREPARE q1 AS
@@ -30,6 +27,7 @@ SELECT * FROM pgr_sloanOrdering('SELECT id, source, target, cost, reverse_cost F
 RETURN QUERY
 SELECT lives_ok('q1', 'Graph with 0 edge and 0 vertex -> Should live');
 
+RETURN;
 -- 6 -> 6 (1 vertex test)
 
 PREPARE q2 AS

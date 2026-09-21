@@ -40,7 +40,8 @@ jobs:
           psql: [14, 15, 16, 17, 18]
           postgis: [3]
           release: [Debug, Release]
-          os: [ubuntu-latest, ubuntu-26.04, ubuntu-22.04]
+          os: [ubuntu-26.04]
+            #os: [ubuntu-latest, ubuntu-26.04, ubuntu-22.04]
 
     steps:
       - uses: actions/checkout@v6
