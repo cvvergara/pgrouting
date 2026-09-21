@@ -63,7 +63,7 @@ sloanOrdering(pgrouting::UndirectedGraph &graph) {
     auto color_map = boost::make_iterator_property_map(colors.begin(), index_map, colors[0]);
 
     /* map which store the degree of each vertex. */
-    auto degree_map = boost::make_out_degree_map(graph.graph);
+    auto degree_map = boost::make_degree_map(graph.graph);
 
     /* store the priority of each vertex. */
     std::vector<int> priorities(n);
