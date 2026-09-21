@@ -113,7 +113,7 @@ jobs:
           sudo -u postgres createdb -p ${PGPORT}  pgr_test__db__test
           # queries that might change
           # mincut: results change depending on boost
-          TESTDIRS="mincut"
+          TESTDIRS="mincut max_flow"
           for d in ${TESTDIRS}
           do
             ./tools/testers/doc_queries_generator.pl -pgver "${PGVER}" -pguser runner -documentation -alg "docqueries/${d}"

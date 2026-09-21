@@ -258,9 +258,14 @@ void contractionHierarchies(
 
 
     int count = 0;
+    log << "************    minPQ.size() " << minPQ.size() << std::endl;
+    log << "                count " << count << std::endl;
     while (!minPQ.empty()) {
         std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
         minPQ.pop();
+        log << "************    minPQ.size() " << minPQ.size() << std::endl;
+        log << "                count " << count << std::endl;
+
         int64_t corrected_metric =
             detail::vertex_contraction(
                 graph_copy,
@@ -297,7 +302,7 @@ void contractionHierarchies(
             contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
         }
-        if (count++ > 14) break;
+        if (count++ > 15) break;
     }
     log << std::endl << "Copy shortcuts" << std::endl;
     graph.copy_shortcuts(shortcuts, log);
