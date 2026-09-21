@@ -265,6 +265,13 @@ void contractionHierarchies(
         minPQ.pop();
         log << "************    minPQ.size() " << minPQ.size() << std::endl;
         log << "                count " << ++count << std::endl;
+        if (minPQ.empty()) {
+            std::pair< int64_t, typename G::V > contracted_vertex;
+            contracted_vertex.first = 0;
+            contracted_vertex.second = ordered_vertex.second;
+            priority_queue.push(contracted_vertex);
+            break;
+        }
 
         auto corrected_metric =
             detail::vertex_contraction(
