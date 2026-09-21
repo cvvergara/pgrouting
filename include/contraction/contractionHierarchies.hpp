@@ -176,9 +176,7 @@ int64_t vertex_contraction(
     if (directed) {
         adjacent_in_vertices = graph.find_adjacent_in_vertices(v);
         adjacent_out_vertices = graph.find_adjacent_out_vertices(v);
-        n_old_edges =
-            static_cast<int64_t>(adjacent_in_vertices.size()
-            + adjacent_out_vertices.size());
+        n_old_edges = static_cast<int64_t>(adjacent_in_vertices.size() + adjacent_out_vertices.size());
     } else {
         adjacent_in_vertices = graph.find_adjacent_vertices(v);
         adjacent_out_vertices = adjacent_in_vertices;
@@ -189,7 +187,7 @@ int64_t vertex_contraction(
         << num_vertices(graph.graph) << " vertices and "
         << num_edges(graph.graph) << " edges " << std::endl;
 
-    for (auto &u : adjacent_in_vertices) {
+    for (const auto &u : adjacent_in_vertices) {
         log << "  >> from " << graph[u].id << std::endl;
         compute_shortcuts(
             graph,
@@ -200,6 +198,9 @@ int64_t vertex_contraction(
             log,
             err);
     }
+
+    // if (graph[v].id > 15 ) return 0;
+
     if (!simulation) {
         for (auto &w : adjacent_out_vertices) {
             boost::remove_edge(v, w, graph.graph);
@@ -226,8 +227,7 @@ int64_t vertex_contraction(
         << " old edges" << std::endl;
 
     int64_t m = 0;
-    m = static_cast<int64_t>(shortcut_edges.size())
-      - static_cast<int64_t>(n_old_edges);
+    m = static_cast<int64_t>(shortcut_edges.size()) - static_cast<int64_t>(n_old_edges);
     log << "  Metric: edge difference = " << shortcut_edges.size()
         << " - " << n_old_edges << " = " << m << std::endl;
     return m;
@@ -303,6 +303,7 @@ void contractionHierarchies(
                     shortcuts,
                     log,
                     err);
+            priority_queue.push(contracted_vertex);
 
             if (count > 15) {
                 log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
@@ -310,7 +311,6 @@ void contractionHierarchies(
                 break;
             }
 
-            priority_queue.push(contracted_vertex);
         }
     }
     log << std::endl << "Copy shortcuts" << std::endl;
