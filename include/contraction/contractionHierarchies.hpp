@@ -42,7 +42,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/filtered_graph.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
-#include "cpp_common/alloc.hpp"
 #include "cpp_common/ch_edge.hpp"
 #include "cpp_common/messages.hpp"
 #include "cpp_common/identifiers.hpp"
@@ -298,7 +297,7 @@ void contractionHierarchies(
             contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
         }
-        if (count++ > 1) break;
+        if (count++ > 3) break;
     }
     log << std::endl << "Copy shortcuts" << std::endl;
     graph.copy_shortcuts(shortcuts, log);
