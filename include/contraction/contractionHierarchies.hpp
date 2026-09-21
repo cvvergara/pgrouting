@@ -283,7 +283,12 @@ void contractionHierarchies(
             << ordered_vertex.first << ", new order "
             << corrected_metric << std::endl;
 
-        if (minPQ.top().first < corrected_metric) {
+        if (minPQ.empty()) {
+            std::pair< int64_t, typename G::V > contracted_vertex;
+            contracted_vertex.first = 0;
+            contracted_vertex.second = ordered_vertex.second;
+            priority_queue.push(contracted_vertex);
+        } else if (minPQ.top().first < corrected_metric) {
             log << "   Vertex reinserted in the queue" << std::endl;
             minPQ.push(std::make_pair(corrected_metric, ordered_vertex.second));
             log << "++++++++++++    minPQ.size() " << minPQ.size() << std::endl;
@@ -304,12 +309,6 @@ void contractionHierarchies(
                     log,
                     err);
             priority_queue.push(contracted_vertex);
-
-            if (count > 15) {
-                log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
-                log << "                count " << count << std::endl;
-                break;
-            }
         }
     }
     log << std::endl << "Copy shortcuts" << std::endl;
