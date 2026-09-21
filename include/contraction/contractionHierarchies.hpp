@@ -120,6 +120,8 @@ void compute_shortcuts(
         catch ( ... ) {
             err << "    Unknown exception during labelling!" << std::endl;
         }
+
+        return;
         /* abort in case of an interruption occurs
         (e.g. the query is being cancelled) */
         CHECK_FOR_INTERRUPTS();
