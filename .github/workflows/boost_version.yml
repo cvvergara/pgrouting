@@ -70,6 +70,7 @@ jobs:
         fail-fast: false
         matrix:
           boost_minor: [74, 75, 76, 77, 78, 79, 80, 83, 84, 86, 92]
+            #boost_minor: [89, 90, 91, 92]
 
     steps:
       - uses: actions/checkout@v6
