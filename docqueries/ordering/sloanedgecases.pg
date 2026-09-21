@@ -8,7 +8,7 @@ UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 
 SELECT * FROM pgr_sloanOrdering('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id > 18');
 
---SELECT * FROM pgr_sloanOrdering('SELECT id, source, source AS target, cost, reverse_cost FROM edges WHERE id = 2');
+SELECT * FROM pgr_sloanOrdering('SELECT id, source, source AS target, cost, reverse_cost FROM edges WHERE id = 2');
 
 --SELECT * FROM pgr_sloanOrdering('SELECT id, source, target, cost, reverse_cost FROM edges WHERE id = 7');
 --SELECT * FROM pgr_sloanOrdering('SELECT id, target AS source, source AS target, cost, reverse_cost FROM edges WHERE id = 7');
