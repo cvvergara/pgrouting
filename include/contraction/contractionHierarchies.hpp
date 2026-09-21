@@ -276,8 +276,6 @@ void contractionHierarchies(
                 log,
                 err);
 
-        if (count++ > 15) break;
-
         log << "A  Vertex: " << graph[ordered_vertex.second].id
             << ", min value of the queue: "
             << minPQ.top().first << std::endl
@@ -290,10 +288,10 @@ void contractionHierarchies(
             minPQ.push(std::make_pair(corrected_metric, ordered_vertex.second));
             log << "   *********    minPQ.size() " << minPQ.size() << std::endl;
             log << "                count " << count << std::endl;
+            if (count++ > 15) break;
         } else {
             std::pair< int64_t, typename G::V > contracted_vertex;
-            typename G::V u =
-                graph.vertices_map[graph[ordered_vertex.second].id];
+            typename G::V u = graph.vertices_map[graph[ordered_vertex.second].id];
             contracted_vertex.first = detail::vertex_contraction(
                 graph_copy,
                 directed,
@@ -303,6 +301,7 @@ void contractionHierarchies(
                 log,
                 err);
             log << "  Vertex endly contracted in the queue" << std::endl;
+            if (count++ > 15) break;
             contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
         }

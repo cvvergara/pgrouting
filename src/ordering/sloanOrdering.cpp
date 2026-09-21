@@ -54,12 +54,12 @@ sloanOrdering(pgrouting::UndirectedGraph &graph) {
     std::vector<V> inv_permutation(n);
 
     if (n == 1) {
-        inv_permutation[1] = 1;
+        inv_permutation[0] = 0;
         return inv_permutation;
     }
     if (n == 2) {
+        inv_permutation[0] = 0;
         inv_permutation[1] = 1;
-        inv_permutation[2] = 2;
         return inv_permutation;
     }
 
