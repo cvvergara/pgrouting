@@ -121,7 +121,6 @@ void compute_shortcuts(
             err << "    Unknown exception during labelling!" << std::endl;
         }
 
-        return;
         /* abort in case of an interruption occurs
         (e.g. the query is being cancelled) */
         CHECK_FOR_INTERRUPTS();
@@ -257,6 +256,8 @@ void contractionHierarchies(
             minPQ.push(std::make_pair(graph[v].id, v));
         }
     }
+
+    return;
 
     while (!minPQ.empty()) {
         std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
