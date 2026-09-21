@@ -69,8 +69,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [74, 75, 76, 77, 78, 79, 80, 83, 84, 86, 92]
-            #boost_minor: [89, 90, 91, 92]
+          boost_minor: [74, 75, 76, 77, 78, 79, 80, 83, 84, 86, 90, 92]
 
     steps:
       - uses: actions/checkout@v6
@@ -108,7 +107,6 @@ jobs:
             postgresql-server-dev-${PGVER}
 
           wget https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          #wget https://dl.bintray.com/boostorg/release/1.${{ matrix.boost_minor }}.0/source/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
 
