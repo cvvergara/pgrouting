@@ -167,17 +167,37 @@ do_ordering(
             }
         }
 
-        if (!undi_results.empty()) {
-            get_vertexId(undigraph, undi_results, return_count, return_tuples);
-        } else if (!di_results.empty()) {
-            get_vertexId(digraph, di_results, return_count, return_tuples);
-        } else if (!id_results.empty()) {
-            return_count = get_identifiers(id_results, return_tuples);
+        switch (which) {
+            case SLOAN:
+            case CUTCHILL:
+            case KING:
+                {
+                    if (!undi_results.empty()) {
+                        get_vertexId(undigraph, undi_results, return_count, return_tuples);
+                    }
+                    break;
+                }
+            case TOPOSORT:
+                {
+                    if (!di_results.empty()) {
+                        get_vertexId(digraph, di_results, return_count, return_tuples);
+                    }
+                    break;
+                }
+            case ARTICULATIONPOINTS:
+            case BRIDGES:
+                {
+                    if (!id_results.empty()) {
+                        return_count = get_identifiers(id_results, return_tuples);
+                    }
+                    break;
+                }
+            default:
+                return;
         }
 
         if (return_count == 0) {
             notice << "No results found";
-            return;
         }
     } catch (AssertFailedException &except) {
         err << except.what();
