@@ -295,12 +295,6 @@ void contractionHierarchies(
             contracted_vertex.second = ordered_vertex.second;
             log << "  Vertex endly contracted in the queue" << std::endl;
 
-            if (count > 15) {
-                log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
-                log << "                count " << count << std::endl;
-                break;
-            }
-
             contracted_vertex.first = detail::vertex_contraction(
                     graph_copy,
                     directed,
@@ -309,6 +303,12 @@ void contractionHierarchies(
                     shortcuts,
                     log,
                     err);
+
+            if (count > 15) {
+                log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
+                log << "                count " << count << std::endl;
+                break;
+            }
 
             priority_queue.push(contracted_vertex);
         }
