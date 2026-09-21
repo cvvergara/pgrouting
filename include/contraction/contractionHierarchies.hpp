@@ -119,7 +119,6 @@ void compute_shortcuts(
         catch ( ... ) {
             err << "    Unknown exception during labelling!" << std::endl;
         }
-
         /* abort in case of an interruption occurs
         (e.g. the query is being cancelled) */
         CHECK_FOR_INTERRUPTS();
@@ -176,18 +175,20 @@ int64_t vertex_contraction(
     if (directed) {
         adjacent_in_vertices = graph.find_adjacent_in_vertices(v);
         adjacent_out_vertices = graph.find_adjacent_out_vertices(v);
-        n_old_edges = static_cast<int64_t>(adjacent_in_vertices.size() + adjacent_out_vertices.size());
+        n_old_edges =
+            static_cast<int64_t>(adjacent_in_vertices.size()
+            + adjacent_out_vertices.size());
     } else {
         adjacent_in_vertices = graph.find_adjacent_vertices(v);
         adjacent_out_vertices = adjacent_in_vertices;
         n_old_edges = static_cast<int64_t>(adjacent_in_vertices.size());
     }
 
-    log << ">>B Contraction of node " << graph[v].id << std::endl
+    log << ">> Contraction of node " << graph[v].id << std::endl
         << num_vertices(graph.graph) << " vertices and "
         << num_edges(graph.graph) << " edges " << std::endl;
 
-    for (const auto &u : adjacent_in_vertices) {
+    for (auto &u : adjacent_in_vertices) {
         log << "  >> from " << graph[u].id << std::endl;
         compute_shortcuts(
             graph,
@@ -198,9 +199,6 @@ int64_t vertex_contraction(
             log,
             err);
     }
-
-    // if (graph[v].id > 15 ) return 0;
-
     if (!simulation) {
         for (auto &w : adjacent_out_vertices) {
             boost::remove_edge(v, w, graph.graph);
@@ -227,7 +225,8 @@ int64_t vertex_contraction(
         << " old edges" << std::endl;
 
     int64_t m = 0;
-    m = static_cast<int64_t>(shortcut_edges.size()) - static_cast<int64_t>(n_old_edges);
+    m = static_cast<int64_t>(shortcut_edges.size())
+      - static_cast<int64_t>(n_old_edges);
     log << "  Metric: edge difference = " << shortcut_edges.size()
         << " - " << n_old_edges << " = " << m << std::endl;
     return m;
@@ -256,15 +255,10 @@ void contractionHierarchies(
         }
     }
 
-
-    int count = 0;
-    log << "************    minPQ.size() " << minPQ.size() << std::endl;
-    log << "                count " << count << std::endl;
     while (!minPQ.empty()) {
-        auto ordered_vertex = minPQ.top();
+        std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
         minPQ.pop();
-        log << "************    minPQ.size() " << minPQ.size() << std::endl;
-        log << "                count " << ++count << std::endl;
+
         if (minPQ.empty()) {
             std::pair< int64_t, typename G::V > contracted_vertex;
             contracted_vertex.first = 0;
@@ -273,7 +267,7 @@ void contractionHierarchies(
             break;
         }
 
-        auto corrected_metric =
+        int64_t corrected_metric =
             detail::vertex_contraction(
                 graph_copy,
                 directed,
@@ -282,39 +276,31 @@ void contractionHierarchies(
                 shortcuts,
                 log,
                 err);
-
-        log << "A  Vertex: " << graph[ordered_vertex.second].id
+        log << "  Vertex: " << graph[ordered_vertex.second].id
             << ", min value of the queue: "
             << minPQ.top().first << std::endl
             << "  Lazy non-destructive simulation: initial order "
             << ordered_vertex.first << ", new order "
             << corrected_metric << std::endl;
 
-        if (minPQ.empty()) {
-            std::pair< int64_t, typename G::V > contracted_vertex;
-            contracted_vertex.first = 0;
-            contracted_vertex.second = ordered_vertex.second;
-            priority_queue.push(contracted_vertex);
-        } else if (minPQ.top().first < corrected_metric) {
+        if (minPQ.top().first < corrected_metric) {
             log << "   Vertex reinserted in the queue" << std::endl;
-            minPQ.push(std::make_pair(corrected_metric, ordered_vertex.second));
-            log << "++++++++++++    minPQ.size() " << minPQ.size() << std::endl;
-            log << "                count " << count << std::endl;
+            minPQ.push(
+                std::make_pair(corrected_metric, ordered_vertex.second));
         } else {
             std::pair< int64_t, typename G::V > contracted_vertex;
-            auto u = graph.vertices_map[graph[ordered_vertex.second].id];
-
-            contracted_vertex.second = ordered_vertex.second;
-            log << "  Vertex endly contracted in the queue" << std::endl;
-
+            typename G::V u =
+                graph.vertices_map[graph[ordered_vertex.second].id];
             contracted_vertex.first = detail::vertex_contraction(
-                    graph_copy,
-                    directed,
-                    u,
-                    false,
-                    shortcuts,
-                    log,
-                    err);
+                graph_copy,
+                directed,
+                u,
+                false,
+                shortcuts,
+                log,
+                err);
+            log << "  Vertex endly contracted in the queue" << std::endl;
+            contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
         }
     }
