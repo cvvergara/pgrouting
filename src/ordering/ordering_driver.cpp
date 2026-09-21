@@ -137,7 +137,7 @@ do_ordering(
             switch (which) {
                 case SLOAN:
                     {
-                        undi_results = sloanOrdering(undigraph);
+                        undi_results = kingOrdering(undigraph);
                         break;
                     }
                 case CUTCHILL:
