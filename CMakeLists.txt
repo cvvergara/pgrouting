@@ -10,15 +10,15 @@ if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_BINARY_DIR})
 endif()
 
 if(POLICY CMP0144)
-    cmake_policy(SET CMP0144 OLD)
+    cmake_policy(SET CMP0144 NEW)
 endif()
 
 if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 OLD)
+    cmake_policy(SET CMP0167 NEW)
 endif()
 
 if(POLICY CMP0148)
-    cmake_policy(SET CMP0148 OLD)
+    cmake_policy(SET CMP0148 NEW)
 endif()
 
 #---------------------------------------------
