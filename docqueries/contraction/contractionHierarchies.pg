@@ -8,17 +8,17 @@ SELECT * FROM pgr_contractionHierarchies(
   'SELECT id, source, target, cost FROM edges',
   directed => false);
 /* -- q2 */
--- SELECT * FROM pgr_contractionHierarchies( 'SELECT id, source, target, cost FROM edges', directed => false, forbidden => ARRAY[6]);
+SELECT * FROM pgr_contractionHierarchies( 'SELECT id, source, target, cost FROM edges', directed => false, forbidden => ARRAY[6]);
 /* -- q3 */
---ALTER TABLE edges ADD is_new BOOLEAN DEFAULT false, ADD contracted_vertices BIGINT[];
+ALTER TABLE edges ADD is_new BOOLEAN DEFAULT false, ADD contracted_vertices BIGINT[];
 /* -- q4 */
--- ALTER TABLE vertices ADD metric INTEGER, ADD vertex_order INTEGER;
+ALTER TABLE vertices ADD metric INTEGER, ADD vertex_order INTEGER;
 /* -- q5 */
--- SELECT * INTO contraction_results FROM pgr_contractionHierarchies( 'SELECT id, source, target, cost FROM edges', directed => false);
+SELECT * INTO contraction_results FROM pgr_contractionHierarchies( 'SELECT id, source, target, cost FROM edges', directed => false);
 /* -- q6 */
--- INSERT INTO edges(source, target, cost, reverse_cost, contracted_vertices, is_new) SELECT source, target, cost, -1, contracted_vertices, true FROM contraction_results WHERE type = 'e';
+INSERT INTO edges(source, target, cost, reverse_cost, contracted_vertices, is_new) SELECT source, target, cost, -1, contracted_vertices, true FROM contraction_results WHERE type = 'e';
 /* -- q7 */
--- UPDATE vertices SET metric = c.metric, vertex_order = c.vertex_order FROM contraction_results c WHERE c.type = 'v' AND c.id = vertices.id;
+UPDATE vertices SET metric = c.metric, vertex_order = c.vertex_order FROM contraction_results c WHERE c.type = 'v' AND c.id = vertices.id;
 /* -- q8 */
--- SELECT * FROM pgr_bdDijkstra( 'SELECT id, source, target, cost, reverse_cost FROM edges', 1, 17);
+SELECT * FROM pgr_bdDijkstra( 'SELECT id, source, target, cost, reverse_cost FROM edges', 1, 17);
 /* -- q9 */
