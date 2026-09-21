@@ -102,6 +102,7 @@ if (NOT Boost_VERSION_MACRO)
     set(Boost_VERSION_MACRO ${Boost_VERSION})
 endif()
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+message(STATUS "Found Boost: ${BOOST_VERSION}")
 add_definitions(-DBOOST_ALLOW_DEPRECATED_HEADERS)
 
 include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
