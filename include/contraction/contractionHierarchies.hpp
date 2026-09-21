@@ -305,12 +305,13 @@ void contractionHierarchies(
                     err);
             priority_queue.push(contracted_vertex);
 
+#if 0
             if (count > 15) {
                 log << "BREAK    minPQ.size() " << minPQ.size() << std::endl;
                 log << "                count " << count << std::endl;
                 break;
             }
-
+#endif
         }
     }
     log << std::endl << "Copy shortcuts" << std::endl;
