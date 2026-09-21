@@ -92,14 +92,14 @@ pgr_contractionHierarchies(
             digraph.insert_edges(edges);
 
             contractionHierarchies(digraph, directed, forbid, log, err);
-            graph_to_tuple(digraph, return_tuples, return_count);
+            // graph_to_tuple(digraph, return_tuples, return_count);
         } else {
             using UndirectedGraph = pgrouting::graph::CHUniqueUndirectedGraph;
             UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
 
             contractionHierarchies(undigraph, directed, forbid, log, err);
-            graph_to_tuple(undigraph, return_tuples, return_count);
+            // graph_to_tuple(undigraph, return_tuples, return_count);
         }
 
         pgassert(err.str().empty());
