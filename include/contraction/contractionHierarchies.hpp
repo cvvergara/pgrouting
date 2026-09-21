@@ -257,7 +257,6 @@ void contractionHierarchies(
         }
     }
 
-    return;
 
     while (!minPQ.empty()) {
         std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
@@ -271,7 +270,7 @@ void contractionHierarchies(
                 shortcuts,
                 log,
                 err);
-        log << "  Vertex: " << graph[ordered_vertex.second].id
+        log << "A  Vertex: " << graph[ordered_vertex.second].id
             << ", min value of the queue: "
             << minPQ.top().first << std::endl
             << "  Lazy non-destructive simulation: initial order "
@@ -298,6 +297,7 @@ void contractionHierarchies(
             contracted_vertex.second = ordered_vertex.second;
             priority_queue.push(contracted_vertex);
         }
+        return;
     }
     log << std::endl << "Copy shortcuts" << std::endl;
     graph.copy_shortcuts(shortcuts, log);
