@@ -53,6 +53,10 @@ sloanOrdering(pgrouting::UndirectedGraph &graph) {
     /* vector which will store the order of the indices. */
     std::vector<V> inv_permutation(n);
 
+    if (n == 1) {
+        inv_permutation[1] = 1;
+        return inv_permutation;
+    }
     if (n == 2) {
         inv_permutation[1] = 1;
         inv_permutation[2] = 2;

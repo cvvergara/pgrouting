@@ -20,27 +20,20 @@ BEGIN
   RETURN QUERY SELECT has_function('pgr_maxweightedmatching');
 
   RETURN QUERY
-  SELECT has_function(
-      'pgr_maxweightedmatching',
-      ARRAY['text', 'boolean']);
+  SELECT has_function('pgr_maxweightedmatching', ARRAY['text']);
 
   RETURN QUERY
-  SELECT function_returns(
-      'pgr_maxweightedmatching',
-      ARRAY['text', 'boolean'],
-      'setof record');
+  SELECT function_returns('pgr_maxweightedmatching', ARRAY['text'], 'setof record');
 
   RETURN QUERY
-SELECT function_args_eq(
-    'pgr_maxweightedmatching',
-    $$SELECT '{"", "", start_vid, end_vid, agg_cost}'::TEXT[]$$
+  SELECT function_args_eq('pgr_maxweightedmatching',
+    $$SELECT '{"", start_vid, end_vid, agg_cost}'::TEXT[]$$
   );
 
   RETURN QUERY
-  SELECT function_types_eq(
-      'pgr_maxweightedmatching',
+  SELECT function_types_eq('pgr_maxweightedmatching',
       $$VALUES
-      ('{text,bool,int8,int8,float8}'::TEXT[])
+      ('{text,int8,int8,float8}'::TEXT[])
       $$
   );
 
