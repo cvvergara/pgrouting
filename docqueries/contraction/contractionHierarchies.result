@@ -51,12 +51,11 @@ SELECT * FROM pgr_contractionHierarchies(
  v    | 14 | {}                  |     -1 |     -1 |   -1 |      0 |           16
  v    | 15 | {}                  |     -1 |     -1 |   -1 |     -1 |           13
  v    | 16 | {}                  |     -1 |     -1 |   -1 |     -1 |           12
- v    | 17 | {}                  |     -1 |     -1 |   -1 |      0 |           17
  e    | -1 | {7}                 |     11 |      8 |    2 |     -1 |           -1
  e    | -2 | {7,8}               |     11 |      9 |    3 |     -1 |           -1
  e    | -3 | {8}                 |     12 |      9 |    2 |     -1 |           -1
  e    | -4 | {11}                |     12 |     16 |    2 |     -1 |           -1
-(21 rows)
+(20 rows)
 
 /* -- q2 */
 -- SELECT * FROM pgr_contractionHierarchies( 'SELECT id, source, target, cost FROM edges', directed => false, forbidden => ARRAY[6]);
