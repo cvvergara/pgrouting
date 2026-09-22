@@ -108,7 +108,7 @@ jobs:
 
           wget https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/boost_1_${{ matrix.boost_minor }}
+          sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/boost
 
 
       - name: Configure
@@ -116,7 +116,7 @@ jobs:
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DBoost_DIR=/usr/include/boost_1_${{ matrix.boost_minor }} -DCMAKE_BUILD_TYPE=Debug ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DBoost_DIR=/usr/include/boost -DCMAKE_BUILD_TYPE=Debug ..
 
       - name: Build
         run: |
