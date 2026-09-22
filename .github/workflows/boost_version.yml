@@ -70,7 +70,8 @@ jobs:
         fail-fast: false
         matrix:
           boost_minor: [74, 75, 76, 77, 78, 79, 80, 83, 84, 86, 90, 92]
-          os: [ubuntu-latest, ubuntu-26.04, ubuntu-22.04]
+          os: [ubuntu-latest, ubuntu-22.04]
+            #os: [ubuntu-latest, ubuntu-26.04, ubuntu-22.04]
 
     steps:
       - uses: actions/checkout@v6
