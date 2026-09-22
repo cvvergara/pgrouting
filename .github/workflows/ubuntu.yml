@@ -3,26 +3,14 @@ name: Build for Ubuntu
 # Copyright (c) 2020-2026 pgRouting developers
 # License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
-# This action runs:
-# - When this file changes
-# - When changes on code (src, include)
-# - When changes on data or testing scripts (tools/testers)
-# - When the way the build changes (CMakeLists.txt)
-#
 # Test is done on:
-# - the preinstalled postgres version
+# - ubuntu available on actions
+# - postgres not in EOL at time of release
 # - postgis 3
-#
-# The boost version tested are when changes that affect pgRouting on
-# - boost::graph
-# - boost::geometry
-# See https://www.boost.org/users/history/
-# Currently
-# - boost::geometry has not changed anything we use
-#
-# boost
-# - 1.92 Latest version at time of release
-# - 1.74 Min requirement
+# - boost
+#   - 1.92 Latest version at time of release
+#   - 1.74 Min requirement
+# - Debug & Release
 
 on:
   workflow_dispatch:
