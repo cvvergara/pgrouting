@@ -97,6 +97,7 @@ endif()
 # Boost
 #---------------------------------------------
 
+find_package(Boost CONFIG)
 find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
 if (NOT Boost_VERSION_MACRO)
     set(Boost_VERSION_MACRO ${Boost_VERSION})
