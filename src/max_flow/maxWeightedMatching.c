@@ -31,7 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 
 #include "c_types/iid_t_rt.h"
-#include "c_common/debug_macro.h"
 
 #include "process/maxWeightedMatching_process.h"
 
@@ -50,7 +49,6 @@ PGDLLEXPORT Datum _pgr_maxweightedmatching(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        PGR_DBG("Calling process");
         pgr_process_maxWeightedMatching(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
             &result_tuples,

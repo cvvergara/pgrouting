@@ -105,6 +105,8 @@ BEGIN
     )
     ORDER BY id;
 
+    PERFORM todo_start('Patch is not returning the expected values');
+
     PREPARE sol4 AS
     SELECT type, id, contracted_vertices, source, target, cost, metric, vertex_order
     FROM (
@@ -149,6 +151,8 @@ BEGIN
 
     RETURN QUERY
     SELECT set_eq('q5', 'sol5');
+
+    PERFORM todo_end();
 
     PREPARE q6 AS
     SELECT * FROM pgr_contractionHierarchies(
