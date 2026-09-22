@@ -80,7 +80,7 @@ FROM pgr_stoerWagner(
   FROM edges WHERE id < 17 ORDER BY id'
 );
 
-PERFORM todo(1, 'It gives different results on different boost version');
+SELECT todo(1, 'It gives different results on different boost version');
 SELECT set_eq('stoerWagner7', 'VALUES (1, 1, 1, 1)', '6: Compare the mincut of subgraph with actual result');
 
 SELECT * FROM finish();
