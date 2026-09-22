@@ -3,14 +3,42 @@ name: Build for Ubuntu
 # Copyright (c) 2020-2026 pgRouting developers
 # License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 
-# manually triggered workflow
-# - 5 * 2 * 2 = 20 jobs are triggered
-# - So many jobs take too much time
-# When this file changes
+# This action runs:
+# - When this file changes
+# - When changes on code (src, include)
+# - When changes on data or testing scripts (tools/testers)
+# - When the way the build changes (CMakeLists.txt)
+#
+# Test is done on:
+# - the preinstalled postgres version
+# - postgis 3
+#
+# The boost version tested are when changes that affect pgRouting on
+# - boost::graph
+# - boost::geometry
+# See https://www.boost.org/users/history/
+# Currently
+# - boost::geometry has not changed anything we use
+#
+# boost
+# - 1.92 Latest version at time of release
+# - 1.74 Min requirement
 
 on:
   workflow_dispatch:
   push:
+    paths:
+      - '.github/workflows/ubuntu.yml'
+      - 'src/**'
+      - 'include/**'
+      - 'pgtap/**'
+      - 'tools/testers/**'
+      - 'CMakeLists.txt'
+
+    branches-ignore:
+      - 'gh-pages'
+
+  pull_request:
     paths:
       - '.github/workflows/ubuntu.yml'
       - 'src/**'
@@ -77,12 +105,12 @@ jobs:
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
 
-      - name: Configure for gcc
+      - name: Configure
         run: |
           export PATH=/usr/lib/postgresql/${{ matrix.psql }}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${{ matrix.psql }} \
+          cmake -DPOSTGRESQL_VERSION=${{ matrix.psql }} -DBoost_DIR=/usr/include/boost \
              -DCMAKE_BUILD_TYPE=${{ matrix.release }} ..
 
       - name: Build

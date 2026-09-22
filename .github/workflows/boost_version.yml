@@ -20,13 +20,14 @@ name: Boost supported versions
 # Currently
 # - boost::geometry has not changed anything we use
 #
-# boost::graph
+# boost
+# - 1.92 Latest version at time of release (tested on ubuntu.yml)
 # - 1.86 does not support C++11 (Aug 2024)
 # - 1.84 is failing its own tests (Jul 2022)
 # - 1.83 transitive closure & stoer wagner changed on 83 (Jul 2022)
 # - 1.80 changed on 1.80 (Aug 2022)
 # - 1.75 requires C++14 (Dec 2020)
-# - 1.74 works on 22.04
+# - 1.74 Min requirement, works on 22.04 (tested on ubuntu.yml)
 
 on:
   workflow_dispatch:
@@ -69,7 +70,7 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [74, 75, 76, 77, 78, 79, 80, 83, 84, 86, 90, 92]
+          boost_minor: [75, 76, 77, 78, 79, 80, 83, 84, 86, 91]
           os: [ubuntu-26.04]
 
     steps:
@@ -89,12 +90,20 @@ jobs:
           sudo -u postgres psql -p "${PG_PORT}" -c "CREATE ROLE \"${PG_USER}\" WITH LOGIN SUPERUSER;"
           sudo -u postgres psql -p "${PG_PORT}" -c "CREATE DATABASE \"${PG_USER}\";"
 
+      - name: 'Raise Priority for apt.postgresql.org'
+        run: |
+          cat << EOF >> ./pgdg.pref
+          Package: *
+          Pin: release o=apt.postgresql.org
+          Pin-Priority: 600
+          EOF
+          sudo mv ./pgdg.pref /etc/apt/preferences.d/
+          sudo apt update
+
       - name: Add PostgreSQL APT repository
         run: |
-          sudo apt-get install curl ca-certificates gnupg
-          curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ \
-            $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg-testing main ${{ matrix.psql }}" > /etc/apt/sources.list.d/pgdg.list'
+          curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null
 
       - name: Install dependencies
         run: |
@@ -109,15 +118,15 @@ jobs:
 
           wget https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
           sudo tar --bzip2 -xf  boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/boost
-
+          sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
 
       - name: Configure
         run: |
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DBoost_DIR=/usr/include/boost -DCMAKE_BUILD_TYPE=Debug ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} -DBoost_DIR=/usr/include/boost \
+             -DCMAKE_BUILD_TYPE=Debug ..
 
       - name: Build
         run: |
@@ -131,5 +140,4 @@ jobs:
           psql -c "CREATE DATABASE ___pgr___test___;"
           DIR=$(git rev-parse --show-toplevel)
           bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "4.1.0"
-          pg_prove        --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/mincut"
           pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
