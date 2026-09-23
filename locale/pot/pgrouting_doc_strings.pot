@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-21 09:34+0000\n"
+"POT-Creation-Date: 2026-09-23 05:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3592,6 +3592,9 @@ msgstr ""
 msgid "`#3131 <https://github.com/pgRouting/pgrouting/issues/3131>`__: binaryBreadthFirstSearch: Integrate into existing process/driver pair"
 msgstr ""
 
+msgid "`#3142 <https://github.com/pgRouting/pgrouting/issues/3142>`__:pgr_coreNumbers"
+msgstr ""
+
 msgid "Bug Fixes"
 msgstr ""
 
@@ -3623,6 +3626,12 @@ msgid "`#3143 <https://github.com/pgRouting/pgrouting/issues/3143>`__:pgr_planar
 msgstr ""
 
 msgid "Summary of changes by function"
+msgstr ""
+
+msgid "pgr_coreNumbers"
+msgstr ""
+
+msgid "New experimental function."
 msgstr ""
 
 msgid "pgr_edgeColoring"
@@ -7045,9 +7054,6 @@ msgstr ""
 msgid "Version 2.5.0"
 msgstr ""
 
-msgid "New experimental function."
-msgstr ""
-
 msgid "Those vertices that belong to more than one biconnected component are called articulation points or, equivalently, cut vertices. Articulation points are vertices whose removal would increase the number of connected components in the graph. This implementation can only be used with an undirected graph."
 msgstr ""
 
@@ -8674,28 +8680,67 @@ msgstr ""
 msgid "The **core number** of a vertex is the largest value :math:`k` such that the vertex **belongs to the** :math:`k`-core of the graph."
 msgstr ""
 
-msgid "The :math:`k`-core of a graph is the maximal subgraph in which every vertex has degree at least :math:`k` within that subgraph. K-core decomposition iteratively removes vertices of degree less than :math:`k` until no such vertices remain, increasing :math:`k` at each stage. The process assigns one core number to every vertex and runs in :math:`O(m)` time on a graph with :math:`m` edges."
+msgid "The :math:`k`-core of a graph is the maximal subgraph in which every vertex has degree at least :math:`k` within that subgraph. K-core decomposition iteratively removes vertices of degree less than :math:`k` until no such vertices remain, increasing :math:`k` at each stage. The process assigns one core number to every vertex."
 msgstr ""
 
 msgid "The core number says how deeply a vertex sits inside the graph:"
 msgstr ""
 
-msgid "Core :math:`1` vertices are peeled in the first step. They are **terminal nodes**, adjacent to at most one other vertex in the induced subgraph: the dead-ends and cul-de-sacs of a road network."
+msgid "Core :math:`1` vertices are peeled in the first step. They are terminal nodes of the peeled graph, adjacent to at most one other vertex in the induced subgraph."
 msgstr ""
 
-msgid "Core :math:`2` vertices survive that step. They lie on cycles, or on the chains joining them, like a rural highway that runs on before it branches."
+msgid "Core :math:`2` vertices survive that step. They lie on cycles, or on the chains joining them."
 msgstr ""
 
-msgid "Core :math:`3` and above mark dense regions where every vertex keeps three or more neighbors however much of the graph is peeled away. Urban street grids, which offer alternate routes at most intersections, behave this way."
+msgid "Core :math:`3` and above mark dense regions where every vertex keeps three or more neighbors however much of the graph is peeled away."
 msgstr ""
 
-msgid "The function applies to **undirected** graphs only. Edge direction and traversal costs are ignored; only the edge endpoints matter. Each vertex receives exactly one core number, all vertices in the graph are returned, and the number of rows is :math:`|V|`. Results are ordered by ``node`` ascending. When the edge SQL returns no rows, the function emits a notice and returns no rows."
+msgid "Parallel edges between the same pair of vertices are collapsed into a single edge before the peeling starts, so edge multiplicity does not inflate core numbers."
 msgstr ""
 
-msgid "**Parallel edges** between the same pair of vertices are collapsed into a single edge before the peeling starts, so edge multiplicity does not inflate core numbers: three parallel edges between two vertices give both vertices core :math:`1`, the same as a single edge. This matters when importing road networks that contain duplicate geometry. A **self loop** is not a neighbor of its own vertex, so it is dropped before peeling and does not contribute to that vertex's degree. A vertex whose only edge is a self loop has no real neighbors left, and therefore does not appear in the result."
+msgid "Three parallel edges between two vertices give both vertices core :math:`1`, the same as a single edge."
 msgstr ""
 
-msgid "Batagelj, V. and Zaversnik, M. (2003). An O(m) Algorithm for Cores Decomposition of Networks. arXiv:cs/0310049."
+msgid "Self loop: a vertex is not a neighbor of its own vertex, so it is dropped before peeling and does not contribute to that vertex's degree."
+msgstr ""
+
+msgid "A vertex whose only edge is a self loop has no real neighbors left, So the core number is 0."
+msgstr ""
+
+msgid "Loops and parallel edges are removed."
+msgstr ""
+
+msgid "All vertices are kept"
+msgstr ""
+
+msgid "Costs are ignored"
+msgstr ""
+
+msgid "Each vertex receives exactly one core number"
+msgstr ""
+
+msgid "Results:"
+msgstr ""
+
+msgid "Number of returned rows: :math:`|V|`."
+msgstr ""
+
+msgid "Ordered by ``node`` ascending."
+msgstr ""
+
+msgid "No rows returned when no edges found. Emits a ``NOTICE``"
+msgstr ""
+
+msgid "Running time: :math:`O(|E| + |E| + |V| log |V|)`"
+msgstr ""
+
+msgid "Loop and parallel removal: :math:`O(|E|)`"
+msgstr ""
+
+msgid "Peeling algorithm: :math:`O(|E|)`"
+msgstr ""
+
+msgid "Sorting:  :math:`|V| log |V|`"
 msgstr ""
 
 msgid "pgr_coreNumbers(`Edges SQL`_)"
@@ -8915,15 +8960,6 @@ msgid "In general the complete graph :math:`K_n` has core number :math:`n - 1` f
 msgstr ""
 
 msgid "The degeneracy of this graph is :math:`3`, compared with :math:`2` for the :doc:`sampledata` network."
-msgstr ""
-
-msgid ":doc:`pgr_betweennessCentrality`"
-msgstr ""
-
-msgid ":doc:`pgr_degree`"
-msgstr ""
-
-msgid ":doc:`pgr_isPlanar`"
 msgstr ""
 
 msgid "Batagelj, V. and Zaversnik, M. (2003). `An O(m) Algorithm for Cores Decomposition of Networks <https://arxiv.org/abs/cs/0310049>`__"
