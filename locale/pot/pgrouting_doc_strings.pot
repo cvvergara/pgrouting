@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 05:35+0000\n"
+"POT-Creation-Date: 2026-09-23 21:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3619,19 +3619,10 @@ msgstr ""
 msgid "`#3141 <https://github.com/pgRouting/pgrouting/issues/3141>`__:pgr_makeMaximalPlanar"
 msgstr ""
 
-msgid "`#3142 <https://github.com/pgRouting/pgrouting/issues/3142>`__:pgr_coreNumbers"
-msgstr ""
-
 msgid "`#3143 <https://github.com/pgRouting/pgrouting/issues/3143>`__:pgr_planarFaces"
 msgstr ""
 
 msgid "Summary of changes by function"
-msgstr ""
-
-msgid "pgr_coreNumbers"
-msgstr ""
-
-msgid "New experimental function."
 msgstr ""
 
 msgid "pgr_edgeColoring"
@@ -7052,6 +7043,9 @@ msgid "Result columns change: ``seq`` is removed"
 msgstr ""
 
 msgid "Version 2.5.0"
+msgstr ""
+
+msgid "New experimental function."
 msgstr ""
 
 msgid "Those vertices that belong to more than one biconnected component are called articulation points or, equivalently, cut vertices. Articulation points are vertices whose removal would increase the number of connected components in the graph. This implementation can only be used with an undirected graph."
@@ -12104,6 +12098,9 @@ msgid "Together with example 1), this confirms the :math:`2|E|` row rule on a ni
 msgstr ""
 
 msgid "Confirm planarity with :doc:`pgr_isPlanar` before calling ``pgr_planarFaces`` on the same ``Edges SQL``."
+msgstr ""
+
+msgid ":doc:`pgr_isPlanar`"
 msgstr ""
 
 msgid "`Boost: Planar Face Traversal <https://www.boost.org/libs/graph/doc/planar_face_traversal.html>`__"

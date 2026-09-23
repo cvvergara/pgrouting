@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 05:35+0000\n"
+"POT-Creation-Date: 2026-09-23 21:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4066,22 +4066,11 @@ msgid ""
 msgstr ""
 
 msgid ""
-"`#3142 <https://github.com/pgRouting/pgrouting/issues/3142>`__:"
-"pgr_coreNumbers"
-msgstr ""
-
-msgid ""
 "`#3143 <https://github.com/pgRouting/pgrouting/issues/3143>`__:"
 "pgr_planarFaces"
 msgstr ""
 
 msgid "Summary of changes by function"
-msgstr ""
-
-msgid "pgr_coreNumbers"
-msgstr ""
-
-msgid "New experimental function."
 msgstr ""
 
 msgid "pgr_edgeColoring"
@@ -8071,6 +8060,9 @@ msgid "Result columns change: ``seq`` is removed"
 msgstr ""
 
 msgid "Version 2.5.0"
+msgstr ""
+
+msgid "New experimental function."
 msgstr ""
 
 msgid ""
@@ -14364,6 +14356,10 @@ msgid ""
 "Confirm planarity with :doc:`pgr_isPlanar` before calling "
 "``pgr_planarFaces`` on the same ``Edges SQL``."
 msgstr ""
+
+#, fuzzy
+msgid ":doc:`pgr_isPlanar`"
+msgstr "``pgr_isplanar``"
 
 msgid ""
 "`Boost: Planar Face Traversal <https://www.boost.org/libs/graph/doc/"
