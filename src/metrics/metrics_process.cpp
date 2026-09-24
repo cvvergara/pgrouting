@@ -41,6 +41,8 @@ extern "C" {
 #include <string>
 #include <sstream>
 
+#include "c_types/iid_t_rt.h"
+
 #include "cpp_common/report_messages.hpp"
 #include "cpp_common/utilities.hpp"
 #include "cpp_common/assert.hpp"
