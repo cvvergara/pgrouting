@@ -20,6 +20,7 @@ on:
       - '.github/workflows/check-queries.yml'
       - 'src/**'
       - 'include/**'
+      - 'pgtap/**'
       - 'sql/**'
       - 'docqueries/**'
       - 'tools/testers/**'
@@ -33,6 +34,7 @@ on:
       - '.github/workflows/check-queries.yml'
       - 'src/**'
       - 'include/**'
+      - 'pgtap/**'
       - 'sql/**'
       - 'docqueries/**'
       - 'tools/testers/**'
@@ -93,7 +95,8 @@ jobs:
           export PATH=/usr/lib/postgresql/${PGVER}/bin:$PATH
           mkdir build
           cd build
-          cmake -DPOSTGRESQL_VERSION=${PGVER} -DCMAKE_BUILD_TYPE=Debug -DBUILD_DOXY=ON ..
+          cmake -DPOSTGRESQL_VERSION=${PGVER} \
+             -DCMAKE_BUILD_TYPE=Release -DBUILD_DOXY=ON ..
 
       - name: Build
         run: |
@@ -132,3 +135,16 @@ jobs:
           more DOXYLOG
           [ ! -s DOXYLOG ] || echo "There are Doxygen warnings"
           [ ! -s DOXYLOG ] || exit 1
+
+      - name: pgtap test
+        run: |
+          sudo service postgresql start
+          export PG_RUNNER_USER=`whoami`
+          sudo -u postgres psql -p ${PGPORT} -c "DROP DATABASE IF EXISTS ___pgr___test___;"
+          sudo -u postgres psql -p ${PGPORT} -c "DROP DATABASE IF EXISTS \"${PG_RUNNER_USER}\";"
+          sudo -u postgres psql -p ${PGPORT} -c "DROP ROLE IF EXISTS \"${PG_RUNNER_USER}\";"
+          sudo -u postgres psql -p ${PGPORT} -c "CREATE ROLE \"${PG_RUNNER_USER}\" WITH LOGIN SUPERUSER;"
+          sudo -u postgres psql -p ${PGPORT} -c "CREATE DATABASE \"${PG_RUNNER_USER}\";"
+          psql -c "CREATE DATABASE ___pgr___test___;"
+          bash ./tools/testers/pg_prove_tests.sh ${PG_RUNNER_USER} ${PGPORT}  Release
+          psql -c "DROP DATABASE IF EXISTS ___pgr___test___;"
