@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 17:55+0000\n"
+"POT-Creation-Date: 2026-09-24 18:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3364,6 +3364,11 @@ msgstr ""
 msgid ":doc:`pgr_maxFlowMinCost_Cost` - Only the Min Cost calculation."
 msgstr ""
 
+msgid ""
+":doc:`pgr_maxWeightedMatching` - Calculates a maximum weighted matching in a "
+"graph."
+msgstr ""
+
 msgid ":doc:`chinesePostmanProblem-family`"
 msgstr ""
 
@@ -3434,24 +3439,6 @@ msgstr ""
 msgid ":doc:`TRSP-family`"
 msgstr ""
 
-msgid "categories"
-msgstr ""
-
-msgid ":doc:`VRP-category`"
-msgstr ""
-
-msgid "Shortest Path Category"
-msgstr ""
-
-msgid ":doc:`pgr_bellmanFord`"
-msgstr ""
-
-msgid ":doc:`pgr_dagShortestPath`"
-msgstr ""
-
-msgid ":doc:`pgr_edwardMoore`"
-msgstr ""
-
 msgid ":doc:`planar-family`"
 msgstr ""
 
@@ -3468,6 +3455,24 @@ msgstr ""
 msgid ""
 ":doc:`pgr_planarFaces` - Identifies the faces of a planar embedding and "
 "lists every edge-face incidence for an undirected graph."
+msgstr ""
+
+msgid "categories"
+msgstr ""
+
+msgid ":doc:`VRP-category`"
+msgstr ""
+
+msgid "Shortest Path Category"
+msgstr ""
+
+msgid ":doc:`pgr_bellmanFord`"
+msgstr ""
+
+msgid ":doc:`pgr_dagShortestPath`"
+msgstr ""
+
+msgid ":doc:`pgr_edwardMoore`"
 msgstr ""
 
 msgid "Miscellaneous Algorithms"
@@ -3958,6 +3963,10 @@ msgstr "pgr_edgeColoring"
 
 msgid "Fix the way it builds the graph"
 msgstr ""
+
+#, fuzzy
+msgid "pgr_maxWeightedMatching"
+msgstr "pgr_maximumcardinalitymatching"
 
 #, fuzzy
 msgid "pgr_makeBiconnectedPlanar"
@@ -6899,10 +6908,10 @@ msgid ""
 "Compiling with Boost 1.75 requires C++ Compiler with C++14 standard support"
 msgstr ""
 
-msgid "Postgresql version >= 13"
+msgid "Postgresql version >= 14"
 msgstr ""
 
-msgid "The Boost Graph Library (BGL) >= 1.56.0"
+msgid "The Boost Graph Library (BGL) >= 1.74.0"
 msgstr ""
 
 msgid "CMake >= 3.12"
@@ -7205,12 +7214,12 @@ msgid ""
 "Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Fan Wu, Florian Thurkow, "
 "Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu "
 "Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko "
-"Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim "
-"Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mohit Rawat, Mukul "
-"Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith "
-"Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, "
-"Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit "
-"Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
+"Nagase, Mayur Galhate, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin "
+"Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mohit "
+"Rawat, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, "
+"Rohith Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh "
+"Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, "
+"Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
 msgstr ""
 
 msgid "Corporate Sponsors (in alphabetical order)"
@@ -13715,6 +13724,65 @@ msgid "RETURNS FLOAT"
 msgstr ""
 
 msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
+msgstr ""
+
+msgid "``pgr_maxWeightedMatching`` - Experimental"
+msgstr ""
+
+msgid ""
+"``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in a "
+"graph."
+msgstr ""
+
+msgid ""
+"A **maximum weighted matching** in a graph is a matching where the sum of "
+"the weights of selected edges is maximized."
+msgstr ""
+
+msgid "Each vertex is matched with at most one other vertex."
+msgstr ""
+
+msgid "Maximizes the total edge weight sum."
+msgstr ""
+
+msgid "There may be many maximum weighted matchings."
+msgstr ""
+
+msgid "Calculates one possible maximum weighted matching in a graph."
+msgstr ""
+
+msgid ""
+"Returns the matched pairs of vertices in the form of a set of `(start_vid, "
+"end_vid, agg_cost)`."
+msgstr ""
+
+msgid "`start_vid` and `end_vid` are the endpoints of the matched edge."
+msgstr ""
+
+msgid "`agg_cost` is the weight of the matched edge."
+msgstr ""
+
+msgid "Running time: :math:`O(n^3)` where :math:`n` is the number of vertices."
+msgstr ""
+
+msgid "pgr_maxWeightedMatching(`Edges SQL`_)"
+msgstr ""
+
+msgid "Identifier of the first end point vertex of the matched edge."
+msgstr ""
+
+msgid "Identifier of the second end point vertex of the matched edge."
+msgstr ""
+
+msgid "Weight of the matched edge."
+msgstr ""
+
+msgid "Maximum weighted matching on a custom 5-vertex graph."
+msgstr ""
+
+msgid ""
+"`Boost: maximum_weighted_matching <https://www.boost.org/doc/libs/latest/"
+"libs/graph/doc/maximum_weighted_matching.html>`__"
 msgstr ""
 
 msgid "``pgr_pickDeliver`` - Experimental"
