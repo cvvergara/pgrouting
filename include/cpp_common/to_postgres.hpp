@@ -179,8 +179,8 @@ void vector_to_tuple(
         /*
          * These 2 lines are specifically for pgr_betweennessCentrality
          */
-        (*result_tuples)[seq].to_vid = 0;
-        (*result_tuples)[seq].cost = graph.is_directed()? results[v_i] / kDirectedCostFactor : results[v_i];
+        (tuples)[seq].to_vid = 0;
+        (tuples)[seq].cost = graph.is_directed()? results[v_i] / kDirectedCostFactor : results[v_i];
         seq++;
     }
 }

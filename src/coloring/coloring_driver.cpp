@@ -44,7 +44,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
 
-#include "planar/makeMaximalPlanar.hpp"
 #include "planar/makeBiconnectedPlanar.hpp"
 #include "coloring/bipartite.hpp"
 #include "coloring/edgeColoring.hpp"
@@ -131,14 +130,6 @@ void do_coloring(
             }
 
             switch (which) {
-               case MAXIMALPLANAR:
-                    {
-                        pgrouting::functions::Pgr_makeMaximalPlanar<UndirectedGraph>
-                            fn_makeMaximalPlanar;
-                        results = fn_makeMaximalPlanar.makeMaximalPlanar(undigraph);
-                        log << fn_makeMaximalPlanar.get_log();
-                    }
-                    break;
                case BICONNECTEDPLANAR:
                     {
                         results = makeBiconnectedPlanar(undigraph);
