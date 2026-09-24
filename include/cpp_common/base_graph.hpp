@@ -341,7 +341,7 @@ class Pgr_base_graph {
      template <typename T>
      void insert_cost1_edges(const std::vector<T> &edges) {
          for (const auto &edge : edges) {
-             add_cost1_edge_no_parallel_no_loop(edge);
+             add_cost1_edges(edge);
          }
      }
 

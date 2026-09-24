@@ -51,6 +51,17 @@ To see all issues & pull requests closed by this release see the
 
 **Summary of changes by function**
 
+<<<<<<< HEAD
+=======
+* pgr_planarFaces
+
+  * New experimental function.
+
+* pgr_coreNumbers
+
+  * New experimental function.
+
+>>>>>>> upstream/develop
 * pgr_edgeColoring
 
   * Fix the way it builds the graph

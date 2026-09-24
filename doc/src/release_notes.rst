@@ -76,11 +76,41 @@ To see all issues & pull requests closed by this release see the
 
 .. rubric:: Summary of changes by function
 
+* pgr_coreNumbers
+
+  .. include:: pgr_coreNumbers.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
 * pgr_edgeColoring
 
   .. include:: pgr_edgeColoring.rst
      :start-after: Version 4.1.0
      :end-before: .. rubric
+
+* pgr_maxWeightedMatching
+
+  .. include:: pgr_maxWeightedMatching.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
+* pgr_makeBiconnectedPlanar
+
+  .. include:: pgr_makeBiconnectedPlanar.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
+* pgr_makeMaximalPlanar
+
+  .. include:: pgr_makeMaximalPlanar.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
+* pgr_planarFaces
+
+  .. include:: pgr_planarFaces.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
 
 pgRouting 4.0
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

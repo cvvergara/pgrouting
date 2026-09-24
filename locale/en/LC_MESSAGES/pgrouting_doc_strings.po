@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-23 21:56+0000\n"
+"POT-Creation-Date: 2026-09-24 02:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3364,11 +3364,6 @@ msgstr ""
 msgid ":doc:`pgr_maxFlowMinCost_Cost` - Only the Min Cost calculation."
 msgstr ""
 
-msgid ""
-":doc:`pgr_maxWeightedMatching` - Calculates a maximum weighted matching in a "
-"graph."
-msgstr ""
-
 msgid ":doc:`chinesePostmanProblem-family`"
 msgstr ""
 
@@ -3439,29 +3434,6 @@ msgstr ""
 msgid ":doc:`TRSP-family`"
 msgstr ""
 
-msgid ":doc:`planar-family`"
-msgstr ""
-
-msgid ""
-":doc:`pgr_isPlanar` - Returns a boolean depending upon the planarity of the "
-"graph."
-msgstr ""
-
-msgid ""
-":doc:`pgr_makeMaximalPlanar` - Returns edges to add to a planar graph to "
-"make its eligible components maximal planar."
-msgstr ""
-
-msgid ""
-":doc:`pgr_makeBiconnectedPlanar` - Returns edges to add to a planar graph to "
-"make each connected component biconnected."
-msgstr ""
-
-msgid ""
-":doc:`pgr_planarFaces` - Identifies the faces of a planar embedding and "
-"lists every edge-face incidence for an undirected graph."
-msgstr ""
-
 msgid "categories"
 msgstr ""
 
@@ -3478,6 +3450,17 @@ msgid ":doc:`pgr_dagShortestPath`"
 msgstr ""
 
 msgid ":doc:`pgr_edwardMoore`"
+msgstr ""
+
+msgid ":doc:`planar-family`"
+msgstr ""
+
+msgid ":doc:`pgr_isPlanar` - Returns whether the graph is planar."
+msgstr ""
+
+msgid ""
+":doc:`pgr_planarFaces` - Identifies the faces of a planar embedding and "
+"lists every edge-face incidence for an undirected graph."
 msgstr ""
 
 msgid "Miscellaneous Algorithms"
@@ -4013,11 +3996,6 @@ msgid ""
 msgstr ""
 
 msgid ""
-"`#3120 <https://github.com/pgRouting/pgrouting/issues/3120>`__: Up "
-"requirements of Boost to 1.74"
-msgstr ""
-
-msgid ""
 "`#3129 <https://github.com/pgRouting/pgrouting/issues/3129>`__: "
 "breadthFirstSearch: Reorganize into traversal"
 msgstr ""
@@ -4040,37 +4018,17 @@ msgid ""
 "pgr_edgeColoring not building graph correctly"
 msgstr ""
 
-msgid "New experimental functions."
-msgstr ""
-
-msgid "Flow"
-msgstr ""
-
-msgid ""
-"`#3136 <https://github.com/pgRouting/pgrouting/issues/3136>`__: "
-"pgr_maxWeightedMatching"
+msgid "Summary of changes by function"
 msgstr ""
 
 #, fuzzy
-msgid "Planar"
+msgid "pgr_planarFaces"
 msgstr "pgr_isPlanar"
 
-msgid ""
-"`#3140 <https://github.com/pgRouting/pgrouting/issues/3140>`__:"
-"pgr_makeBiconnectedPlanar"
+msgid "New experimental function."
 msgstr ""
 
-msgid ""
-"`#3141 <https://github.com/pgRouting/pgrouting/issues/3141>`__:"
-"pgr_makeMaximalPlanar"
-msgstr ""
-
-msgid ""
-"`#3143 <https://github.com/pgRouting/pgrouting/issues/3143>`__:"
-"pgr_planarFaces"
-msgstr ""
-
-msgid "Summary of changes by function"
+msgid "pgr_coreNumbers"
 msgstr ""
 
 msgid "pgr_edgeColoring"
@@ -6565,6 +6523,9 @@ msgstr "``y2``"
 msgid "Y coordinate of ``target`` vertex."
 msgstr ""
 
+msgid "Flow"
+msgstr ""
+
 msgid "Edges SQL for :doc:`flow-family`"
 msgstr ""
 
@@ -6909,10 +6870,10 @@ msgid ""
 "Compiling with Boost 1.75 requires C++ Compiler with C++14 standard support"
 msgstr ""
 
-msgid "Postgresql version >= 14"
+msgid "Postgresql version >= 13"
 msgstr ""
 
-msgid "The Boost Graph Library (BGL) >= 1.74.0"
+msgid "The Boost Graph Library (BGL) >= 1.56.0"
 msgstr ""
 
 msgid "CMake >= 3.12"
@@ -7215,12 +7176,12 @@ msgid ""
 "Denis Rykov, Ema Miyawaki, Esteban Zimanyi, Fan Wu, Florian Thurkow, "
 "Frederic Junod, Gerald Fenoy, Gudesa Venkata Sai Akhil, Hang Wu, Himanshu "
 "Raj, Imre Samu, Jay Mahadeokar, Jinfu Leng, Kai Behncke, Kishore Kumar, Ko "
-"Nagase, Mayur Galhate, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin "
-"Wiesenhaan, Maxim Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mohit "
-"Rawat, Mukul Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, "
-"Rohith Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh "
-"Garg, Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, "
-"Veenit Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
+"Nagase, Mahmoud Sakr, Manikata Kondeti, Mario Basa, Martin Wiesenhaan, Maxim "
+"Dubinin, Maoguang Wang, Mohamed Bakli, Mohamed Zia, Mohit Rawat, Mukul "
+"Priya, Nitish Chauhan, Rajat Shinde, Razequl Islam, Regina Obe, Rohith "
+"Reddy, Saloni Kumari, Sarthak Agarwal, Shobhit Chaurasia, Sourabh Garg, "
+"Stephen Woodbridge, Swapnil Joshi, Sylvain Housseman, Sylvain Pasche, Veenit "
+"Kumar, Vidhan Jain, Virginia Vergara, Yige Huang"
 msgstr ""
 
 msgid "Corporate Sponsors (in alphabetical order)"
@@ -8060,9 +8021,6 @@ msgid "Result columns change: ``seq`` is removed"
 msgstr ""
 
 msgid "Version 2.5.0"
-msgstr ""
-
-msgid "New experimental function."
 msgstr ""
 
 msgid ""
@@ -13370,98 +13328,6 @@ msgstr ""
 msgid "https://en.wikipedia.org/wiki/Complete_graph"
 msgstr ""
 
-msgid "``pgr_makeBiconnectedPlanar`` - Experimental"
-msgstr ""
-
-msgid ""
-"``pgr_makeBiconnectedPlanar`` — Returns the set of edges needed to make each "
-"connected component of a planar graph biconnected."
-msgstr ""
-
-msgid ""
-"``pgr_makeBiconnectedPlanar`` identifies the missing edges that need to be "
-"added to each connected component of an existing planar graph to make those "
-"components biconnected, while ensuring the graph remains planar."
-msgstr ""
-
-msgid ""
-"A graph is considered **biconnected** if it is connected and cannot be "
-"broken into disconnected pieces by deleting any single vertex (it has no "
-"articulation points). A planar graph is one that can be drawn in two-"
-"dimensional space with no two of its edges crossing."
-msgstr ""
-
-msgid "Works for **planar** graphs only."
-msgstr ""
-
-msgid ""
-"If any component of the input graph is not planar, no added edges are "
-"returned for that component."
-msgstr ""
-
-msgid ""
-"Returns a list of all new edges needed to make each connected component of "
-"the graph biconnected."
-msgstr ""
-
-msgid "The algorithm does not consider traversal costs in the calculations."
-msgstr ""
-
-msgid "The algorithm does not consider geometric topology in the calculations."
-msgstr ""
-
-msgid ""
-"Running time: :math:`O(|V_G| + |E_G| + R \\log R)` where :math:`G(V_G, E_G)` "
-"is the input graph and :math:`R` is the number of returned edges."
-msgstr ""
-
-msgid "pgr_makeBiconnectedPlanar(`Edges SQL`_)"
-msgstr ""
-
-msgid "Returns set of |result-component-make|"
-msgstr ""
-
-msgid "List of edges that are needed to make the graph biconnected planar."
-msgstr ""
-
-msgid "**Sample graph before:**"
-msgstr ""
-
-msgid "Sample graph before"
-msgstr ""
-
-msgid "**Output:**"
-msgstr ""
-
-msgid "**Sample graph after adding biconnecting edges:**"
-msgstr ""
-
-msgid ""
-"Sample graph after adding biconnecting edges (olive = original edges, red "
-"dashed = 4 new biconnecting edges). Note: When a graph contains multiple "
-"disconnected components, each component is processed independently. "
-"Components (2,4) and (13,14) are already biconnected (0 articulation points) "
-"and require no new edges."
-msgstr ""
-
-msgid "Biconnecting a simple 4-vertex line graph (path graph)."
-msgstr ""
-
-msgid ""
-"Sample 4-vertex line graph before biconnecting (vertices 2 and 3 are "
-"articulation points)."
-msgstr ""
-
-msgid ""
-"Biconnected planar graph after adding new edges to eliminate articulation "
-"points without crossing."
-msgstr ""
-
-msgid ""
-"`Boost: make_biconnected_planar <https://www.boost.org/doc/libs/latest/libs/"
-"graph/doc/html/graph/algorithms/planar/make_biconnected_planar.html>`__"
-msgstr ""
-
 msgid "``pgr_makeConnected`` - Experimental"
 msgstr ""
 
@@ -13490,76 +13356,15 @@ msgstr ""
 msgid "pgr_makeConnected(`Edges SQL`_)"
 msgstr ""
 
+msgid "Returns set of |result-component-make|"
+msgstr ""
+
 msgid "List of edges that are needed to connect the graph."
 msgstr ""
 
 msgid ""
 "`Boost: make connected <https://www.boost.org/libs/graph/doc/make_connected."
 "html>`__"
-msgstr ""
-
-msgid "``pgr_makeMaximalPlanar`` - Experimental"
-msgstr ""
-
-msgid ""
-"``pgr_makeMaximalPlanar`` — Returns the set of edges needed to make a planar "
-"graph maximal planar."
-msgstr ""
-
-msgid ""
-"``pgr_makeMaximalPlanar`` identifies the missing edges that need to be added "
-"to the connected components of a planar graph to make each eligible "
-"component maximal planar."
-msgstr ""
-
-msgid ""
-"A planar graph is considered **maximal planar** (or fully triangulated) if "
-"no additional edges can be added to it without violating its planarity. In a "
-"maximal planar graph, every face (including the outer face) is a triangle."
-msgstr ""
-
-msgid ""
-"Returns a list of all new edges needed to triangulate the eligible "
-"components of the graph and make them maximal planar."
-msgstr ""
-
-msgid ""
-"The augmentation applies independently to eligible components (components "
-"with 3 or more vertices). Components with fewer than 3 vertices produce no "
-"added edges."
-msgstr ""
-
-msgid "pgr_makeMaximalPlanar(`Edges SQL`_)"
-msgstr ""
-
-msgid "List of edges that are needed to make the sample graph maximal planar."
-msgstr ""
-
-msgid "**Sample graph after adding triangulation edges:**"
-msgstr ""
-
-msgid ""
-"Sample graph after adding triangulation edges (olive = original edges, red "
-"dashed = 17 new triangulation edges). Note: When a graph contains multiple "
-"disconnected components, each component is processed independently. "
-"Components (2,4) and (13,14) have < 3 vertices and cannot be triangulated; "
-"the 13-vertex component is triangulated with 17 new edges."
-msgstr ""
-
-msgid "Triangulating a simple 5-cycle ring graph."
-msgstr ""
-
-msgid "Sample 5-cycle ring graph before triangulation."
-msgstr ""
-
-msgid ""
-"Maximal planar triangulation of a simple 5-cycle ring graph (4 red dashed "
-"triangulation edges added)."
-msgstr ""
-
-msgid ""
-"`Boost: make_maximal_planar <https://www.boost.org/doc/libs/latest/libs/"
-"graph/doc/html/graph/algorithms/planar/make_maximal_planar.html>`__"
 msgstr ""
 
 msgid "``pgr_maxCardinalityMatch``"
@@ -13793,65 +13598,6 @@ msgstr ""
 msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
 msgstr ""
 
-msgid "``pgr_maxWeightedMatching`` - Experimental"
-msgstr ""
-
-msgid ""
-"``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in a "
-"graph."
-msgstr ""
-
-msgid ""
-"A **maximum weighted matching** in a graph is a matching where the sum of "
-"the weights of selected edges is maximized."
-msgstr ""
-
-msgid "Each vertex is matched with at most one other vertex."
-msgstr ""
-
-msgid "Maximizes the total edge weight sum."
-msgstr ""
-
-msgid "There may be many maximum weighted matchings."
-msgstr ""
-
-msgid "Calculates one possible maximum weighted matching in a graph."
-msgstr ""
-
-msgid ""
-"Returns the matched pairs of vertices in the form of a set of `(start_vid, "
-"end_vid, agg_cost)`."
-msgstr ""
-
-msgid "`start_vid` and `end_vid` are the endpoints of the matched edge."
-msgstr ""
-
-msgid "`agg_cost` is the weight of the matched edge."
-msgstr ""
-
-msgid "Running time: :math:`O(n^3)` where :math:`n` is the number of vertices."
-msgstr ""
-
-msgid "pgr_maxWeightedMatching(`Edges SQL`_)"
-msgstr ""
-
-msgid "Identifier of the first end point vertex of the matched edge."
-msgstr ""
-
-msgid "Identifier of the second end point vertex of the matched edge."
-msgstr ""
-
-msgid "Weight of the matched edge."
-msgstr ""
-
-msgid "Maximum weighted matching on a custom 5-vertex graph."
-msgstr ""
-
-msgid ""
-"`Boost: maximum_weighted_matching <https://www.boost.org/doc/libs/latest/"
-"libs/graph/doc/maximum_weighted_matching.html>`__"
-msgstr ""
-
 msgid "``pgr_pickDeliver`` - Experimental"
 msgstr ""
 
@@ -14069,19 +13815,28 @@ msgid ""
 msgstr ""
 
 msgid ""
-"In a **planar embedding**, the graph is drawn in the plane so that edges "
-"meet only at vertices. A **face** is a maximal connected region of the plane "
-"bounded by edges: on a street network, the city blocks between the roads. "
+"In a planar embedding, the graph is drawn in the plane so that edges meet "
+"only at vertices. A face is a maximal connected region of the plane bounded "
+"by edges."
+msgstr ""
+
+msgid ""
 "Every bounded face is a cycle of edges enclosing an interior region. The "
-"**exterior face**, also called the unbounded face, is the region outside the "
+"exterior face, also called the unbounded face, is the region outside the "
 "outermost cycle."
 msgstr ""
 
 msgid ""
-"Once an embedding is fixed, each undirected edge has a **left** and a "
-"**right** side when walked in the direction the embedding assigns around "
-"each vertex. In a connected planar graph, each edge separates exactly two "
-"faces, so it contributes one row on the left and one on the right. "
+"Once an embedding is fixed, each undirected edge has a left and a right side "
+"when walked in the direction the embedding assigns around each vertex."
+msgstr ""
+
+msgid ""
+"In a connected planar undirected graph, each edge separates exactly two "
+"faces, so it contributes one row on the left and one on the right."
+msgstr ""
+
+msgid ""
 "``pgr_planarFaces`` returns those incidences: ``face_id`` names the face, "
 "``edge_id`` is the border edge, and ``side`` is ``1`` (left) or ``2`` "
 "(right) relative to the embedding."
@@ -14089,34 +13844,34 @@ msgstr ""
 
 msgid ""
 "The function first computes a planar embedding with the Boyer-Myrvold "
-"planarity test, then walks faces with Boost ``planar_face_traversal``. Only "
-"**undirected** structure matters: ``cost`` and ``reverse_cost`` are ignored. "
-"The input must be **planar**; otherwise the call raises ``ERROR: Graph is "
-"not planar``. When planarity is unknown, run :doc:`pgr_isPlanar` first. The "
-"result has one row per edge-side pair, so a graph with :math:`|E|` edges "
-"yields :math:`2|E|` rows when extraction succeeds. Face identifiers come "
-"from the traversal; one is the exterior face. An empty edge SQL emits a "
-"notice and returns no rows. Running time is :math:`O(|V| + |E|)`."
+"planarity test, then walks faces with Boost ``planar_face_traversal``.i"
+msgstr ""
+
+msgid "Loops and paralell edges are preserved."
+msgstr ""
+
+msgid "They are used to determine the existance of an edge"
+msgstr ""
+
+msgid "When the graph is not planar it will emit an 'ERROR'"
+msgstr ""
+
+#, fuzzy
+msgid "Run :doc:`pgr_isPlanar` first"
+msgstr "``pgr_isplanar``"
+
+msgid "The result has one row per edge-side pair"
+msgstr ""
+
+msgid "Graph with :math:`|E|` edges yields :math:`2|E|` rows."
 msgstr ""
 
 msgid ""
-"The number of faces obeys **Euler's formula**. On a connected planar graph :"
-"math:`|V| - |E| + |F| = 2`. The traversal walks the outer face of every "
-"connected component separately, so on a graph with :math:`C` components the "
-"relation generalises to :math:`|V| - |E| + |F| = 2C`. On the :doc:"
-"`sampledata` network, which has :math:`3` components, :math:`17 - 18 + 7 = 6 "
-"= 2 \\times 3`."
+"Number of faces: * Obeys Euler's formula: :math:`|V| - |E| + |F| = 2` * On a "
+"graph with :math:`C` components: :math:`|V| - |E| + |F| = 2C`."
 msgstr ""
 
-msgid ""
-"Boyer, J. M. and Myrvold, W. J. (2004). On the Cutting Edge: Simplified O(n) "
-"Planarity Algorithms by Edge Addition. Journal of Graph Algorithms and "
-"Applications, 8(3), 241-273."
-msgstr ""
-
-msgid ""
-"Boost Graph Library: `Planar Face Traversal <https://www.boost.org/libs/"
-"graph/doc/planar_face_traversal.html>`__"
+msgid "Running time: :math:`O(|E| + |V|)`"
 msgstr ""
 
 msgid "pgr_planarFaces(`Edges SQL`_)"
@@ -14149,19 +13904,8 @@ msgid ""
 msgstr ""
 
 msgid ""
-"The diagram below sketches the full sample graph. Face boundaries are not "
-"drawn to scale; run example 6) to count how many edge incidences belong to "
-"each ``face_id``."
-msgstr ""
-
-msgid ""
-"A **triangle** has one bounded interior face and the exterior face. Each of "
-"the three edges appears on both sides (six rows total)."
-msgstr ""
-
-msgid ""
-"A **single edge** separates two regions of the plane; face extraction still "
-"returns two rows (left and right of edge ``1``)."
+"Have :math:`3` components then number if faces = :math:`17 - 18 + 7 = 6 = 2 "
+"\\times 3`."
 msgstr ""
 
 #, fuzzy
@@ -14180,16 +13924,6 @@ msgstr ""
 msgid "``2`` when the edge borders the face on the right side."
 msgstr ""
 
-msgid ""
-"The examples of this section are based on the :doc:`sampledata` network "
-"unless noted otherwise."
-msgstr ""
-
-msgid ""
-"Directed sample network. ``pgr_planarFaces`` treats every edge as "
-"undirected, so ``cost`` and ``reverse_cost`` do not affect face extraction."
-msgstr ""
-
 msgid "Non-planar graphs"
 msgstr ""
 
@@ -14201,178 +13935,66 @@ msgid ""
 "``sampledata`` (edges highlighted in blue in the figure)."
 msgstr ""
 
-msgid ""
-"A non-planar subgraph of ``sampledata``. Test with ``pgr_isPlanar`` before "
-"calling ``pgr_planarFaces``."
+msgid "Create a :math:`K_5` graph."
 msgstr ""
 
-msgid "1) Check planarity of the full graph"
+msgid "Test planarity: dont execute when is not planar."
 msgstr ""
 
-msgid ""
-"``pgr_isPlanar`` returns ``true`` for the full ``edges`` table, so face "
-"extraction in the main example is valid."
+msgid "Or get an error: (not shown)"
 msgstr ""
 
-msgid ""
-"When the result is ``false``, do not call ``pgr_planarFaces`` on the same "
-"edge set unless the graph is edited to remove crossings."
+msgid "Planarity of loops"
 msgstr ""
 
-msgid "2) Triangle graph built in SQL"
+msgid "One loop graph with only one vertex:"
 msgstr ""
 
-msgid ""
-"Example 3 creates a three-edge table ``tri_edges`` and extracts its faces."
+msgid "Two loop graph with only one vertex:"
+msgstr ""
+
+msgid "Triangular graphs"
+msgstr ""
+
+msgid "Triangular graph (no duplicate edges)"
 msgstr ""
 
 msgid "Six rows are returned: :math:`2 \\times 3` edges."
 msgstr ""
 
-msgid ""
-"``face_id`` **1** is the interior triangle; ``face_id`` **2** is the "
-"exterior face."
+msgid ":math:`face\\_id = 1` is the interior face."
+msgstr ""
+
+msgid ":math:`face\\_id = 2` is the exterior face. face."
 msgstr ""
 
 msgid "Each edge lists ``1`` on one face and ``2`` on the other."
 msgstr ""
 
-msgid "3) Single edge from ``sampledata``"
+msgid "Triangular graph (duplicate edges)"
 msgstr ""
 
-msgid "Edge ``1`` connects vertices :math:`5` and :math:`6`."
-msgstr ""
-
-msgid ""
-"Two rows are returned for the single edge (:math:`2|E|` with :math:`|E| = "
-"1`)."
-msgstr ""
-
-msgid ""
-"Both incidences use ``face_id = 1`` in this degenerate one-edge graph; the "
-"left and right sides still differ (``1`` vs ``2``)."
-msgstr ""
-
-msgid "4) Row count on three ``sampledata`` edges"
-msgstr ""
-
-msgid ""
-"Edges :math:`8`, :math:`10`, and :math:`12` connect vertices :math:`\\{7, 8, "
-"11, 12\\}` (see :doc:`sampledata`)."
-msgstr ""
-
-msgid "The count is **6** (:math:`2 \\times 3` edges)."
-msgstr ""
-
-msgid ""
-"Three edges on four vertices still yield two faces in the embedding (compare "
-"the six rows in example 2))."
-msgstr ""
-
-msgid "5) Row count on a larger subgraph"
-msgstr ""
-
-msgid ""
-"Edges with ``id < 10`` are the same subgraph used in several metrics-module "
-"examples."
-msgstr ""
-
-msgid ""
-"Undirected view of the sample network (subgraph with ``id < 10`` highlighted "
-"in related documentation)."
-msgstr ""
-
-msgid "**18** rows means **9** edges in this subgraph (:math:`2 \\times 9`)."
-msgstr ""
-
-msgid ""
-"The subgraph is planar, so extraction succeeds even though the full network "
-"adds more faces when all edges are included."
-msgstr ""
-
-msgid "6) Count edge incidences per face"
-msgstr ""
-
-msgid "Aggregate the main example result by ``face_id``."
-msgstr ""
-
-msgid "Seven distinct ``face_id`` values appear on the full graph."
-msgstr ""
-
-msgid ""
-"``edge_count`` is the number of result rows for that ``face_id`` (each "
-"physical edge can contribute up to two rows, one per side)."
-msgstr ""
-
-msgid ""
-"``face_id = 1`` has the largest count because it includes the exterior face "
-"wrapping the drawing."
-msgstr ""
-
-msgid "Face-walk illustration (subgraph ``id < 10``)"
-msgstr ""
-
-msgid ""
-"The following sketch shows how a face traversal cycles through directed half-"
-"edges. Labels are ``edge_id`` values from ``sampledata``."
-msgstr ""
-
-msgid "7) Empty edge set"
-msgstr ""
-
-msgid "8) Each edge borders exactly two faces"
-msgstr ""
-
-msgid ""
-"Every undirected edge must appear once with ``side = 1`` and once with "
-"``side = 2``. The query below lists edges that violate this rule (none on "
-"the full sample graph)."
-msgstr ""
-
-msgid ""
-"An empty result confirms each ``edge_id`` appears exactly twice in the "
-"output."
-msgstr ""
-
-msgid ""
-"This is the same property verified in ``pgtap/planar/planarFaces/edge_cases."
-"pg``."
-msgstr ""
-
-msgid "9) Face row count on edges ``id < 10``"
-msgstr ""
-
-msgid ""
-"The count **18** matches example 5): the same subgraph yields the same :math:"
-"`2|E|` row count."
-msgstr ""
-
-msgid ""
-"Together with example 1), this confirms the :math:`2|E|` row rule on a nine-"
-"edge subgraph."
-msgstr ""
-
-msgid ""
-"Confirm planarity with :doc:`pgr_isPlanar` before calling "
-"``pgr_planarFaces`` on the same ``Edges SQL``."
-msgstr ""
-
-#, fuzzy
 msgid ":doc:`pgr_isPlanar`"
-msgstr "``pgr_isplanar``"
-
-msgid ""
-"`Boost: Planar Face Traversal <https://www.boost.org/libs/graph/doc/"
-"planar_face_traversal.html>`__"
 msgstr ""
 
 msgid ""
-"`Boost: Boyer Myrvold planarity <https://www.boost.org/libs/graph/doc/"
-"boyer_myrvold.html>`__"
+"Boost Graph Library: `Planar Face Traversal <https://www.boost.org/libs/"
+"graph/doc/planar_face_traversal.html>`__"
+msgstr ""
+
+msgid ""
+"Boost Graph Library: `Boost: Boyer Myrvold planarity <https://www.boost.org/"
+"libs/graph/doc/boyer_myrvold.html>`__"
 msgstr ""
 
 msgid ""
 "Wikipedia: `Planar graph <https://en.wikipedia.org/wiki/Planar_graph>`__"
+msgstr ""
+
+msgid ""
+"Boyer, J. M. and Myrvold, W. J. (2004). On the Cutting Edge: Simplified O(n) "
+"Planarity Algorithms by Edge Addition. Journal of Graph Algorithms and "
+"Applications, 8(3), 241-273."
 msgstr ""
 
 msgid "``pgr_prim``"
@@ -16571,6 +16193,9 @@ msgstr ""
 msgid ""
 "`#2718 <https://github.com/pgRouting/pgrouting/issues/2718>`__: "
 "pgr_pushRelabel(Combinations)"
+msgstr ""
+
+msgid "New experimental functions."
 msgstr ""
 
 msgid "Metrics"
