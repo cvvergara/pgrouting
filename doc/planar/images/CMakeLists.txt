@@ -9,8 +9,6 @@ set(LOCAL_FILES
     maximal_planar_5cycle_before.png
 
     biconnected_planar_sampledata.png
-    biconnected_line_before.png
-    biconnected_line_after.png
     )
 
 foreach (f ${LOCAL_FILES})

@@ -6,9 +6,6 @@ set(LOCAL_FILES
     _isPlanar.sql
     isPlanar.sql
 
-    _makeMaximalPlanar.sql
-    makeMaximalPlanar.sql
-
     _makeBiconnectedPlanar.sql
     makeBiconnectedPlanar.sql
 

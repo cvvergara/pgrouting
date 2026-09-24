@@ -12,7 +12,35 @@ To read all history of releases go to the latest [release notes](https://docs.pg
 To see all issues & pull requests closed by this release see the
 [#4.1.0](https://github.com/pgRouting/pgrouting/issues?utf8=%E2%9C%93&q=milestone%3A%22Release%204.1.0%22)
 
-**Code enhancements**
+4.1.0 Summary of changes by function
+
+* pgr_coreNumbers
+
+  * New experimental function.
+
+* pgr_edgeColoring
+
+  * Fix the way it builds the graph
+
+* pgr_maxWeightedMatching
+
+  * New experimental function.
+
+* pgr_makeBiconnectedPlanar
+
+  * New experimental function.
+
+* pgr_planarFaces
+
+  * New experimental function.
+
+4.1.0 New experimental functions.
+
+* pgr_coreNumbers
+* pgr_makeBiconnectedPlanar
+* pgr_planarFaces
+
+4.1.0 Code enhancements
 
 * [#3049](https://github.com/pgRouting/pgrouting/issues/3049): Use enumeration on drivers and process.
 * [#3054](https://github.com/pgRouting/pgrouting/issues/3054): Change error message when edges_sql is empty
@@ -26,45 +54,17 @@ To see all issues & pull requests closed by this release see the
   process
 * [#3100](https://github.com/pgRouting/pgrouting/issues/3100): Coloring: create and use a process & driver
 * [#3113](https://github.com/pgRouting/pgrouting/issues/3113): Components: Integrate into existing process/driver pair
-* [#3120](https://github.com/pgRouting/pgrouting/issues/3120): Up requirements of  to 1.74
 * [#3129](https://github.com/pgRouting/pgrouting/issues/3129): breadthFirstSearch: Reorganize into traversal
 * [#3131](https://github.com/pgRouting/pgrouting/issues/3131): binaryBreadthFirstSearch: Integrate into existing
   process/driver pair
-* [#3142](https://github.com/pgRouting/pgrouting/issues/3142):pgr_coreNumbers
+* [#3140](https://github.com/pgRouting/pgrouting/issues/3140): New function: pgr_makeBiconnectedPlannar
+* [#3142](https://github.com/pgRouting/pgrouting/issues/3142): New function: pgr_coreNumbers
+* [#3142](https://github.com/pgRouting/pgrouting/issues/3142): New function: pgr_planarFaces
+* [#3154](https://github.com/pgRouting/pgrouting/issues/3154): betweennessCentrality: use allpairs/process and driver
 
-**Bug Fixes**
+4.1.0 Bug Fixes
 
 * [#3101](https://github.com/pgRouting/pgrouting/issues/3101): pgr_edgeColoring not building graph correctly
-
-**New experimental functions.**
-
-* Flow
-
-  * [#3136](https://github.com/pgRouting/pgrouting/issues/3136): pgr_maxWeightedMatching
-
-* Planar
-
-  * [#3140](https://github.com/pgRouting/pgrouting/issues/3140):pgr_makeBiconnectedPlanar
-  * [#3141](https://github.com/pgRouting/pgrouting/issues/3141):pgr_makeMaximalPlanar
-  * [#3142](https://github.com/pgRouting/pgrouting/issues/3142):pgr_coreNumbers
-  * [#3143](https://github.com/pgRouting/pgrouting/issues/3143):pgr_planarFaces
-
-**Summary of changes by function**
-
-<<<<<<< HEAD
-=======
-* pgr_planarFaces
-
-  * New experimental function.
-
-* pgr_coreNumbers
-
-  * New experimental function.
-
->>>>>>> upstream/develop
-* pgr_edgeColoring
-
-  * Fix the way it builds the graph
 
 ## pgRouting 4.0
 
@@ -297,7 +297,6 @@ Summary of changes by function
 
   * All signatures promoted to official.
 
-
 * pgr_maxCardinalityMatch
 
   .. Breaking change
@@ -488,7 +487,6 @@ New experimental functions.
 
   * [#2954](https://github.com/pgRouting/pgrouting/issues/2954): pgr_kingOrdering
   * [#2955](https://github.com/pgRouting/pgrouting/issues/2955): pgr_sloanOrdering
-
 
 SQL signatures and output standardization
 

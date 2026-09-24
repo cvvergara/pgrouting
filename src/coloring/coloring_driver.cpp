@@ -90,6 +90,7 @@ void do_coloring(
         using pgrouting::algorithms::connectedComponents;
         using pgrouting::algorithms::strongComponents;
         using pgrouting::functions::makeConnected;
+        using pgrouting::functions::makeBiconnectedPlanar;
         using pgrouting::metrics::coreNumbers;
 
         hint = edges_sql;
@@ -123,6 +124,8 @@ void do_coloring(
         } else {
             if (which == CORENUMBERS) {
                 undigraph.insert_cost1_edge_no_parallel_no_loop(edges);
+            } else if (which == BICONNECTEDPLANAR) {
+                undigraph.insert_cost1_edge_no_parallel_no_loop(edges);
             } else {
                 undigraph.insert_edges(edges);
             }
@@ -138,9 +141,7 @@ void do_coloring(
                     break;
                case BICONNECTEDPLANAR:
                     {
-                        pgrouting::functions::Pgr_makeBiconnectedPlanar<UndirectedGraph> fn;
-                        results = fn.makeBiconnectedPlanar(undigraph);
-                        log << fn.get_log();
+                        results = makeBiconnectedPlanar(undigraph);
                     }
                     break;
                 case EDGECOLORING:
