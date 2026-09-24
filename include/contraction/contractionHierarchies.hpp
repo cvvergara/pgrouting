@@ -42,6 +42,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <boost/graph/filtered_graph.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 
+#include "cpp_common/alloc.hpp"
 #include "cpp_common/ch_edge.hpp"
 #include "cpp_common/messages.hpp"
 #include "cpp_common/identifiers.hpp"
@@ -258,15 +259,6 @@ void contractionHierarchies(
     while (!minPQ.empty()) {
         std::pair< int64_t, typename G::V > ordered_vertex = minPQ.top();
         minPQ.pop();
-
-        if (minPQ.empty()) {
-            std::pair< int64_t, typename G::V > contracted_vertex;
-            contracted_vertex.first = 0;
-            contracted_vertex.second = ordered_vertex.second;
-            priority_queue.push(contracted_vertex);
-            break;
-        }
-
         int64_t corrected_metric =
             detail::vertex_contraction(
                 graph_copy,
@@ -276,14 +268,16 @@ void contractionHierarchies(
                 shortcuts,
                 log,
                 err);
+        bool queue_is_empty = minPQ.empty();
+        int64_t next_min = queue_is_empty? -1 : minPQ.top().first;
         log << "  Vertex: " << graph[ordered_vertex.second].id
             << ", min value of the queue: "
-            << minPQ.top().first << std::endl
+            << next_min << std::endl
             << "  Lazy non-destructive simulation: initial order "
             << ordered_vertex.first << ", new order "
             << corrected_metric << std::endl;
 
-        if (minPQ.top().first < corrected_metric) {
+        if (!queue_is_empty && next_min < corrected_metric) {
             log << "   Vertex reinserted in the queue" << std::endl;
             minPQ.push(
                 std::make_pair(corrected_metric, ordered_vertex.second));

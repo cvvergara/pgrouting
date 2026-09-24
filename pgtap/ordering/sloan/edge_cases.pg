@@ -5,7 +5,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('4.0.0') THEN plan(2) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.0.0') THEN plan(6) ELSE plan(1) END;
 
 
 CREATE OR REPLACE FUNCTION edge_cases()
@@ -34,7 +34,6 @@ SELECT * FROM pgr_sloanOrdering('SELECT id, source, source AS target, cost, reve
 
 RETURN QUERY
 SELECT set_eq('q2',$$VALUES (1, 6)$$, '4: Same node returned');
-RETURN;
 
 -- 3 -- 7 -- 3; 2 vertices test (connected)
 

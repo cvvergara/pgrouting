@@ -5,13 +5,11 @@
 set(LOCAL_FILES
     _isPlanar.sql
     isPlanar.sql
-
     _makeBiconnectedPlanar.sql
     makeBiconnectedPlanar.sql
-
     _planarFaces.sql
     planarFaces.sql
-)
+    )
 
 foreach (f ${LOCAL_FILES})
     configure_file(${f} ${f})
