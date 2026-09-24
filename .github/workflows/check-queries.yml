@@ -55,7 +55,7 @@ jobs:
 
     strategy:
         fail-fast: false
-          os: [ubuntu-latest, ubuntu-26.04]
+        os: [ubuntu-latest, ubuntu-26.04]
 
     steps:
       - uses: actions/checkout@v6
