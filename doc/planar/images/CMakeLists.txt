@@ -3,11 +3,6 @@
 # License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 set(LOCAL_FILES
     nonPlanar.png
-
-    maximal_planar_sampledata.png
-    maximal_planar_5cycle.png
-    maximal_planar_5cycle_before.png
-
     biconnected_planar_sampledata.png
     )
 
