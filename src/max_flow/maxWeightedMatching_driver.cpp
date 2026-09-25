@@ -83,7 +83,8 @@ void do_maxWeightedMatching(
             matrix.push_back(row);
         }
 
-        pgrouting::graph::UndirectedHasCostBG graph(matrix);
+        pgrouting::graph::UndirectedHasCostBG graph;
+        graph.insert_maxCost_edge_no_parallel_no_loop(edges);
 
         auto matched_pairs = pgrouting::flow::maximumWeightedMatch(graph);
 

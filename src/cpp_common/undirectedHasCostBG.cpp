@@ -241,8 +241,9 @@ UndirectedHasCostBG::add_maxCost_edge_no_parallel_no_loop(const Edge_t &edge) {
     /* the edge exists on the graph */
     pgassert((edge.cost >= 0) || (edge.reverse_cost >= 0));
 
-    pgassert(has_vertex(edge.source));
-    pgassert(has_vertex(edge.target));
+    /* vertices are created on demand */
+    insert_vertex(edge.source);
+    insert_vertex(edge.target);
 
     auto vm_s = get_boost_vertex(edge.source);
     auto vm_t = get_boost_vertex(edge.target);

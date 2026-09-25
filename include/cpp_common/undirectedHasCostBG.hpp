@@ -63,7 +63,7 @@ class UndirectedHasCostBG {
  public:
     explicit UndirectedHasCostBG(std::vector<IID_t_rt>&);
     explicit UndirectedHasCostBG(const std::vector<Coordinate_t>&);
-    UndirectedHasCostBG() = delete;
+    UndirectedHasCostBG() = default;
 
     bool has_vertex(int64_t id) const;
 
