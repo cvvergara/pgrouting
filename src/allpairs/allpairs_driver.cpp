@@ -44,6 +44,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "allpairs/allpairs.hpp"
 #include "metrics/betweennessCentrality.hpp"
 #include "planar/planarFaces.hpp"
+#include "max_flow/maxWeightedMatching.hpp"
 
 namespace pgrouting {
 namespace drivers {
@@ -74,15 +75,18 @@ do_allpairs(
         using pgrouting::to_postgres::matrix_to_tuple;
         using pgrouting::to_postgres::vector_to_tuple;
         using pgrouting::to_postgres::get_tuples;
+        using pgrouting::to_postgres::get_cumulative_tuples;
 
 
         using pgrouting::DirectedGraph;
         using pgrouting::UndirectedGraph;
+        using pgrouting::graph::UndirectedHasCostBG;
 
         using pgrouting::johnson;
         using pgrouting::floydWarshall;
         using pgrouting::functions::betweennessCentrality;
         using pgrouting::functions::planarFaces;
+        using pgrouting::functions::maximumWeightedMatch;
 
         hint = edges_sql;
         auto edges = get_edges(edges_sql, true, true);
@@ -97,6 +101,7 @@ do_allpairs(
 
         UndirectedGraph undigraph;
         DirectedGraph digraph;
+        UndirectedHasCostBG wgraph;
 
         if (directed) {
             digraph.insert_edges(edges);
@@ -118,6 +123,8 @@ do_allpairs(
         } else {
             if (which == PLANARFACES) {
                 undigraph.insert_cost1_edges(edges);
+            } else if (which == MAXWEIGHTEDMATCHING) {
+                wgraph.insert_maxCost_edge_no_parallel_no_loop(edges);
             } else {
                 undigraph.insert_edges(edges);
             }
@@ -134,6 +141,9 @@ do_allpairs(
                     break;
                 case PLANARFACES:
                     return_count = get_tuples(planarFaces(undigraph), return_tuples);
+                    break;
+                case MAXWEIGHTEDMATCHING:
+                    return_count = get_cumulative_tuples(maximumWeightedMatch(wgraph), return_tuples);
                     break;
                 default:
                     err << "allpairs_driver.cpp: Unknown function with name '" << get_name(which)
