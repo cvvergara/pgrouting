@@ -122,78 +122,36 @@ do_ordering(
             digraph.insert_edges(edges);
             switch (which) {
                 case TOPOSORT:
-                    {
-                        di_results = topologicalSort(digraph);
-                        break;
-                    }
+                    get_vertexId(digraph, topologicalSort(digraph), return_count, return_tuples);
+                    break;
                 default:
                     err << "ordering_driver.cpp: Unknown function with name '" << get_name(which)
                         << "' for directed graph";
                     return;
             }
-
         } else {
             undigraph.insert_edges(edges);
             switch (which) {
                 case SLOAN:
-                    {
-                        undi_results = sloanOrdering(undigraph);
-                        break;
-                    }
+                    get_vertexId(undigraph, sloanOrdering(undigraph), return_count, return_tuples);
+                    break;
                 case CUTCHILL:
-                    {
-                        undi_results = cuthillMckeeOrdering(undigraph);
-                        break;
-                    }
+                    get_vertexId(undigraph, cuthillMckeeOrdering(undigraph), return_count, return_tuples);
+                    break;
                 case KING:
-                    {
-                        undi_results = kingOrdering(undigraph);
-                        break;
-                    }
+                    get_vertexId(undigraph, kingOrdering(undigraph), return_count, return_tuples);
+                    break;
                 case ARTICULATIONPOINTS:
-                    {
-                        id_results = articulationPoints(undigraph);
-                        break;
-                    }
+                    return_count = get_identifiers(articulationPoints(undigraph), return_tuples);
+                    break;
                 case BRIDGES:
-                    {
-                        id_results = bridges(undigraph);
-                        break;
-                    }
+                    return_count = get_identifiers(bridges(undigraph), return_tuples);
+                    break;
                 default:
                     err << "ordering_driver.cpp: Unknown function with name '" << get_name(which)
                         << "' for undirected graph";
                     return;
             }
-        }
-
-        switch (which) {
-            case SLOAN:
-            case CUTCHILL:
-            case KING:
-                {
-                    if (!undi_results.empty()) {
-                        get_vertexId(undigraph, undi_results, return_count, return_tuples);
-                    }
-                    break;
-                }
-            case TOPOSORT:
-                {
-                    if (!di_results.empty()) {
-                        get_vertexId(digraph, di_results, return_count, return_tuples);
-                    }
-                    break;
-                }
-            case ARTICULATIONPOINTS:
-            case BRIDGES:
-                {
-                    if (!id_results.empty()) {
-                        return_count = get_identifiers(id_results, return_tuples);
-                    }
-                    break;
-                }
-            default:
-                return;
         }
 
         if (return_count == 0) {
