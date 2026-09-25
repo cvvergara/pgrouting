@@ -1,12 +1,9 @@
 /*PGR-GNU*****************************************************************
-File: maxWeightedMatching_process.h
-
-Copyright (c) 2007-2026 pgRouting developers
-Mail: project@pgrouting.org
+File: allpairs_process.h
 
 Function's developer:
-Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -41,12 +38,15 @@ using IID_t_rt = struct IID_t_rt;
 typedef struct IID_t_rt IID_t_rt;
 #endif
 
+#include "c_common/enums.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 void pgr_process_maxWeightedMatching(
         const char*,
+        bool, enum Which,
         IID_t_rt**, size_t*);
 
 #ifdef __cplusplus

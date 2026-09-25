@@ -1,12 +1,18 @@
 /*PGR-GNU*****************************************************************
-File: maxWeightedMatching_driver.hpp
+File: allpairs_driver.hpp
 
-Copyright (c) 2025-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
+
+Copying this file (or a derivative) within pgRouting code add the following:
+
+Generated with Template by:
+Copyright (c) 2015-2026 pgRouting developers
+Mail: project@pgrouting.org
 
 ------
 
@@ -31,8 +37,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <cstddef>
+#include <cstdint>
 #include <string>
 #include <sstream>
+
+#include "c_common/enums.h"
 
 using IID_t_rt = struct IID_t_rt;
 
@@ -41,6 +50,7 @@ namespace drivers {
 
 void do_maxWeightedMatching(
         const std::string&,
+        bool, Which,
         IID_t_rt*&, size_t&,
         std::ostringstream&, std::ostringstream&, std::ostringstream&);
 

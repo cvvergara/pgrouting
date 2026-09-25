@@ -1,12 +1,18 @@
 /*PGR-GNU*****************************************************************
-File: maxWeightedMatching_process.cpp
+File: allpairs_process.cpp
 
 Copyright (c) 2025-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
+
+Copying this file (or a derivative) within pgRouting code add the following:
+
+Generated with Template by:
+Copyright (c) 2025-2026 pgRouting developers
+Mail: project@pgrouting.org
 
 ------
 
@@ -28,18 +34,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "process/maxWeightedMatching_process.h"
 
-#include <string>
-#include <sstream>
-
 extern "C" {
 #include "c_common/postgres_connection.h"
 #include "c_common/e_report.h"
 #include "c_common/time_msg.h"
 }
 
+#include <string>
+#include <sstream>
+
 #include "c_types/iid_t_rt.h"
 
 #include "cpp_common/report_messages.hpp"
+#include "cpp_common/utilities.hpp"
 #include "cpp_common/assert.hpp"
 #include "cpp_common/alloc.hpp"
 
@@ -48,8 +55,13 @@ extern "C" {
 
 void pgr_process_maxWeightedMatching(
         const char* edges_sql,
+        bool directed,
+        enum Which which,
         IID_t_rt **result_tuples,
         size_t *result_count) {
+    using pgrouting::to_pg_msg;
+    using pgrouting::pgr_free;
+    pgassert(edges_sql);
     pgassert(!(*result_tuples));
     pgassert(*result_count == 0);
     pgr_SPI_connect();
@@ -60,16 +72,19 @@ void pgr_process_maxWeightedMatching(
 
     clock_t start_t = clock();
     pgrouting::drivers::do_maxWeightedMatching(
-            edges_sql ? edges_sql : "",
+            edges_sql? edges_sql : "",
+            directed,
+            which,
             (*result_tuples), (*result_count),
             log, notice, err);
 
-    time_msg(" processing pgr_maxWeightedMatching", start_t, clock());
+    auto name = std::string(" processing ") + pgrouting::get_name(which);
+    time_msg(name.c_str(), start_t, clock());
 
     if (!err.str().empty() && (*result_tuples)) {
         pfree(*result_tuples);
         (*result_tuples) = nullptr;
-        (*result_count)  = 0;
+        (*result_count) = 0;
     }
 
     pgrouting::report_messages(log, notice, err);

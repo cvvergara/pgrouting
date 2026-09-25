@@ -47,22 +47,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "planar/planarFaces.hpp"
 #include "max_flow/maxWeightedMatching.hpp"
 
-
 namespace pgrouting {
 namespace drivers {
 
 void do_maxWeightedMatching(
         const std::string &edges_sql,
+        bool directed,
+
+        Which which,
+
         IID_t_rt* &return_tuples,
         size_t &return_count,
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {
-    using pgrouting::to_postgres::get_cumulative_tuples;
-
     std::string hint = "";
     return_tuples = nullptr;
-    return_count  = 0;
+    return_count = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -74,6 +75,7 @@ void do_maxWeightedMatching(
         using pgrouting::to_postgres::matrix_to_tuple;
         using pgrouting::to_postgres::vector_to_tuple;
         using pgrouting::to_postgres::get_tuples;
+        using pgrouting::to_postgres::get_cumulative_tuples;
 
 
         using pgrouting::DirectedGraph;
@@ -97,20 +99,66 @@ void do_maxWeightedMatching(
 
         hint = "";
 
-        UndirectedHasCostBG graph;
-        graph.insert_maxCost_edge_no_parallel_no_loop(edges);
+        UndirectedGraph undigraph;
+        DirectedGraph digraph;
+        UndirectedHasCostBG wgraph;
 
-        auto matched_pairs = maximumWeightedMatch(graph);
+        if (directed) {
+            digraph.insert_edges(edges);
+            switch (which) {
+                case JOHNSON:
+                    matrix_to_tuple(digraph, johnson(digraph), return_count, return_tuples);
+                    break;
+                case FLOYD:
+                    matrix_to_tuple(digraph, floydWarshall(digraph), return_count, return_tuples);
+                    break;
+                case BETWEENCENTRALITY:
+                    vector_to_tuple(digraph, betweennessCentrality(digraph), return_count, return_tuples);
+                    break;
+                default:
+                    err << "allpairs_driver.cpp: Unknown function with name '" << get_name(which)
+                        << "' for directed graph";
+                    return;
+            }
+        } else {
+            if (which == PLANARFACES) {
+                undigraph.insert_cost1_edges(edges);
+            } else if (which == MAXWEIGHTEDMATCHING) {
+                wgraph.insert_maxCost_edge_no_parallel_no_loop(edges);
+            } else {
+                undigraph.insert_edges(edges);
+            }
 
-        if (matched_pairs.empty()) {
-            log << "No matching found";
-            return;
+            switch (which) {
+                case JOHNSON:
+                    matrix_to_tuple(undigraph, johnson(undigraph), return_count, return_tuples);
+                    break;
+                case FLOYD:
+                    matrix_to_tuple(undigraph, floydWarshall(undigraph), return_count, return_tuples);
+                    break;
+                case BETWEENCENTRALITY:
+                    vector_to_tuple(undigraph, betweennessCentrality(undigraph), return_count, return_tuples);
+                    break;
+                case PLANARFACES:
+                    return_count = get_tuples(planarFaces(undigraph), return_tuples);
+                    break;
+                case MAXWEIGHTEDMATCHING:
+                    return_count = get_cumulative_tuples(maximumWeightedMatch(wgraph), return_tuples);
+                    break;
+                default:
+                    err << "allpairs_driver.cpp: Unknown function with name '" << get_name(which)
+                        << "' for undirected graph";
+                    return;
+            }
         }
 
-        return_count = get_cumulative_tuples(matched_pairs, return_tuples);
+        if (return_count == 0) {
+            notice << "No result found\n";
+            return;
+        }
     } catch (AssertFailedException &except) {
         err << except.what();
-    } catch (const std::pair<std::string, std::string> &ex) {
+    } catch (const std::pair<std::string, std::string>& ex) {
         err << ex.first;
         log << ex.second;
     } catch (const std::string &ex) {
