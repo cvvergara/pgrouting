@@ -1,12 +1,12 @@
 /*PGR-GNU*****************************************************************
-File: maxWeightedMatching_driver.cpp
+File: allpairs_driver.cpp
 
-Copyright (c) 2025-2026 pgRouting developers
+Generated with Template by:
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2026 Mayur Galhate
-Mail: galhatemayur at gmail.com
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
 ------
 
@@ -29,15 +29,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "drivers/maxWeightedMatching_driver.hpp"
 
 #include <sstream>
+#include <deque>
+#include <vector>
 #include <string>
 #include <utility>
-#include <vector>
+#include <cstdint>
 
 #include "c_types/iid_t_rt.h"
+#include "cpp_common/base_graph.hpp"
 #include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/utilities.hpp"
 #include "cpp_common/assert.hpp"
 #include "cpp_common/to_postgres.hpp"
 
+#include "allpairs/allpairs.hpp"
+#include "metrics/betweennessCentrality.hpp"
+#include "planar/planarFaces.hpp"
 #include "max_flow/maxWeightedMatching.hpp"
 
 
@@ -46,6 +53,10 @@ namespace drivers {
 
 void do_maxWeightedMatching(
         const std::string &edges_sql,
+        bool directed,
+
+        Which which,
+
         IID_t_rt* &return_tuples,
         size_t &return_count,
         std::ostringstream &log,
@@ -55,7 +66,7 @@ void do_maxWeightedMatching(
 
     std::string hint = "";
     return_tuples = nullptr;
-    return_count  = 0;
+    return_count = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -63,17 +74,34 @@ void do_maxWeightedMatching(
             return;
         }
 
+        using pgrouting::pgget::get_edges;
+        using pgrouting::to_postgres::matrix_to_tuple;
+        using pgrouting::to_postgres::vector_to_tuple;
+        using pgrouting::to_postgres::get_tuples;
+
+
+        using pgrouting::DirectedGraph;
+        using pgrouting::UndirectedGraph;
+        using pgrouting::graph::UndirectedHasCostBG;
+
+        using pgrouting::johnson;
+        using pgrouting::floydWarshall;
+        using pgrouting::functions::betweennessCentrality;
+        using pgrouting::functions::planarFaces;
+        using pgrouting::flow::maximumWeightedMatch
+
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(edges_sql, false, false);
+        auto edges = get_edges(edges_sql, false, false);
 
         if (edges.empty()) {
             notice << "No edges found";
             log << edges_sql;
             return;
         }
+
         hint = "";
 
-        pgrouting::graph::UndirectedHasCostBG graph;
+        UndirectedHasCostBG graph;
         graph.insert_maxCost_edge_no_parallel_no_loop(edges);
 
         auto matched_pairs = pgrouting::flow::maximumWeightedMatch(graph);
