@@ -35,8 +35,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "c_types/iid_t_rt.h"
 #include "cpp_common/pgdata_getters.hpp"
-#include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/to_postgres.hpp"
 
 #include "max_flow/maxWeightedMatching.hpp"
 
@@ -51,7 +51,7 @@ void do_maxWeightedMatching(
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {
-    using pgrouting::pgr_alloc;
+    using pgrouting::to_postgres::get_cumulative_tuples;
 
     std::string hint = "";
     return_tuples = nullptr;
@@ -73,36 +73,17 @@ void do_maxWeightedMatching(
         }
         hint = "";
 
-        std::vector<IID_t_rt> matrix;
-        matrix.reserve(edges.size());
-        for (const auto &e : edges) {
-            IID_t_rt row;
-            row.from_vid = e.source;
-            row.to_vid   = e.target;
-            row.cost     = e.cost;
-            matrix.push_back(row);
-        }
-
         pgrouting::graph::UndirectedHasCostBG graph;
         graph.insert_maxCost_edge_no_parallel_no_loop(edges);
 
         auto matched_pairs = pgrouting::flow::maximumWeightedMatch(graph);
 
-        auto count = matched_pairs.size();
-
-        if (count == 0) {
+        if (matched_pairs.empty()) {
             log << "No matching found";
             return;
         }
 
-        double agg = 0.0;
-        return_tuples = pgr_alloc(count, return_tuples);
-        for (size_t i = 0; i < count; i++) {
-            agg += matched_pairs[i].cost;
-            matched_pairs[i].cost = agg;
-            return_tuples[i]      = matched_pairs[i];
-        }
-        return_count = count;
+        return_count = get_cumulative_tuples(matched_pairs, return_tuples);
     } catch (AssertFailedException &except) {
         err << except.what();
     } catch (const std::pair<std::string, std::string> &ex) {
