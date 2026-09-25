@@ -53,10 +53,6 @@ namespace drivers {
 
 void do_maxWeightedMatching(
         const std::string &edges_sql,
-        bool directed,
-
-        Which which,
-
         IID_t_rt* &return_tuples,
         size_t &return_count,
         std::ostringstream &log,
@@ -66,7 +62,7 @@ void do_maxWeightedMatching(
 
     std::string hint = "";
     return_tuples = nullptr;
-    return_count = 0;
+    return_count  = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -88,7 +84,7 @@ void do_maxWeightedMatching(
         using pgrouting::floydWarshall;
         using pgrouting::functions::betweennessCentrality;
         using pgrouting::functions::planarFaces;
-        using pgrouting::flow::maximumWeightedMatch
+        using pgrouting::functions::maximumWeightedMatch;
 
         hint = edges_sql;
         auto edges = get_edges(edges_sql, false, false);
@@ -104,7 +100,7 @@ void do_maxWeightedMatching(
         UndirectedHasCostBG graph;
         graph.insert_maxCost_edge_no_parallel_no_loop(edges);
 
-        auto matched_pairs = pgrouting::flow::maximumWeightedMatch(graph);
+        auto matched_pairs = maximumWeightedMatch(graph);
 
         if (matched_pairs.empty()) {
             log << "No matching found";
