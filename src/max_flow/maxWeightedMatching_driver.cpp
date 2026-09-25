@@ -88,7 +88,7 @@ void do_maxWeightedMatching(
         using pgrouting::functions::maximumWeightedMatch;
 
         hint = edges_sql;
-        auto edges = get_edges(edges_sql, false, false);
+        auto edges = get_edges(edges_sql, true, true);
 
         if (edges.empty()) {
             notice << "No edges found";
