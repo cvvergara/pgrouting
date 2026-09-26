@@ -40,6 +40,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/alloc.hpp"
 #include "cpp_common/assert.hpp"
+#include "cpp_common/identifiers.hpp"
+#include "cpp_common/to_postgres.hpp"
 #include "max_flow/maximumcardinalitymatching.hpp"
 
 
@@ -76,12 +78,8 @@ pgr_do_maximum_cardinality_matching(
         pgrouting::graph::UndirectedNoCostsBG graph(edges);
         auto matched_vertices = pgrouting::flow::maxCardinalityMatch(graph);
 
-        (*return_tuples) = pgr_alloc(matched_vertices.size(), (*return_tuples));
-        size_t i {0};
-        for (const auto e : matched_vertices) {
-            (*return_tuples)[i++] = e;
-        }
-        *return_count = matched_vertices.size();
+        pgrouting::Identifiers<int64_t> ids(matched_vertices);
+        *return_count = pgrouting::to_postgres::get_identifiers(ids, *return_tuples);
 
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);

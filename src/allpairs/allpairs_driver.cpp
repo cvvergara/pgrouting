@@ -58,6 +58,7 @@ do_allpairs(
 
         IID_t_rt* &return_tuples,
         size_t &return_count,
+
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {

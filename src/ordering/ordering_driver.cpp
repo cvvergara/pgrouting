@@ -40,15 +40,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <utility>
 #include <cstdint>
 
+#include "cpp_common/base_graph.hpp"
 #include "cpp_common/pgdata_getters.hpp"
-#include "cpp_common/to_postgres.hpp"
 #include "cpp_common/utilities.hpp"
+#include "cpp_common/to_postgres.hpp"
+#include "cpp_common/undirectedNoCostBG.hpp"
 
 #include "ordering/sloanOrdering.hpp"
 #include "ordering/kingOrdering.hpp"
 #include "ordering/cuthillMckeeOrdering.hpp"
 #include "ordering/topologicalSort.hpp"
 #include "components/components.hpp"
+#include "max_flow/maximumcardinalitymatching.hpp"
 
 
 namespace pgrouting {
@@ -58,6 +61,7 @@ void
 do_ordering(
         const std::string &edges_sql,
         bool directed,
+
         Which which,
 
         int64_t *&return_tuples,
@@ -67,6 +71,8 @@ do_ordering(
         std::ostringstream &notice,
         std::ostringstream &err) {
     std::string hint = "";
+    return_tuples = nullptr;
+    return_count = 0;
 
     try {
         if (edges_sql.empty()) {
@@ -75,11 +81,14 @@ do_ordering(
         }
 
         using pgrouting::pgget::get_edges;
+        using pgrouting::pgget::get_basic_edges;
         using pgrouting::to_postgres::get_vertexId;
         using pgrouting::to_postgres::get_identifiers;
 
-        using pgrouting::UndirectedGraph;
+
         using pgrouting::DirectedGraph;
+        using pgrouting::UndirectedGraph;
+        using pgrouting::graph::UndirectedNoCostsBG;
 
         using pgrouting::functions::sloanOrdering;
         using pgrouting::functions::kingOrdering;
@@ -87,15 +96,20 @@ do_ordering(
         using pgrouting::functions::topologicalSort;
         using pgrouting::algorithms::bridges;
         using pgrouting::algorithms::articulationPoints;
+        using pgrouting::flow::maxCardinalityMatch;
+
 
 
         hint = edges_sql;
-        auto edges = get_edges(edges_sql, true, false);
-        if (edges.empty()) {
+        auto bedges = (which == MAXCARDINALITYMATCH)? get_basic_edges(edges_sql) : std::vector<Edge_bool_t>();
+        auto edges  = (which != MAXCARDINALITYMATCH)? get_edges(edges_sql, true, false) : std::vector<Edge_t>();
+
+        if (edges.empty() || bedges.empty()) {
             notice << "No edges found";
-            log << hint;
+            log << edges_sql;
             return;
         }
+
         hint = "";
 
 
@@ -113,6 +127,7 @@ do_ordering(
          */
         UndirectedGraph undigraph = vertices.empty()? UndirectedGraph() : UndirectedGraph(vertices);
         DirectedGraph digraph = DirectedGraph();
+        UndirectedNoCostsBG bgraph = (which == MAXCARDINALITYMATCH)? UndirectedNoCostsBG(bedges) :  UndirectedNoCostsBG(std::vector<Edge_bool_t>());
 
         std::vector<typename UndirectedGraph::V> undi_results;
         std::vector<typename DirectedGraph::V> di_results;
@@ -130,7 +145,10 @@ do_ordering(
                     return;
             }
         } else {
-            undigraph.insert_edges(edges);
+            if (which != MAXCARDINALITYMATCH) {
+                undigraph.insert_edges(edges);
+            }
+
             switch (which) {
                 case SLOAN:
                     get_vertexId(undigraph, sloanOrdering(undigraph), return_count, return_tuples);
@@ -146,6 +164,9 @@ do_ordering(
                     break;
                 case BRIDGES:
                     return_count = get_identifiers(bridges(undigraph), return_tuples);
+                    break;
+                case MAXCARDINALITYMATCH:
+                    auto matched_vertices = maxCardinalityMatch(bgraph);
                     break;
                 default:
                     err << "ordering_driver.cpp: Unknown function with name '" << get_name(which)
