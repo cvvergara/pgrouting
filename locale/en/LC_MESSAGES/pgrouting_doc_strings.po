@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-22 09:09+0000\n"
+"POT-Creation-Date: 2026-09-26 18:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3979,6 +3979,9 @@ msgstr "pgr_isPlanar"
 msgid "4.1.0 New experimental functions."
 msgstr ""
 
+msgid "issue:3136"
+msgstr ""
+
 msgid "4.1.0 Code enhancements"
 msgstr ""
 
@@ -4073,31 +4076,6 @@ msgstr ""
 msgid ""
 "`#3101 <https://github.com/pgRouting/pgrouting/issues/3101>`__: "
 "pgr_edgeColoring not building graph correctly"
-msgstr ""
-
-msgid "New experimental functions."
-msgstr ""
-
-msgid "Flow"
-msgstr ""
-
-msgid "issue:3136"
-msgstr ""
-
-#, fuzzy
-msgid "pgr_maxWeightedMatch"
-msgstr "pgr_maximumcardinalitymatching"
-
-msgid "Summary of changes by function"
-msgstr ""
-
-msgid "New experimental function."
-msgstr ""
-
-msgid "pgr_edgeColoring"
-msgstr "pgr_edgeColoring"
-
-msgid "Fix the way it builds the graph"
 msgstr ""
 
 msgid "All releases"
@@ -13755,8 +13733,7 @@ msgid "``pgr_maxWeightedMatch`` - Experimental"
 msgstr ""
 
 msgid ""
-"``pgr_maxWeightedMatch`` — Calculates a maximum weighted matching in a "
-"graph."
+"``pgr_maxWeightedMatch`` — Calculates a maximum weighted matching in a graph."
 msgstr ""
 
 msgid ""
@@ -13776,33 +13753,13 @@ msgstr ""
 msgid "Calculates one possible maximum weighted matching in a graph."
 msgstr ""
 
-msgid ""
-"Returns the matched pairs of vertices in the form of a set of `(start_vid, "
-"end_vid, agg_cost)`."
-msgstr ""
-
-msgid "`start_vid` and `end_vid` are the endpoints of the matched edge."
-msgstr ""
-
-msgid "`agg_cost` is the weight of the matched edge."
-msgstr ""
-
-msgid "Running time: :math:`O(n^3)` where :math:`n` is the number of vertices."
+msgid "Running time: :math:`O(V^3)`."
 msgstr ""
 
 msgid "pgr_maxWeightedMatch(`Edges SQL`_)"
 msgstr ""
 
-msgid "Ignored. The matching algorithm always works on **undirected** graphs."
-msgstr ""
-
-msgid "Identifier of the first end point vertex of the matched edge."
-msgstr ""
-
-msgid "Identifier of the second end point vertex of the matched edge."
-msgstr ""
-
-msgid "Weight of the matched edge."
+msgid "Set of |result-edge|"
 msgstr ""
 
 msgid "Maximum weighted matching on a custom 5-vertex graph."
