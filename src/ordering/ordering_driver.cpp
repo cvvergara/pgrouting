@@ -131,7 +131,6 @@ do_ordering(
 
         std::vector<typename UndirectedGraph::V> undi_results;
         std::vector<typename DirectedGraph::V> di_results;
-        Identifiers<int64_t> id_results;
 
         if (directed) {
             digraph.insert_edges(edges);
@@ -166,7 +165,7 @@ do_ordering(
                     return_count = get_identifiers(bridges(undigraph), return_tuples);
                     break;
                 case MAXCARDINALITYMATCH:
-                    auto matched_vertices = maxCardinalityMatch(bgraph);
+                    return_count = get_identifiers(maxCardinalityMatch(bgraph), return_tuples);
                     break;
                 default:
                     err << "ordering_driver.cpp: Unknown function with name '" << get_name(which)

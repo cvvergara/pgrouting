@@ -78,8 +78,8 @@ pgr_do_maximum_cardinality_matching(
         pgrouting::graph::UndirectedNoCostsBG graph(edges);
         auto matched_vertices = pgrouting::flow::maxCardinalityMatch(graph);
 
-        pgrouting::Identifiers<int64_t> ids(matched_vertices);
-        *return_count = pgrouting::to_postgres::get_identifiers(ids, *return_tuples);
+        *return_count = pgrouting::to_postgres::get_identifiers(
+            matched_vertices, *return_tuples);
 
         *log_msg = to_pg_msg(log);
         *notice_msg = to_pg_msg(notice);
