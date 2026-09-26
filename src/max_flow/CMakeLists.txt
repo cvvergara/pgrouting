@@ -12,7 +12,6 @@ ADD_LIBRARY(max_flow OBJECT
     # driver & process files
     maxFlow_driver.cpp
     maxFlow_process.cpp
-
     minCostMaxFlow_driver.cpp
 
 
@@ -21,6 +20,7 @@ ADD_LIBRARY(max_flow OBJECT
     maxflow.cpp
     flowgraph.cpp
     minCostMaxFlow.cpp
+    maxWeightedMatching.cpp
 
     # deprecated
     maximum_cardinality_matching_deprecated.c

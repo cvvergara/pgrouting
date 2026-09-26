@@ -36,8 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 PGDLLEXPORT Datum _pgr_maxweightedmatch(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_maxweightedmatch);
 
-PGDLLEXPORT Datum
-_pgr_maxweightedmatch(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_maxweightedmatch(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
     TupleDesc        tuple_desc;
 
@@ -82,7 +81,7 @@ _pgr_maxweightedmatch(PG_FUNCTION_ARGS) {
 
         size_t num = 3;
         values = palloc(num * sizeof(Datum));
-        nulls = palloc(num * sizeof(bool));
+        nulls  = palloc(num * sizeof(bool));
         size_t i;
         for (i = 0; i < num; ++i) {
             nulls[i] = false;

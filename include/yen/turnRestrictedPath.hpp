@@ -263,6 +263,4 @@ class Pgr_turnRestrictedPath : public Pgr_ksp< G > {
 }  // namespace yen
 }  // namespace pgrouting
 
-
-
 #endif  // INCLUDE_YEN_TURNRESTRICTEDPATH_HPP_

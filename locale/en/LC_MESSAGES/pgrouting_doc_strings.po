@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pgRouting v4.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-24 18:43+0000\n"
+"POT-Creation-Date: 2026-08-22 09:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -4058,7 +4058,7 @@ msgid ""
 msgstr ""
 
 msgid ""
-"`#3142 <https://github.com/pgRouting/pgrouting/issues/3142>`__: New "
+"`#3143 <https://github.com/pgRouting/pgrouting/issues/3143>`__: New "
 "function: pgr_planarFaces"
 msgstr ""
 
@@ -4073,6 +4073,31 @@ msgstr ""
 msgid ""
 "`#3101 <https://github.com/pgRouting/pgrouting/issues/3101>`__: "
 "pgr_edgeColoring not building graph correctly"
+msgstr ""
+
+msgid "New experimental functions."
+msgstr ""
+
+msgid "Flow"
+msgstr ""
+
+msgid "issue:3136"
+msgstr ""
+
+#, fuzzy
+msgid "pgr_maxWeightedMatch"
+msgstr "pgr_maximumcardinalitymatching"
+
+msgid "Summary of changes by function"
+msgstr ""
+
+msgid "New experimental function."
+msgstr ""
+
+msgid "pgr_edgeColoring"
+msgstr "pgr_edgeColoring"
+
+msgid "Fix the way it builds the graph"
 msgstr ""
 
 msgid "All releases"
@@ -13766,6 +13791,9 @@ msgid "Running time: :math:`O(n^3)` where :math:`n` is the number of vertices."
 msgstr ""
 
 msgid "pgr_maxWeightedMatch(`Edges SQL`_)"
+msgstr ""
+
+msgid "Ignored. The matching algorithm always works on **undirected** graphs."
 msgstr ""
 
 msgid "Identifier of the first end point vertex of the matched edge."

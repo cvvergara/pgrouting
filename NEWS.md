@@ -30,6 +30,10 @@ To see all issues & pull requests closed by this release see the
 
   * New experimental function.
 
+* pgr_maxWeightedMatch
+
+  * New experimental function.
+
 * pgr_planarFaces
 
   * New experimental function.
@@ -38,6 +42,7 @@ To see all issues & pull requests closed by this release see the
 
 * pgr_coreNumbers
 * pgr_makeBiconnectedPlanar
+* :issue:3136: pgr_maxWeightedMatch
 * pgr_planarFaces
 
 4.1.0 Code enhancements
@@ -59,7 +64,7 @@ To see all issues & pull requests closed by this release see the
   process/driver pair
 * [#3140](https://github.com/pgRouting/pgrouting/issues/3140): New function: pgr_makeBiconnectedPlannar
 * [#3142](https://github.com/pgRouting/pgrouting/issues/3142): New function: pgr_coreNumbers
-* [#3142](https://github.com/pgRouting/pgrouting/issues/3142): New function: pgr_planarFaces
+* [#3143](https://github.com/pgRouting/pgrouting/issues/3143): New function: pgr_planarFaces
 * [#3154](https://github.com/pgRouting/pgrouting/issues/3154): betweennessCentrality: use allpairs/process and driver
 
 4.1.0 Bug Fixes
