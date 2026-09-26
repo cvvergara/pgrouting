@@ -4,4 +4,10 @@
 ADD_LIBRARY(planar OBJECT
     isPlanar.c
     isPlanar_driver.cpp
-    )
+
+    makeBiconnectedPlanar.c
+    makeBiconnectedPlanar.cpp
+    planarFaces.c
+
+    planarFaces.cpp
+)

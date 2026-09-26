@@ -37,7 +37,42 @@ pgRouting 4.1.0 Release Notes
 To see all issues & pull requests closed by this release see the
 :milestone:`4.1.0`
 
-.. rubric:: Code enhancements
+4.1.0 Summary of changes by function
+...............................................................................
+
+* pgr_coreNumbers
+
+  .. include:: pgr_coreNumbers.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
+* pgr_edgeColoring
+
+  .. include:: pgr_edgeColoring.rst
+     :start-after: Version 4.1.0
+     :end-before: .. rubric
+
+* pgr_makeBiconnectedPlanar
+
+  .. include:: pgr_makeBiconnectedPlanar.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
+* pgr_planarFaces
+
+  .. include:: pgr_planarFaces.rst
+     :start-after: Version 4.1.0
+     :end-before: Description
+
+4.1.0 New experimental functions.
+...............................................................................
+
+* pgr_coreNumbers
+* pgr_makeBiconnectedPlanar
+* pgr_planarFaces
+
+4.1.0 Code enhancements
+...............................................................................
 
 * :issue:`3049`: Use enumeration on drivers and process.
 * :issue:`3054`: Change error message when edges_sql is empty
@@ -54,19 +89,15 @@ To see all issues & pull requests closed by this release see the
 * :issue:`3129`: breadthFirstSearch: Reorganize into traversal
 * :issue:`3131`: binaryBreadthFirstSearch: Integrate into existing
   process/driver pair
+* :issue:`3140`: New function: pgr_makeBiconnectedPlannar
+* :issue:`3142`: New function: pgr_coreNumbers
+* :issue:`3143`: New function: pgr_planarFaces
+* :issue:`3154`: betweennessCentrality: use allpairs/process and driver
 
-.. rubric:: Bug Fixes
+4.1.0 Bug Fixes
+...............................................................................
 
 * :issue:`3101`: pgr_edgeColoring not building graph correctly
-
-
-.. rubric:: Summary of changes by function
-
-* pgr_edgeColoring
-
-  .. include:: pgr_edgeColoring.rst
-     :start-after: Version 4.1.0
-     :end-before: .. rubric
 
 pgRouting 4.0
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

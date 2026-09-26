@@ -1,13 +1,11 @@
 /*PGR-GNU*****************************************************************
-File: betweennessCentrality_driver.h
+File: _planarFaces.sql
 
-Generated with Template by:
-Copyright (c) 2007-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Function's developer:
-Copyright (c) 2024 Arun Thakur
-Mail: bedupako12mas at gmail.com
+Copyright (c) 2026 Sakir Ahmed
+Mail: sakirahmed75531 at gmail.com
 
 ------
 
@@ -27,38 +25,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
-#define INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
-#pragma once
+--v4.1
+CREATE FUNCTION _pgr_planarFaces(
+  TEXT,   -- edges_sql (required)
 
-/* for size-t */
-#ifdef __cplusplus
-#   include <cstddef>
-using IID_t_rt = struct IID_t_rt;
-#else
-#   include <stddef.h>
-#include <stdbool.h>
-typedef struct IID_t_rt IID_t_rt;
-#endif
+  OUT seq     BIGINT,
+  OUT face_id BIGINT,
+  OUT edge_id BIGINT,
+  OUT side    INTEGER)
 
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C VOLATILE STRICT
+COST ${COST_HIGH} ROWS ${ROWS_HIGH};
 
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void
-pgr_do_betweennessCentrality(
-    const char*,
-    bool,
-
-    IID_t_rt**,
-    size_t*,
-    char**,
-    char**);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif  // INCLUDE_DRIVERS_METRICS_BETWEENNESSCENTRALITY_DRIVER_H_
+COMMENT ON FUNCTION _pgr_planarFaces(TEXT)
+IS 'pgRouting internal function';

@@ -56,6 +56,8 @@ get_name(Which which) {
         case JOHNSON:
             return "pgr_johnson";
             break;
+        case BETWEENCENTRALITY:
+            return "pgr_betweennessCentrality";
         case BANDWIDTH:
             return "pgr_bandwidth";
             break;
@@ -104,6 +106,8 @@ get_name(Which which) {
         case EDMONDSKARP:
             return "pgr_edmondsKarp";
             break;
+        case BICONNECTEDPLANAR:
+            return "pgr_makeBiconnectedPlanar";
 
         case ARTICULATIONPOINTS:
             return "pgr_articulationPoints";
@@ -122,6 +126,11 @@ get_name(Which which) {
             break;
         case STRONGCOMPONENTS:
             return "pgr_strongComponents";
+            break;
+        case PLANARFACES:
+            return "pgr_planarFaces";
+        case CORENUMBERS:
+            return "pgr_coreNumbers";
             break;
         default:
             return "unknown";

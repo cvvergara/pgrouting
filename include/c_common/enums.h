@@ -37,7 +37,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     EDGEDISJOINT,
     BINARYBFS,
     /** allpairs **/
-    FLOYD = 31, JOHNSON,
+    FLOYD = 131, JOHNSON, BETWEENCENTRALITY,
     /** metrics **/
     BANDWIDTH,
     /** with edges that have x y */
@@ -52,9 +52,15 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     MAXFLOW, PUSHRELABEL, BOYKOV, EDMONDSKARP,
     /* For coloring */
     EDGECOLORING, BIPARTITE, SEQUENTIAL,
+    /* For planar */
+    BICONNECTEDPLANAR,
     /* For components */
     CONNECTEDCOMPONENTS, BICONNECTEDCOMPONENTS, STRONGCOMPONENTS, ARTICULATIONPOINTS,
-    BRIDGES, MAKECONNECTED
+    BRIDGES, MAKECONNECTED,
+    /* For planar */
+    PLANARFACES,
+    /* For metrics */
+    CORENUMBERS
 };
 
 #endif  // INCLUDE_C_COMMON_ENUMS_H_
