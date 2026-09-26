@@ -52,7 +52,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "ordering/topologicalSort.hpp"
 #include "components/components.hpp"
 #include "max_flow/maximumcardinalitymatching.hpp"
-
+#include "max_flow/maxWeightedMatching.hpp"
 
 namespace pgrouting {
 namespace drivers {
@@ -89,6 +89,7 @@ do_ordering(
         using pgrouting::DirectedGraph;
         using pgrouting::UndirectedGraph;
         using pgrouting::graph::UndirectedNoCostsBG;
+        using pgrouting::graph::UndirectedHasCostBG;
 
         using pgrouting::functions::sloanOrdering;
         using pgrouting::functions::kingOrdering;
@@ -97,13 +98,11 @@ do_ordering(
         using pgrouting::algorithms::bridges;
         using pgrouting::algorithms::articulationPoints;
         using pgrouting::flow::maxCardinalityMatch;
-
-
+        using pgrouting::functions::maxWeightedMatch;
 
         hint = edges_sql;
         auto bedges = (which == MAXCARDINALITYMATCH)? get_basic_edges(edges_sql) : std::vector<Edge_bool_t>();
         auto edges  = (which != MAXCARDINALITYMATCH)? get_edges(edges_sql, true, false) : std::vector<Edge_t>();
-
         auto no_edges = (which == MAXCARDINALITYMATCH)? bedges.empty() : edges.empty();
 
         if (no_edges) {
@@ -128,7 +127,8 @@ do_ordering(
          * SLOAN & KING are for undirected graph
          */
         UndirectedGraph undigraph = vertices.empty()? UndirectedGraph() : UndirectedGraph(vertices);
-        DirectedGraph digraph = DirectedGraph();
+        DirectedGraph digraph;
+        UndirectedHasCostBG wgraph;
         UndirectedNoCostsBG bgraph = (which == MAXCARDINALITYMATCH)? UndirectedNoCostsBG(bedges) :  UndirectedNoCostsBG(std::vector<Edge_bool_t>());
 
         std::vector<typename UndirectedGraph::V> undi_results;
@@ -146,7 +146,9 @@ do_ordering(
                     return;
             }
         } else {
-            if (which != MAXCARDINALITYMATCH) {
+            if (which == MAXWEIGHTMATCH) {
+                wgraph.insert_maxCost_edge_no_parallel_no_loop(edges);
+            } else if (which != MAXCARDINALITYMATCH) {
                 undigraph.insert_edges(edges);
             }
 
@@ -168,6 +170,9 @@ do_ordering(
                     break;
                 case MAXCARDINALITYMATCH:
                     return_count = get_identifiers(maxCardinalityMatch(bgraph), return_tuples);
+                    break;
+                case MAXWEIGHTMATCH:
+                    return_count = get_identifiers(maxWeightedMatch(wgraph), return_tuples);
                     break;
                 default:
                     err << "ordering_driver.cpp: Unknown function with name '" << get_name(which)

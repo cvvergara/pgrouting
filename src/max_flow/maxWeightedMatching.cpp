@@ -42,8 +42,52 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
+Identifiers<int64_t>
+maxWeightedMatch(pgrouting::graph::UndirectedHasCostBG &graph) {
+    using G = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
+    using V = pgrouting::graph::UndirectedHasCostBG::V;
+    using E = pgrouting::graph::UndirectedHasCostBG::E;
+
+    std::vector<V> mate_map(boost::num_vertices(graph.graph()));
+    Identifiers<int64_t> match;
+
+    CHECK_FOR_INTERRUPTS();
+    try {
+        boost::maximum_weighted_matching(graph.graph(), &mate_map[0]);
+    } catch (boost::exception const &ex) {
+        (void)ex;
+        throw;
+    } catch (std::exception &e) {
+        (void)e;
+        throw;
+    } catch (...) {
+        throw;
+    }
+
+    /*
+     * Check for each vertex:
+     * 1) The vertex does not have a match
+     * 2) prevent double output of the edge
+     */
+    for (const auto &v2 : mate_map) {
+        auto v1 = static_cast<V>(&v2 - &mate_map[0]);
+
+        if (v2 == boost::graph_traits<G>::null_vertex()) continue;
+        if (v1 >= v2) continue;
+
+        E e;
+        bool exists = false;
+        boost::tie(e, exists) = boost::edge(v1, v2, graph.graph());
+        if (!exists) throw;
+
+        match += graph.get_edge_id(e);
+    }
+
+    return match;
+}
+
 std::vector<IID_t_rt>
-maximumWeightedMatch(pgrouting::graph::UndirectedHasCostBG &graph) {
+maximumWeightedMatching(pgrouting::graph::UndirectedHasCostBG &graph) {
     using G = pgrouting::graph::UndirectedHasCostBG::TSP_Graph;
     using V = pgrouting::graph::UndirectedHasCostBG::V;
     using E = pgrouting::graph::UndirectedHasCostBG::E;
