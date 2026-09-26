@@ -124,7 +124,7 @@ do_allpairs(
         } else {
             if (which == PLANARFACES) {
                 undigraph.insert_cost1_edges(edges);
-            } else if (which == MAXWEIGHTEDMATCHING) {
+            } else if (which == MAXWEIGHTMATCH) {
                 wgraph.insert_maxCost_edge_no_parallel_no_loop(edges);
             } else {
                 undigraph.insert_edges(edges);
@@ -143,7 +143,7 @@ do_allpairs(
                 case PLANARFACES:
                     return_count = get_tuples(planarFaces(undigraph), return_tuples);
                     break;
-                case MAXWEIGHTEDMATCHING:
+                case MAXWEIGHTMATCH:
                     return_count = get_cumulative_tuples(maximumWeightedMatch(wgraph), return_tuples);
                     break;
                 default:

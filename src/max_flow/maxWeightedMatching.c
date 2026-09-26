@@ -33,11 +33,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_types/iid_t_rt.h"
 #include "process/allpairs_process.h"
 
-PGDLLEXPORT Datum _pgr_maxweightedmatching(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_maxweightedmatching);
+PGDLLEXPORT Datum _pgr_maxweightedmatch(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_maxweightedmatch);
 
 PGDLLEXPORT Datum
-_pgr_maxweightedmatching(PG_FUNCTION_ARGS) {
+_pgr_maxweightedmatch(PG_FUNCTION_ARGS) {
     FuncCallContext *funcctx;
     TupleDesc        tuple_desc;
 
@@ -52,7 +52,7 @@ _pgr_maxweightedmatching(PG_FUNCTION_ARGS) {
         pgr_process_allpairs(
             text_to_cstring(PG_GETARG_TEXT_P(0)),
             false,
-            MAXWEIGHTEDMATCHING,
+            MAXWEIGHTMATCH,
             &result_tuples,
             &result_count);
 

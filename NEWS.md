@@ -22,7 +22,7 @@ To see all issues & pull requests closed by this release see the
 
   * Fix the way it builds the graph
 
-* pgr_maxWeightedMatching
+* pgr_maxWeightedMatch
 
   * New experimental function.
 

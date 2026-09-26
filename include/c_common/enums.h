@@ -57,7 +57,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     BICONNECTEDPLANAR,
     PLANARFACES,
     /* For Matching */
-    MAXWEIGHTEDMATCHING,
+    MAXWEIGHTMATCH,
     MAXCARDINALITYMATCH,
 
     /* For components */

@@ -3365,7 +3365,7 @@ msgid ":doc:`pgr_maxFlowMinCost_Cost` - Only the Min Cost calculation."
 msgstr ""
 
 msgid ""
-":doc:`pgr_maxWeightedMatching` - Calculates a maximum weighted matching in a "
+":doc:`pgr_maxWeightedMatch` - Calculates a maximum weighted matching in a "
 "graph."
 msgstr ""
 
@@ -3965,7 +3965,7 @@ msgid "Fix the way it builds the graph"
 msgstr ""
 
 #, fuzzy
-msgid "pgr_maxWeightedMatching"
+msgid "pgr_maxWeightedMatch"
 msgstr "pgr_maximumcardinalitymatching"
 
 #, fuzzy
@@ -13726,11 +13726,11 @@ msgstr ""
 msgid "Minimum Cost Maximum Flow possible from the source(s) to the target(s)"
 msgstr ""
 
-msgid "``pgr_maxWeightedMatching`` - Experimental"
+msgid "``pgr_maxWeightedMatch`` - Experimental"
 msgstr ""
 
 msgid ""
-"``pgr_maxWeightedMatching`` — Calculates a maximum weighted matching in a "
+"``pgr_maxWeightedMatch`` — Calculates a maximum weighted matching in a "
 "graph."
 msgstr ""
 
@@ -13765,7 +13765,7 @@ msgstr ""
 msgid "Running time: :math:`O(n^3)` where :math:`n` is the number of vertices."
 msgstr ""
 
-msgid "pgr_maxWeightedMatching(`Edges SQL`_)"
+msgid "pgr_maxWeightedMatch(`Edges SQL`_)"
 msgstr ""
 
 msgid "Identifier of the first end point vertex of the matched edge."
