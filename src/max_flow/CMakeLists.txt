@@ -22,4 +22,7 @@ ADD_LIBRARY(max_flow OBJECT
     maxflow.cpp
     flowgraph.cpp
     minCostMaxFlow.cpp
+
+    # deprecated
+    maximum_cardinality_matching_deprecated.c
 )

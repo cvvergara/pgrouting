@@ -104,7 +104,9 @@ do_ordering(
         auto bedges = (which == MAXCARDINALITYMATCH)? get_basic_edges(edges_sql) : std::vector<Edge_bool_t>();
         auto edges  = (which != MAXCARDINALITYMATCH)? get_edges(edges_sql, true, false) : std::vector<Edge_t>();
 
-        if (edges.empty() || bedges.empty()) {
+        auto no_edges = (which == MAXCARDINALITYMATCH)? bedges.empty() : edges.empty();
+
+        if (no_edges) {
             notice << "No edges found";
             log << edges_sql;
             return;

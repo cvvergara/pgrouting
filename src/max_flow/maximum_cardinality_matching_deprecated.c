@@ -31,12 +31,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 #include "process/ordering_process.h"
 
-PGDLLEXPORT Datum _pgr_maxcardinalitymatch_v4(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_maxcardinalitymatch_v4);
+/*
+ * TODO (v5) v5 remove deprecated code
+ * TODO (v4 last micro) warn about deprecated code
+ */
+PGDLLEXPORT Datum _pgr_maxcardinalitymatch(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_maxcardinalitymatch);
 
 PGDLLEXPORT Datum
-_pgr_maxcardinalitymatch_v4(PG_FUNCTION_ARGS) {
+_pgr_maxcardinalitymatch(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
+    TupleDesc           tuple_desc;
 
     int64_t *result_tuples = NULL;
     size_t   result_count  = 0;
@@ -56,19 +61,43 @@ _pgr_maxcardinalitymatch_v4(PG_FUNCTION_ARGS) {
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = result_tuples;
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
+            ereport(ERROR,
+                    (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
+                     errmsg("function returning record called in context "
+                         "that cannot accept type record")));
+        }
 
+        funcctx->tuple_desc = tuple_desc;
         MemoryContextSwitchTo(oldcontext);
     }
 
     funcctx            = SRF_PERCALL_SETUP();
+    tuple_desc         = funcctx->tuple_desc;
     result_tuples      = funcctx->user_fctx;
     uint64_t call_cntr = funcctx->call_cntr;
 
     if (call_cntr < funcctx->max_calls) {
-        Datum result;
+        HeapTuple   tuple;
+        Datum       result;
+        Datum       *values;
+        bool        *nulls;
 
-        result = Int64GetDatum(result_tuples[call_cntr]);
+        size_t num  = 2;
+        values = palloc(num * sizeof(Datum));
+        nulls = palloc(num * sizeof(bool));
+        size_t i;
+        for (i = 0; i < num; ++i) {
+            nulls[i] = false;
+        }
 
+        values[0] = 0;
+        values[1] = Int64GetDatum(result_tuples[call_cntr]);
+        values[2] = 0;
+        values[3] = 0;
+        tuple = heap_form_tuple(tuple_desc, values, nulls);
+        result = HeapTupleGetDatum(tuple);
         SRF_RETURN_NEXT(funcctx, result);
     } else {
         SRF_RETURN_DONE(funcctx);
