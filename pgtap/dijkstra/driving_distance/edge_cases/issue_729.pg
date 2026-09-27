@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_lib_version('3.6.0') THEN plan(4) ELSE plan(1) END;
+SELECT CASE WHEN min_version('3.6.0') THEN plan(4) ELSE plan(1) END;
 
 -- https://github.com/pgRouting/pgrouting/issues/729
 -- After an UPDATE that uses pgr_drivingDistance, the following
@@ -64,7 +64,7 @@ ADD COLUMN another_column INTEGER;
 CREATE OR REPLACE FUNCTION test_function() RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
-    IF NOT min_lib_version('3.6.0') THEN
+    IF NOT min_version('3.6.0') THEN
       RETURN NEXT skip(1, 'Internal function deprecated on 3.6.0');
       RETURN;
     END IF;
