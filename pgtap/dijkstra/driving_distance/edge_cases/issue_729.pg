@@ -10,6 +10,15 @@ SELECT CASE WHEN min_version('3.6.0') THEN plan(4) ELSE plan(1) END;
 -- After an UPDATE that uses pgr_drivingDistance, the following
 -- ALTER TABLE on the same table must not fail.
 
+CREATE OR REPLACE FUNCTION test_function() RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+    IF NOT min_version('3.6.0') THEN
+      RETURN NEXT skip(1, 'Internal function deprecated on 3.6.0');
+      RETURN;
+    END IF;
+
+
 ALTER TABLE edges
 DROP COLUMN IF EXISTS node_count,
 ADD COLUMN node_count INTEGER;
@@ -60,14 +69,6 @@ WHERE network.source=count.start_vid;
 ALTER TABLE network
 DROP COLUMN IF EXISTS another_column,
 ADD COLUMN another_column INTEGER;
-
-CREATE OR REPLACE FUNCTION test_function() RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-    IF NOT min_version('3.6.0') THEN
-      RETURN NEXT skip(1, 'Internal function deprecated on 3.6.0');
-      RETURN;
-    END IF;
 
     RETURN QUERY SELECT is_empty(
         'SELECT * FROM edges WHERE node_count IS NULL',
