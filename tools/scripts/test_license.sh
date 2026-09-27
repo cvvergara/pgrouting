@@ -14,7 +14,8 @@ EXCLUDE_LIST="png|jpeg|gif|ico|md|sig|mo|xml"
 # directories
 EXCLUDE_LIST="${EXCLUDE_LIST}|_static|_templates|git-tools|doctrees"
 # files
-EXCLUDE_LIST="${EXCLUDE_LIST}|forward|README|Doxyfile|allPairs-performance|typos_whitelist|CPPLINT|gitignore"
+# largetbl: the tracked largetbl.tar.gz and the largetbl.pg unpacked by setup_db.sh
+EXCLUDE_LIST="${EXCLUDE_LIST}|forward|README|Doxyfile|allPairs-performance|typos_whitelist|CPPLINT|gitignore|largetbl"
 mylicensecheck() {
     licensecheck --copyright -r -m -l 30 --tail 0 -i "$EXCLUDE_LIST" "$1"
 }
@@ -52,7 +53,5 @@ if [[ $missing ]]; then
   echo "$missing"
 fi
 
-echo the pop
 popd > /dev/null || exit ${error}
-echo the pop
 exit $error
