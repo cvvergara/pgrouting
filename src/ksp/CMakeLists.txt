@@ -12,7 +12,4 @@ ADD_LIBRARY(ksp OBJECT
 
     turnRestrictedPath.c
     turnRestrictedPath_driver.cpp
-
-    ksp_deprecated.c
-    ksp_driver_deprecated.cpp
 )

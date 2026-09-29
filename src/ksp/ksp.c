@@ -32,68 +32,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "c_common/postgres_connection.h"
 
 #include "c_types/path_rt.h"
-#include "c_common/debug_macro.h"
-#include "c_common/e_report.h"
-#include "c_common/time_msg.h"
 
-
-#include "drivers/yen/ksp_driver.h"
+#include "process/ksp_process.h"
 
 PGDLLEXPORT Datum _pgr_ksp_v4(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_ksp_v4);
 
-static
-void
-process(
-        char *edges_sql,
-        char *combinations_sql,
-        ArrayType *starts,
-        ArrayType *ends,
 
-        int64_t* start_vertex,
-        int64_t* end_vertex,
-
-        int p_k,
-        bool directed,
-        bool heap_paths,
-        Path_rt **result_tuples,
-        size_t *result_count) {
-    pgr_SPI_connect();
-    char* log_msg = NULL;
-    char* notice_msg = NULL;
-    char* err_msg = NULL;
-    if (p_k < 0) {
-        /* TODO return error message */
-        return;
-    }
-
-    clock_t start_t = clock();
-    pgr_do_ksp(
-            edges_sql,
-            combinations_sql,
-            starts, ends,
-
-            start_vertex, end_vertex,
-            (size_t) p_k,
-            directed,
-            heap_paths,
-            result_tuples,
-            result_count,
-            &log_msg,
-            &notice_msg,
-            &err_msg);
-    time_msg(" processing KSP", start_t, clock());
-
-    if (err_msg && (*result_tuples)) {
-        pfree(*result_tuples);
-        (*result_tuples) = NULL;
-        (*result_count) = 0;
-    }
-
-    pgr_global_report(&log_msg, &notice_msg, &err_msg);
-
-    pgr_SPI_finish();
-}
 
 PGDLLEXPORT Datum
 _pgr_ksp_v4(PG_FUNCTION_ARGS) {
@@ -112,29 +57,37 @@ _pgr_ksp_v4(PG_FUNCTION_ARGS) {
             /*
              * many to many
              */
-            process(
+            pgr_process_ksp(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 NULL,
                 PG_GETARG_ARRAYTYPE_P(1),
                 PG_GETARG_ARRAYTYPE_P(2),
-                NULL, NULL,
+
+                NULL, NULL, // For back compatability
+
                 PG_GETARG_INT32(3),
                 PG_GETARG_BOOL(4),
                 PG_GETARG_BOOL(5),
+
+                KSP,
                 &path,
                 &result_count);
         } else if (PG_NARGS() == 5) {
             /*
              * combinations
              */
-            process(
+            pgr_process_ksp(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
                 text_to_cstring(PG_GETARG_TEXT_P(1)),
                 NULL, NULL,
-                NULL, NULL,
+
+                NULL, NULL, // For back compatability
+
                 PG_GETARG_INT32(2),
                 PG_GETARG_BOOL(3),
                 PG_GETARG_BOOL(4),
+
+                KSP,
                 &path,
                 &result_count);
         }
