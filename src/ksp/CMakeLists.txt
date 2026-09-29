@@ -3,11 +3,16 @@
 # License: GPL-2 See https://github.com/pgRouting/pgrouting/blob/main/LICENSE
 ADD_LIBRARY(ksp OBJECT
     ksp.c
+
     ksp_driver.cpp
+    ksp_process.cpp
 
     withPoints_ksp.c
     withPoints_ksp_driver.cpp
 
     turnRestrictedPath.c
     turnRestrictedPath_driver.cpp
-    )
+
+    ksp_deprecated.c
+    ksp_driver_deprecated.cpp
+)

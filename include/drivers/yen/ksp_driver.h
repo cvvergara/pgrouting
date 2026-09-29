@@ -60,9 +60,8 @@ extern "C" {
 #endif
 
 void  pgr_do_ksp(
-        const char*,
-        const char*,
-        ArrayType*, ArrayType*,
+        const char*, const char*,
+        ArrayType*,  ArrayType*,
         int64_t*,
         int64_t*,
         size_t,

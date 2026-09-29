@@ -97,6 +97,28 @@ void get_path(
     }
 }
 
+#if 0
+void get_ksp_path(
+        const pgrouting::Path &path,
+        Path_rt* &tuples,
+        size_t &sequence) {
+    double prev_cost = 0;
+    double aggcost = path.size() == 1? path[0].agg_cost : 0;
+
+    for (const auto &e : path) {
+        aggcost += prev_cost;
+        (tuples)[sequence].start_id = path.start_id();
+        (tuples)[sequence].end_id = path.end_id();
+        (tuples)[sequence].node = e.node;
+        (tuples)[sequence].edge = e.edge;
+        (tuples)[sequence].cost = to_inf(e.cost);
+        (tuples)[sequence].agg_cost = to_inf(aggcost);
+        prev_cost = e.cost;
+        sequence++;
+    }
+}
+#endif
+
 void get_path(
         const pgrouting::Path &path,
         MST_rt* &tuples,
@@ -206,6 +228,28 @@ get_tuples(
     return sequence;
 }
 
+#if 0
+/* used by ksp */
+size_t
+get_ksp_tuples(
+        const std::deque<Path> paths,
+        Path_rt* &tuples) {
+    pgassert(!tuples);
+
+    auto count = count_tuples(paths);
+    if (count == 0) return 0;
+
+    tuples = pgr_alloc(count, tuples);
+
+    size_t sequence = 0;
+    for (const auto &path: paths) {
+        if (path.size() > 0) {
+            ::get_ksp_path(path, tuples, sequence);
+        }
+    }
+    return sequence;
+}
+#endif
 
 size_t
 get_tuples(
@@ -390,6 +434,7 @@ get_tuples(
     }
     return paths.size();
 }
+
 
 }  // namespace to_postgres
 }  // namespace pgrouting

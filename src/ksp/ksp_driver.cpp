@@ -1,14 +1,18 @@
 /*PGR-GNU*****************************************************************
 File: ksp_driver.cpp
 
-Copyright (c) 2013-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
-Copyright (c) 2015 Celia Virginia Vergara Castillo
-vicky at erosion.dev
+Design of one process & driver file by
+Copyright (c) 2025 Celia Virginia Vergara Castillo
+Mail: vicky at erosion.dev
 
-Copyright (c) 2023 Aniket Agarwal
-aniketgarg187 at gmail.com
+Copying this file (or a derivative) within pgRouting code add the following:
+
+Generated with Template by:
+Copyright (c) 2015-2026 pgRouting developers
+Mail: project@pgrouting.org
 
 ------
 
@@ -28,28 +32,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-
-#include "drivers/yen/ksp_driver.h"
+#include "drivers/ksp_driver.hpp"
 
 #include <sstream>
 #include <deque>
 #include <vector>
 #include <string>
 
+#include "cpp_common/pgdata_getters.hpp"
+#include "cpp_common/combinations.hpp"
+#include "cpp_common/utilities.hpp"
+#include "cpp_common/to_postgres.hpp"
+
 #include "yen/ksp.hpp"
 
-#include "cpp_common/combinations.hpp"
-#include "cpp_common/pgdata_getters.hpp"
-#include "cpp_common/to_postgres.hpp"
-#include "cpp_common/assert.hpp"
+namespace pgrouting {
+namespace drivers {
 
-#include "c_types/ii_t_rt.h"
-
-void pgr_do_ksp(
-        const char *edges_sql,
-        const char *combinations_sql,
-        ArrayType* starts,
-        ArrayType* ends,
+void
+do_ksp(
+        const std::string &edges_sql,
+        const std::string &combinations_sql,
+        ArrayType *starts,
+        ArrayType *ends,
 
         int64_t *start_vid,
         int64_t *end_vid,
@@ -57,102 +62,106 @@ void pgr_do_ksp(
         size_t k,
         bool directed,
         bool heap_paths,
-        Path_rt **return_tuples,
-        size_t *return_count,
-        char **log_msg,
-        char **notice_msg,
-        char **err_msg) {
-    using pgrouting::Path;
-    using pgrouting::to_pg_msg;
-    using pgrouting::pgr_free;
-    using pgrouting::utilities::get_combinations;
-    using pgrouting::yen::Pgr_ksp;
 
-    std::ostringstream err;
-    std::ostringstream log;
-    std::ostringstream notice;
-    const char *hint = nullptr;
+        Which which,
+        Path_rt* &return_tuples, size_t &return_count,
+        std::ostringstream &log,
+        std::ostringstream &notice,
+        std::ostringstream &err) {
+    using pgrouting::Path;
+
+    std::string hint = "";
 
     try {
-        pgassert(!(*log_msg));
-        pgassert(!(*notice_msg));
-        pgassert(!(*err_msg));
-        pgassert(!(*return_tuples));
-        pgassert(*return_count == 0);
+        if (edges_sql.empty()) {
+            err << "Empty edges SQL";
+            return;
+        }
 
+        if (k <= 0) {
+            err << "Invalid value for k";
+            return;
+        }
+
+        using pgrouting::pgget::get_edges;
+        using pgrouting::utilities::get_combinations;
+        using pgrouting::to_pg_msg;
+        using pgrouting::pgr_free;
+        using pgrouting::utilities::get_combinations;
+        using pgrouting::yen::Pgr_ksp;
         using pgrouting::to_postgres::get_tuples;
+        using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
         auto combinations = get_combinations(combinations_sql, starts, ends, true);
-        hint = nullptr;
+        hint = "";
 
         if (start_vid && end_vid) {
             combinations[*start_vid].insert(*end_vid);
         }
 
-        if (combinations.empty() && combinations_sql) {
-            *notice_msg = to_pg_msg("No (source, target) pairs found");
-            *log_msg = to_pg_msg(combinations_sql);
+        if (combinations.empty() && !combinations_sql.empty()) {
+            notice << "No (source, target) pairs found";
+            log << combinations_sql;
             return;
         }
 
         hint = edges_sql;
-        auto edges = pgrouting::pgget::get_edges(std::string(edges_sql), true, false);
+        auto edges = get_edges(std::string(edges_sql), true, false);
 
         if (edges.empty()) {
-            *notice_msg = to_pg_msg("No edges found");
-            *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+            notice << "No edges found";
+            log << edges_sql;
             return;
         }
-        hint = nullptr;
+        hint = "";
+
+
+        DirectedGraph digraph;
+        UndirectedGraph undigraph;
 
         std::deque<Path>paths;
 
         if (directed) {
-            pgrouting::DirectedGraph graph;
-            graph.insert_edges(edges);
-            paths = pgrouting::algorithms::Yen(graph, combinations, k, heap_paths);
+            digraph.insert_edges(edges);
+            switch (which) {
+                case KSP:
+                    paths = Yen(digraph, combinations, k, heap_paths);
+                    break;
+                default:
+                    err << "INTERNAL: wrong function call: " << which;
+                    return;
+            }
         } else {
-            pgrouting::UndirectedGraph graph;
-            graph.insert_edges(edges);
-            paths = pgrouting::algorithms::Yen(graph, combinations, k, heap_paths);
-        }
-        combinations.clear();
-
-        (*return_count) = get_tuples(paths, (*return_tuples));
-
-        if (*return_count == 0) {
-            *log_msg = to_pg_msg("No paths found");
-            return;
+            undigraph.insert_edges(edges);
+            switch (which) {
+                case KSP:
+                    paths = Yen(undigraph, combinations, k, heap_paths);                    break;
+                default:
+                    err << "INTERNAL: wrong function call: " << which;
+                    return;
+            }
         }
 
-        size_t sequence = 0;
-        for (const auto &path : paths) {
-            if (path.size() > 0) path.get_pg_nksp_path(return_tuples, sequence);
-        }
+        return_count = get_tuples(paths, return_tuples);
 
-        *log_msg = to_pg_msg(log);
-        *notice_msg = to_pg_msg(notice);
+        if (return_count == 0) {
+            log << "No paths found";
+        }
     } catch (AssertFailedException &except) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count) = 0;
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
+    } catch (const std::pair<std::string, std::string>& ex) {
+        err << ex.first;
+        log << ex.second;
     } catch (const std::string &ex) {
-        *err_msg = to_pg_msg(ex);
-        *log_msg = hint? to_pg_msg(hint) : to_pg_msg(log);
+        err << ex;
+        log << hint;
     } catch (std::exception &except) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count) = 0;
         err << except.what();
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
-    } catch(...) {
-        (*return_tuples) = pgr_free(*return_tuples);
-        (*return_count) = 0;
+    } catch (...) {
         err << "Caught unknown exception!";
-        *err_msg = to_pg_msg(err);
-        *log_msg = to_pg_msg(log);
     }
 }
+
+}  // namespace drivers
+}  // namespace pgrouting
