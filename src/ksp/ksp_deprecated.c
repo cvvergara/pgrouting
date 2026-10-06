@@ -39,9 +39,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/yen/ksp_driver.h"
 
-PGDLLEXPORT Datum _pgr_ksp_v4(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_ksp_v4);
-
 static
 void
 process(
@@ -95,8 +92,18 @@ process(
     pgr_SPI_finish();
 }
 
+/* Deprecated code starts here
+ * This code is used on v3.5 and under
+ *
+ * TODO(v4.2) define SHOWMSG
+ * TODO(v4.3) change to WARNING
+ * TODO(v5) Move to legacy
+ */
+PGDLLEXPORT Datum _pgr_ksp(PG_FUNCTION_ARGS);
+PG_FUNCTION_INFO_V1(_pgr_ksp);
+
 PGDLLEXPORT Datum
-_pgr_ksp_v4(PG_FUNCTION_ARGS) {
+_pgr_ksp(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc            tuple_desc;
     Path_rt      *path = NULL;
@@ -108,7 +115,15 @@ _pgr_ksp_v4(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        if (PG_NARGS() == 6) {
+#ifdef SHOWMSG
+        ereport(NOTICE, (
+                    errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
+                    errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
+                    errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
+                    errhint("Consider upgrade pgRouting")));
+#endif
+
+        if (PG_NARGS() == 7) {
             /*
              * many to many
              */
@@ -137,14 +152,31 @@ _pgr_ksp_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(4),
                 &path,
                 &result_count);
+        } else if (PG_NARGS() == 6) {
+            /* this is for the old signature */
+            int64_t departure = PG_GETARG_INT64(1);
+            int64_t destination = PG_GETARG_INT64(2);
+
+            process(
+                text_to_cstring(PG_GETARG_TEXT_P(0)),
+                NULL, NULL, NULL,
+                &departure,
+                &destination,
+                PG_GETARG_INT32(3),
+                PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(5),
+                &path,
+                &result_count);
         }
 
         funcctx->max_calls = result_count;
         funcctx->user_fctx = path;
-        if (get_call_result_type(fcinfo, NULL, &tuple_desc) != TYPEFUNC_COMPOSITE) {
+        if (get_call_result_type(fcinfo, NULL, &tuple_desc)
+                != TYPEFUNC_COMPOSITE) {
             ereport(ERROR,
                     (errcode(ERRCODE_FEATURE_NOT_SUPPORTED),
-                     errmsg("function returning record called in context that cannot accept type record")));
+                     errmsg("function returning record called in context "
+                         "that cannot accept type record")));
         }
 
         funcctx->tuple_desc = tuple_desc;
@@ -161,7 +193,7 @@ _pgr_ksp_v4(PG_FUNCTION_ARGS) {
         Datum        *values;
         bool*        nulls;
 
-        size_t n = 9;
+        size_t n = (PG_NARGS() == 6)? 7 : 9;
         values = palloc(n * sizeof(Datum));
         nulls = palloc(n * sizeof(bool));
 
@@ -183,12 +215,14 @@ _pgr_ksp_v4(PG_FUNCTION_ARGS) {
         values[0] = Int32GetDatum((int32_t)funcctx->call_cntr + 1);
         values[1] = Int32GetDatum((int32_t)path_id);
         values[2] = Int32GetDatum((int32_t)seq);
-        values[3] = Int64GetDatum(path[funcctx->call_cntr].start_id);
-        values[4] = Int64GetDatum(path[funcctx->call_cntr].end_id);
-        values[5] = Int64GetDatum(path[funcctx->call_cntr].node);
-        values[6] = Int64GetDatum(path[funcctx->call_cntr].edge);
-        values[7] = Float8GetDatum(path[funcctx->call_cntr].cost);
-        values[8] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
+        if (PG_NARGS() != 6) {
+            values[3] = Int64GetDatum(path[funcctx->call_cntr].start_id);
+            values[4] = Int64GetDatum(path[funcctx->call_cntr].end_id);
+        }
+        values[n - 4] = Int64GetDatum(path[funcctx->call_cntr].node);
+        values[n - 3] = Int64GetDatum(path[funcctx->call_cntr].edge);
+        values[n - 2] = Float8GetDatum(path[funcctx->call_cntr].cost);
+        values[n - 1] = Float8GetDatum(path[funcctx->call_cntr].agg_cost);
 
         path[funcctx->call_cntr].start_id = path_id;
         path[funcctx->call_cntr].end_id = path[funcctx->call_cntr].edge < 0? 1 : seq + 1;
