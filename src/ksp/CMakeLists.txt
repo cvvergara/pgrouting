@@ -5,7 +5,9 @@
 ADD_LIBRARY(ksp OBJECT
     ksp.c
     ksp_deprecated.c
-    ksp_driver.cpp
+
+    kPaths_driver.cpp
+    kPaths_process.cpp
 
     withPoints_ksp.c
     withPoints_ksp_driver.cpp

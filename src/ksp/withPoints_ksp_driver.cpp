@@ -44,7 +44,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "cpp_common/assert.hpp"
 #include "withPoints/withPoints.hpp"
 
-#include "yen/ksp.hpp"
+#include "yen/yen.hpp"
 
 void
 pgr_do_withPointsKsp(
@@ -71,7 +71,7 @@ pgr_do_withPointsKsp(
     using pgrouting::Path;
     using pgrouting::to_pg_msg;
     using pgrouting::pgr_free;
-    using pgrouting::yen::Pgr_ksp;
+    using pgrouting::algorithms::Yen;
     using pgrouting::utilities::get_combinations;
     using pgrouting::pgget::get_points;
     using pgrouting::pgget::get_edges;
@@ -141,13 +141,13 @@ pgr_do_withPointsKsp(
             digraph.insert_edges(edges);
             digraph.insert_edges(pg_graph.new_edges());
 
-            paths = pgrouting::algorithms::Yen(digraph, combinations, k, heap_paths);
+            paths = Yen(digraph, combinations, k, heap_paths);
         } else {
             pgrouting::UndirectedGraph undigraph;
             undigraph.insert_edges(edges);
             undigraph.insert_edges(pg_graph.new_edges());
 
-            paths = pgrouting::algorithms::Yen(undigraph, combinations, k, heap_paths);
+            paths = Yen(undigraph, combinations, k, heap_paths);
         }
 
 
