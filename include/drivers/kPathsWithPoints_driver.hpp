@@ -45,20 +45,11 @@ namespace pgrouting {
 namespace drivers {
 
 void do_kPathsWithPoints(
-        const std::string&, const std::string&,
-        const std::string&,
-
+        const std::string&, const std::string&, const std::string&,
         ArrayType*, ArrayType*,
 
-        bool,
-        bool,
-        bool,
-
-        int64_t,
-        bool,
-
-        char,
-        bool,
+        bool, bool, bool,
+        int64_t, bool, char, bool,
 
         int,
         bool,

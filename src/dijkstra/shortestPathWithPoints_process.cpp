@@ -90,6 +90,8 @@ void pgr_process_shortestPathWithPoints(
             only_cost, normal,
             n_goals, global,
             driving_side, details,
+
+            -1, false, nullptr, nullptr,
             which,
             is_matrix,
             (*result_tuples), (*result_count),

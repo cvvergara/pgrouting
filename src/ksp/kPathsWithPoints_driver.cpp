@@ -178,14 +178,13 @@ do_kPathsWithPoints(
         using pgrouting::functions::bellmanFord;
         using pgrouting::functions::edgeDisjoint;
         using functions::binaryBreadthFirstSearch;
-
         using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
         auto combinations = get_combinations(combinations_sql, starts, ends, normal, is_matrix);
         hint = "";
 
-        if (start_vid && end_vid) {
+        if (which == OLDKSPWITHPOINTS && start_vid && end_vid) {
             combinations[*start_vid].insert(*end_vid);
         }
 

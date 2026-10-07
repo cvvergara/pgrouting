@@ -47,7 +47,7 @@ extern "C" {
 #include "cpp_common/assert.hpp"
 #include "cpp_common/alloc.hpp"
 
-#include "drivers/kPathsWithPoints_driver.hpp"
+#include "drivers/shortestPathWithPoints_driver.hpp"
 
 
 void pgr_process_kPathsWithPoints(
@@ -80,7 +80,7 @@ void pgr_process_kPathsWithPoints(
 
     bool is_matrix {false};
     clock_t start_t = clock();
-    pgrouting::drivers::do_kPathsWithPoints(
+    pgrouting::drivers::do_shortestPathWithPoints(
             edges_sql? edges_sql : "",
             points_sql? points_sql : "",
             combinations_sql? combinations_sql : "",

@@ -56,6 +56,11 @@ void do_shortestPathWithPoints(
         bool, bool, bool,
         int64_t, bool, char, bool,
 
+        int,
+        bool,
+        int64_t*,
+        int64_t*,
+
         Which,
         bool&,
         Path_rt*&, size_t&,

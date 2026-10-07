@@ -58,6 +58,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "bellman_ford/bellman_ford.hpp"
 #include "max_flow/maxflow.hpp"
 #include "traversal/binaryBreadthFirstSearch.hpp"
+#include "yen/yen.hpp"
 
 namespace {
 
@@ -133,6 +134,11 @@ do_shortestPathWithPoints(
         char driving_side,
         bool details,
 
+        int k,
+        bool heap_paths,
+        int64_t *start_vid,
+        int64_t *end_vid,
+
         Which which,
         bool &is_matrix,
         Path_rt* &return_tuples, size_t &return_count,
@@ -146,6 +152,17 @@ do_shortestPathWithPoints(
             err << "Empty edges SQL";
             return;
         }
+
+        if (points_sql.empty()) {
+            err << "Empty points SQL";
+        }
+
+        if ((which == KSPWITHPOINTS || which == OLDKSPWITHPOINTS) && k <= 0) {
+            err << "Invalid value for k";
+            return;
+        }
+
+        size_t K{static_cast<size_t>(k)};
 
         using pgrouting::pgget::get_edges;
         using pgrouting::pgget::get_points;
@@ -161,10 +178,15 @@ do_shortestPathWithPoints(
         using pgrouting::functions::bellmanFord;
         using pgrouting::functions::edgeDisjoint;
         using functions::binaryBreadthFirstSearch;
+        using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
         auto combinations = get_combinations(combinations_sql, starts, ends, normal, is_matrix);
         hint = "";
+
+        if (which == OLDKSPWITHPOINTS && start_vid && end_vid) {
+            combinations[*start_vid].insert(*end_vid);
+        }
 
         if (combinations.empty() && !combinations_sql.empty()) {
             notice << "No (source, target) pairs found";
@@ -240,6 +262,10 @@ do_shortestPathWithPoints(
                     paths = dijkstra(digraph, combinations, only_cost, n);
                     post_process(paths, only_cost, normal, n, global);
                     break;
+                case OLDKSPWITHPOINTS:
+                case KSPWITHPOINTS:
+                    paths = Yen(digraph, combinations, K, heap_paths);
+                    break;
                 default:
                     err << "INTERNAL: wrong function call: " << which;
                     return;
@@ -252,12 +278,15 @@ do_shortestPathWithPoints(
                     paths =  dijkstra(undigraph, combinations, only_cost, n);
                     post_process(paths, only_cost, normal, n, global);
                     break;
+                case OLDKSPWITHPOINTS:
+                case KSPWITHPOINTS:
+                    paths = Yen(undigraph, combinations, K, heap_paths);
+                    break;
                 default:
-                   err << "INTERNAL: wrong function call: " << which;
-                   return;
+                    err << "INTERNAL: wrong function call: " << which;
+                    return;
             }
         }
-
 
         if (!details) {
             for (auto &path : paths) path = pg_graph.eliminate_details(path);
