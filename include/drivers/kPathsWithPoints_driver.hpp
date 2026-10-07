@@ -50,6 +50,7 @@ void do_kPathsWithPoints(
         ArrayType*, ArrayType*,
 
         int64_t*, int64_t*,
+
         int, char,
         bool, bool, bool,
 

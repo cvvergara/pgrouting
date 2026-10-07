@@ -61,7 +61,7 @@ void pgr_process_kPathsWithPoints(
 
         int64_t*, int64_t*,
 
-        int, char*,
+        int, char,
 
         bool, bool, bool,
 
