@@ -9,6 +9,9 @@ ADD_LIBRARY(ksp OBJECT
     kPaths_driver.cpp
     kPaths_process.cpp
 
+    kPathsWithPoints_driver.cpp
+    kPathsWithPoints_process.cpp
+
     withPoints_ksp.c
     withPoints_ksp_driver.cpp
 
