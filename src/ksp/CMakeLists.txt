@@ -7,8 +7,6 @@ ADD_LIBRARY(ksp OBJECT
     withPoints_ksp.c
 
     kPaths_process.cpp
-
-    kPathsWithPoints_driver.cpp
     kPathsWithPoints_process.cpp
 
     turnRestrictedPath.c
