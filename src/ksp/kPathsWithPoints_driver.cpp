@@ -45,20 +45,22 @@ namespace pgrouting {
 namespace drivers {
 
 void
-do_withPointsKsp(
+do_kPathsWithPoints(
         const std::string &edges_sql,
         const std::string &points_sql,
         const std::string &combinations_sql,
+
         ArrayType *starts,
         ArrayType *ends,
 
         int64_t *start_vid,
         int64_t *end_vid,
 
-        size_t k,
+        int k,
+        char driving_side,
+
         bool directed,
         bool heap_paths,
-        char driving_side,
         bool details,
 
         Which which,
@@ -84,6 +86,8 @@ do_withPointsKsp(
             err << "Invalid value for k";
             return;
         }
+
+        size_t K{static_cast<size_t>(k)};
 
         using pgrouting::pgget::get_edges;
         using pgrouting::pgget::get_points;
@@ -170,7 +174,7 @@ do_withPointsKsp(
             digraph.insert_edges(edges);
             switch (which) {
                 case KSPWITHPOINTS:
-                    paths = Yen(digraph, combinations, k, heap_paths);
+                    paths = Yen(digraph, combinations, K, heap_paths);
                     break;
                 default:
                     err << "INTERNAL: wrong function call: " << which;
@@ -180,7 +184,7 @@ do_withPointsKsp(
             undigraph.insert_edges(edges);
             switch (which) {
                 case KSPWITHPOINTS:
-                    paths = Yen(undigraph, combinations, k, heap_paths);
+                    paths = Yen(undigraph, combinations, K, heap_paths);
                     break;
                 default:
                     err << "INTERNAL: wrong function call: " << which;

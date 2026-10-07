@@ -1,12 +1,18 @@
 /*PGR-GNU*****************************************************************
-File: kPaths_driver.hpp
+File: shortestPathWithPoints_process.h
 
-Copyright (c) 2026-2026 pgRouting developers
+Copyright (c) 2007-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Design of one process & driver file by
-Copyright (c) 2026 Celia Virginia Vergara Castillo
+Copyright (c) 2025 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
+
+Copying this file (or a derivative) within pgRouting code add the following:
+
+Generated with Template by:
+Copyright (c) 2007-2026 pgRouting developers
+Mail: project@pgrouting.org
 
 ------
 
@@ -26,38 +32,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_DRIVERS_KPATHSWITHPOINTS_DRIVER_HPP_
-#define INCLUDE_DRIVERS_KPATHSWITHPOINTS_DRIVER_HPP_
+#ifndef INCLUDE_PROCESS_KPATHSWITHPOINTS_PROCESS_H_
+#define INCLUDE_PROCESS_KPATHSWITHPOINTS_PROCESS_H_
 #pragma once
 
-
+#ifdef __cplusplus
 #include <cstddef>
 #include <cstdint>
-#include <string>
-#include <sstream>
+using Path_rt = struct Path_rt;
+using ArrayType = struct ArrayType;
+#else
+#include <stddef.h>
+#include <stdint.h>
+#include <stdbool.h>
+typedef struct Path_rt Path_rt;
+typedef struct ArrayType ArrayType;
+#endif
 
 #include "c_common/enums.h"
 
-using Path_rt = struct Path_rt;
-using ArrayType = struct ArrayType;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-namespace pgrouting {
-namespace drivers {
-
-void do_kPathsWithPoints(
-        const std::string&, const std::string&,
-        const std::string&,
+void pgr_process_kPathsWithPoints(
+        const char*, const char*, const char*,
         ArrayType*, ArrayType*,
 
         int64_t*, int64_t*,
-        int, char,
+
+        int, char*,
+
         bool, bool, bool,
 
-        Which,
-        Path_rt*&, size_t&,
-        std::ostringstream&, std::ostringstream&, std::ostringstream&);
+        enum Which,
+        Path_rt**, size_t*);
 
-}  // namespace drivers
-}  // namespace pgrouting
+#ifdef __cplusplus
+}
+#endif
 
-#endif  // INCLUDE_DRIVERS_KPATHSWITHPOINTS_DRIVER_HPP_
+#endif  // INCLUDE_PROCESS_KPATHSWITHPOINTS_PROCESS_H_
