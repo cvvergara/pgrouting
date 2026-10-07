@@ -4,7 +4,7 @@
 
 ADD_LIBRARY(ksp OBJECT
     ksp.c
-    ksp_deprecated.c
+    withPoints_ksp.c
 
     kPaths_driver.cpp
     kPaths_process.cpp
@@ -12,9 +12,9 @@ ADD_LIBRARY(ksp OBJECT
     kPathsWithPoints_driver.cpp
     kPathsWithPoints_process.cpp
 
-    withPoints_ksp.c
-    withPoints_ksp_driver.cpp
-
     turnRestrictedPath.c
     turnRestrictedPath_driver.cpp
+
+    ksp_deprecated.c
+    withPoints_ksp_deprecated.c
 )
