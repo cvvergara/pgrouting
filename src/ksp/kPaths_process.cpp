@@ -71,25 +71,21 @@ void pgr_process_ksp(
     std::ostringstream err;
     std::ostringstream notice;
 
-    if (p_k < 0) {
-        /* TODO return error message */
-        return;
-    }
-
+    bool is_matrix {false};
     clock_t start_t = clock();
     pgrouting::drivers::do_ksp(
-          edges_sql? edges_sql : "",
-          combinations_sql? combinations_sql : "",
-
+            edges_sql? edges_sql : "",
+            combinations_sql? combinations_sql : "",
             starts, ends,
-
-            start_vertex, end_vertex,
-
-            static_cast<size_t>(p_k),
             directed,
-            heap_paths,
 
-            which,
+            false, true, -1, false,
+            static_cast<size_t>(p_k),
+
+            heap_paths,
+            start_vertex, end_vertex,
+            which, is_matrix,
+
             (*result_tuples), (*result_count),
             log, notice, err);
 

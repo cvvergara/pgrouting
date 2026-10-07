@@ -49,11 +49,14 @@ do_ksp(
         const std::string&, const std::string&,
         ArrayType*, ArrayType*,
 
-        int64_t*, int64_t*,
-        size_t,
-        bool, bool,
+        bool, bool, bool,
 
-        Which,
+        int64_t, bool,
+
+        size_t, bool,
+        int64_t*, int64_t*,
+
+        Which, bool&,
         Path_rt*&, size_t&,
         std::ostringstream&, std::ostringstream&, std::ostringstream&);
 

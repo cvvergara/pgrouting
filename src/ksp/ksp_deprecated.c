@@ -73,7 +73,7 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_BOOL(4),
                 PG_GETARG_BOOL(5),
 
-                KSP,
+                OLDKSP,
                 &path,
                 &result_count);
         } else if (PG_NARGS() == 5) {
@@ -88,7 +88,7 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT32(2),
                 PG_GETARG_BOOL(3),
                 PG_GETARG_BOOL(4),
-                KSP,
+                OLDKSP,
                 &path,
                 &result_count);
         } else if (PG_NARGS() == 6) {
@@ -104,7 +104,7 @@ _pgr_ksp(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT32(3),
                 PG_GETARG_BOOL(4),
                 PG_GETARG_BOOL(5),
-                KSP,
+                OLDKSP,
                 &path,
                 &result_count);
         }
