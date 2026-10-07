@@ -147,7 +147,7 @@ do_kPathsWithPoints(
          */
         pgrouting::Pg_points_graph pg_graph(points, edges_of_points,
                 true,
-                driving_side,
+                pgrouting::estimate_drivingSide(driving_side, which),
                 directed);
 
         if (pg_graph.has_error()) {
