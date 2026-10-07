@@ -6,7 +6,6 @@ ADD_LIBRARY(ksp OBJECT
     ksp.c
     withPoints_ksp.c
 
-    kPaths_driver.cpp
     kPaths_process.cpp
 
     kPathsWithPoints_driver.cpp

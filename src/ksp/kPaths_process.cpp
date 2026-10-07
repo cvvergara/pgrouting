@@ -44,7 +44,7 @@ extern "C" {
 #include "cpp_common/assert.hpp"
 #include "cpp_common/alloc.hpp"
 
-#include "drivers/kPaths_driver.hpp"
+#include "drivers/shortestPath_driver.hpp"
 
 void pgr_process_ksp(
         const char *edges_sql,
@@ -74,7 +74,7 @@ void pgr_process_ksp(
 
     bool is_matrix {false};
     clock_t start_t = clock();
-    pgrouting::drivers::do_ksp(
+    pgrouting::drivers::do_shortestPath(
             edges_sql? edges_sql : "",
             combinations_sql? combinations_sql : "",
             starts, ends,

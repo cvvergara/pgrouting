@@ -1,12 +1,18 @@
 /*PGR-GNU*****************************************************************
-File: kPathsWithPoints_driver.cpp
+File: shortestPathWithPoints_driver.cpp
 
-Copyright (c) 2026-2026 pgRouting developers
+Copyright (c) 2015-2026 pgRouting developers
 Mail: project@pgrouting.org
 
 Design of one process & driver file by
-Copyright (c) 2026 Celia Virginia Vergara Castillo
+Copyright (c) 2025 Celia Virginia Vergara Castillo
 Mail: vicky at erosion.dev
+
+Copying this file (or a derivative) within pgRouting code add the following:
+
+Generated with Template by:
+Copyright (c) 2015-2026 pgRouting developers
+Mail: project@pgrouting.org
 
 ------
 
@@ -28,18 +34,83 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "drivers/kPathsWithPoints_driver.hpp"
 
+#include <algorithm>
 #include <sstream>
 #include <deque>
 #include <vector>
+#include <limits>
 #include <string>
+#include <map>
+#include <set>
+#include <utility>
+#include <cstdint>
 
 #include "cpp_common/pgdata_getters.hpp"
 #include "cpp_common/combinations.hpp"
 #include "cpp_common/utilities.hpp"
 #include "cpp_common/to_postgres.hpp"
-#include "withPoints/withPoints.hpp"
 
+#include "dijkstra/dijkstra.hpp"
+#include "bellman_ford/edwardMoore.hpp"
+#include "bdDijkstra/bdDijkstra.hpp"
+#include "withPoints/withPoints.hpp"
+#include "dagShortestPath/dagShortestPath.hpp"
+#include "bellman_ford/bellman_ford.hpp"
+#include "max_flow/maxflow.hpp"
+#include "traversal/binaryBreadthFirstSearch.hpp"
 #include "yen/yen.hpp"
+
+namespace {
+
+void
+post_process(std::deque<pgrouting::Path> &paths, bool only_cost, bool normal, size_t n_goals, bool global) {
+    using pgrouting::Path;
+    paths.erase(std::remove_if(paths.begin(), paths.end(),
+                [](const Path &p) {
+                    return p.size() == 0;
+                }),
+                paths.end());
+    using difference_type = std::deque<double>::difference_type;
+
+    if (!normal) {
+        for (auto &path : paths) path.reverse();
+    }
+
+    if (!only_cost) {
+        for (auto &p : paths) {
+            p.recalculate_agg_cost();
+        }
+    }
+
+    if (n_goals != (std::numeric_limits<size_t>::max)()) {
+        std::sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.end_id() < e2.end_id();
+                });
+        std::stable_sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.start_id() < e2.start_id();
+                });
+        std::stable_sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.tot_cost() < e2.tot_cost();
+                });
+        if (global && n_goals < paths.size()) {
+            paths.erase(paths.begin() + static_cast<difference_type>(n_goals), paths.end());
+        }
+    } else {
+        std::sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.end_id() < e2.end_id();
+                });
+        std::stable_sort(paths.begin(), paths.end(),
+                [](const Path &e1, const Path &e2)->bool {
+                    return e1.start_id() < e2.start_id();
+                });
+    }
+}
+
+}  // namespace
 
 namespace pgrouting {
 namespace drivers {
@@ -53,23 +124,27 @@ do_kPathsWithPoints(
         ArrayType *starts,
         ArrayType *ends,
 
+        bool directed,
+        bool only_cost,
+        bool normal,
+
+        int64_t n_goals,
+        bool global,
+
+        char driving_side,
+        bool details,
+
+        int k,
+        bool heap_paths,
         int64_t *start_vid,
         int64_t *end_vid,
 
-        int k,
-        char driving_side,
-
-        bool directed,
-        bool heap_paths,
-        bool details,
-
         Which which,
+        bool &is_matrix,
         Path_rt* &return_tuples, size_t &return_count,
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {
-
-
     std::string hint = "";
 
     try {
@@ -82,7 +157,7 @@ do_kPathsWithPoints(
             err << "Empty points SQL";
         }
 
-        if (k <= 0) {
+        if ((which == KSPWITHPOINTS || which == OLDKSPWITHPOINTS) && k <= 0) {
             err << "Invalid value for k";
             return;
         }
@@ -93,14 +168,21 @@ do_kPathsWithPoints(
         using pgrouting::pgget::get_points;
         using pgrouting::utilities::get_combinations;
         using pgrouting::to_postgres::get_tuples;
-        using pgrouting::Path;
         using pgrouting::UndirectedGraph;
         using pgrouting::DirectedGraph;
+
+        using pgrouting::algorithms::dijkstra;
+        using pgrouting::algorithms::bdDijkstra;
+        using pgrouting::algorithms::edwardMoore;
+        using pgrouting::algorithms::dagShortestPath;
+        using pgrouting::functions::bellmanFord;
+        using pgrouting::functions::edgeDisjoint;
+        using functions::binaryBreadthFirstSearch;
 
         using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
-        auto combinations = get_combinations(combinations_sql, starts, ends, true);
+        auto combinations = get_combinations(combinations_sql, starts, ends, normal, is_matrix);
         hint = "";
 
         if (start_vid && end_vid) {
@@ -121,7 +203,7 @@ do_kPathsWithPoints(
 
         if (points_sql.empty()) {
             hint = edges_sql;
-            edges = get_edges(edges_sql, true, false);
+            edges = get_edges(edges_sql, normal, false);
             hint = "";
         } else {
             pgrouting::get_new_queries(edges_sql, points_sql, eofp, enop);
@@ -130,10 +212,10 @@ do_kPathsWithPoints(
             points = get_points(points_sql);
 
             hint = eofp;
-            edges_of_points = !eofp.empty()? get_edges(eofp, true, false) : std::vector<Edge_t>();
+            edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
 
             hint = enop;
-            edges = !enop.empty()? get_edges(enop, true, false) : std::vector<Edge_t>();
+            edges = !enop.empty()? get_edges(enop, normal, false) : std::vector<Edge_t>();
             hint = "";
 
             if (edges.empty() && edges_of_points.empty()) {
@@ -146,7 +228,7 @@ do_kPathsWithPoints(
          * processing points
          */
         pgrouting::Pg_points_graph pg_graph(points, edges_of_points,
-                true,
+                normal,
                 pgrouting::estimate_drivingSide(driving_side, which),
                 directed);
 
@@ -166,13 +248,22 @@ do_kPathsWithPoints(
         }
         hint = "";
 
+        size_t n = n_goals <= 0? (std::numeric_limits<size_t>::max)() : static_cast<size_t>(n_goals);
+
         DirectedGraph digraph;
         UndirectedGraph undigraph;
 
         std::deque<Path> paths;
+
         if (directed) {
             digraph.insert_edges(edges);
             switch (which) {
+                case WITHPOINTS:
+                case OLD_WITHPOINTS:
+                    paths = dijkstra(digraph, combinations, only_cost, n);
+                    post_process(paths, only_cost, normal, n, global);
+                    break;
+                case OLDKSPWITHPOINTS:
                 case KSPWITHPOINTS:
                     paths = Yen(digraph, combinations, K, heap_paths);
                     break;
@@ -183,6 +274,12 @@ do_kPathsWithPoints(
         } else {
             undigraph.insert_edges(edges);
             switch (which) {
+                case WITHPOINTS:
+                case OLD_WITHPOINTS:
+                    paths =  dijkstra(undigraph, combinations, only_cost, n);
+                    post_process(paths, only_cost, normal, n, global);
+                    break;
+                case OLDKSPWITHPOINTS:
                 case KSPWITHPOINTS:
                     paths = Yen(undigraph, combinations, K, heap_paths);
                     break;
@@ -191,7 +288,6 @@ do_kPathsWithPoints(
                     return;
             }
         }
-
 
         if (!details) {
             for (auto &path : paths) path = pg_graph.eliminate_details(path);

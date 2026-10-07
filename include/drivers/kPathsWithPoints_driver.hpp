@@ -47,16 +47,30 @@ namespace drivers {
 void do_kPathsWithPoints(
         const std::string&, const std::string&,
         const std::string&,
+
         ArrayType*, ArrayType*,
 
-        int64_t*, int64_t*,
+        bool,
+        bool,
+        bool,
 
-        int, char,
-        bool, bool, bool,
+        int64_t,
+        bool,
+
+        char,
+        bool,
+
+        int,
+        bool,
+        int64_t*,
+        int64_t*,
 
         Which,
-        Path_rt*&, size_t&,
-        std::ostringstream&, std::ostringstream&, std::ostringstream&);
+        bool&,
+        Path_rt*&, size_t &,
+        std::ostringstream&,
+        std::ostringstream&,
+        std::ostringstream&);
 
 }  // namespace drivers
 }  // namespace pgrouting

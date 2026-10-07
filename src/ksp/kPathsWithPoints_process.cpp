@@ -78,6 +78,7 @@ void pgr_process_kPathsWithPoints(
     std::ostringstream err;
     std::ostringstream notice;
 
+    bool is_matrix {false};
     clock_t start_t = clock();
     pgrouting::drivers::do_kPathsWithPoints(
             edges_sql? edges_sql : "",
@@ -85,13 +86,18 @@ void pgr_process_kPathsWithPoints(
             combinations_sql? combinations_sql : "",
 
             starts, ends,
+
+            directed, false, true,
+            -1, false,
+
+            driving_side,
+            details,
+
+            k, heap_paths,
             start_vid, end_vid,
 
-            k, driving_side,
-
-            directed, heap_paths, details,
-
             which,
+            is_matrix,
             (*result_tuples), (*result_count),
             log, notice, err);
 

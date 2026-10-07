@@ -119,6 +119,7 @@ do_shortestPathWithPoints(
         const std::string &edges_sql,
         const std::string &points_sql,
         const std::string &combinations_sql,
+
         ArrayType *starts,
         ArrayType *ends,
 
@@ -128,6 +129,7 @@ do_shortestPathWithPoints(
 
         int64_t n_goals,
         bool global,
+
         char driving_side,
         bool details,
 
@@ -137,8 +139,6 @@ do_shortestPathWithPoints(
         std::ostringstream &log,
         std::ostringstream &notice,
         std::ostringstream &err) {
-    using pgrouting::Path;
-
     std::string hint = "";
 
     try {
@@ -186,7 +186,7 @@ do_shortestPathWithPoints(
             pgrouting::get_new_queries(edges_sql, points_sql, eofp, enop);
 
             hint = points_sql;
-            points = get_points(std::string(points_sql));
+            points = get_points(points_sql);
 
             hint = eofp;
             edges_of_points = !eofp.empty()? get_edges(eofp, normal, false) : std::vector<Edge_t>();
