@@ -54,10 +54,13 @@ void do_shortestPath(
         ArrayType*, ArrayType*,
 
         bool, bool, bool,
+
         int64_t, bool,
 
-        Which,
-        bool&,
+        size_t, bool,
+        int64_t*, int64_t*,
+
+        Which, bool&,
         Path_rt*&, size_t&,
         std::ostringstream&, std::ostringstream&, std::ostringstream&);
 

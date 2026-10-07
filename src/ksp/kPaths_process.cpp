@@ -49,6 +49,7 @@ extern "C" {
 void pgr_process_ksp(
         const char *edges_sql,
         const char *combinations_sql,
+
         ArrayType *starts, ArrayType *ends,
 
         int64_t* start_vertex,
@@ -84,8 +85,9 @@ void pgr_process_ksp(
 
             heap_paths,
             start_vertex, end_vertex,
-            which, is_matrix,
 
+            which,
+            is_matrix,
             (*result_tuples), (*result_count),
             log, notice, err);
 

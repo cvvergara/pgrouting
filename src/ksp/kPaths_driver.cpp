@@ -120,17 +120,20 @@ do_ksp(
         const std::string &combinations_sql,
         ArrayType *starts,
         ArrayType *ends,
-        bool directed,
 
+        bool directed,
         bool only_cost,
         bool normal,
+
         int64_t n_goals,
         bool global,
-        size_t k,
 
+        /* for ksp */
+        size_t k,
         bool heap_paths,
         int64_t *start_vid,
         int64_t *end_vid,
+
         Which which,
         bool &is_matrix,
 
@@ -148,7 +151,7 @@ do_ksp(
             return;
         }
 
-        if (k <= 0) {
+        if ((which == KSP || which == OLDKSP) && k <= 0) {
             err << "Invalid value for k";
             return;
         }
@@ -203,10 +206,10 @@ do_ksp(
             return_count = get_tuples(results, edges, return_tuples);
             return;
         } else if (directed) {
-            if (which == KSP || which == OLDKSP) {
-                digraph.insert_min_edges_no_parallel(edges);
-            } else if (which == DAGSP) {
+            if (which == DAGSP) {
                 digraph.insert_no_edge_cycle(edges);
+            } else if (which == KSP || which == OLDKSP) {
+                digraph.insert_min_edges_no_parallel(edges);
             } else {
                 digraph.insert_edges(edges);
             }
