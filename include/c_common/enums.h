@@ -36,6 +36,7 @@ enum Which {  // NOLINT(cppcoreguidelines-use-enum-class)
     BELLMANFORD,
     EDGEDISJOINT,
     BINARYBFS,
+    HAWICKCIRCUITS,
     KSP, OLDKSP,
     KSPWITHPOINTS, OLDKSPWITHPOINTS,
     /** allpairs **/

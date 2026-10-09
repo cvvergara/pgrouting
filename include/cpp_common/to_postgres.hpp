@@ -80,6 +80,15 @@ size_t get_tuples(const std::vector<Flow_t>&, Flow_t*&);
 size_t
 get_tuples(std::vector<Path_rt>&, const std::vector<Edge_t>&, Path_rt*&);
 
+/**
+ * @brief get tuples from a set of circuits to a Path_rt
+ */
+size_t
+get_tuples(
+        const pgrouting::DirectedGraph&,
+        const std::vector<std::vector<pgrouting::DirectedGraph::V>>&,
+        Path_rt*&);
+
 size_t
 get_tuples(const std::vector<II_t_rt>&, II_t_rt*&);
 

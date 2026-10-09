@@ -362,6 +362,44 @@ get_tuples(
 
 size_t
 get_tuples(
+        const pgrouting::DirectedGraph &graph,
+        const std::vector<std::vector<pgrouting::DirectedGraph::V>> &circuits,
+        Path_rt* &tuples) {
+    pgassert(!tuples);
+
+    size_t count = 0;
+    for (const auto &circuit : circuits) {
+        count += circuit.size() + 1;
+    }
+    if (count == 0) return 0;
+
+    tuples = pgr_alloc(count, tuples);
+
+    size_t sequence = 0;
+    for (const auto &circuit : circuits) {
+        auto start_vid = graph[circuit.front()].id;
+        double agg_cost = 0;
+        for (size_t i = 0; i < circuit.size(); ++i) {
+            auto next = circuit[(i + 1) % circuit.size()];
+            double cost = 0;
+            auto edge_id = graph.get_edge_id(circuit[i], next, cost);
+            tuples[sequence++] = {
+                start_vid, start_vid,
+                graph[circuit[i]].id,
+                edge_id,
+                cost,
+                agg_cost};
+            agg_cost += cost;
+        }
+        tuples[sequence++] = {start_vid, start_vid, start_vid, -1, 0, agg_cost};
+    }
+
+    pgassert(count == sequence);
+    return count;
+}
+
+size_t
+get_tuples(
         std::vector<Path_rt> &paths,
         const std::vector<Edge_t> &edges,
         Path_rt* &tuples) {
