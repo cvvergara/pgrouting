@@ -53,6 +53,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "dijkstra/dijkstra.hpp"
 #include "bellman_ford/edwardMoore.hpp"
 #include "bdDijkstra/bdDijkstra.hpp"
+#include "circuits/hawickcircuits.hpp"
 #include "dagShortestPath/dagShortestPath.hpp"
 #include "bellman_ford/bellman_ford.hpp"
 #include "max_flow/maxflow.hpp"
@@ -169,6 +170,7 @@ do_shortestPath(
         using pgrouting::functions::bellmanFord;
         using pgrouting::functions::edgeDisjoint;
         using functions::binaryBreadthFirstSearch;
+        using functions::hawickCircuits;
         using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
@@ -210,7 +212,7 @@ do_shortestPath(
         } else if (directed) {
             if (which == DAGSP) {
                 digraph.insert_no_edge_cycle(edges);
-            } else if (which == KSP || which == OLDKSP) {
+            } else if (which == KSP || which == OLDKSP || which == HAWICKCIRCUITS) {
                 digraph.insert_min_edges_no_parallel(edges);
             } else {
                 digraph.insert_edges(edges);
@@ -234,6 +236,9 @@ do_shortestPath(
                     break;
                 case BELLMANFORD:
                     return_count = get_tuples(bellmanFord(digraph, combinations, only_cost), return_tuples);
+                    break;
+                case HAWICKCIRCUITS:
+                    return_count = get_tuples(digraph, hawickCircuits(digraph), return_tuples);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);
