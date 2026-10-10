@@ -6,4 +6,5 @@ ADD_LIBRARY(circuits OBJECT
     hawickCircuits.c
 
     hawickcircuits.cpp
+    circuits_process.cpp
 )

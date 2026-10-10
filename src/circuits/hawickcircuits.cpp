@@ -59,7 +59,11 @@ namespace functions {
  * @returns results, when results are found
  */
 Circuits
-hawickCircuits(const pgrouting::DirectedGraph & graph) {
+hawickCircuits(
+        const pgrouting::DirectedGraph &graph,
+        int,
+        int
+        ) {
     // results storing the output
     Circuits circuits;
 

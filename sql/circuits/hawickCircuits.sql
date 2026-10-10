@@ -30,9 +30,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- pgr_hawickCircuits
 ---------------
 
---v3.4.0
+--v4.1.0
 CREATE FUNCTION pgr_hawickCircuits(
-    TEXT, -- edges_sql (required)
+    TEXT,    -- edges_sql (required)
+    min_depth BIGINT DEFAULT 1,
+    max_depth BIGINT DEFAULT 9223372036854775807,
 
     OUT seq INTEGER,
     OUT path_id INTEGER,
@@ -49,16 +51,19 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_hawickCircuits(_pgr_get_statement($1)) AS a;
+    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), min_depth, max_depth) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,INTEGER)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:
-    - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+- Optional Parameters:
+  - min_depth := 1
+  - max_depth := 9223372036854775807
 - Documentation:
-    - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
+  - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
 ';

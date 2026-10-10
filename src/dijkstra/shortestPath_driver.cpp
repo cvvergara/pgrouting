@@ -135,6 +135,10 @@ do_shortestPath(
         int64_t *start_vid,
         int64_t *end_vid,
 
+        /* for circuits */
+        int min_depth,
+        int max_depth,
+
         Which which,
         bool &is_matrix,
 
@@ -149,6 +153,24 @@ do_shortestPath(
     try {
         if (edges_sql.empty()) {
             err << "Empty edges SQL";
+            return;
+        }
+
+        if ((which == HAWICKCIRCUITS && min_depth <= 0) {
+            err << "'Invalid value for min_depth'";
+            log << "Must be positive";
+            return;
+        }
+
+        if ((which == HAWICKCIRCUITS && max_depth <= 0) {
+            err << "Invalid value for 'max_depth'";
+            log << "Must be positive";
+            return;
+        }
+
+        if ((which == HAWICKCIRCUITS && max_depth < min_depth) {
+            err << "Invalid values for 'max_depth' and 'min_depth'";
+            log << "'min_depth' can not be greater than 'max_depth'";
             return;
         }
 
@@ -238,7 +260,7 @@ do_shortestPath(
                     return_count = get_tuples(bellmanFord(digraph, combinations, only_cost), return_tuples);
                     break;
                 case HAWICKCIRCUITS:
-                    return_count = get_tuples(digraph, hawickCircuits(digraph), return_tuples);
+                    return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth), return_tuples);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);

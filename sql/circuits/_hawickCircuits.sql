@@ -30,6 +30,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 -- _pgr_hawickCircuits
 ---------------
 
+--v4.1.0
+CREATE FUNCTION _pgr_hawickCircuits(
+    TEXT,
+    INTEGER,
+    INTEGER,
+
+    OUT seq INTEGER,
+    OUT path_id  INTEGER,
+    OUT path_seq INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+
+RETURNS SETOF RECORD AS
+'MODULE_PATHNAME'
+LANGUAGE C IMMUTABLE STRICT;
+
+COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT,INTEGER,INTEGER)
+IS 'pgRouting internal function';
+
+
 --v3.4.0
 CREATE FUNCTION _pgr_hawickCircuits(
     TEXT,
@@ -49,4 +73,4 @@ RETURNS SETOF RECORD AS
 LANGUAGE C IMMUTABLE STRICT;
 
 COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT)
-IS 'pgRouting internal function';
+IS 'pgRouting deprecated internal function';

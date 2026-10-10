@@ -8,6 +8,10 @@ Mail: project@pgrouting.org
 Function's developer:
 Copyright (c) 2022 Nitish Chauhan
 Mail: nitishchauhan0022 at gmail.com
+
+Copyright (c) 2026 Vicky Vergara
+Mail: vicky at erosion.dev
+
 ------
 
 This program is free software; you can redistribute it and/or modify
@@ -29,13 +33,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <stdbool.h>
 #include "c_common/postgres_connection.h"
 #include "c_types/path_rt.h"
-#include "process/shortestPath_process.h"
+#include "process/circuits_process.h"
 
-PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS);
+PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS);
 PG_FUNCTION_INFO_V1(_pgr_hawickcircuits);
 
 
-PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
+PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS) {
     FuncCallContext     *funcctx;
     TupleDesc           tuple_desc;
 
@@ -47,13 +51,11 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
-        pgr_process_shortestPath(
+        pgr_process_circuits(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
 
-                /* the rest of the parameters are not used*/
-                NULL, NULL, NULL,
-                true, false, true,
-                -1, true,
+                PG_GETARG_INT32(1),
+                PG_GETARG_INT32(2),
 
                 HAWICKCIRCUITS,
                 &result_tuples,
