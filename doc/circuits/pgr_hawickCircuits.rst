@@ -26,23 +26,24 @@
 Description
 -------------------------------------------------------------------------------
 
-Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Health A. James.
+Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
 This algorithm solves the problem of detecting and enumerating circuits in graphs.
-It is capable of circuit enumeration in graphs with directed-arcs, multiple-arcs
-and self-arcs with a memory efficient and high-performance im-plementation.
-It is an extension of Johnson's Algorithm of finding all the elementary circuits of
-a directed graph.
 
-There are 2 variations defined in the Boost Graph Library. Here, we have implemented only
-2nd as it serves the most suitable and practical usecase. In this variation we get the
-circuits after filtering out the circuits caused by parallel edges. Parallel edge circuits
-have more use cases when you want to count the no. of circuits.Maybe in future, we will also
-implemenent this variation.
+It is capable of circuit enumeration in graphs with directed-arcs, multiple arcs
+and self arcs with a memory efficient and high-performance implementation.
+
+It is an extension of Johnson's Algorithm of finding all the elementary circuits
+of a directed graph.
+
+There are 2 variations defined in the Boost Graph Library.
+In pgRouting , we have implemented the "hawick unique circuits".
+- In this variation we get the circuits after filtering out the circuits caused by
+parallel edges.
+- It is a variation of Johnson's algorithm for circuit enumeration.
 
 **The main Characteristics are:**
 
 - The algorithm implementation works only for directed graph
-- It is a variation of Johnson's algorithm for circuit enumeration.
 - The algorithm outputs the distinct circuits present in the graph.
 - Time Complexity: :math:`O((V + E) (c + 1))`
 
@@ -76,12 +77,7 @@ Parameters
     :start-after: edges_start
     :end-before: edges_end
 
-Optional parameters
-...............................................................................
 
-.. include:: dijkstra-family.rst
-    :start-after: dijkstra_optionals_start
-    :end-before: dijkstra_optionals_end
 
 Inner Queries
 -------------------------------------------------------------------------------
@@ -132,7 +128,7 @@ Result columns
        path sequence.
    * - ``agg_cost``
      - ``FLOAT``
-     - Aggregate cost from ``start_v`` to ``node``.
+     - Aggregate cost from ``start_vid`` to ``node``.
 
 
 See Also
