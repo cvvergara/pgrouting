@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #define INCLUDE_CIRCUITS_HAWICKCIRCUITS_HPP_
 #pragma once
 
+#include <cstdint>
 #include <vector>
 
 #include "cpp_common/base_graph.hpp"
@@ -39,7 +40,10 @@ namespace functions {
 using Circuit = std::vector<pgrouting::DirectedGraph::V>;
 using Circuits = std::vector<Circuit>;
 
-Circuits hawickCircuits(const pgrouting::DirectedGraph&);
+Circuits hawickCircuits(
+        const pgrouting::DirectedGraph&,
+        int64_t min_depth,
+        int64_t max_depth);
 
 }  // namespace functions
 }  // namespace pgrouting

@@ -31,10 +31,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 ---------------
 
 --v4.1.0
-CREATE FUNCTION _pgr_hawickCircuits(
+CREATE FUNCTION _pgr_hawickCircuits_v4(
     TEXT,
-    INTEGER,
-    INTEGER,
+    BIGINT,
+    BIGINT,
 
     OUT seq INTEGER,
     OUT path_id  INTEGER,
@@ -50,7 +50,7 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT,INTEGER,INTEGER)
+COMMENT ON FUNCTION _pgr_hawickCircuits_v4(TEXT,BIGINT,BIGINT)
 IS 'pgRouting internal function';
 
 

@@ -56,7 +56,7 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,INTEGER)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,BIGINT,BIGINT)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:

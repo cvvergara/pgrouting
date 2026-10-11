@@ -136,8 +136,8 @@ do_shortestPath(
         int64_t *end_vid,
 
         /* for circuits */
-        int min_depth,
-        int max_depth,
+        int64_t min_depth,
+        int64_t max_depth,
 
         Which which,
         bool &is_matrix,
@@ -156,19 +156,19 @@ do_shortestPath(
             return;
         }
 
-        if ((which == HAWICKCIRCUITS && min_depth <= 0) {
+        if (which == HAWICKCIRCUITS && min_depth <= 0) {
             err << "'Invalid value for min_depth'";
             log << "Must be positive";
             return;
         }
 
-        if ((which == HAWICKCIRCUITS && max_depth <= 0) {
+        if (which == HAWICKCIRCUITS && max_depth <= 0) {
             err << "Invalid value for 'max_depth'";
             log << "Must be positive";
             return;
         }
 
-        if ((which == HAWICKCIRCUITS && max_depth < min_depth) {
+        if (which == HAWICKCIRCUITS && max_depth < min_depth) {
             err << "Invalid values for 'max_depth' and 'min_depth'";
             log << "'min_depth' can not be greater than 'max_depth'";
             return;

@@ -4,6 +4,7 @@
 
 ADD_LIBRARY(circuits OBJECT
     hawickCircuits.c
+    hawickCircuits_deprecated.c
 
     hawickcircuits.cpp
     circuits_process.cpp

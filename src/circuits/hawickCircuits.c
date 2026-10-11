@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "process/circuits_process.h"
 
 PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS);
-PG_FUNCTION_INFO_V1(_pgr_hawickcircuits);
+PG_FUNCTION_INFO_V1(_pgr_hawickcircuits_v4);
 
 
 PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS) {
@@ -54,8 +54,8 @@ PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS) {
         pgr_process_circuits(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
 
-                PG_GETARG_INT32(1),
-                PG_GETARG_INT32(2),
+                PG_GETARG_INT64(1),
+                PG_GETARG_INT64(2),
 
                 HAWICKCIRCUITS,
                 &result_tuples,
