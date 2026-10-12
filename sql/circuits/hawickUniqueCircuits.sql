@@ -37,7 +37,7 @@ CREATE FUNCTION pgr_hawickUniqueCircuits(
 
     OUT seq INTEGER,
     OUT path_id INTEGER,
-    OUT path_seq INTEGER,
+    OUT depth INTEGER,
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT node BIGINT,
@@ -49,7 +49,7 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RETURN QUERY
-    SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
     FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1), min_depth, max_depth, self_loops) AS a;
 END;
 $BODY$

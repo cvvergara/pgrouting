@@ -36,7 +36,7 @@ CREATE FUNCTION _pgr_hawickCircuits_v4(
 
     OUT seq INTEGER,
     OUT path_id  INTEGER,
-    OUT path_seq INTEGER,
+    OUT depth INTEGER,
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
     OUT node BIGINT,

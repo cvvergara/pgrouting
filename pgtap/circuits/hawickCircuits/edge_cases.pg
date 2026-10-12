@@ -72,18 +72,18 @@ SELECT set_eq('hawickCircuits3',
     $$,
     'Circuit between the vertex 3 and 7');
 
--- path_seq numbering test
+-- depth numbering test
 
 PREPARE hawickCircuitsSeq AS
-SELECT path_seq FROM pgr_hawickcircuits('q3');
+SELECT depth FROM pgr_hawickcircuits('q3');
 
 RETURN QUERY
 SELECT CASE WHEN min_lib_version('4.1.0') THEN
   collect_tap(set_eq('hawickCircuitsSeq', $$VALUES (1), (2), (3)$$,
-    'path_seq starts at 1 on 4.1.0'))
+    'depth starts at 1 on 4.1.0'))
 ELSE
   collect_tap(set_eq('hawickCircuitsSeq', $$VALUES (0), (1), (2)$$,
-    'path_seq starts at 0 before 4.1.0'))
+    'depth starts at 0 before 4.1.0'))
 END;
 
 -- 3 vertices test
@@ -149,7 +149,7 @@ SELECT set_eq('hawickCircuits5',
 -- parallel edges test (different costs, min cost edge is not the first id)
 
 PREPARE q6 AS
-SELECT path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+SELECT depth, start_vid, end_vid, node, edge, cost, agg_cost
 FROM pgr_hawickcircuits($$
     SELECT id, source, target, cost, reverse_cost
     FROM (VALUES
