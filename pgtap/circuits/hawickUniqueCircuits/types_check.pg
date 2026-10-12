@@ -5,41 +5,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(7) WHEN min_version('3.4.0') THEN plan(5) ELSE plan(1) END;
-
-CREATE OR REPLACE FUNCTION types_check_deprecated()
-RETURNS SETOF TEXT AS
-$BODY$
-BEGIN
-
-  IF NOT min_version('3.4.0') THEN
-    RETURN QUERY
-    SELECT skip(1, 'Function is new on 3.4.0');
-    RETURN;
-  END IF;
-
-RETURN QUERY
-SELECT has_function('pgr_hawickUniquecircuits');
-RETURN QUERY
-SELECT has_function('pgr_hawickUniquecircuits', ARRAY['text']);
-RETURN QUERY
-SELECT function_returns('pgr_hawickUniquecircuits', ARRAY['text'],'setof record');
-
-RETURN QUERY
-SELECT function_args_eq('pgr_hawickUniquecircuits',
-  $$VALUES
-  ('{"","seq","path_id","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
-  $$);
-
-RETURN QUERY
-SELECT function_types_eq('pgr_hawickUniquecircuits',
-  $$VALUES
-  ('{text,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
-  $$);
-
-END;
-$BODY$
-LANGUAGE plpgsql;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(5) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION types_check()
 RETURNS SETOF TEXT AS
@@ -47,37 +13,29 @@ $BODY$
 BEGIN
 
   IF NOT min_version('4.1.0') THEN
-    RETURN QUERY
-    SELECT types_check_deprecated();
+    RETURN QUERY SELECT skip(1, 'pgr_hawickuniquecircuits new on 4.1.0');
     RETURN;
   END IF;
 
-RETURN QUERY
-SELECT has_function('pgr_hawickUniquecircuits');
-RETURN QUERY
-SELECT has_function('pgr_hawickUniquecircuits', ARRAY['text','int4','int4']);
-RETURN QUERY
-SELECT function_returns('pgr_hawickUniquecircuits', ARRAY['text','int4','int4'],'setof record');
+  RETURN QUERY
+  SELECT collect_tap(
 
-RETURN QUERY
-SELECT collect_tap(
+    has_function('pgr_hawickuniquecircuits'),
 
-  has_function('pgr_hawickUniquecircuits', ARRAY['text']),
+    has_function('pgr_hawickuniquecircuits', '{text,int4,int8,bool}'::TEXT[]),
 
-  function_returns('pgr_hawickUniquecircuits', ARRAY['text'],'setof record'),
+    function_returns('pgr_hawickuniquecircuits', '{text,int4,int8,bool}'::TEXT[],'setof record'),
 
-  function_args_eq('pgr_hawickUniquecircuits',
-    $$VALUES
-    ('{"","seq","path_id","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","min_depth","max_depth","seq","path_id","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
-    $$),
+    function_args_eq('pgr_hawickuniquecircuits',
+      $$VALUES
+      ('{"","min_depth","max_depth","self_loops","seq","path_id","path_seq","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
+      $$),
 
-  function_types_eq('pgr_hawickUniquecircuits',
-    $$VALUES
-    ('{text,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,int4,int4,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
-    $$)
-);
+    function_types_eq('pgr_hawickuniquecircuits',
+      $$VALUES
+      ('{text,int4,int8,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
+      $$)
+  );
 
 END;
 $BODY$

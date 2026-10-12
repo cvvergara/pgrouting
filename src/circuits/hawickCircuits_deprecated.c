@@ -50,7 +50,7 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         pgr_process_circuits(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
 
-                1, 2147483647, true,
+                1, 9223372036854775807, true,
 
                 HAWICKCIRCUITS,
                 &result_tuples,
