@@ -157,19 +157,22 @@ do_shortestPath(
             return;
         }
 
-        if (which == HAWICKCIRCUITS && min_depth <= 0) {
+        const bool is_circuits =
+            which == HAWICKCIRCUITS || which == HAWICKUNIQUECIRCUITS;
+
+        if (is_circuits && min_depth <= 0) {
             err << "'Invalid value for min_depth'";
             log << "Must be positive";
             return;
         }
 
-        if (which == HAWICKCIRCUITS && max_depth <= 0) {
+        if (is_circuits && max_depth <= 0) {
             err << "Invalid value for 'max_depth'";
             log << "Must be positive";
             return;
         }
 
-        if (which == HAWICKCIRCUITS && max_depth < min_depth) {
+        if (is_circuits && max_depth < min_depth) {
             err << "Invalid values for 'max_depth' and 'min_depth'";
             log << "'min_depth' can not be greater than 'max_depth'";
             return;

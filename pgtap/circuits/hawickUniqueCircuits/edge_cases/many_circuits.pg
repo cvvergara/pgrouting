@@ -31,12 +31,14 @@ BEGIN
       (6, 3, 4, 1, 1)
   ) AS t(id, source, target, cost, reverse_cost);
 
+  -- min_depth = 1 forces the complete enumeration (the default min_depth is 3)
+
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q1') WHERE edge = -1), 20,
+  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q1', 1) WHERE edge = -1), 20,
       'K4: 20 elementary circuits are expected');
 
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q1')), 80,
+  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q1', 1)), 80,
       'K4: 80 output rows (sum of circuit lengths + terminators)');
 
   RETURN QUERY
@@ -48,7 +50,7 @@ BEGIN
                   = count(*) FILTER (WHERE edge <> -1)
               AND bool_and(node = start_vid) FILTER (WHERE edge = -1)
               AND sum(cost) = max(agg_cost) AS valid
-          FROM pgr_hawickUniquecircuits('q1')
+          FROM pgr_hawickUniquecircuits('q1', 1)
           GROUP BY path_id
       ) s), 'K4: every circuit is elementary, closed and agg_cost is consistent');
 
@@ -69,12 +71,14 @@ BEGIN
       (10, 4, 5, 1, 1)
   ) AS t(id, source, target, cost, reverse_cost);
 
+  -- min_depth = 1 forces the complete enumeration (the default min_depth is 3)
+
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q2') WHERE edge = -1), 84,
+  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q2', 1) WHERE edge = -1), 84,
       'K5: 84 elementary circuits are expected');
 
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q2')), 404,
+  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('q2', 1)), 404,
       'K5: 404 output rows');
 
 END;

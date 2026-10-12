@@ -32,18 +32,18 @@ SELECT id, source, target, cost, reverse_cost FROM (VALUES
 ) AS t(id, source, target, cost, reverse_cost);
 
 RETURN QUERY
-SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('depth_q') WHERE edge = -1), 20,
-    'K4: default call returns all 20 circuits');
+SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('depth_q', 1, 2147483647) WHERE edge = -1), 20,
+    'K4: min_depth = 1 with unlimited max_depth returns all 20 circuits');
 
-PREPARE depth_q_default AS
-SELECT * FROM pgr_hawickUniquecircuits('depth_q');
+PREPARE depth_q_min AS
+SELECT * FROM pgr_hawickUniquecircuits('depth_q', 1);
 
 PREPARE depth_q_full AS
-SELECT * FROM pgr_hawickUniquecircuits('depth_q', 1, 2147483647);
+SELECT * FROM pgr_hawickUniquecircuits('depth_q', 1, 9223372036854775807);
 
 RETURN QUERY
-SELECT set_eq('depth_q_default', 'depth_q_full',
-    'K4: default call equals (min_depth = 1, max_depth = integer max)');
+SELECT set_eq('depth_q_min', 'depth_q_full',
+    'K4: default max_depth equals bigint max');
 
 RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('depth_q', 1, 2) WHERE edge = -1), 6,

@@ -47,39 +47,39 @@ BEGIN
   PREPARE named_k4 AS
   SELECT * FROM pgr_hawickUniquecircuits('g_k4', min_depth => 3);
 
-  -- 1. the default min_depth excludes the six u-turns of K4
+  -- the default min_depth excludes the six u-turns of K4
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
       FROM pgr_hawickUniquecircuits('g_k4') WHERE edge = -1), 14,
       'K4: default min_depth = 3 excludes the six u-turns');
 
-  -- 2. the default call equals the explicit min_depth = 3 call
+  -- the default call equals the explicit min_depth = 3 call
 
   RETURN QUERY
   SELECT set_eq('default_k4', 'min_depth_3_k4',
       'K4: default call equals min_depth = 3');
 
-  -- 3. the default max_depth and self_loops values
+  -- the default max_depth and self_loops values
 
   RETURN QUERY
   SELECT set_eq('default_k4', 'full_k4',
       'K4: default call equals (min_depth = 3, max_depth = bigint max, self_loops = true)');
 
-  -- 4. the default is not the complete (min_depth = 1) enumeration
+  -- the default is not the complete (min_depth = 1) enumeration
 
   RETURN QUERY
   SELECT isnt((SELECT count(*)::INTEGER
       FROM pgr_hawickUniquecircuits('g_k4') WHERE edge = -1), 20,
       'K4: default is not the complete 20 circuit enumeration');
 
-  -- 5. the named min_depth argument equals the default
+  -- the named min_depth argument equals the default
 
   RETURN QUERY
   SELECT set_eq('default_k4', 'named_k4',
       'K4: min_depth => 3 equals the default call');
 
-  -- 6. a u-turn (1->2->1) has depth 2 and is excluded by default
+  -- a u-turn (1->2->1) has depth 2 and is excluded by default
 
   PREPARE g_u_turn AS
   SELECT id, source, target, cost, reverse_cost
@@ -91,7 +91,7 @@ BEGIN
       $$,
       'U-turn (1->2->1): excluded by the default min_depth');
 
-  -- 7. a self loop (1->1) has depth 1 and is excluded by default
+  -- a self loop (1->1) has depth 1 and is excluded by default
 
   PREPARE g_self AS
   SELECT id, source, target, cost, reverse_cost
@@ -103,7 +103,7 @@ BEGIN
       $$,
       'Self loop (1->1): excluded by the default min_depth');
 
-  -- 8. a size three circuit is included by default
+  -- a size three circuit is included by default
 
   PREPARE g_tri AS
   SELECT id, source, target, cost, reverse_cost
@@ -118,7 +118,7 @@ BEGIN
       FROM pgr_hawickUniquecircuits('g_tri') WHERE edge = -1), 1,
       'Directed triangle: size 3 is included by default');
 
-  -- 9. a size four circuit is included by default
+  -- a size four circuit is included by default
 
   PREPARE g_quad AS
   SELECT id, source, target, cost, reverse_cost
@@ -134,7 +134,7 @@ BEGIN
       FROM pgr_hawickUniquecircuits('g_quad') WHERE edge = -1), 1,
       'Four-cycle: size 4 is included by default');
 
-  -- 10. the default max_depth is unlimited
+  -- the default max_depth is unlimited
 
   PREPARE g_pent AS
   SELECT id, source, target, cost, reverse_cost
@@ -151,7 +151,7 @@ BEGIN
       FROM pgr_hawickUniquecircuits('g_pent') WHERE edge = -1), 1,
       'Five-cycle: default max_depth is unlimited');
 
-  -- 11. on a mixed graph only the triangle survives the default
+  -- on a mixed graph only the triangle survives the default
 
   -- a self loop, a u-turn and a triangle on the same graph
   PREPARE g_mixed AS
@@ -169,7 +169,7 @@ BEGIN
       FROM pgr_hawickUniquecircuits('g_mixed') WHERE edge = -1), 1,
       'Mixed graph: only the size 3 circuit survives the default');
 
-  -- 12. K5 with the default keeps the circuits of size 3, 4 and 5
+  -- K5 with the default keeps the circuits of size 3, 4 and 5
 
   -- complete digraph K5: by size: 2 (10), 3 (20), 4 (30), 5 (24) => 84
   PREPARE g_k5 AS
