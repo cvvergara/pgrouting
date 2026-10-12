@@ -50,13 +50,13 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), min_depth, max_depth) AS a;
+    FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1), min_depth, max_depth, self_loops) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
 COMMENT ON FUNCTION pgr_hawickUniqueCircuits(TEXT,INTEGER,BIGINT,BOOLEAN)
-IS 'pgr_hawickCircuits
+IS 'pgr_hawickUniqueCircuits
 - EXPERIMENTAL
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]

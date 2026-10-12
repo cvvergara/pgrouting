@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN NOT min_version('3.4.0') THEN plan(1) ELSE plan(7) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(7) ELSE plan(1) END;
 
 PREPARE edges_q AS
 SELECT id, source, target, cost, reverse_cost  FROM edges;
@@ -25,9 +25,10 @@ DECLARE
 params TEXT[];
 subs TEXT[];
 BEGIN
-  IF NOT min_version('3.4.0') THEN
+
+  IF NOT min_version('4.1.0') THEN
     RETURN QUERY
-    SELECT skip(1, 'Function is new on 3.4.0');
+    SELECT skip(1, 'pgr_hawickUniquecircuits is new on 4.1.0');
     RETURN;
   END IF;
 
