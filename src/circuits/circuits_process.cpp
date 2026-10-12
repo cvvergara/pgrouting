@@ -50,8 +50,8 @@ extern "C" {
 void pgr_process_circuits(
         const char *edges_sql,
 
-        int64_t min_depth,
-        int64_t max_depth,
+        int min_depth,
+        int max_depth,
 
         enum Which which,
         Path_rt **result_tuples, size_t *result_count) {

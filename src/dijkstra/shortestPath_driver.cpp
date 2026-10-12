@@ -136,8 +136,8 @@ do_shortestPath(
         int64_t *end_vid,
 
         /* for circuits */
-        int64_t min_depth,
-        int64_t max_depth,
+        int min_depth,
+        int max_depth,
 
         Which which,
         bool &is_matrix,

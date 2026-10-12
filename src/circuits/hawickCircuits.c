@@ -54,8 +54,8 @@ PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS) {
         pgr_process_circuits(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
 
-                PG_GETARG_INT64(1),
-                PG_GETARG_INT64(2),
+                PG_GETARG_INT32(1),
+                PG_GETARG_INT32(2),
 
                 HAWICKCIRCUITS,
                 &result_tuples,

@@ -57,7 +57,7 @@ extern "C" {
 
 void pgr_process_circuits(
         const char*,
-        int64_t, int64_t,
+        int, int,
 
         enum Which,
         Path_rt**, size_t*);

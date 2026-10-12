@@ -33,8 +33,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --v4.1.0
 CREATE FUNCTION pgr_hawickCircuits(
     TEXT,    -- edges_sql (required)
-    min_depth BIGINT DEFAULT 1,
-    max_depth BIGINT DEFAULT 9223372036854775807,
+
+    -- TODO v5 min_depth has default 1
+    min_depth INTEGER,
+    max_depth INTEGER DEFAULT 2147483647,
 
     OUT seq INTEGER,
     OUT path_id INTEGER,
@@ -56,14 +58,14 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,BIGINT,BIGINT)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,INTEGER)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Optional Parameters:
   - min_depth := 1
-  - max_depth := 9223372036854775807
+  - max_depth := 2147483647
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
 ';

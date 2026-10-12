@@ -5,7 +5,9 @@
 set(LOCAL_FILES
     _hawickCircuits.sql
     hawickCircuits.sql
-    )
+
+    deprecated.sql
+)
 
 foreach (f ${LOCAL_FILES})
     configure_file(${f} ${f})
