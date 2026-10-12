@@ -1,0 +1,209 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+
+BEGIN;
+
+SELECT CASE WHEN min_version('4.1.0') THEN plan(12) ELSE plan(1) END;
+
+CREATE OR REPLACE FUNCTION min_depth_default()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+  IF NOT min_version('4.1.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'pgr_hawickUniquecircuits is new on 4.1.0');
+    RETURN;
+  END IF;
+
+  -- pgr_hawickUniquecircuits has min_depth DEFAULT 3, so a bare call does not
+  -- return the u-turns (1->2->1) nor the self loops (1->1), which can not
+  -- happen on real streets.
+
+  -- self contained graphs used by the tests
+  -- (id, source, target, cost, reverse_cost)
+
+  -- complete digraph K4: elementary circuits by size: 2 (6), 3 (8), 4 (6) => 20
+  PREPARE g_k4 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, 1),
+      (2, 1, 3, 1, 1),
+      (3, 1, 4, 1, 1),
+      (4, 2, 3, 1, 1),
+      (5, 2, 4, 1, 1),
+      (6, 3, 4, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- complete digraph K5: by size: 2 (10), 3 (20), 4 (30), 5 (24) => 84
+  PREPARE g_k5 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      ( 1, 1, 2, 1, 1),
+      ( 2, 1, 3, 1, 1),
+      ( 3, 1, 4, 1, 1),
+      ( 4, 1, 5, 1, 1),
+      ( 5, 2, 3, 1, 1),
+      ( 6, 2, 4, 1, 1),
+      ( 7, 2, 5, 1, 1),
+      ( 8, 3, 4, 1, 1),
+      ( 9, 3, 5, 1, 1),
+      (10, 4, 5, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- a u-turn (a two-cycle)
+  PREPARE g_u_turn AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 1, 2, 1, 1)) AS t(id, source, target, cost, reverse_cost);
+
+  -- a self loop (a one-cycle)
+  PREPARE g_self AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost);
+
+  -- a directed triangle (a three-cycle)
+  PREPARE g_tri AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 1, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- a directed four-cycle
+  PREPARE g_quad AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 4, 1, -1),
+      (4, 4, 1, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- a directed five-cycle
+  PREPARE g_pent AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 4, 1, -1),
+      (4, 4, 5, 1, -1),
+      (5, 5, 1, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- a self loop, a u-turn and a triangle on the same graph
+  PREPARE g_mixed AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 1, 1, -1),
+      (2, 1, 2, 1, 1),
+      (3, 2, 3, 1, -1),
+      (4, 3, 4, 1, -1),
+      (5, 4, 2, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE default_k4 AS
+  SELECT * FROM pgr_hawickUniquecircuits('g_k4');
+
+  PREPARE min_depth_3_k4 AS
+  SELECT * FROM pgr_hawickUniquecircuits('g_k4', 3);
+
+  PREPARE full_k4 AS
+  SELECT * FROM pgr_hawickUniquecircuits('g_k4', 3, 9223372036854775807, true);
+
+  PREPARE named_k4 AS
+  SELECT * FROM pgr_hawickUniquecircuits('g_k4', min_depth => 3);
+
+  -- 1. the default min_depth excludes the six u-turns of K4
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_k4') WHERE edge = -1), 14,
+      'K4: default min_depth = 3 excludes the six u-turns');
+
+  -- 2. the default call equals the explicit min_depth = 3 call
+
+  RETURN QUERY
+  SELECT set_eq('default_k4', 'min_depth_3_k4',
+      'K4: default call equals min_depth = 3');
+
+  -- 3. the default max_depth and self_loops values
+
+  RETURN QUERY
+  SELECT set_eq('default_k4', 'full_k4',
+      'K4: default call equals (min_depth = 3, max_depth = bigint max, self_loops = true)');
+
+  -- 4. the default is not the complete (min_depth = 1) enumeration
+
+  RETURN QUERY
+  SELECT isnt((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_k4') WHERE edge = -1), 20,
+      'K4: default is not the complete 20 circuit enumeration');
+
+  -- 5. a u-turn (1->2->1) has depth 2 and is excluded by default
+
+  RETURN QUERY
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_u_turn')
+      $$,
+      'U-turn (1->2->1): excluded by the default min_depth');
+
+  -- 6. a self loop (1->1) has depth 1 and is excluded by default
+
+  RETURN QUERY
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_self')
+      $$,
+      'Self loop (1->1): excluded by the default min_depth');
+
+  -- 7. a size three circuit is included by default
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_tri') WHERE edge = -1), 1,
+      'Directed triangle: size 3 is included by default');
+
+  -- 8. a size four circuit is included by default
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_quad') WHERE edge = -1), 1,
+      'Four-cycle: size 4 is included by default');
+
+  -- 9. the default max_depth is unlimited
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_pent') WHERE edge = -1), 1,
+      'Five-cycle: default max_depth is unlimited');
+
+  -- 10. on a mixed graph only the triangle survives the default
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_mixed') WHERE edge = -1), 1,
+      'Mixed graph: only the size 3 circuit survives the default');
+
+  -- 11. K5 with the default keeps the circuits of size 3, 4 and 5
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_k5') WHERE edge = -1), 74,
+      'K5: default keeps the 74 circuits of size 3, 4 and 5');
+
+  -- 12. the named min_depth argument equals the default
+
+  RETURN QUERY
+  SELECT set_eq('default_k4', 'named_k4',
+      'K4: min_depth => 3 equals the default call');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT min_depth_default();
+
+SELECT * FROM finish();
+ROLLBACK;

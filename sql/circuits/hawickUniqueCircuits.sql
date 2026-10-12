@@ -61,7 +61,7 @@ IS 'pgr_hawickUniqueCircuits
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
 - Optional Parameters:
-  - min_depth := 1
+  - min_depth := 3
   - max_depth := 9223372036854775807
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
