@@ -51,7 +51,7 @@ void pgr_process_circuits(
         const char *edges_sql,
 
         ArrayType *starts,
-        int min_depth,
+        int64_t min_depth,
         int64_t max_depth,
         bool self_loop,
 

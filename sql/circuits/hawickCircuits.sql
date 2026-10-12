@@ -35,7 +35,7 @@ CREATE FUNCTION pgr_hawickCircuits(
     TEXT,    -- edges_sql (required)
 
     -- TODO v5 min_depth has default 1
-    min_depth INTEGER,
+    min_depth BIGINT,
     start_ids BIGINT[] DEFAULT '{}',
     max_depth BIGINT DEFAULT 9223372036854775807,
     self_loops BOOLEAN DEFAULT true,
@@ -60,7 +60,7 @@ END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,BIGINT[],BIGINT,BOOLEAN)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,BIGINT,BIGINT[],BIGINT,BOOLEAN)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:

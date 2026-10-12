@@ -5,6 +5,18 @@
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM edges'
 );
+SELECT * FROM pgr_hawickUniqueCircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM edges', 0
+);
+SELECT * FROM pgr_hawickUniqueCircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM edges', 10
+);
+SELECT * FROM pgr_hawickUniqueCircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM edges', 11
+);
+SELECT * FROM pgr_hawickUniqueCircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM edges', ARRAY[10,11]
+);
 /* -- q2 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM edges',

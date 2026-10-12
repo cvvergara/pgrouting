@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 CREATE FUNCTION _pgr_hawickCircuits_v4(
     TEXT,
     BIGINT[],
-    INTEGER,
+    BIGINT,
     BIGINT,
     BOOLEAN,
 
@@ -49,5 +49,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-COMMENT ON FUNCTION _pgr_hawickCircuits_v4(TEXT,BIGINT[],INTEGER,BIGINT,BOOLEAN)
+COMMENT ON FUNCTION _pgr_hawickCircuits_v4(TEXT,BIGINT[],BIGINT,BIGINT,BOOLEAN)
 IS 'pgRouting internal function';

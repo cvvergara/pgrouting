@@ -42,7 +42,7 @@ namespace  {
 struct circuit_collector {
     pgrouting::functions::Circuits& circuits;
     const std::set<int64_t>& vertices;
-    int min_depth;
+    int64_t min_depth;
     int64_t max_depth;
     bool self_loops;
 
@@ -74,7 +74,7 @@ Circuits
 hawickCircuits(
         const pgrouting::DirectedGraph &graph,
         const std::set<int64_t> &vertices,
-        int min_depth,
+        int64_t min_depth,
         int64_t max_depth,
         bool self_loops) {
     Circuits circuits;
@@ -110,7 +110,7 @@ Circuits
 hawickUniqueCircuits(
         const pgrouting::DirectedGraph &graph,
         const std::set<int64_t> &vertices,
-        int min_depth,
+        int64_t min_depth,
         int64_t max_depth,
         bool self_loops) {
     Circuits circuits;

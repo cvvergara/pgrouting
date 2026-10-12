@@ -136,7 +136,7 @@ do_shortestPath(
         int64_t *end_vid,
 
         /* for circuits */
-        int min_depth,
+        int64_t min_depth,
         int64_t max_depth,
         bool self_loops,
 

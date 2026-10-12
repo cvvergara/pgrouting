@@ -43,13 +43,13 @@ using Circuits = std::vector<Circuit>;
 Circuits hawickCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
-        int, int64_t, bool
+        int64_t, int64_t, bool
 );
 
 Circuits hawickUniqueCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
-        int, int64_t, bool
+        int64_t, int64_t, bool
 );
 
 }  // namespace functions

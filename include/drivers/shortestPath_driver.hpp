@@ -53,7 +53,7 @@ void do_shortestPath(
         int, bool,
         int64_t*, int64_t*,
 
-        int, int64_t, bool,
+        int64_t, int64_t, bool,
 
         Which,
         bool&,
