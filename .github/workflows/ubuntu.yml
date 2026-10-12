@@ -99,7 +99,7 @@ jobs:
           mkdir build
           cd build
           cmake -DPOSTGRESQL_VERSION=${{ matrix.psql }} \
-             -DBoost_DIR=/usr/include/boost \
+             -DBOOST_INCLUDEDIR=/usr/include \
              -DCMAKE_BUILD_TYPE=${{ matrix.release }} ..
 
       - name: Build
