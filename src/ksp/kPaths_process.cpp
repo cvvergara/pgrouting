@@ -87,7 +87,7 @@ void pgr_process_ksp(
 
             start_vid, end_vid,
 
-            0, 0,
+            0, 0, true,
 
             which,
             is_matrix,

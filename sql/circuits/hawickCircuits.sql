@@ -34,9 +34,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 CREATE FUNCTION pgr_hawickCircuits(
     TEXT,    -- edges_sql (required)
 
-    -- TODO v5 min_depth has default 1
+    -- TODO v5 min_depth has default 3
     min_depth INTEGER,
     max_depth INTEGER DEFAULT 2147483647,
+    self_loops BOOLEAN DEFAULT true,
 
     OUT seq INTEGER,
     OUT path_id INTEGER,
@@ -53,12 +54,12 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT a.seq, a.path_id, a.path_seq, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), min_depth, max_depth) AS a;
+    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), min_depth, max_depth,self_loops) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,INTEGER)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,INTEGER,BOOLEAN)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:

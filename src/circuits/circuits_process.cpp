@@ -51,7 +51,8 @@ void pgr_process_circuits(
         const char *edges_sql,
 
         int min_depth,
-        int max_depth,
+        int64_t max_depth,
+        bool self_loop,
 
         enum Which which,
         Path_rt **result_tuples, size_t *result_count) {
@@ -79,7 +80,7 @@ void pgr_process_circuits(
             -1, true,
             0, false, nullptr, nullptr,
 
-            min_depth, max_depth,
+            min_depth, max_depth, self_loop,
 
             which,
             is_matrix,

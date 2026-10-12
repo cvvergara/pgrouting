@@ -64,8 +64,9 @@ namespace functions {
 Circuits
 hawickCircuits(
         const pgrouting::DirectedGraph &graph,
-        int64_t min_depth,
-        int64_t max_depth) {
+        int min_depth,
+        int64_t max_depth,
+        bool) {
     // results storing the output
     Circuits circuits;
 

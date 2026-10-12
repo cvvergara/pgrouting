@@ -32,6 +32,7 @@ CREATE FUNCTION _pgr_hawickCircuits_v4(
     TEXT,
     INTEGER,
     INTEGER,
+    BOOLEAN,
 
     OUT seq INTEGER,
     OUT path_id  INTEGER,
@@ -47,5 +48,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
-COMMENT ON FUNCTION _pgr_hawickCircuits_v4(TEXT,INTEGER,INTEGER)
+COMMENT ON FUNCTION _pgr_hawickCircuits_v4(TEXT,INTEGER,INTEGER,BOOLEAN)
 IS 'pgRouting internal function';

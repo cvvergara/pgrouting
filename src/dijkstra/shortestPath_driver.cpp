@@ -137,7 +137,8 @@ do_shortestPath(
 
         /* for circuits */
         int min_depth,
-        int max_depth,
+        int64_t max_depth,
+        bool self_loops,
 
         Which which,
         bool &is_matrix,
@@ -232,12 +233,22 @@ do_shortestPath(
             return_count = get_tuples(results, edges, return_tuples);
             return;
         } else if (directed) {
-            if (which == DAGSP) {
-                digraph.insert_no_edge_cycle(edges);
-            } else if (which == KSP || which == OLDKSP || which == HAWICKCIRCUITS) {
-                digraph.insert_min_edges_no_parallel(edges);
-            } else {
-                digraph.insert_edges(edges);
+
+            switch (which) {
+                case DAGSP:
+                    digraph.insert_no_edge_cycle(edges);
+                    break;
+                case HAWICKUNIQUECIRCUITS:
+                    digraph.insert_min_edges_no_parallel(edges);
+                    break;
+                case KSP:
+                case OLDKSP:
+                case HAWICKCIRCUITS:
+                case OLDHAWICKCIRCUITS:
+                    digraph.insert_min_edges_no_parallel(edges);
+                    break;
+                default:
+                    digraph.insert_edges(edges);
             }
 
             switch (which) {
@@ -259,8 +270,12 @@ do_shortestPath(
                 case BELLMANFORD:
                     return_count = get_tuples(bellmanFord(digraph, combinations, only_cost), return_tuples);
                     break;
+                case OLDHAWICKCIRCUITS:
                 case HAWICKCIRCUITS:
-                    return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth), return_tuples);
+                    return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
+                    break;
+                case HAWICKUNIQUECIRCUITS:
+                    return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);

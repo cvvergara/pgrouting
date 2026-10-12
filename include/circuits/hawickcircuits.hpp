@@ -42,8 +42,8 @@ using Circuits = std::vector<Circuit>;
 
 Circuits hawickCircuits(
         const pgrouting::DirectedGraph&,
-        int64_t min_depth,
-        int64_t max_depth);
+        int, int64_t, bool
+);
 
 }  // namespace functions
 }  // namespace pgrouting
