@@ -45,6 +45,11 @@ Circuits hawickCircuits(
         int, int64_t, bool
 );
 
+Circuits hawickUniqueCircuits(
+        const pgrouting::DirectedGraph&,
+        int, int64_t, bool
+);
+
 }  // namespace functions
 }  // namespace pgrouting
 

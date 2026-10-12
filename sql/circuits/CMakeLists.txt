@@ -6,6 +6,9 @@ set(LOCAL_FILES
     _hawickCircuits.sql
     hawickCircuits.sql
 
+    _hawickUniqueCircuits.sql
+    hawickUniqueCircuits.sql
+
     deprecated.sql
 )
 

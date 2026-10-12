@@ -194,6 +194,7 @@ do_shortestPath(
         using pgrouting::functions::edgeDisjoint;
         using functions::binaryBreadthFirstSearch;
         using functions::hawickCircuits;
+        using functions::hawickUniqueCircuits;
         using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
