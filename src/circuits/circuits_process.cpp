@@ -50,6 +50,7 @@ extern "C" {
 void pgr_process_circuits(
         const char *edges_sql,
 
+        ArrayType *starts,
         int min_depth,
         int64_t max_depth,
         bool self_loop,
@@ -72,7 +73,7 @@ void pgr_process_circuits(
     pgrouting::drivers::do_shortestPath(
             edges_sql? edges_sql : "",
             "",
-            nullptr, nullptr,
+            starts, nullptr,
 
             true,
             false, true,

@@ -50,12 +50,96 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1), min_depth, max_depth, self_loops) AS a;
+    FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1), '{}'::BIGINT[], min_depth, max_depth, self_loops) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
 COMMENT ON FUNCTION pgr_hawickUniqueCircuits(TEXT,INTEGER,BIGINT,BOOLEAN)
+IS 'pgr_hawickUniqueCircuits
+- EXPERIMENTAL
+- Parameters:
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+- Optional Parameters:
+  - min_depth := 3
+  - max_depth := 9223372036854775807
+  - self_loops := true
+- Documentation:
+  - ${PROJECT_DOC_LINK}/pgr_hawickUniqueCircuits.html
+';
+
+--v4.1.0
+CREATE FUNCTION pgr_hawickUniqueCircuits(
+    TEXT,    -- edges_sql (required)
+
+    anyarray,
+    min_depth INTEGER DEFAULT 3,
+    max_depth BIGINT DEFAULT 9223372036854775807,
+    self_loops BOOLEAN DEFAULT true,
+
+    OUT seq INTEGER,
+    OUT path_id INTEGER,
+    OUT depth INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+
+RETURNS SETOF RECORD AS
+$BODY$
+BEGIN
+    RETURN QUERY
+    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1), $2::BIGINT[], min_depth, max_depth, self_loops) AS a;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE STRICT;
+
+COMMENT ON FUNCTION pgr_hawickUniqueCircuits(TEXT,ANYARRAY,INTEGER,BIGINT,BOOLEAN)
+IS 'pgr_hawickUniqueCircuits
+- EXPERIMENTAL
+- Parameters:
+  - Edges SQL with columns: id, source, target, cost [,reverse_cost]
+- Optional Parameters:
+  - min_depth := 3
+  - max_depth := 9223372036854775807
+  - self_loops := true
+- Documentation:
+  - ${PROJECT_DOC_LINK}/pgr_hawickUniqueCircuits.html
+';
+
+--v4.1.0
+CREATE FUNCTION pgr_hawickUniqueCircuits(
+    TEXT,    -- edges_sql (required)
+
+    BIGINT,
+    min_depth INTEGER DEFAULT 3,
+    max_depth BIGINT DEFAULT 9223372036854775807,
+    self_loops BOOLEAN DEFAULT true,
+
+    OUT seq INTEGER,
+    OUT path_id INTEGER,
+    OUT depth INTEGER,
+    OUT start_vid BIGINT,
+    OUT end_vid BIGINT,
+    OUT node BIGINT,
+    OUT edge BIGINT,
+    OUT cost FLOAT,
+    OUT agg_cost FLOAT)
+
+RETURNS SETOF RECORD AS
+$BODY$
+BEGIN
+    RETURN QUERY
+    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1),  ARRAY[$2]::BIGINT[], start_ids, min_depth, max_depth, self_loops) AS a;
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE STRICT;
+
+COMMENT ON FUNCTION pgr_hawickUniqueCircuits(TEXT,BIGINT,INTEGER,BIGINT,BOOLEAN)
 IS 'pgr_hawickUniqueCircuits
 - EXPERIMENTAL
 - Parameters:

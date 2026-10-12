@@ -47,8 +47,17 @@ PGDLLEXPORT Datum _pgr_hawickcircuits(PG_FUNCTION_ARGS) {
         funcctx = SRF_FIRSTCALL_INIT();
         oldcontext = MemoryContextSwitchTo(funcctx->multi_call_memory_ctx);
 
+#ifdef SHOWMSG
+        ereport(NOTICE, (
+                    errcode(ERRCODE_WARNING_DEPRECATED_FEATURE),
+                    errmsg("A stored procedure is using deprecated C internal function '%s'", __func__),
+                    errdetail("Library function '%s' was deprecated in pgRouting %s", __func__, "4.0.0"),
+                    errhint("Consider upgrade pgRouting")));
+#endif
+
         pgr_process_circuits(
                 text_to_cstring(PG_GETARG_TEXT_P(0)),
+                NULL,
 
                 1, 9223372036854775807, true,
 

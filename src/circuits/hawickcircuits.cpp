@@ -41,15 +41,18 @@ namespace  {
 
 struct circuit_collector {
     pgrouting::functions::Circuits& circuits;
+    const std::set<int64_t>& vertices;
     int min_depth;
     int64_t max_depth;
     bool self_loops;
 
     template <typename Vertices, typename G>
-    void cycle(const Vertices& circuit, const G&) {
+    void cycle(const Vertices& circuit, const G& g) {
         const auto depth = static_cast<int64_t>(circuit.size());
         if (depth < min_depth || depth > max_depth) return;
         if (depth == 1 && !self_loops) return;
+        if (!vertices.empty() && vertices.find(g[circuit.front()].id) == vertices.end()) return;
+
         circuits.emplace_back(circuit.begin(), circuit.end());
     }
 };
@@ -70,14 +73,13 @@ namespace functions {
 Circuits
 hawickCircuits(
         const pgrouting::DirectedGraph &graph,
+        const std::set<int64_t> &vertices,
         int min_depth,
         int64_t max_depth,
         bool self_loops) {
-    // results storing the output
     Circuits circuits;
 
-    // a circuit detector to provide the mechanism to store the circuit
-    circuit_collector collector{circuits, min_depth, max_depth, self_loops};
+    circuit_collector collector{circuits, vertices, min_depth, max_depth, self_loops};
 
     CHECK_FOR_INTERRUPTS();
     try {
@@ -107,14 +109,13 @@ hawickCircuits(
 Circuits
 hawickUniqueCircuits(
         const pgrouting::DirectedGraph &graph,
+        const std::set<int64_t> &vertices,
         int min_depth,
         int64_t max_depth,
         bool self_loops) {
-    // results storing the output
     Circuits circuits;
 
-    // a circuit detector to provide the mechanism to store the circuit
-    circuit_collector collector{circuits, min_depth, max_depth, self_loops};
+    circuit_collector collector{circuits, vertices, min_depth, max_depth, self_loops};
 
     CHECK_FOR_INTERRUPTS();
     try {

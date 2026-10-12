@@ -184,6 +184,7 @@ do_shortestPath(
         }
 
         using pgrouting::pgget::get_edges;
+        using pgrouting::pgget::get_intSet;
         using pgrouting::utilities::get_combinations;
         using pgrouting::to_postgres::get_tuples;
         using pgrouting::UndirectedGraph;
@@ -195,9 +196,9 @@ do_shortestPath(
         using pgrouting::algorithms::dagShortestPath;
         using pgrouting::functions::bellmanFord;
         using pgrouting::functions::edgeDisjoint;
-        using functions::binaryBreadthFirstSearch;
-        using functions::hawickCircuits;
-        using functions::hawickUniqueCircuits;
+        using pgrouting::functions::binaryBreadthFirstSearch;
+        using pgrouting::functions::hawickCircuits;
+        using pgrouting::functions::hawickUniqueCircuits;
         using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
@@ -208,6 +209,8 @@ do_shortestPath(
         if (which == OLDKSP && start_vid && end_vid) {
             combinations[*start_vid].insert(*end_vid);
         }
+
+        auto circuit_starts = get_intSet(starts);
 
         size_t K{static_cast<size_t>(k)};
 
@@ -276,10 +279,10 @@ do_shortestPath(
                     break;
                 case OLDHAWICKCIRCUITS:
                 case HAWICKCIRCUITS:
-                    return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
+                    return_count = get_tuples(digraph, hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops), return_tuples);
                     break;
                 case HAWICKUNIQUECIRCUITS:
-                    return_count = get_tuples(digraph, hawickUniqueCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
+                    return_count = get_tuples(digraph, hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops), return_tuples);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);

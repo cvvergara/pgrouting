@@ -36,6 +36,7 @@ CREATE FUNCTION pgr_hawickCircuits(
 
     -- TODO v5 min_depth has default 1
     min_depth INTEGER,
+    start_ids BIGINT[] DEFAULT '{}',
     max_depth BIGINT DEFAULT 9223372036854775807,
     self_loops BOOLEAN DEFAULT true,
 
@@ -54,12 +55,12 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), min_depth, max_depth,self_loops) AS a;
+    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), start_ids, min_depth, max_depth,self_loops) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,BIGINT,BOOLEAN)
+COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,INTEGER,BIGINT[],BIGINT,BOOLEAN)
 IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:

@@ -81,7 +81,7 @@ BEGIN
 
   PREPARE g_bidir_cyc AS
   SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_bidir', 1);
+  FROM pgr_hawickUniquecircuits('g_bidir', min_depth => 1);
 
   RETURN QUERY
   SELECT set_eq('g_bidir_cyc',
@@ -95,7 +95,7 @@ BEGIN
   -- depth numbering
 
   PREPARE g_bidir_seq AS
-  SELECT depth FROM pgr_hawickUniquecircuits('g_bidir', 1);
+  SELECT depth FROM pgr_hawickUniquecircuits('g_bidir', min_depth => 1);
 
   RETURN QUERY
   SELECT CASE WHEN min_lib_version('4.1.0') THEN
@@ -125,7 +125,7 @@ BEGIN
 
   RETURN QUERY
   SELECT is_empty($$
-      SELECT * FROM pgr_hawickUniquecircuits('g_tri', 2, 2)
+      SELECT * FROM pgr_hawickUniquecircuits('g_tri', min_depth => 2, max_depth => 2)
       $$,
       'Directed triangle -> min_depth = max_depth = 2 returns no rows');
 
@@ -142,7 +142,7 @@ BEGIN
 
   PREPARE g4_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g4', 1);
+  FROM pgr_hawickUniquecircuits('g4', min_depth => 1);
 
   RETURN QUERY
   SELECT set_eq('g4_cyc',
@@ -180,7 +180,7 @@ BEGIN
 
   PREPARE g_par_cyc AS
   SELECT depth, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_par', 1);
+  FROM pgr_hawickUniquecircuits('g_par', min_depth => 1);
 
   RETURN QUERY
   SELECT set_eq('g_par_cyc',
@@ -199,7 +199,7 @@ BEGIN
 
   PREPARE g_self_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_self', 1);
+  FROM pgr_hawickUniquecircuits('g_self', min_depth => 1);
 
   RETURN QUERY
   SELECT set_eq('g_self_cyc',
@@ -228,7 +228,7 @@ BEGIN
 
   PREPARE g_cost_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_cost', 1);
+  FROM pgr_hawickUniquecircuits('g_cost', min_depth => 1);
 
   RETURN QUERY
   SELECT set_eq('g_cost_cyc',
