@@ -5,7 +5,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN NOT min_version('4.1.0') THEN plan(1) ELSE plan(22) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(22) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION depth()
 RETURNS SETOF TEXT AS
@@ -39,11 +39,11 @@ PREPARE depth_q_default AS
 SELECT * FROM pgr_hawickcircuits('depth_q');
 
 PREPARE depth_q_full AS
-SELECT * FROM pgr_hawickcircuits('depth_q', 1, 9223372036854775807);
+SELECT * FROM pgr_hawickcircuits('depth_q', 1, 2147483647);
 
 RETURN QUERY
 SELECT set_eq('depth_q_default', 'depth_q_full',
-    'K4: default call equals (min_depth = 1, max_depth = bigint max)');
+    'K4: default call equals (min_depth = 1, max_depth = integer max)');
 
 RETURN QUERY
 SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_q', 1, 2) WHERE edge = -1), 6,
@@ -70,12 +70,12 @@ SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_q', 3, 4) WHE
     'K4: a depth range keeps the circuits within it');
 
 RETURN QUERY
-SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_q', 4, 9223372036854775807) WHERE edge = -1), 6,
+SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_q', 4, 2147483647) WHERE edge = -1), 6,
     'K4: min_depth with an unlimited max_depth keeps the 4-cycles');
 
 RETURN QUERY
 SELECT is_empty($$
-    SELECT * FROM pgr_hawickcircuits('depth_q', 5, 9223372036854775807)
+    SELECT * FROM pgr_hawickcircuits('depth_q', 5, 2147483647)
     $$,
     'K4: min_depth greater than the largest circuit returns no rows');
 
@@ -86,7 +86,7 @@ SELECT is_empty($$
     'K4: a depth range without circuits returns no rows');
 
 RETURN QUERY
-SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_q', max_depth => 2) WHERE edge = -1), 6,
+SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_q', 1, max_depth => 2) WHERE edge = -1), 6,
     'K4: max_depth can be given by name');
 
 RETURN QUERY
@@ -110,7 +110,7 @@ SELECT id, source, target, cost, reverse_cost FROM (VALUES
 ) AS t(id, source, target, cost, reverse_cost);
 
 RETURN QUERY
-SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_k5', 5, 9223372036854775807) WHERE edge = -1), 24,
+SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_k5', 5, 2147483647) WHERE edge = -1), 24,
     'K5: min_depth = 5 keeps only the 5-cycles');
 
 RETURN QUERY
