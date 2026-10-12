@@ -18,86 +18,12 @@ BEGIN
     RETURN;
   END IF;
 
-  -- self contained graphs used by the tests
-  -- (id, source, target, cost, reverse_cost)
+  -- 1. empty graph
 
   PREPARE g_empty AS
   SELECT id, source, target, cost, reverse_cost
   FROM (VALUES (1, 1, 2, 1, 1)) AS t(id, source, target, cost, reverse_cost)
   WHERE false;
-
-  PREPARE g_single AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES (1, 1, 2, 1, -1)) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_chain AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (1, 1, 2, 1, -1),
-      (2, 2, 3, 1, -1),
-      (3, 3, 4, 1, -1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_disc AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (1, 1, 2, 1, 1),
-      (2, 3, 4, 1, 1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_bidir AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES (1, 3, 7, 1, 1)) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_tri AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (1, 1, 2, 1, -1),
-      (2, 2, 3, 1, -1),
-      (3, 3, 1, 1, -1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g4 AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (3, 10, 15, -1, 1),
-      (5, 10, 11, 1, -1),
-      (9, 11, 16, 1, 1),
-      (16, 15, 16, 1, 1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_par AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (1, 1, 2, 5, -1),
-      (2, 1, 2, 1, -1),
-      (3, 2, 1, 4, -1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_self AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost);
-
-  PREPARE g_cost AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (1, 1, 2, 2, -1),
-      (2, 2, 1, 3, -1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  -- complete digraph K4: 6 bidirected edges -> 12 arcs -> 20 elementary circuits
-  PREPARE g_k4 AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM (VALUES
-      (1, 1, 2, 1, 1),
-      (2, 1, 3, 1, 1),
-      (3, 1, 4, 1, 1),
-      (4, 2, 3, 1, 1),
-      (5, 2, 4, 1, 1),
-      (6, 3, 4, 1, 1)
-  ) AS t(id, source, target, cost, reverse_cost);
-
-  -- 1. empty graph
 
   RETURN QUERY
   SELECT is_empty($$
@@ -107,6 +33,10 @@ BEGIN
 
   -- 2. one edge can not have a circuit
 
+  PREPARE g_single AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 1, 2, 1, -1)) AS t(id, source, target, cost, reverse_cost);
+
   RETURN QUERY
   SELECT is_empty($$
       SELECT * FROM pgr_hawickUniquecircuits('g_single', 1)
@@ -114,6 +44,14 @@ BEGIN
       'One edge graph can not have circuits -> Empty row is returned');
 
   -- 3. acyclic graph can not have circuits
+
+  PREPARE g_chain AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 4, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
 
   RETURN QUERY
   SELECT is_empty($$
@@ -123,12 +61,23 @@ BEGIN
 
   -- 4. disconnected components: one two-cycle per component
 
+  PREPARE g_disc AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, 1),
+      (2, 3, 4, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
       FROM pgr_hawickUniquecircuits('g_disc', 1) WHERE edge = -1), 2,
       'Disconnected graph -> one two-cycle per component');
 
   -- 5. bidirectional edge gives an exact two-cycle
+
+  PREPARE g_bidir AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 3, 7, 1, 1)) AS t(id, source, target, cost, reverse_cost);
 
   PREPARE g_bidir_cyc AS
   SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
@@ -159,12 +108,37 @@ BEGIN
 
   -- 7. a directed triangle is counted once, not once per rotation
 
+  PREPARE g_tri AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 1, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
       FROM pgr_hawickUniquecircuits('g_tri', 1) WHERE edge = -1), 1,
       'Directed triangle -> counted once, not 3 rotations');
 
-  -- 8. four vertices: a 4-cycle and two two-cycles
+  -- 8. a directed triangle has no two-cycles
+
+  RETURN QUERY
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_tri', 2, 2)
+      $$,
+      'Directed triangle -> min_depth = max_depth = 2 returns no rows');
+
+  -- 9. four vertices: a 4-cycle and two two-cycles
+
+  PREPARE g4 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (3, 10, 15, -1, 1),
+      (5, 10, 11, 1, -1),
+      (9, 11, 16, 1, 1),
+      (16, 15, 16, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
 
   PREPARE g4_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
@@ -187,14 +161,22 @@ BEGIN
       $$,
       'Four vertices -> 4-cycle, 15<->16 and 11<->16');
 
-  -- 9. parallel arcs collapse to a single circuit
+  -- 10. parallel arcs collapse to a single circuit
+
+  PREPARE g_par AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 5, -1),
+      (2, 1, 2, 1, -1),
+      (3, 2, 1, 4, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
       FROM pgr_hawickUniquecircuits('g_par', 1) WHERE edge = -1), 1,
       'Parallel arcs -> a single circuit is returned');
 
-  -- 10. the collapsed circuit uses the minimum cost arc
+  -- 11. the collapsed circuit uses the minimum cost arc
 
   PREPARE g_par_cyc AS
   SELECT path_seq, start_vid, end_vid, node, edge, cost, agg_cost
@@ -209,7 +191,11 @@ BEGIN
       $$,
       'Parallel arcs -> minimum cost edge (id 2) is used');
 
-  -- 11. a self loop with the default self_loops value
+  -- 12. a self loop with the default self_loops value
+
+  PREPARE g_self AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost);
 
   PREPARE g_self_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
@@ -223,12 +209,19 @@ BEGIN
       $$,
       'Self loop -> one vertex circuit (default self_loops)');
 
-  -- 12. a self loop with self_loops => false
+  -- 13. a self loop with self_loops => false
 
   RETURN QUERY
   SELECT collect_tap(skip(1, 'self_loops parameter not wired yet'));
 
-  -- 13. non unit costs: agg_cost accumulates real edge costs
+  -- 14. non unit costs: agg_cost accumulates real edge costs
+
+  PREPARE g_cost AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 2, -1),
+      (2, 2, 1, 3, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
 
   PREPARE g_cost_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
@@ -243,7 +236,19 @@ BEGIN
       $$,
       'Non unit costs -> agg_cost accumulates real edge costs');
 
-  -- 14. every circuit is elementary, closed and agg_cost is consistent
+  -- 15. every circuit is elementary, closed and agg_cost is consistent
+
+  -- complete digraph K4: 6 bidirected edges -> 12 arcs -> 20 elementary circuits
+  PREPARE g_k4 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, 1),
+      (2, 1, 3, 1, 1),
+      (3, 1, 4, 1, 1),
+      (4, 2, 3, 1, 1),
+      (5, 2, 4, 1, 1),
+      (6, 3, 4, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
 
   RETURN QUERY
   SELECT ok((
@@ -257,14 +262,6 @@ BEGIN
           FROM pgr_hawickUniquecircuits('g_k4', 1)
           GROUP BY path_id
       ) s), 'K4 -> every circuit is elementary, closed and agg_cost is consistent');
-
-  -- 15. a directed triangle has no two-cycles
-
-  RETURN QUERY
-  SELECT is_empty($$
-      SELECT * FROM pgr_hawickUniquecircuits('g_tri', 2, 2)
-      $$,
-      'Directed triangle -> min_depth = max_depth = 2 returns no rows');
 
 END;
 $BODY$
