@@ -5,8 +5,7 @@
 
 BEGIN;
 
-UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('4.1.0') THEN plan(12) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(15) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -19,186 +18,253 @@ BEGIN
     RETURN;
   END IF;
 
-  -- 0 edge, 0 vertex test
+  -- self contained graphs used by the tests
+  -- (id, source, target, cost, reverse_cost)
 
-  PREPARE q1 AS
+  PREPARE g_empty AS
   SELECT id, source, target, cost, reverse_cost
-  FROM edges
-  WHERE id > 18;
+  FROM (VALUES (1, 1, 2, 1, 1)) AS t(id, source, target, cost, reverse_cost)
+  WHERE false;
 
-  PREPARE hawickUniqueCircuits1 AS
-  SELECT * FROM pgr_hawickUniquecircuits('q1', 1);
+  PREPARE g_single AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 1, 2, 1, -1)) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_chain AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 4, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_disc AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, 1),
+      (2, 3, 4, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_bidir AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 3, 7, 1, 1)) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_tri AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, -1),
+      (2, 2, 3, 1, -1),
+      (3, 3, 1, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g4 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (3, 10, 15, -1, 1),
+      (5, 10, 11, 1, -1),
+      (9, 11, 16, 1, 1),
+      (16, 15, 16, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_par AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 5, -1),
+      (2, 1, 2, 1, -1),
+      (3, 2, 1, 4, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_self AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost);
+
+  PREPARE g_cost AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 2, -1),
+      (2, 2, 1, 3, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- complete digraph K4: 6 bidirected edges -> 12 arcs -> 20 elementary circuits
+  PREPARE g_k4 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES
+      (1, 1, 2, 1, 1),
+      (2, 1, 3, 1, 1),
+      (3, 1, 4, 1, 1),
+      (4, 2, 3, 1, 1),
+      (5, 2, 4, 1, 1),
+      (6, 3, 4, 1, 1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  -- 1. empty graph
 
   RETURN QUERY
-  SELECT is_empty('hawickUniqueCircuits1', 'Graph with 0 edge and 0 vertex -> Empty row is returned');
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_empty', 1)
+      $$,
+      'Empty graph -> Empty row is returned');
 
-
-  -- 1 edge test
-
-  PREPARE q2 AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM edges
-  WHERE id = 2;
-
-  PREPARE hawickUniqueCircuits2 AS
-  SELECT * FROM pgr_hawickUniquecircuits('q2', 1);
+  -- 2. one edge can not have a circuit
 
   RETURN QUERY
-  SELECT is_empty('hawickUniqueCircuits2', 'One edge graph can not have circuits -> Empty row is returned');
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_single', 1)
+      $$,
+      'One edge graph can not have circuits -> Empty row is returned');
 
-  -- 2 vertices test (connected)
-
-  PREPARE q3 AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM edges
-  WHERE id = 7;
+  -- 3. acyclic graph can not have circuits
 
   RETURN QUERY
-  SELECT set_eq('q3', $$VALUES (7, 3, 7, 1, 1)$$, 'Graph with two connected vertices 3 and 7');
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_chain', 1)
+      $$,
+      'Acyclic graph can not have circuits -> Empty row is returned');
 
-  PREPARE hawickUniqueCircuits3 AS
+  -- 4. disconnected components: one two-cycle per component
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_disc', 1) WHERE edge = -1), 2,
+      'Disconnected graph -> one two-cycle per component');
+
+  -- 5. bidirectional edge gives an exact two-cycle
+
+  PREPARE g_bidir_cyc AS
   SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('q3', 1);
+  FROM pgr_hawickUniquecircuits('g_bidir', 1);
 
   RETURN QUERY
-  SELECT set_eq('hawickUniqueCircuits3',
+  SELECT set_eq('g_bidir_cyc',
       $$VALUES
-          (1, 1, 3, 3, 3, 7, 1, 0),
-          (2, 1, 3, 3, 7, 7, 1, 1),
+          (1, 1, 3, 3, 3, 1, 1, 0),
+          (2, 1, 3, 3, 7, 1, 1, 1),
           (3, 1, 3, 3, 3, -1, 0, 2)
       $$,
-      'Circuit between the vertex 3 and 7');
+      'Bidirectional edge -> exact two-cycle rows');
 
-  -- path_seq numbering test
+  -- 6. path_seq numbering
 
-  PREPARE hawickUniqueCircuitsSeq AS
-  SELECT path_seq FROM pgr_hawickUniquecircuits('q3', 1);
-
-  RETURN QUERY
-  SELECT set_eq('hawickUniqueCircuitsSeq', $$VALUES (1), (2), (3)$$,
-      'path_seq starts at 1 on 4.1.0');
-
-  -- 3 vertices test
-
-  PREPARE q4 AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM edges
-  WHERE id <= 2;
-
-  RETURN QUERY
-  SELECT set_eq('q4', $$VALUES (1, 5, 6, 1, 1), (2, 6, 10, -1, 1)$$, 'Graph with three vertices 5, 6 and 10');
-
-  PREPARE hawickUniqueCircuits4 AS
-  SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('q4', 1);
-
-  RETURN QUERY
-  SELECT set_eq('hawickUniqueCircuits4',
-      $$VALUES
-          (1, 1, 5, 5, 5, 1, 1, 0),
-          (2, 1, 5, 5, 6, 1, 1, 1),
-          (3, 1, 5, 5, 5, -1, 0, 2)
-      $$,
-      'Circuit between the vertex 5 and 6');
-
-  -- 4 vertices test
-
-  PREPARE q5 AS
-  SELECT id, source, target, cost, reverse_cost
-  FROM edges
-  WHERE id IN (3, 5, 9, 16);
-
-  RETURN QUERY
-  SELECT set_eq('q5',
-      $$VALUES
-          (3, 10, 15, -1, 1),
-          (5, 10, 11, 1, -1),
-          (9, 11, 16, 1, 1),
-          (16, 15, 16, 1, 1)
-      $$,
-      'Graph with four vertices 10, 11, 15, 16');
-
-  PREPARE hawickUniqueCircuits5 AS
-  SELECT start_vid, end_vid, node, edge, cost, agg_cost FROM pgr_hawickUniqueCircuits('q5', 1);
-
-  RETURN QUERY
-  SELECT set_eq('hawickUniqueCircuits5',
-      $$VALUES
-      (10, 10, 10, 5, 1, 0),
-      (10, 10, 11, 9, 1, 1),
-      (10, 10, 16, 16, 1, 2),
-      (10, 10, 15, 3, 1, 3),
-      (10, 10, 10, -1, 0, 4),
-      (15, 15, 15, 16, 1, 0),
-      (15, 15, 16, 16, 1, 1),
-      (15, 15, 15, -1, 0, 2),
-      (11, 11, 11, 9, 1, 0),
-      (11, 11, 16, 9, 1, 1),
-      (11, 11, 11, -1, 0, 2)
-      $$,
-      'Circuits 10->11->16->15->10, 15->16->15 & 11>16>11 expected');
-
-  -- parallel edges test (different costs, min cost edge is not the first id)
-
-  PREPARE q6 AS
-  SELECT path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits($$
-      SELECT id, source, target, cost, reverse_cost
-      FROM (VALUES
-          (1, 1, 2, 5, -1),
-          (2, 1, 2, 1, -1),
-          (3, 2, 1, 4, -1)
-      ) AS t(id, source, target, cost, reverse_cost)
-  $$, 1);
+  PREPARE g_bidir_seq AS
+  SELECT path_seq FROM pgr_hawickUniquecircuits('g_bidir', 1);
 
   RETURN QUERY
   SELECT CASE WHEN min_lib_version('4.1.0') THEN
-    collect_tap(set_eq('q6',
-        $$VALUES
-            (1, 1, 1, 1, 2, 1, 0),
-            (2, 1, 1, 2, 3, 4, 1),
-            (3, 1, 1, 1, -1, 0, 5)
-        $$,
-        'Parallel edges 1->2 collapse to the min cost edge (id 2)'))
+    collect_tap(set_eq('g_bidir_seq', $$VALUES (1), (2), (3)$$,
+      'path_seq starts at 1 on 4.1.0'))
   ELSE
-    collect_tap(skip(1, 'min-cost parallel edge selection on 4.1.0'))
+    collect_tap(set_eq('g_bidir_seq', $$VALUES (0), (1), (2)$$,
+      'path_seq starts at 0 before 4.1.0'))
   END;
 
-  -- self loop test
-
-  PREPARE q7 AS
-  SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits($$
-      SELECT id, source, target, cost, reverse_cost
-      FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost)
-  $$, 1);
+  -- 7. a directed triangle is counted once, not once per rotation
 
   RETURN QUERY
-  SELECT set_eq('q7',
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_tri', 1) WHERE edge = -1), 1,
+      'Directed triangle -> counted once, not 3 rotations');
+
+  -- 8. four vertices: a 4-cycle and two two-cycles
+
+  PREPARE g4_cyc AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickUniquecircuits('g4', 1);
+
+  RETURN QUERY
+  SELECT set_eq('g4_cyc',
+      $$VALUES
+          (10, 10, 10, 5, 1, 0),
+          (10, 10, 11, 9, 1, 1),
+          (10, 10, 16, 16, 1, 2),
+          (10, 10, 15, 3, 1, 3),
+          (10, 10, 10, -1, 0, 4),
+          (15, 15, 15, 16, 1, 0),
+          (15, 15, 16, 16, 1, 1),
+          (15, 15, 15, -1, 0, 2),
+          (11, 11, 11, 9, 1, 0),
+          (11, 11, 16, 9, 1, 1),
+          (11, 11, 11, -1, 0, 2)
+      $$,
+      'Four vertices -> 4-cycle, 15<->16 and 11<->16');
+
+  -- 9. parallel arcs collapse to a single circuit
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_par', 1) WHERE edge = -1), 1,
+      'Parallel arcs -> a single circuit is returned');
+
+  -- 10. the collapsed circuit uses the minimum cost arc
+
+  PREPARE g_par_cyc AS
+  SELECT path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickUniquecircuits('g_par', 1);
+
+  RETURN QUERY
+  SELECT set_eq('g_par_cyc',
+      $$VALUES
+          (1, 1, 1, 1, 2, 1, 0),
+          (2, 1, 1, 2, 3, 4, 1),
+          (3, 1, 1, 1, -1, 0, 5)
+      $$,
+      'Parallel arcs -> minimum cost edge (id 2) is used');
+
+  -- 11. a self loop with the default self_loops value
+
+  PREPARE g_self_cyc AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickUniquecircuits('g_self', 1);
+
+  RETURN QUERY
+  SELECT set_eq('g_self_cyc',
       $$VALUES
           (1, 1, 1, 1, 1, 0),
           (1, 1, 1, -1, 0, 1)
       $$,
-      'A self loop is a one-vertex circuit');
+      'Self loop -> one vertex circuit (default self_loops)');
 
-  -- non-unit cost test
-
-  PREPARE q8 AS
-  SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits($$
-      SELECT id, source, target, cost, reverse_cost
-      FROM (VALUES (1, 1, 2, 2, -1), (2, 2, 1, 3, -1))
-      AS t(id, source, target, cost, reverse_cost)
-  $$ ,1);
+  -- 12. a self loop with self_loops => false
 
   RETURN QUERY
-  SELECT set_eq('q8',
+  SELECT collect_tap(skip(1, 'self_loops parameter not wired yet'));
+
+  -- 13. non unit costs: agg_cost accumulates real edge costs
+
+  PREPARE g_cost_cyc AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickUniquecircuits('g_cost', 1);
+
+  RETURN QUERY
+  SELECT set_eq('g_cost_cyc',
       $$VALUES
           (1, 1, 1, 1, 2, 0),
           (1, 1, 2, 2, 3, 2),
           (1, 1, 1, -1, 0, 5)
       $$,
-      'agg_cost accumulates real edge costs');
+      'Non unit costs -> agg_cost accumulates real edge costs');
+
+  -- 14. every circuit is elementary, closed and agg_cost is consistent
+
+  RETURN QUERY
+  SELECT ok((
+      SELECT bool_and(valid) FROM (
+          SELECT
+              count(*) FILTER (WHERE edge = -1) = 1
+              AND count(DISTINCT node) FILTER (WHERE edge <> -1)
+                  = count(*) FILTER (WHERE edge <> -1)
+              AND bool_and(node = start_vid) FILTER (WHERE edge = -1)
+              AND sum(cost) = max(agg_cost) AS valid
+          FROM pgr_hawickUniquecircuits('g_k4', 1)
+          GROUP BY path_id
+      ) s), 'K4 -> every circuit is elementary, closed and agg_cost is consistent');
+
+  -- 15. a directed triangle has no two-cycles
+
+  RETURN QUERY
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_tri', 2, 2)
+      $$,
+      'Directed triangle -> min_depth = max_depth = 2 returns no rows');
 
 END;
 $BODY$

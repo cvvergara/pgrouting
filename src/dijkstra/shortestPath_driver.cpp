@@ -276,7 +276,7 @@ do_shortestPath(
                     return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
                     break;
                 case HAWICKUNIQUECIRCUITS:
-                    return_count = get_tuples(digraph, hawickCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
+                    return_count = get_tuples(digraph, hawickUniqueCircuits(digraph, min_depth, max_depth, self_loops), return_tuples);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);
