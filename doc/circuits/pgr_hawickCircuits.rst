@@ -26,32 +26,9 @@
 Description
 -------------------------------------------------------------------------------
 
-Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
-This algorithm solves the problem of detecting and enumerating circuits in graphs.
-
-It is capable of circuit enumeration in graphs with directed-arcs, multiple arcs
-and self arcs with a memory efficient and high-performance implementation.
-
-It is an extension of Johnson's Algorithm of finding all the elementary circuits
-of a directed graph.
-
-There are 2 variations defined in the Boost Graph Library.
-In pgRouting , we have implemented the "hawick unique circuits".
-- In this variation we get the circuits after filtering out the circuits caused by
-parallel edges.
-- It is a variation of Johnson's algorithm for circuit enumeration.
-
-**The main Characteristics are:**
-
-- The algorithm implementation works only for directed graph
-- The algorithm outputs the distinct circuits present in the graph.
-- Time Complexity: :math:`O((V + E) (c + 1))`
-
-  - where :math:`|E|` is the number of edges in the graph,
-  - :math:`|V|` is the number of vertices in the graph.
-  - :math:`|c|` is the number of circuits in the graph.
-
-|Boost| Boost Graph Inside
+.. include:: circuits-family.rst
+   :start-after: circuits_characteristics_start
+   :end-before: circuits_characteristics_end
 
 Signatures
 -------------------------------------------------------------------------------
@@ -73,11 +50,9 @@ Signatures
 Parameters
 -------------------------------------------------------------------------------
 
-.. include:: allpairs-family.rst
-    :start-after: edges_start
-    :end-before: edges_end
-
-
+.. include:: circuits-family.rst
+    :start-after: circuits_parameters_start
+    :end-before: circuits_parameters_end
 
 Inner Queries
 -------------------------------------------------------------------------------
@@ -86,50 +61,15 @@ Edges SQL
 ...............................................................................
 
 .. include:: pgRouting-concepts.rst
-    :start-after: no_id_edges_sql_start
-    :end-before: no_id_edges_sql_end
+    :start-after: basic_edges_sql_start
+    :end-before: basic_edges_sql_end
 
 Result columns
 -------------------------------------------------------------------------------
 
-.. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
-
-   * - Column
-     - Type
-     - Description
-   * - ``seq``
-     - ``INTEGER``
-     - Sequential value starting from ``1``
-   * - ``path_id``
-     - ``INTEGER``
-     - Id of the circuit starting from ``1``
-   * - ``path_seq``
-     - ``INTEGER``
-     - Relative position in the path. Has value **1** for the beginning of a path
-   * - ``start_vid``
-     - ``BIGINT``
-     - Identifier of the starting vertex of the circuit.
-   * - ``end_vid``
-     - ``BIGINT``
-     - Identifier of the ending vertex of the circuit.
-   * - ``node``
-     - ``BIGINT``
-     - Identifier of the node in the path from a vid to next vid.
-   * - ``edge``
-     - ``BIGINT``
-     - Identifier of the edge used to go from ``node`` to the next node in
-       the path sequence. ``-1`` for the last node of the path.
-   * - ``cost``
-     - ``FLOAT``
-     - Cost to traverse from ``node`` using ``edge`` to the next node in the
-       path sequence.
-   * - ``agg_cost``
-     - ``FLOAT``
-     - Aggregate cost from ``start_vid`` to ``node``.
-
+.. include:: circuits-family.rst
+    :start-after: circuits_result_columns_start
+    :end-before: circuits_result_columns_end
 
 See Also
 -------------------------------------------------------------------------------

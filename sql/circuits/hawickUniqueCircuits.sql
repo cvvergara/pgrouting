@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: hawickCircuits.sql
+File: hawickUniqueCircuits.sql
 
 Generated with Template by:
 Copyright (c) 2007-2026 pgRouting developers
@@ -63,6 +63,7 @@ IS 'pgr_hawickUniqueCircuits
 - Optional Parameters:
   - min_depth := 3
   - max_depth := 9223372036854775807
+  - self_loops := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
+  - ${PROJECT_DOC_LINK}/pgr_hawickUniqueCircuits.html
 ';
