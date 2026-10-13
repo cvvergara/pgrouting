@@ -20,7 +20,7 @@ FROM edges
 WHERE id IN (4, 7, 8, 10, 11, 12) ORDER BY id;
 INSERT INTO c_example (id, source, target, cost, reverse_cost)
 VALUES
-    (100, 7, 7, 1, 1), (101, 7, 20 , 1, -1), (102, 20, 21, 1, -1) , (103, 21, 7, 1,-1), (104, 7,8, 1.5, 1.5);
+    (100, 7, 7, 1, 1), (101, 7, 20 , 1, -1), (102, 20, 21, 1, -1) , (103, 21, 7, 1,-1), (104, 7,8, 1.5, 1.7);
 /* -- q5 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 0
