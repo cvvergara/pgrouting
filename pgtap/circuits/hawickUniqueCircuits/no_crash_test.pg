@@ -9,14 +9,7 @@ UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
 SELECT CASE WHEN min_version('4.1.0') THEN plan(7) ELSE plan(1) END;
 
 PREPARE edges_q AS
-SELECT id, source, target, cost, reverse_cost  FROM edges;
-
-PREPARE null_ret AS
-SELECT id FROM vertices WHERE id IN (-1);
-
-PREPARE null_ret_arr AS
-SELECT array_agg(id) FROM vertices WHERE id IN (-1);
-
+SELECT id, source, target, cost, reverse_cost FROM edges;
 
 CREATE OR REPLACE FUNCTION no_crash()
 RETURNS SETOF TEXT AS
@@ -32,21 +25,15 @@ BEGIN
     RETURN;
   END IF;
 
-  RETURN QUERY
-  SELECT isnt_empty('edges_q', 'Should be not empty to tests be meaningful');
-  RETURN QUERY
-  SELECT is_empty('null_ret', 'Should be empty to tests be meaningful');
-  RETURN QUERY
-  SELECT set_eq('null_ret_arr', 'SELECT NULL::BIGINT[]', 'Should be empty to tests be meaningful');
+  params = ARRAY[
+  '$$SELECT id, source, target, cost, reverse_cost FROM edges$$'
+  ]::TEXT[];
 
-    params = ARRAY[
-    '$$SELECT id, source, target, cost, reverse_cost  FROM edges$$'
-    ]::TEXT[];
-    subs = ARRAY[
-    'NULL'
-    ]::TEXT[];
+  subs = ARRAY[ 'NULL' ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_hawickUniquecircuits', params, subs);
 
-    RETURN query SELECT * FROM no_crash_test('pgr_hawickUniquecircuits', params, subs);
+  subs = ARRAY[ 'edges_q' ]::TEXT[];
+  RETURN query SELECT * FROM no_crash_test('pgr_hawickUniquecircuits', params, subs);
 
 END
 $BODY$
