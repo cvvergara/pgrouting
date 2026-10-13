@@ -131,8 +131,8 @@ SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_self', min_de
     'Self loop: min_depth = max_depth = 1 keeps only the self loop');
 
 RETURN QUERY
-SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_self', min_depth => 2, max_depth => 2) WHERE edge = -1), 1,
-    'Self loop: min_depth = 2 excludes the self loop');
+SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_self', min_depth => 2, max_depth => 2) WHERE edge = -1), 2,
+    'Self loop: min_depth = 2 keeps the self loop (self_loops default true)');
 
 -- parallel edges collapse to the min cost edge, the circuit has size 2
 

@@ -191,7 +191,7 @@ BEGIN
       $$,
       'Parallel arcs -> minimum cost edge (id 2) is used');
 
-  -- a self loop with the default self_loops value
+  -- a self loop is returned by the default call (min_depth = 3, self_loops = true)
 
   PREPARE g_self AS
   SELECT id, source, target, cost, reverse_cost
@@ -199,7 +199,7 @@ BEGIN
 
   PREPARE g_self_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_self', min_depth => 1);
+  FROM pgr_hawickUniquecircuits('g_self');
 
   RETURN QUERY
   SELECT set_eq('g_self_cyc',

@@ -28,6 +28,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include "circuits/hawickcircuits.hpp"
 
 #include <cstdint>
+#include <set>
 #include <vector>
 
 #include <boost/graph/hawick_circuits.hpp>
@@ -49,8 +50,11 @@ struct circuit_collector {
     template <typename Vertices, typename G>
     void cycle(const Vertices& circuit, const G& g) {
         const auto depth = static_cast<int64_t>(circuit.size());
-        if (depth < min_depth || depth > max_depth) return;
-        if (depth == 1 && !self_loops) return;
+        if (depth == 1) {
+            if (!self_loops) return;
+        } else if (depth < min_depth || depth > max_depth) {
+            return;
+        }
         if (!vertices.empty() && vertices.find(g[circuit.front()].id) == vertices.end()) return;
 
         circuits.emplace_back(circuit.begin(), circuit.end());

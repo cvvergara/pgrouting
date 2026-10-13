@@ -19,8 +19,9 @@ BEGIN
   END IF;
 
   -- pgr_hawickUniquecircuits has min_depth DEFAULT 3, so a bare call does not
-  -- return the u-turns (1->2->1) nor the self loops (1->1), which can not
-  -- happen on real streets.
+  -- return the u-turns (1->2->1), which can not happen on real streets.
+  -- Self loops (1->1) are governed by self_loops (DEFAULT true) and are
+  -- returned independently of min_depth.
 
   -- complete digraph K4: elementary circuits by size: 2 (6), 3 (8), 4 (6) => 20
 
@@ -91,17 +92,16 @@ BEGIN
       $$,
       'U-turn (1->2->1): excluded by the default min_depth');
 
-  -- a self loop (1->1) has depth 1 and is excluded by default
+  -- a self loop (1->1) has depth 1 and is returned by default
 
   PREPARE g_self AS
   SELECT id, source, target, cost, reverse_cost
   FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost);
 
   RETURN QUERY
-  SELECT is_empty($$
-      SELECT * FROM pgr_hawickUniquecircuits('g_self')
-      $$,
-      'Self loop (1->1): excluded by the default min_depth');
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_self') WHERE edge = -1), 1,
+      'Self loop (1->1): returned by the default (self_loops = true)');
 
   -- a size three circuit is included by default
 
@@ -151,7 +151,7 @@ BEGIN
       FROM pgr_hawickUniquecircuits('g_pent') WHERE edge = -1), 1,
       'Five-cycle: default max_depth is unlimited');
 
-  -- on a mixed graph only the triangle survives the default
+  -- on a mixed graph the self loop and the triangle survive the default
 
   -- a self loop, a u-turn and a triangle on the same graph
   PREPARE g_mixed AS
@@ -166,8 +166,8 @@ BEGIN
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
-      FROM pgr_hawickUniquecircuits('g_mixed') WHERE edge = -1), 1,
-      'Mixed graph: only the size 3 circuit survives the default');
+      FROM pgr_hawickUniquecircuits('g_mixed') WHERE edge = -1), 2,
+      'Mixed graph: the self loop and the size 3 circuit survive the default');
 
   -- K5 with the default keeps the circuits of size 3, 4 and 5
 

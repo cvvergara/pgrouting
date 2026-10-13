@@ -97,18 +97,19 @@ Optional parameters
      - Default
      - Description
    * - ``min_depth``
-     - ``INTEGER``
+     - ``BIGINT``
      - ``3``
-     - Minimum number of vertices in a circuit.
+     - Minimum number of vertices in a circuit. Self loops are not affected.
    * - ``max_depth``
      - ``BIGINT``
      - ``9223372036854775807``
-     - Maximum number of vertices in a circuit.
+     - Maximum number of vertices in a circuit. Self loops are not affected.
    * - ``self_loops``
      - ``BOOLEAN``
      - ``true``
      - * When ``true`` self loops are included in the results.
        * When ``false`` self loops are excluded from the results.
+       * Self loops are included or excluded regardless of ``min_depth`` and ``max_depth``.
 
 .. circuits_optionals_end
 
