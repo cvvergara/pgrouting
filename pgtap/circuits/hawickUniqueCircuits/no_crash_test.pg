@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('4.1.0') THEN plan(7) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(8) ELSE plan(1) END;
 
 PREPARE edges_q AS
 SELECT id, source, target, cost, reverse_cost FROM edges;
@@ -32,7 +32,7 @@ BEGIN
   subs = ARRAY[ 'NULL' ]::TEXT[];
   RETURN query SELECT * FROM no_crash_test('pgr_hawickUniquecircuits', params, subs);
 
-  subs = ARRAY[ 'edges_q' ]::TEXT[];
+  params = ARRAY[ '$$edges_q$$' ]::TEXT[];
   RETURN query SELECT * FROM no_crash_test('pgr_hawickUniquecircuits', params, subs);
 
 END

@@ -95,11 +95,14 @@ BEGIN
       'K4: a depth range without circuits returns no rows');
 
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('depth_q', min_depth => 1, max_depth => 2) WHERE edge = -1), 6,
+  SELECT is((SELECT count(*)::INTEGER
+       FROM pgr_hawickUniquecircuits('depth_q', min_depth => 1, max_depth => 2)
+       WHERE edge = -1), 6,
       'K4: max_depth can be given by name');
 
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('depth_q', min_depth => 4) WHERE edge = -1), 6,
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('depth_q', min_depth => 4) WHERE edge = -1), 6,
       'K4: min_depth can be given by name');
 
   -- complete digraph K5: elementary circuits by size: 2 (10), 3 (20), 4 (30), 5 (24) => 84
