@@ -90,7 +90,7 @@ PGDLLEXPORT Datum _pgr_hawickuniquecircuits(PG_FUNCTION_ARGS) {
         size_t       call_cntr = funcctx->call_cntr;
 
 
-        size_t numb = 9;
+        size_t numb = 10;
         values = palloc(numb * sizeof(Datum));
         nulls = palloc(numb * sizeof(bool));
 
@@ -99,20 +99,27 @@ PGDLLEXPORT Datum _pgr_hawickuniquecircuits(PG_FUNCTION_ARGS) {
             nulls[i] = false;
         }
 
-        int64_t seq = call_cntr == 0?  1 : result_tuples[call_cntr - 1].start_id;
+        int64_t depth = call_cntr == 0?  0 : result_tuples[call_cntr - 1].start_id;
         int64_t circuit_id = call_cntr == 0?  1 : result_tuples[call_cntr - 1].end_id;
+
+        int64_t pred = (call_cntr == 0
+                || result_tuples[call_cntr - 1].edge < 0
+                || result_tuples[call_cntr].edge < 0)
+            ? result_tuples[call_cntr].node
+            : result_tuples[call_cntr - 1].node;
 
         values[0] = Int32GetDatum((int32_t)call_cntr + 1);
         values[1] = Int32GetDatum((int32_t)circuit_id);
-        values[2] = Int32GetDatum((int32_t)seq);
+        values[2] = Int32GetDatum((int32_t)depth);
         values[3] = Int64GetDatum(result_tuples[call_cntr].start_id);
         values[4] = Int64GetDatum(result_tuples[call_cntr].end_id);
-        values[5] = Int64GetDatum(result_tuples[call_cntr].node);
-        values[6] = Int64GetDatum(result_tuples[call_cntr].edge);
-        values[7] = Float8GetDatum(result_tuples[call_cntr].cost);
-        values[8] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
+        values[5] = Int64GetDatum(pred);
+        values[6] = Int64GetDatum(result_tuples[call_cntr].node);
+        values[7] = Int64GetDatum(result_tuples[call_cntr].edge);
+        values[8] = Float8GetDatum(result_tuples[call_cntr].cost);
+        values[9] = Float8GetDatum(result_tuples[call_cntr].agg_cost);
 
-        result_tuples[call_cntr].start_id = result_tuples[call_cntr].edge < 0? 1 : seq + 1;
+        result_tuples[call_cntr].start_id = result_tuples[call_cntr].edge < 0? 0 : depth + 1;
         result_tuples[call_cntr].end_id   = result_tuples[call_cntr].edge < 0? circuit_id + 1: circuit_id;
 
         tuple = heap_form_tuple(tuple_desc, values, nulls);

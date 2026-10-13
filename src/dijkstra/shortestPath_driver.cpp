@@ -160,7 +160,7 @@ do_shortestPath(
         const bool is_circuits =
             which == HAWICKCIRCUITS || which == HAWICKUNIQUECIRCUITS;
 
-        if (is_circuits && min_depth <= 0) {
+        if (is_circuits && min_depth < 0) {
             err << "'Invalid value for min_depth'";
             log << "Must be positive";
             return;
@@ -173,7 +173,7 @@ do_shortestPath(
         }
 
         if (is_circuits && max_depth < min_depth) {
-            err << "Invalid values for 'max_depth' and 'min_depth'";
+            err << "Invalid values for 'min_depth' < 'max_depth'";
             log << "'min_depth' can not be greater than 'max_depth'";
             return;
         }
@@ -246,7 +246,7 @@ do_shortestPath(
                     digraph.insert_no_edge_cycle(edges);
                     break;
                 case HAWICKUNIQUECIRCUITS:
-                    digraph.insert_min_edges_no_parallel(edges);
+                    digraph.insert_edges_no_parallel(edges);
                     break;
                 case KSP:
                 case OLDKSP:

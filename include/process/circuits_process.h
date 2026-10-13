@@ -32,8 +32,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
  ********************************************************************PGR-GNU*/
 
-#ifndef INCLUDE_PROCESS_SHORTESTPATH_PROCESS_H_
-#define INCLUDE_PROCESS_SHORTESTPATH_PROCESS_H_
+#ifndef INCLUDE_PROCESS_CIRCUITS_PROCESS_H_
+#define INCLUDE_PROCESS_CIRCUITS_PROCESS_H_
 #pragma once
 
 #ifdef __cplusplus
@@ -67,4 +67,4 @@ void pgr_process_circuits(
 }
 #endif
 
-#endif  // INCLUDE_PROCESS_SHORTESTPATH_PROCESS_H_
+#endif  // INCLUDE_PROCESS_CIRCUITS_PROCESS_H_

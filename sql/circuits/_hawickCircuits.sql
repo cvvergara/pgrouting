@@ -40,6 +40,7 @@ CREATE FUNCTION _pgr_hawickCircuits_v4(
     OUT depth INTEGER,
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,

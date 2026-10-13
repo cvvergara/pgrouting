@@ -19,6 +19,12 @@
 
 .. rubric:: Availability
 
+* Version 4.1.0
+
+  * New optional parameters: ``start_ids``, ``max_depth`` and ``self_loops``.
+  * The ``min_depth`` parameter is compulsory.
+  * Deprecated signature: ``pgr_hawickCircuits(text)``.
+
 * Version 3.4.0
 
   * New experimental function.
@@ -36,7 +42,7 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_)
+   | pgr_hawickCircuits(`Edges SQL`_, ``min_depth`` [, ``start_ids``] [, ``max_depth``] [, ``self_loops``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -53,6 +59,48 @@ Parameters
 .. include:: circuits-family.rst
     :start-after: circuits_parameters_start
     :end-before: circuits_parameters_end
+
+.. list-table::
+   :width: 81
+   :widths: auto
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``min_depth``
+     - ``BIGINT``
+     -
+     - Minimum number of vertices in a circuit. Self loops are not affected.
+
+Optional parameters
+...............................................................................
+
+.. list-table::
+   :width: 81
+   :widths: auto
+   :header-rows: 1
+
+   * - Parameter
+     - Type
+     - Default
+     - Description
+   * - ``start_ids``
+     - ``BIGINT[]``
+     - ``'{}'``
+     - Array of identifiers of the starting vertices of the circuits. When
+       empty all the circuits are returned.
+   * - ``max_depth``
+     - ``BIGINT``
+     - ``9223372036854775807``
+     - Maximum number of vertices in a circuit. Self loops are not affected.
+   * - ``self_loops``
+     - ``BOOLEAN``
+     - ``true``
+     - * When ``true`` self loops are included in the results.
+       * When ``false`` self loops are excluded from the results.
+       * Self loops are included or excluded regardless of ``min_depth`` and ``max_depth``.
 
 Inner Queries
 -------------------------------------------------------------------------------

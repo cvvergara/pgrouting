@@ -45,6 +45,7 @@ CREATE FUNCTION pgr_hawickCircuits(
     OUT depth INTEGER,
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -54,7 +55,7 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RETURN QUERY
-    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
     FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), start_ids, min_depth, max_depth,self_loops) AS a;
 END;
 $BODY$

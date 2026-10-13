@@ -41,6 +41,7 @@ CREATE FUNCTION pgr_hawickUniqueCircuits(
     OUT depth INTEGER,
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -50,7 +51,7 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RETURN QUERY
-    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
     FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1), $2::BIGINT[], min_depth, max_depth, self_loops) AS a;
 END;
 $BODY$
@@ -83,6 +84,7 @@ CREATE FUNCTION pgr_hawickUniqueCircuits(
     OUT depth INTEGER,
     OUT start_vid BIGINT,
     OUT end_vid BIGINT,
+    OUT pred BIGINT,
     OUT node BIGINT,
     OUT edge BIGINT,
     OUT cost FLOAT,
@@ -92,7 +94,7 @@ RETURNS SETOF RECORD AS
 $BODY$
 BEGIN
     RETURN QUERY
-    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.node, a.edge, a.cost, a.agg_cost
+    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
     FROM _pgr_hawickuniquecircuits(_pgr_get_statement($1),
       CASE WHEN $2 = 0 THEN '{}'::BIGINT[] ELSE ARRAY[$2]::BIGINT[] END,
       min_depth, max_depth, self_loops) AS a;

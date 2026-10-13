@@ -332,6 +332,12 @@ class Pgr_base_graph {
      }
 
 
+     template <typename T> void insert_edges_no_parallel(const std::vector<T> &edges) {
+         for (const auto &edge : edges) {
+             graph_add_edge_no_parallel(edge);
+         }
+     }
+
      template <typename T> void insert_min_edges_no_parallel(const std::vector<T> &edges) {
          for (const auto &edge : edges) {
              graph_add_min_edge_no_parallel(edge);
@@ -863,9 +869,63 @@ class Pgr_base_graph {
          }
      }
 
-     template <typename T> void graph_add_min_edge_no_parallel(const T &edge) {
+     /** no parallel, but if an edge exists and has a different id it is replaced */
+
+     template <typename T> void graph_add_edge_no_parallel(const T &edge) {
          bool inserted = false;
          E e;
+         if ((edge.cost < 0) && (edge.reverse_cost < 0)) return;
+
+         /*
+          * true: for source
+          * false: for target
+          */
+         auto vm_s = get_V(T_V(edge, true));
+         auto vm_t = get_V(T_V(edge, false));
+
+         pgassert(vertices_map.find(edge.source) != vertices_map.end());
+         pgassert(vertices_map.find(edge.target) != vertices_map.end());
+
+         E e1, e2;
+         bool found1 = false;
+         bool found2 = false;
+         boost::tie(e1, found1) = boost::edge(vm_s, vm_t, graph);
+         boost::tie(e2, found2) = boost::edge(vm_t, vm_s, graph);
+
+         if (edge.cost >= 0) {
+             if (!found1) {
+                 boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
+                 graph[e].cost = edge.cost;
+                 graph[e].id = edge.id;
+             } else if (edge.cost < graph[e1].cost){
+                 graph[e1].cost = edge.cost;
+                 graph[e1].id = edge.id;
+
+                 /*
+                  * The reverse edge exists already
+                  * - dont change it
+                  */
+                 if (found2) return;
+             }
+         }
+
+         if (edge.reverse_cost >= 0) {
+             if (!found2) {
+                 boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
+                 graph[e].cost = edge.reverse_cost;
+                 graph[e].id = edge.id;
+             } else {
+                 graph[e2].cost = edge.reverse_cost;
+                 graph[e2].id = edge.id;
+             }
+         }
+     }
+
+
+     template <typename T> void graph_add_min_edge_no_parallel(const T &edge) {
+         E e;
+         bool inserted = false;
+
          if ((edge.cost < 0) && (edge.reverse_cost < 0)) return;
 
          /*

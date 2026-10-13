@@ -44,8 +44,11 @@ It is an extension of Johnson's Algorithm of finding all the elementary circuits
 of a directed graph.
 
 There are 2 variations defined in the Boost Graph Library.
-In pgRouting, we have implemented the "hawick unique circuits" variation, where
-the circuits caused by parallel edges are filtered out.
+pgRouting provides:
+
+* :doc:`pgr_hawickCircuits` - Hawick's circuits algorithm.
+* :doc:`pgr_hawickUniqueCircuits` - Hawick's unique circuits algorithm, where
+  the circuits caused by parallel edges are filtered out.
 
 **The main characteristics are:**
 
@@ -152,6 +155,11 @@ Result columns
    * - ``end_vid``
      - ``BIGINT``
      - Identifier of the ending vertex of the circuit.
+   * - ``pred``
+     - ``BIGINT``
+     - Identifier of the node that precedes ``node`` in the circuit. When
+       ``node`` is the first node of the circuit, it has the same value as
+       ``node``.
    * - ``node``
      - ``BIGINT``
      - Identifier of the node in the path from a vid to next vid.
