@@ -5,7 +5,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(7) WHEN min_version('3.4.0') THEN plan(5) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(9) WHEN min_version('3.4.0') THEN plan(5) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION types_check_deprecated()
 RETURNS SETOF TEXT AS
@@ -52,32 +52,33 @@ BEGIN
     RETURN;
   END IF;
 
-RETURN QUERY
-SELECT has_function('pgr_hawickcircuits');
-RETURN QUERY
-SELECT has_function('pgr_hawickcircuits', '{text,int8,_int8,int8,bool}'::TEXT[]);
-RETURN QUERY
-SELECT function_returns('pgr_hawickcircuits', '{text,int8,_int8,int8,bool}'::TEXT[],'setof record');
+RETURN QUERY SELECT has_function('pgr_hawickcircuits', ARRAY['text']);
+RETURN QUERY SELECT function_returns('pgr_hawickcircuits', ARRAY['text'],'setof record');
 
 RETURN QUERY
 SELECT collect_tap(
 
-  has_function('pgr_hawickcircuits', ARRAY['text']),
+    has_function('pgr_hawickcircuits'),
 
-  function_returns('pgr_hawickcircuits', ARRAY['text'],'setof record'),
+    has_function('pgr_hawickcircuits', '{text,int8,int8,int8,bool}'::TEXT[]),
+    has_function('pgr_hawickcircuits', '{text,anyarray,int8,int8,bool}'::TEXT[]),
 
-  function_args_eq('pgr_hawickcircuits',
-    $$VALUES
-    ('{"","seq","path_id","depth","start_vid","end_vid","pred","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"",min_depth,start_ids,max_depth,self_loops,seq,path_id,depth,start_vid,end_vid,pred,node,edge,cost,agg_cost}'::TEXT[])
-    $$),
+    function_returns('pgr_hawickcircuits', '{text,int8,int8,int8,bool}'::TEXT[],'setof record'),
+    function_returns('pgr_hawickcircuits', '{text,anyarray,int8,int8,bool}'::TEXT[],'setof record'),
 
-  function_types_eq('pgr_hawickcircuits',
-    $$VALUES
-    ('{text,int4,int4,int4,int8,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,int8,_int8,int8,bool,int4,int4,int4,int8,int8,int8,int8,int8,float8,float8}'::TEXT[])
-    $$)
-);
+    function_args_eq('pgr_hawickcircuits',
+      $$VALUES
+      ('{"",seq,path_id,depth,start_vid,end_vid,pred,node,edge,cost,agg_cost}'::TEXT[]),
+      ('{"","",min_depth,max_depth,self_loops,seq,path_id,depth,start_vid,end_vid,pred,node,edge,cost,agg_cost}'::TEXT[])
+      $$),
+
+    function_types_eq('pgr_hawickcircuits',
+      $$VALUES
+      ('{text,int4,int4,int4,int8,int8,int8,int8,int8,float8,float8}'::TEXT[]),
+      ('{text,anyarray,int8,int8,bool,int4,int4,int4,int8,int8,int8,int8,int8,float8,float8}'::TEXT[]),
+      ('{text,int8,int8,int8,bool,int4,int4,int4,int8,int8,int8,int8,int8,float8,float8}'::TEXT[])
+      $$)
+  );
 
 END;
 $BODY$
