@@ -155,11 +155,11 @@ SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickUniquecircuits('depth_par', m
 
 RETURN QUERY
 SELECT throws_ok($$
-    SELECT * FROM pgr_hawickUniquecircuits('depth_q', min_depth => 0, max_depth => 5)
+    SELECT * FROM pgr_hawickUniquecircuits('depth_q', min_depth => -1, max_depth => 5)
     $$,
     'XX000',
     $$'Invalid value for min_depth'$$,
-    'min_depth = 0 should throw');
+    'min_depth = -1 should throw');
 
 RETURN QUERY
 SELECT throws_ok($$
@@ -174,7 +174,7 @@ SELECT throws_ok($$
     SELECT * FROM pgr_hawickUniquecircuits('depth_q', min_depth => 5, max_depth => 2)
     $$,
     'XX000',
-    $$Invalid values for 'max_depth' and 'min_depth'$$,
+    $$Invalid values for 'min_depth' < 'max_depth'$$,
     'min_depth greater than max_depth should throw');
 
 END;

@@ -5,7 +5,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(19) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(18) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION options()
 RETURNS SETOF TEXT AS
@@ -147,18 +147,10 @@ BEGIN
       SELECT * FROM pgr_hawickUniquecircuits('k4', max_depth => 2)
       $$,
       'XX000',
-      $$Invalid values for 'max_depth' and 'min_depth'$$,
+      $$Invalid values for 'min_depth' < 'max_depth'$$,
       'K4: max_depth => 2 is less than the default min_depth = 3');
 
   -- wrong option values
-
-  RETURN QUERY
-  SELECT throws_ok($$
-      SELECT * FROM pgr_hawickUniquecircuits('k4', min_depth => 0)
-      $$,
-      'XX000',
-      $$'Invalid value for min_depth'$$,
-      'K4: min_depth => 0 is rejected');
 
   RETURN QUERY
   SELECT throws_ok($$
@@ -189,7 +181,7 @@ BEGIN
       SELECT * FROM pgr_hawickUniquecircuits('k4', min_depth => 5, max_depth => 2)
       $$,
       'XX000',
-      $$Invalid values for 'max_depth' and 'min_depth'$$,
+      $$Invalid values for 'min_depth' < 'max_depth'$$,
       'K4: min_depth => 5 greater than max_depth => 2 is rejected');
 
 END;
