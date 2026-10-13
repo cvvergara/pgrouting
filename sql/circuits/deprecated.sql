@@ -66,7 +66,7 @@ $BODY$
 BEGIN
     RETURN QUERY
     SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
-    FROM pgr_hawickCircuits($1, 1) AS a;
+    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), '{}'::BIGINT[], 0, 9223372036854775807, true) AS a;
 END;
 $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
