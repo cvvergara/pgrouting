@@ -38,7 +38,7 @@ Signatures
 
    | pgr_hawickCircuits(`Edges SQL`_)
 
-   | Returns set of |generic-result|
+   | Returns set of |circuits-result|
    | OR EMPTY SET
 
 :Example: Circuits present in the pgRouting :doc:`sampledata`

@@ -39,7 +39,7 @@ Signatures
 
    | pgr_hawickUniqueCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
 
-   | Returns set of |generic-result|
+   | Returns set of |circuits-result|
    | OR EMPTY SET
 
 :Example: Circuits present in the pgRouting :doc:`sampledata`

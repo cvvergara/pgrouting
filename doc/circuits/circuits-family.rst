@@ -141,9 +141,10 @@ Result columns
    * - ``path_id``
      - ``INTEGER``
      - Id of the circuit starting from ``1``
-   * - ``path_seq``
+   * - ``depth``
      - ``INTEGER``
-     - Relative position in the path. Has value **1** for the beginning of a path
+     - Relative position in the circuit. Has value **1** for the beginning of a
+       circuit
    * - ``start_vid``
      - ``BIGINT``
      - Identifier of the starting vertex of the circuit.
