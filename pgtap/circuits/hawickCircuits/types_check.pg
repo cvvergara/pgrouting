@@ -55,9 +55,9 @@ BEGIN
 RETURN QUERY
 SELECT has_function('pgr_hawickcircuits');
 RETURN QUERY
-SELECT has_function('pgr_hawickcircuits', '{text,int4,int8,bool}'::TEXT[]);
+SELECT has_function('pgr_hawickcircuits', '{text,int8,_int8,int8,bool}'::TEXT[]);
 RETURN QUERY
-SELECT function_returns('pgr_hawickcircuits', '{text,int4,int8,bool}'::TEXT[],'setof record');
+SELECT function_returns('pgr_hawickcircuits', '{text,int8,_int8,int8,bool}'::TEXT[],'setof record');
 
 RETURN QUERY
 SELECT collect_tap(
@@ -69,13 +69,13 @@ SELECT collect_tap(
   function_args_eq('pgr_hawickcircuits',
     $$VALUES
     ('{"","seq","path_id","depth","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[]),
-    ('{"","min_depth","max_depth","self_loops","seq","path_id","depth","start_vid","end_vid","node","edge","cost","agg_cost"}'::TEXT[])
+    ('{"",min_depth,start_ids,max_depth,self_loops,seq,path_id,depth,start_vid,end_vid,node,edge,cost,agg_cost}'::TEXT[])
     $$),
 
   function_types_eq('pgr_hawickcircuits',
     $$VALUES
     ('{text,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[]),
-    ('{text,int4,int8,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
+    ('{text,int8,_int8,int8,bool,int4,int4,int4,int8,int8,int8,int8,float8,float8}'::TEXT[])
     $$)
 );
 

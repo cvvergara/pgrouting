@@ -122,7 +122,7 @@ BEGIN
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
-      FROM pgr_hawickUniquecircuits('self', 1, self_loops => false) WHERE edge = -1), 1,
+      FROM pgr_hawickUniquecircuits('self', min_depth => 1, self_loops => false) WHERE edge = -1), 1,
       'Self loop graph: positional min_depth with a named self_loops');
 
   -- self_loops => false with the default min_depth = 3 returns nothing

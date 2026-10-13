@@ -39,10 +39,10 @@ BEGIN
   SELECT * FROM pgr_hawickUniquecircuits('g_k4');
 
   PREPARE min_depth_3_k4 AS
-  SELECT * FROM pgr_hawickUniquecircuits('g_k4', 3);
+  SELECT * FROM pgr_hawickUniquecircuits('g_k4', min_depth => 3);
 
   PREPARE full_k4 AS
-  SELECT * FROM pgr_hawickUniquecircuits('g_k4', 3, 9223372036854775807, true);
+  SELECT * FROM pgr_hawickUniquecircuits('g_k4', min_depth => 3, max_depth => 9223372036854775807, self_loops => true);
 
   PREPARE named_k4 AS
   SELECT * FROM pgr_hawickUniquecircuits('g_k4', min_depth => 3);

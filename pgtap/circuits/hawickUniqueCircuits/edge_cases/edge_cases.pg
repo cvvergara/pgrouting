@@ -70,7 +70,7 @@ BEGIN
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
-      FROM pgr_hawickUniquecircuits('g_disc') WHERE edge = -1), 2,
+      FROM pgr_hawickUniquecircuits('g_disc', min_depth => 2) WHERE edge = -1), 2,
       'Disconnected graph -> one two-cycle per component');
 
   -- bidirectional edge gives an exact two-cycle
@@ -81,7 +81,7 @@ BEGIN
 
   PREPARE g_bidir_cyc AS
   SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_bidir');
+  FROM pgr_hawickUniquecircuits('g_bidir', min_depth => 2);
 
   RETURN QUERY
   SELECT set_eq('g_bidir_cyc',
@@ -95,7 +95,7 @@ BEGIN
   -- depth numbering
 
   PREPARE g_bidir_seq AS
-  SELECT depth FROM pgr_hawickUniquecircuits('g_bidir');
+  SELECT depth FROM pgr_hawickUniquecircuits('g_bidir', min_depth => 2);
 
   RETURN QUERY
   SELECT CASE WHEN min_lib_version('4.1.0') THEN
@@ -142,7 +142,7 @@ BEGIN
 
   PREPARE g4_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g4');
+  FROM pgr_hawickUniquecircuits('g4', min_depth => 2);
 
   RETURN QUERY
   SELECT set_eq('g4_cyc',
@@ -173,14 +173,14 @@ BEGIN
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
-      FROM pgr_hawickUniquecircuits('g_par') WHERE edge = -1), 1,
+      FROM pgr_hawickUniquecircuits('g_par', min_depth => 2) WHERE edge = -1), 1,
       'Parallel arcs -> a single circuit is returned');
 
   -- the collapsed circuit uses the minimum cost arc
 
   PREPARE g_par_cyc AS
   SELECT depth, start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_par');
+  FROM pgr_hawickUniquecircuits('g_par', min_depth => 2);
 
   RETURN QUERY
   SELECT set_eq('g_par_cyc',
@@ -199,7 +199,7 @@ BEGIN
 
   PREPARE g_self_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_self');
+  FROM pgr_hawickUniquecircuits('g_self', min_depth => 1);
 
   RETURN QUERY
   SELECT set_eq('g_self_cyc',
@@ -228,7 +228,7 @@ BEGIN
 
   PREPARE g_cost_cyc AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost
-  FROM pgr_hawickUniquecircuits('g_cost');
+  FROM pgr_hawickUniquecircuits('g_cost', min_depth => 2);
 
   RETURN QUERY
   SELECT set_eq('g_cost_cyc',
