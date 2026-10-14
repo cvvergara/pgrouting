@@ -126,6 +126,7 @@ function action_tests {
     bash tools/scripts/test_signatures.sh
     bash tools/scripts/test_shell.sh
     bash tools/scripts/test_license.sh
+    bash tools/scripts/test_pgtap_plan.sh
     bash tools/scripts/code_checker.sh
     tools/testers/doc_queries_generator.pl  -documentation  -pgport $PGPORT
 }
