@@ -76,7 +76,8 @@ void
 expand_parallel_arcs(
         const pgrouting::DirectedGraph& graph,
         const std::vector<pgrouting::DirectedGraph::V>& vertex_circuit,
-        pgrouting::types::Circuits& circuits) {
+        pgrouting::types::Circuits& circuits,
+        bool u_turn_on_edge) {
     using E = pgrouting::DirectedGraph::E;
 
     const size_t size = vertex_circuit.size();
@@ -101,7 +102,19 @@ expand_parallel_arcs(
             const auto edge = hops[i][indexes[i]];
             circuit.push_back({graph[vertex_circuit[i]].id, graph[edge].id, graph[edge].cost});
         }
-        circuits.push_back(std::move(circuit));
+
+        bool keep = true;
+        if (!u_turn_on_edge && size >= 2) {
+            for (size_t i = 0; i < size && keep; ++i) {
+                const auto next = (i + 1) % size;
+                if (circuit[i].edge == circuit[next].edge) {
+                    keep = false;
+                }
+            }
+        }
+        if (keep) {
+            circuits.push_back(std::move(circuit));
+        }
 
         size_t i = 0;
         while (i < size && ++indexes[i] == hops[i].size()) {
@@ -132,7 +145,7 @@ hawickCircuits(
         int64_t min_depth,
         int64_t max_depth,
         bool self_loops,
-        bool) {
+        bool u_turn_on_edge) {
     std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
     circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops, {}};
@@ -152,7 +165,7 @@ hawickCircuits(
 
     pgrouting::types::Circuits circuits;
     for (const auto& vertex_circuit : vertex_circuits) {
-        expand_parallel_arcs(graph, vertex_circuit, circuits);
+        expand_parallel_arcs(graph, vertex_circuit, circuits, u_turn_on_edge);
     }
 
     return circuits;
@@ -174,7 +187,7 @@ hawickUniqueCircuits(
         int64_t min_depth,
         int64_t max_depth,
         bool self_loops,
-        bool) {
+        bool u_turn_on_edge) {
     UniqueCircuits circuits;
 
     circuit_collector collector{circuits, vertices, min_depth, max_depth, self_loops, {}};
@@ -190,6 +203,34 @@ hawickUniqueCircuits(
         throw;
     } catch (...) {
         throw;
+    }
+
+    if (!u_turn_on_edge) {
+        UniqueCircuits filtered;
+        filtered.clear();
+        filtered.reserve(circuits.size());
+        for (const auto &circuit : circuits) {
+            if (circuit.size() < 2) {
+                filtered.push_back(circuit);
+                continue;
+            }
+            bool keep = true;
+            for (size_t i = 0; i < circuit.size() && keep; ++i) {
+                const auto from = circuit[i];
+                const auto to = circuit[(i + 1) % circuit.size()];
+                const auto to2 = circuit[(i + 2) % circuit.size()];
+                double c0 = 0.0;
+                double c1 = 0.0;
+                const auto e0 = graph.get_edge_id(from, to, c0);
+                const auto e1 = graph.get_edge_id(to, to2, c1);
+                if (e0 != -1 && e1 != -1 && e0 == e1) {
+                    keep = false;
+                    break;
+                }
+            }
+            if (keep) filtered.push_back(circuit);
+        }
+        circuits.swap(filtered);
     }
 
     return circuits;
