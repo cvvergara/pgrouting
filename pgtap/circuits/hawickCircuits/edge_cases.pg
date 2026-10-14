@@ -6,225 +6,225 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('3.4.0') THEN plan(14) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(14) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-IF NOT min_version('3.4.0') THEN
+  IF NOT min_version('4.1.0') THEN
+    RETURN QUERY
+    SELECT skip(1, 'pgr_hawickcircuits was rewritten on 4.1.0');
+    RETURN;
+  END IF;
+
+  -- 0 edge, 0 vertex test
+
+  PREPARE q1 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id > 18;
+
   RETURN QUERY
-  SELECT skip(1, 'Function is new on 3.4.0');
-  RETURN;
-END IF;
+  SELECT is_empty('q1', 'Graph with 0 edge and 0 vertex');
 
--- 0 edge, 0 vertex test
+  PREPARE hawickCircuits1 AS
+  SELECT * FROM pgr_hawickcircuits('q1');
 
-PREPARE q1 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id > 18;
-
-RETURN QUERY
-SELECT is_empty('q1', 'Graph with 0 edge and 0 vertex');
-
-PREPARE hawickCircuits1 AS
-SELECT * FROM pgr_hawickcircuits('q1');
-
-RETURN QUERY
-SELECT is_empty('hawickCircuits1', 'Graph with 0 edge and 0 vertex -> Empty row is returned');
+  RETURN QUERY
+  SELECT is_empty('hawickCircuits1', 'Graph with 0 edge and 0 vertex -> Empty row is returned');
 
 
--- 1 edge test
+  -- 1 edge test
 
-PREPARE q2 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id = 2;
+  PREPARE q2 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id = 2;
 
-PREPARE hawickCircuits2 AS
-SELECT * FROM pgr_hawickcircuits('q2');
+  PREPARE hawickCircuits2 AS
+  SELECT * FROM pgr_hawickcircuits('q2');
 
-RETURN QUERY
-SELECT is_empty('hawickCircuits2', 'One edge graph can not have circuits -> Empty row is returned');
+  RETURN QUERY
+  SELECT is_empty('hawickCircuits2', 'One edge graph can not have circuits -> Empty row is returned');
 
--- 2 vertices test (connected)
+  -- 2 vertices test (connected)
 
-PREPARE q3 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id = 7;
+  PREPARE q3 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id = 7;
 
-RETURN QUERY
-SELECT set_eq('q3', $$VALUES (7, 3, 7, 1, 1)$$, 'Graph with two connected vertices 3 and 7');
+  RETURN QUERY
+  SELECT set_eq('q3', $$VALUES (7, 3, 7, 1, 1)$$, 'Graph with two connected vertices 3 and 7');
 
-PREPARE hawickCircuits3 AS
-SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_hawickcircuits('q3');
+  PREPARE hawickCircuits3 AS
+  SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickcircuits('q3');
 
-RETURN QUERY
-SELECT set_eq('hawickCircuits3',
-    $$VALUES
-        (1, 1, 3, 3, 3, 7, 1, 0),
-        (2, 1, 3, 3, 7, 7, 1, 1),
-        (3, 1, 3, 3, 3, -1, 0, 2)
-    $$,
-    'Circuit between the vertex 3 and 7');
-
--- depth numbering test
-
-PREPARE hawickCircuitsSeq AS
-SELECT depth FROM pgr_hawickcircuits('q3');
-
-RETURN QUERY
-SELECT collect_tap(set_eq('hawickCircuitsSeq', $$VALUES (0), (1), (2)$$,
-    'depth starts at 0 on 4.1.0'));
-
--- 3 vertices test
-
-PREPARE q4 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id <= 2;
-
-RETURN QUERY
-SELECT set_eq('q4', $$VALUES (1, 5, 6, 1, 1), (2, 6, 10, -1, 1)$$, 'Graph with three vertices 5, 6 and 10');
-
-PREPARE hawickCircuits4 AS
-SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_hawickcircuits('q4');
-
-RETURN QUERY
-SELECT set_eq('hawickCircuits4',
-    $$VALUES
-        (1, 1, 5, 5, 5, 1, 1, 0),
-        (2, 1, 5, 5, 6, 1, 1, 1),
-        (3, 1, 5, 5, 5, -1, 0, 2)
-    $$,
-    'Circuit between the vertex 5 and 6');
-
--- 4 vertices test
-
-PREPARE q5 AS
-SELECT id, source, target, cost, reverse_cost
-FROM edges
-WHERE id IN (3, 5, 9, 16);
-
-RETURN QUERY
-SELECT set_eq('q5',
-    $$VALUES
-        (3, 10, 15, -1, 1),
-        (5, 10, 11, 1, -1),
-        (9, 11, 16, 1, 1),
-        (16, 15, 16, 1, 1)
-    $$,
-    'Graph with four vertices 10, 11, 15, 16');
-
-PREPARE hawickCircuits5 AS
-SELECT start_vid, end_vid, node, edge, cost, agg_cost FROM pgr_hawickCircuits('q5');
-
-RETURN QUERY
-SELECT set_eq('hawickCircuits5',
-    $$VALUES
-    (10, 10, 10, 5, 1, 0),
-    (10, 10, 11, 9, 1, 1),
-    (10, 10, 16, 16, 1, 2),
-    (10, 10, 15, 3, 1, 3),
-    (10, 10, 10, -1, 0, 4),
-    (15, 15, 15, 16, 1, 0),
-    (15, 15, 16, 16, 1, 1),
-    (15, 15, 15, -1, 0, 2),
-    (11, 11, 11, 9, 1, 0),
-    (11, 11, 16, 9, 1, 1),
-    (11, 11, 11, -1, 0, 2)
-    $$,
-    'Circuits 10->11->16->15->10, 15->16->15 & 11>16>11 expected');
-
--- parallel edges test (different costs, min cost edge is not the first id)
-
-PREPARE q6 AS
-SELECT depth, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_hawickcircuits($$
-    SELECT id, source, target, cost, reverse_cost
-    FROM (VALUES
-        (1, 1, 2, 5, -1),
-        (2, 1, 2, 1, -1),
-        (3, 2, 1, 4, -1)
-    ) AS t(id, source, target, cost, reverse_cost)
-$$);
-
-RETURN QUERY
-SELECT collect_tap(set_eq('q6',
+  RETURN QUERY
+  SELECT set_eq('hawickCircuits3',
       $$VALUES
-          (0, 1, 1, 1, 1, 5, 0),
-          (1, 1, 1, 2, 3, 4, 5),
-          (2, 1, 1, 1, -1, 0, 9),
-          (0, 1, 1, 1, 2, 1, 0),
-          (1, 1, 1, 2, 3, 4, 1),
-          (2, 1, 1, 1, -1, 0, 5)
+          (1, 1, 3, 3, 3, 7, 1, 0),
+          (2, 1, 3, 3, 7, 7, 1, 1),
+          (3, 1, 3, 3, 3, -1, 0, 2)
       $$,
-      'Parallel edges 1->2 give one circuit per arc (edge 1 and edge 2)'));
+      'Circuit between the vertex 3 and 7');
 
--- self loop test
+  -- depth numbering test
 
-PREPARE q7 AS
-SELECT start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_hawickcircuits($$
-    SELECT id, source, target, cost, reverse_cost
-    FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost)
-$$);
+  PREPARE hawickCircuitsSeq AS
+  SELECT depth FROM pgr_hawickcircuits('q3');
 
-RETURN QUERY
-SELECT set_eq('q7',
-    $$VALUES
-        (1, 1, 1, 1, 1, 0),
-        (1, 1, 1, -1, 0, 1)
-    $$,
-    'A self loop is a one-vertex circuit');
+  RETURN QUERY
+  SELECT collect_tap(set_eq('hawickCircuitsSeq', $$VALUES (0), (1), (2)$$,
+      'depth starts at 0 on 4.1.0'));
 
--- non-unit cost test
+  -- 3 vertices test
 
-PREPARE q8 AS
-SELECT start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_hawickcircuits($$
-    SELECT id, source, target, cost, reverse_cost
-    FROM (VALUES (1, 1, 2, 2, -1), (2, 2, 1, 3, -1))
-    AS t(id, source, target, cost, reverse_cost)
-$$);
+  PREPARE q4 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id <= 2;
 
-RETURN QUERY
-SELECT set_eq('q8',
-    $$VALUES
-        (1, 1, 1, 1, 2, 0),
-        (1, 1, 2, 2, 3, 2),
-        (1, 1, 1, -1, 0, 5)
-    $$,
-    'agg_cost accumulates real edge costs');
+  RETURN QUERY
+  SELECT set_eq('q4', $$VALUES (1, 5, 6, 1, 1), (2, 6, 10, -1, 1)$$, 'Graph with three vertices 5, 6 and 10');
 
--- multiple parallel arcs test
+  PREPARE hawickCircuits4 AS
+  SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickcircuits('q4');
 
-PREPARE q9 AS
-SELECT id, source, target, cost, reverse_cost FROM (VALUES
-    ( 1, 0, 1, 1, -1),
-    ( 2, 0, 1, 1, -1),
-    ( 3, 0, 1, 1, -1),
-    ( 4, 0, 1, 1, -1),
-    ( 5, 1, 2, 1, -1),
-    ( 6, 1, 2, 1, -1),
-    ( 7, 1, 2, 1, -1),
-    ( 8, 1, 2, 1, -1),
-    ( 9, 2, 0, 1, -1),
-    (10, 2, 3, 1, -1),
-    (11, 3, 0, 1, -1)
-) AS t(id, source, target, cost, reverse_cost);
+  RETURN QUERY
+  SELECT set_eq('hawickCircuits4',
+      $$VALUES
+          (1, 1, 5, 5, 5, 1, 1, 0),
+          (2, 1, 5, 5, 6, 1, 1, 1),
+          (3, 1, 5, 5, 5, -1, 0, 2)
+      $$,
+      'Circuit between the vertex 5 and 6');
 
-RETURN QUERY
-SELECT ok((
-    SELECT count(*) FILTER (WHERE depth = 3) = 16
-       AND count(*) FILTER (WHERE depth = 4) = 16
-    FROM pgr_hawickcircuits('q9') WHERE edge = -1),
-    '4 arcs on 0->1 and 4 arcs on 1->2: 16 three-circuits plus 16 four-circuits');
+  -- 4 vertices test
+
+  PREPARE q5 AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM edges
+  WHERE id IN (3, 5, 9, 16);
+
+  RETURN QUERY
+  SELECT set_eq('q5',
+      $$VALUES
+          (3, 10, 15, -1, 1),
+          (5, 10, 11, 1, -1),
+          (9, 11, 16, 1, 1),
+          (16, 15, 16, 1, 1)
+      $$,
+      'Graph with four vertices 10, 11, 15, 16');
+
+  PREPARE hawickCircuits5 AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost FROM pgr_hawickCircuits('q5');
+
+  RETURN QUERY
+  SELECT set_eq('hawickCircuits5',
+      $$VALUES
+      (10, 10, 10, 5, 1, 0),
+      (10, 10, 11, 9, 1, 1),
+      (10, 10, 16, 16, 1, 2),
+      (10, 10, 15, 3, 1, 3),
+      (10, 10, 10, -1, 0, 4),
+      (15, 15, 15, 16, 1, 0),
+      (15, 15, 16, 16, 1, 1),
+      (15, 15, 15, -1, 0, 2),
+      (11, 11, 11, 9, 1, 0),
+      (11, 11, 16, 9, 1, 1),
+      (11, 11, 11, -1, 0, 2)
+      $$,
+      'Circuits 10->11->16->15->10, 15->16->15 & 11>16>11 expected');
+
+  -- parallel edges test (different costs, min cost edge is not the first id)
+
+  PREPARE q6 AS
+  SELECT depth, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickcircuits($$
+      SELECT id, source, target, cost, reverse_cost
+      FROM (VALUES
+          (1, 1, 2, 5, -1),
+          (2, 1, 2, 1, -1),
+          (3, 2, 1, 4, -1)
+      ) AS t(id, source, target, cost, reverse_cost)
+  $$);
+
+  RETURN QUERY
+  SELECT collect_tap(set_eq('q6',
+        $$VALUES
+            (0, 1, 1, 1, 1, 5, 0),
+            (1, 1, 1, 2, 3, 4, 5),
+            (2, 1, 1, 1, -1, 0, 9),
+            (0, 1, 1, 1, 2, 1, 0),
+            (1, 1, 1, 2, 3, 4, 1),
+            (2, 1, 1, 1, -1, 0, 5)
+        $$,
+        'Parallel edges 1->2 give one circuit per arc (edge 1 and edge 2)'));
+
+  -- self loop test
+
+  PREPARE q7 AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickcircuits($$
+      SELECT id, source, target, cost, reverse_cost
+      FROM (VALUES (1, 1, 1, 1, -1)) AS t(id, source, target, cost, reverse_cost)
+  $$);
+
+  RETURN QUERY
+  SELECT set_eq('q7',
+      $$VALUES
+          (1, 1, 1, 1, 1, 0),
+          (1, 1, 1, -1, 0, 1)
+      $$,
+      'A self loop is a one-vertex circuit');
+
+  -- non-unit cost test
+
+  PREPARE q8 AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickcircuits($$
+      SELECT id, source, target, cost, reverse_cost
+      FROM (VALUES (1, 1, 2, 2, -1), (2, 2, 1, 3, -1))
+      AS t(id, source, target, cost, reverse_cost)
+  $$);
+
+  RETURN QUERY
+  SELECT set_eq('q8',
+      $$VALUES
+          (1, 1, 1, 1, 2, 0),
+          (1, 1, 2, 2, 3, 2),
+          (1, 1, 1, -1, 0, 5)
+      $$,
+      'agg_cost accumulates real edge costs');
+
+  -- multiple parallel arcs test
+
+  PREPARE q9 AS
+  SELECT id, source, target, cost, reverse_cost FROM (VALUES
+      ( 1, 0, 1, 1, -1),
+      ( 2, 0, 1, 1, -1),
+      ( 3, 0, 1, 1, -1),
+      ( 4, 0, 1, 1, -1),
+      ( 5, 1, 2, 1, -1),
+      ( 6, 1, 2, 1, -1),
+      ( 7, 1, 2, 1, -1),
+      ( 8, 1, 2, 1, -1),
+      ( 9, 2, 0, 1, -1),
+      (10, 2, 3, 1, -1),
+      (11, 3, 0, 1, -1)
+  ) AS t(id, source, target, cost, reverse_cost);
+
+  RETURN QUERY
+  SELECT ok((
+      SELECT count(*) FILTER (WHERE depth = 3) = 16
+         AND count(*) FILTER (WHERE depth = 4) = 16
+      FROM pgr_hawickcircuits('q9') WHERE edge = -1),
+      '4 arcs on 0->1 and 4 arcs on 1->2: 16 three-circuits plus 16 four-circuits');
 
 END;
 $BODY$

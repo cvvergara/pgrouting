@@ -28,7 +28,7 @@ SELECT function_returns('pgr_hawickcircuits', ARRAY['text'],'setof record');
 RETURN QUERY
 SELECT function_args_eq('pgr_hawickcircuits',
   $$VALUES
-  ('{"","seq","path_id","depth","start_vid","end_vid","pred","node","edge","cost","agg_cost"}'::TEXT[])
+  ('{"","seq","path_id","path_seq","start_vid","end_vid","pred","node","edge","cost","agg_cost"}'::TEXT[])
   $$);
 
 RETURN QUERY

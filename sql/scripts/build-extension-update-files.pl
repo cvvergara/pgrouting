@@ -332,6 +332,13 @@ sub generate_upgrade_script {
         }
     }
 
+    if ($old_mayor == 4) {
+        # Out parameters changed names on v4.1.0
+        if ($old_minor == "4.0") {
+            push @commands, drop_special_case_function("pgr_hawickcircuits(text)");
+        }
+    }
+
     if ($old_mayor == 2) {
         push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult;  DROP TYPE pgr_costresult;\n";
         push @commands, "ALTER EXTENSION pgrouting DROP TYPE pgr_costresult3; DROP TYPE pgr_costresult3;\n";
