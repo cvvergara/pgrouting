@@ -104,7 +104,7 @@ Optional parameters
      - Description
    * - ``min_depth``
      - ``BIGINT``
-     - ``3``
+     - ``1``
      - Minimum number of vertices in a circuit. Self loops are not affected.
    * - ``max_depth``
      - ``BIGINT``

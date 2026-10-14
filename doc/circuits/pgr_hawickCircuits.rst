@@ -121,8 +121,8 @@ Many start vertices
 :Example: Circuits starting at vertices :math:`\{10, 11\}`
 
 Passing an array of **start vids** returns the circuits that start and end at
-any of the given vertices. The result has 17 rows: the 2 circuits of vertex
-:math:`10` and the circuit of vertex :math:`11`:
+any of the given vertices. The result has 20 rows: the 2 circuits of vertex
+:math:`10` and the 2 circuits of vertex :math:`11`:
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q3
@@ -230,8 +230,10 @@ With the default ``self_loops => true`` it is part of the result; in Examples 1
 and 2 it is reported as ``path_id`` 8 and 9 (once for each direction of the
 self loop).
 
-With ``self_loops => false`` the self loops are removed, leaving only the
-circuit of 3 vertices through vertices :math:`20` and :math:`21`:
+With ``self_loops => false`` the self loops are removed. The result keeps the
+seven circuits of 2 vertices (four of them are the arc-distinct combinations
+between vertices :math:`7` and :math:`8`) plus the circuit of 3 vertices
+through vertices :math:`20` and :math:`21`:
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q7
@@ -275,7 +277,7 @@ Only circuits with 3 vertices (plus the self loops):
 :Example 5: Start vertex :math:`7`
 
 The circuits that start and end at vertex :math:`7`, with the default
-``min_depth => 3``:
+``min_depth => 1``:
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q12
