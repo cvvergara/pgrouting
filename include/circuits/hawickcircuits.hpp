@@ -30,23 +30,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #pragma once
 
 #include <cstdint>
+#include <set>
 #include <vector>
 
 #include "cpp_common/base_graph.hpp"
+#include "cpp_common/circuits_t.hpp"
 
 namespace pgrouting {
 namespace functions {
 
-using Circuit = std::vector<pgrouting::DirectedGraph::V>;
-using Circuits = std::vector<Circuit>;
+using UniqueCircuit = std::vector<pgrouting::DirectedGraph::V>;
+using UniqueCircuits = std::vector<UniqueCircuit>;
 
-Circuits hawickCircuits(
+pgrouting::types::Circuits hawickCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
         int64_t, int64_t, bool
 );
 
-Circuits hawickUniqueCircuits(
+UniqueCircuits hawickUniqueCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
         int64_t, int64_t, bool

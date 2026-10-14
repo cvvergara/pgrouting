@@ -24,6 +24,8 @@
   * New optional parameters: ``start_ids``, ``max_depth`` and ``self_loops``.
   * The ``min_depth`` parameter is compulsory.
   * Deprecated signature: ``pgr_hawickCircuits(text)``.
+  * The circuits are arc-distinct: each combination of parallel arcs is
+    returned as a different circuit.
 
 * Version 3.4.0
 
@@ -35,6 +37,10 @@ Description
 .. include:: circuits-family.rst
    :start-after: circuits_characteristics_start
    :end-before: circuits_characteristics_end
+
+The circuits are arc-distinct: when there are parallel arcs between two
+vertices, each combination of arcs is returned as a different circuit.
+:doc:`pgr_hawickUniqueCircuits` can be used to filter those duplicates out.
 
 Signatures
 -------------------------------------------------------------------------------

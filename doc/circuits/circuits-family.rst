@@ -46,7 +46,8 @@ of a directed graph.
 There are 2 variations defined in the Boost Graph Library.
 pgRouting provides:
 
-* :doc:`pgr_hawickCircuits` - Hawick's circuits algorithm.
+* :doc:`pgr_hawickCircuits` - Hawick's circuits algorithm. Each combination of
+  parallel arcs between two vertices is reported as a different circuit.
 * :doc:`pgr_hawickUniqueCircuits` - Hawick's unique circuits algorithm, where
   the circuits caused by parallel edges are filtered out.
 
@@ -54,6 +55,8 @@ pgRouting provides:
 
 - The algorithm implementation works only for directed graph
 - The algorithm outputs the distinct circuits present in the graph.
+- Circuits are arc-distinct: parallel arcs between the same pair of vertices
+  produce a different circuit for each combination of arcs.
 - Time Complexity: :math:`O((V + E) (c + 1))`
 
   - where :math:`|E|` is the number of edges in the graph,

@@ -146,7 +146,7 @@ BEGIN
   SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_self', 0, min_depth => 2, max_depth => 2) WHERE edge = -1), 2,
       'Self loop: min_depth = 2 keeps the self loop (self_loops default true)');
 
-  -- parallel edges collapse to the min cost edge, the circuit has size 2
+  -- parallel edges produce one circuit per arc, each circuit has size 2
 
   PREPARE depth_par AS
   SELECT id, source, target, cost, reverse_cost FROM (VALUES
@@ -157,11 +157,11 @@ BEGIN
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_par', 0, min_depth => 1, max_depth => 1) WHERE edge = -1), 0,
-      'Parallel edges: the collapsed circuit has size 2 and is excluded by max_depth = 1');
+      'Parallel edges: the circuits have size 2 and are excluded by max_depth = 1');
 
   RETURN QUERY
-  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_par', 0, min_depth => 2, max_depth => 2) WHERE edge = -1), 1,
-      'Parallel edges: the collapsed circuit has size 2 and is kept by min_depth = max_depth = 2');
+  SELECT is((SELECT count(*)::INTEGER FROM pgr_hawickcircuits('depth_par', 0, min_depth => 2, max_depth => 2) WHERE edge = -1), 2,
+      'Parallel edges: each parallel arc gives a size 2 circuit, both kept by min_depth = max_depth = 2');
 
   -- invalid parameters
 

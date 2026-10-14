@@ -250,9 +250,11 @@ do_shortestPath(
                     break;
                 case KSP:
                 case OLDKSP:
+                    digraph.insert_min_edges_no_parallel(edges);
+                    break;
                 case HAWICKCIRCUITS:
                 case OLDHAWICKCIRCUITS:
-                    digraph.insert_min_edges_no_parallel(edges);
+                    digraph.insert_edges(edges);
                     break;
                 default:
                     digraph.insert_edges(edges);
@@ -279,10 +281,15 @@ do_shortestPath(
                     break;
                 case OLDHAWICKCIRCUITS:
                 case HAWICKCIRCUITS:
-                    return_count = get_tuples(digraph, hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops), return_tuples);
+                    return_count = get_tuples(
+                            hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops),
+                            return_tuples);
                     break;
                 case HAWICKUNIQUECIRCUITS:
-                    return_count = get_tuples(digraph, hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops), return_tuples);
+                    return_count = get_tuples(
+                            digraph,
+                            hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops),
+                            return_tuples);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);
