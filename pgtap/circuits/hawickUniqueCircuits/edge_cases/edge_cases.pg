@@ -5,7 +5,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(15) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(18) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -211,6 +211,41 @@ BEGIN
       SELECT * FROM pgr_hawickUniquecircuits('g_self' , min_depth => 0, self_loops => false)
       $$,
       'Self loop -> excluded when self_loops => false');
+
+  -- a bidirectional self loop (cost and reverse_cost both positive) creates two
+  -- parallel self-loop arcs that must collapse into a single circuit
+
+  PREPARE g_self_bidir AS
+  SELECT id, source, target, cost, reverse_cost
+  FROM (VALUES (100, 7, 7, 1, 1)) AS t(id, source, target, cost, reverse_cost);
+
+  RETURN QUERY
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('g_self_bidir', min_depth => 1, self_loops => true)
+      WHERE edge = -1), 1,
+      'Bidirectional self loop -> a single self loop circuit');
+
+  -- the collapsed circuit uses the self loop arc
+
+  PREPARE g_self_bidir_cyc AS
+  SELECT start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickUniquecircuits('g_self_bidir', min_depth => 1, self_loops => true);
+
+  RETURN QUERY
+  SELECT set_eq('g_self_bidir_cyc',
+      $$VALUES
+          (7, 7, 7, 100, 1, 0),
+          (7, 7, 7, -1, 0, 1)
+      $$,
+      'Bidirectional self loop -> one vertex circuit using the self loop arc');
+
+  -- and it is excluded when self_loops => false
+
+  RETURN QUERY
+  SELECT is_empty($$
+      SELECT * FROM pgr_hawickUniquecircuits('g_self_bidir', min_depth => 1, self_loops => false)
+      $$,
+      'Bidirectional self loop -> excluded when self_loops => false');
 
   -- non unit costs: agg_cost accumulates real edge costs
 
