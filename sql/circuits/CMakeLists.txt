@@ -9,7 +9,8 @@ set(LOCAL_FILES
     _hawickUniqueCircuits.sql
     hawickUniqueCircuits.sql
 
-    deprecated.sql
+    _hawickCircuits_deprecated.sql
+    hawickCircuits_deprecated.sql
 )
 
 foreach (f ${LOCAL_FILES})

@@ -1,5 +1,5 @@
 /*PGR-GNU*****************************************************************
-File: deprecated.sql
+File: _hawickCircuits_deprecated.sql
 
 Generated with Template by:
 Copyright (c) 2007-2026 pgRouting developers
@@ -45,33 +45,5 @@ RETURNS SETOF RECORD AS
 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
---v3.4.0
-CREATE FUNCTION pgr_hawickCircuits(
-    TEXT, -- edges_sql (required)
-
-    OUT seq INTEGER,
-    OUT path_id INTEGER,
-    OUT depth INTEGER,
-    OUT start_vid BIGINT,
-    OUT end_vid BIGINT,
-    OUT pred BIGINT,
-    OUT node BIGINT,
-    OUT edge BIGINT,
-    OUT cost FLOAT,
-    OUT agg_cost FLOAT)
-
-RETURNS SETOF RECORD AS
-$BODY$
-BEGIN
-    RETURN QUERY
-    SELECT a.seq, a.path_id, a.depth, a.start_vid, a.end_vid, a.pred, a.node, a.edge, a.cost, a.agg_cost
-    FROM _pgr_hawickCircuits_v4(_pgr_get_statement($1), '{}'::BIGINT[], 0, 9223372036854775807, true, true) AS a;
-END;
-$BODY$
-LANGUAGE plpgsql VOLATILE STRICT;
-
 COMMENT ON FUNCTION _pgr_hawickCircuits(TEXT)
 IS 'pgRouting deprecated internal function';
-
-COMMENT ON FUNCTION pgr_hawickCircuits(TEXT)
-IS 'pgRouting deprecated function';
