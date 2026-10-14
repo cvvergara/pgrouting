@@ -82,15 +82,6 @@ size_t
 get_tuples(std::vector<Path_rt>&, const std::vector<Edge_t>&, Path_rt*&);
 
 /**
- * @brief get tuples from a set of circuits to a Path_rt
- */
-size_t
-get_tuples(
-        const pgrouting::DirectedGraph&,
-        const std::vector<std::vector<pgrouting::DirectedGraph::V>>&,
-        Path_rt*&);
-
-/**
  * @brief get tuples from a set of arc-distinct circuits to a Path_rt
  */
 size_t

@@ -125,6 +125,42 @@ expand_parallel_arcs(
     }
 }
 
+/** @brief Resolves one unique circuit over the graph's edges
+ *
+ * Every hop of the vertex cycle is resolved to exactly one edge, the one
+ * `get_edge_id` returns, keeping a single circuit per vertex cycle.
+ * When u-turns are not wanted, circuits with a hop and its successor using
+ * the same edge are discarded.
+ */
+void
+resolve_unique_circuit(
+        const pgrouting::DirectedGraph& graph,
+        const std::vector<pgrouting::DirectedGraph::V>& vertex_circuit,
+        pgrouting::types::Circuits& circuits,
+        bool u_turn_on_edge) {
+    const size_t size = vertex_circuit.size();
+    pgrouting::types::Circuit circuit;
+    circuit.reserve(size);
+    for (size_t i = 0; i < size; ++i) {
+        const auto to = vertex_circuit[(i + 1) % size];
+        double cost = 0;
+        const auto edge_id = graph.get_edge_id(vertex_circuit[i], to, cost);
+        circuit.push_back({graph[vertex_circuit[i]].id, edge_id, cost});
+    }
+
+    if (!u_turn_on_edge && size >= 2) {
+        for (size_t i = 0; i < size; ++i) {
+            const auto next = (i + 1) % size;
+            if (circuit[i].edge != -1 && circuit[next].edge != -1
+                    && circuit[i].edge == circuit[next].edge) {
+                return;
+            }
+        }
+    }
+
+    circuits.push_back(std::move(circuit));
+}
+
 }  // namespace
 
 namespace pgrouting {
@@ -180,7 +216,7 @@ hawickCircuits(
  * @param max_depth  maximum depth of the circuits to be returned
  * @returns results, when results are found
  */
-UniqueCircuits
+pgrouting::types::Circuits
 hawickUniqueCircuits(
         const pgrouting::DirectedGraph &graph,
         const std::set<int64_t> &vertices,
@@ -188,9 +224,9 @@ hawickUniqueCircuits(
         int64_t max_depth,
         bool self_loops,
         bool u_turn_on_edge) {
-    UniqueCircuits circuits;
+    std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
-    circuit_collector collector{circuits, vertices, min_depth, max_depth, self_loops, {}};
+    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops, {}};
 
     CHECK_FOR_INTERRUPTS();
     try {
@@ -205,32 +241,9 @@ hawickUniqueCircuits(
         throw;
     }
 
-    if (!u_turn_on_edge) {
-        UniqueCircuits filtered;
-        filtered.clear();
-        filtered.reserve(circuits.size());
-        for (const auto &circuit : circuits) {
-            if (circuit.size() < 2) {
-                filtered.push_back(circuit);
-                continue;
-            }
-            bool keep = true;
-            for (size_t i = 0; i < circuit.size() && keep; ++i) {
-                const auto from = circuit[i];
-                const auto to = circuit[(i + 1) % circuit.size()];
-                const auto to2 = circuit[(i + 2) % circuit.size()];
-                double c0 = 0.0;
-                double c1 = 0.0;
-                const auto e0 = graph.get_edge_id(from, to, c0);
-                const auto e1 = graph.get_edge_id(to, to2, c1);
-                if (e0 != -1 && e1 != -1 && e0 == e1) {
-                    keep = false;
-                    break;
-                }
-            }
-            if (keep) filtered.push_back(circuit);
-        }
-        circuits.swap(filtered);
+    pgrouting::types::Circuits circuits;
+    for (const auto& vertex_circuit : vertex_circuits) {
+        resolve_unique_circuit(graph, vertex_circuit, circuits, u_turn_on_edge);
     }
 
     return circuits;

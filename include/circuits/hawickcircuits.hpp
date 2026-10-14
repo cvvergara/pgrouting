@@ -39,16 +39,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace pgrouting {
 namespace functions {
 
-using UniqueCircuit = std::vector<pgrouting::DirectedGraph::V>;
-using UniqueCircuits = std::vector<UniqueCircuit>;
-
 pgrouting::types::Circuits hawickCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
         int64_t, int64_t, bool, bool
 );
 
-UniqueCircuits hawickUniqueCircuits(
+pgrouting::types::Circuits hawickUniqueCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
         int64_t, int64_t, bool, bool
