@@ -1,0 +1,47 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2020-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+
+BEGIN;
+
+UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
+
+-- Deprecated one parameter signature pgr_hawickCircuits(text):
+--   before 3.4.0    : does not exist      -> skip
+--   3.4.0 .. 4.1.y  : works, emits NOTICE  -> pgTAP cannot assert NOTICE
+--   4.2.0 .. 4.y    : works, emits WARNING -> pgTAP cannot assert WARNING
+--   5.0.0 and up    : throws an error      -> throws_ok
+-- Exactly one test is performed on every version.
+SELECT plan(1);
+
+PREPARE edges_g AS
+SELECT * FROM edges;
+
+CREATE OR REPLACE FUNCTION deprecated()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
+
+  IF min_version('5.0.0') THEN
+    RETURN QUERY
+    SELECT throws_ok('SELECT * FROM pgr_hawickcircuits($$edges_g$$)');
+    RETURN;
+  END IF;
+
+  IF min_version('3.4.0') THEN
+    RETURN QUERY
+    SELECT lives_ok('SELECT * FROM pgr_hawickcircuits($$edges_g$$)');
+    RETURN;
+  END IF;
+
+  RETURN QUERY SELECT skip(1, 'Deprecated function was created on 3.4.0');
+
+END;
+$BODY$
+LANGUAGE plpgsql;
+
+SELECT deprecated();
+
+SELECT * FROM finish();
+ROLLBACK;
