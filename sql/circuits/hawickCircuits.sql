@@ -68,6 +68,7 @@ IS 'pgr_hawickCircuits
   - min_depth := 1
   - max_depth := 9223372036854775807
   - self_loops := true
+  - u_turn_on_edge := true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
 ';
@@ -107,7 +108,7 @@ $BODY$
 LANGUAGE plpgsql VOLATILE STRICT;
 
 COMMENT ON FUNCTION pgr_hawickCircuits(TEXT,ANYARRAY,BIGINT,BIGINT,BOOLEAN,BOOLEAN)
-IS 'pgr_hawickUniqueCircuits
+IS 'pgr_hawickCircuits
 - EXPERIMENTAL
 - Parameters:
   - Edges SQL with columns: id, source, target, cost [,reverse_cost]
@@ -115,6 +116,7 @@ IS 'pgr_hawickUniqueCircuits
   - min_depth := 1
   - max_depth := 9223372036854775807
   - self_loops := true
+  - u_turn_on_edge := true
 - Documentation:
-  - ${PROJECT_DOC_LINK}/pgr_hawickUniqueCircuits.html
+  - ${PROJECT_DOC_LINK}/pgr_hawickCircuits.html
 ';

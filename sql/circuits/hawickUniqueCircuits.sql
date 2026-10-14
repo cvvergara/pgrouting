@@ -72,6 +72,7 @@ IS 'pgr_hawickUniqueCircuits
   - min_depth := 1
   - max_depth := 9223372036854775807
   - self_loops := true
+  - u_turn_on_edge := true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_hawickUniqueCircuits.html
 ';
@@ -118,6 +119,7 @@ IS 'pgr_hawickUniqueCircuits
   - min_depth := 1
   - max_depth := 9223372036854775807
   - self_loops := true
+  - u_turn_on_edge := true
 - Documentation:
   - ${PROJECT_DOC_LINK}/pgr_hawickUniqueCircuits.html
 ';

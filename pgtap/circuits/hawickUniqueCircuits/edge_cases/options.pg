@@ -72,8 +72,8 @@ BEGIN
 
   RETURN QUERY
   SELECT is((SELECT count(*)::INTEGER
-      FROM pgr_hawickUniquecircuits('k4', self_loops => false) WHERE edge = -1), 14,
-      'K4: self_loops => false alone keeps the default depth range');
+      FROM pgr_hawickUniquecircuits('k4', self_loops => false) WHERE edge = -1), 20,
+      'K4: self_loops => false alone keeps the default depth range (min_depth = 1)');
 
   -- all the options by name
 
@@ -125,13 +125,12 @@ BEGIN
       FROM pgr_hawickUniquecircuits('self', min_depth => 1, self_loops => false) WHERE edge = -1), 1,
       'Self loop graph: positional min_depth with a named self_loops');
 
-  -- self_loops => false with the default min_depth = 3 returns nothing
+  -- self_loops => false with the default min_depth = 1 keeps the two-cycle
 
   RETURN QUERY
-  SELECT is_empty($$
-      SELECT * FROM pgr_hawickUniquecircuits('self', self_loops => false)
-      $$,
-      'Self loop graph: self_loops => false alone returns nothing');
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('self', self_loops => false) WHERE edge = -1), 1,
+      'Self loop graph: self_loops => false alone keeps the two-cycle');
 
   -- min_depth by name keeps the default self_loops = true
 
@@ -140,15 +139,12 @@ BEGIN
       FROM pgr_hawickUniquecircuits('self', min_depth => 1) WHERE edge = -1), 2,
       'Self loop graph: min_depth => 1 keeps the default self_loops = true');
 
-  -- max_depth by name is still validated against the default min_depth
+  -- max_depth by name is checked against the default min_depth = 1
 
   RETURN QUERY
-  SELECT throws_ok($$
-      SELECT * FROM pgr_hawickUniquecircuits('k4', max_depth => 2)
-      $$,
-      'XX000',
-      $$Invalid values for 'min_depth' < 'max_depth'$$,
-      'K4: max_depth => 2 is less than the default min_depth = 3');
+  SELECT is((SELECT count(*)::INTEGER
+      FROM pgr_hawickUniquecircuits('k4', max_depth => 2) WHERE edge = -1), 6,
+      'K4: max_depth => 2 with the default min_depth = 1 returns the six two-cycles');
 
   -- wrong option values
 
