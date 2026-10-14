@@ -131,7 +131,8 @@ hawickCircuits(
         const std::set<int64_t> &vertices,
         int64_t min_depth,
         int64_t max_depth,
-        bool self_loops) {
+        bool self_loops,
+        bool) {
     std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
     circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops, {}};
@@ -172,7 +173,8 @@ hawickUniqueCircuits(
         const std::set<int64_t> &vertices,
         int64_t min_depth,
         int64_t max_depth,
-        bool self_loops) {
+        bool self_loops,
+        bool) {
     UniqueCircuits circuits;
 
     circuit_collector collector{circuits, vertices, min_depth, max_depth, self_loops, {}};

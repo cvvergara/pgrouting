@@ -84,7 +84,7 @@ void pgr_process_shortestPath(
             n_goals, global,
 
             0, false, nullptr, nullptr,
-            0, 0, true,
+            0, 0, true, true,
 
             which,
             is_matrix,

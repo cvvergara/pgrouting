@@ -58,6 +58,7 @@ PGDLLEXPORT Datum _pgr_hawickcircuits_v4(PG_FUNCTION_ARGS) {
                 PG_GETARG_INT64(2),
                 PG_GETARG_INT64(3),
                 PG_GETARG_BOOL(4),
+                PG_GETARG_BOOL(5),
 
                 HAWICKCIRCUITS,
                 &result_tuples,

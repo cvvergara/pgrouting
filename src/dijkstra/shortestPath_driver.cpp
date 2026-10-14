@@ -139,6 +139,7 @@ do_shortestPath(
         int64_t min_depth,
         int64_t max_depth,
         bool self_loops,
+        bool u_turn_on_edge,
 
         Which which,
         bool &is_matrix,
@@ -252,10 +253,6 @@ do_shortestPath(
                 case OLDKSP:
                     digraph.insert_min_edges_no_parallel(edges);
                     break;
-                case HAWICKCIRCUITS:
-                case OLDHAWICKCIRCUITS:
-                    digraph.insert_edges(edges);
-                    break;
                 default:
                     digraph.insert_edges(edges);
             }
@@ -282,13 +279,13 @@ do_shortestPath(
                 case OLDHAWICKCIRCUITS:
                 case HAWICKCIRCUITS:
                     return_count = get_tuples(
-                            hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops),
+                            hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops, u_turn_on_edge),
                             return_tuples);
                     break;
                 case HAWICKUNIQUECIRCUITS:
                     return_count = get_tuples(
                             digraph,
-                            hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops),
+                            hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops, u_turn_on_edge),
                             return_tuples);
                     break;
                 case BINARYBFS:

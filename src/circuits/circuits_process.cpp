@@ -54,6 +54,7 @@ void pgr_process_circuits(
         int64_t min_depth,
         int64_t max_depth,
         bool self_loop,
+        bool u_turn_on_edge,
 
         enum Which which,
         Path_rt **result_tuples, size_t *result_count) {
@@ -81,7 +82,7 @@ void pgr_process_circuits(
             -1, true,
             0, false, nullptr, nullptr,
 
-            min_depth, max_depth, self_loop,
+            min_depth, max_depth, self_loop, u_turn_on_edge,
 
             which,
             is_matrix,

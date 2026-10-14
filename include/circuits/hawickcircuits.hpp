@@ -45,13 +45,13 @@ using UniqueCircuits = std::vector<UniqueCircuit>;
 pgrouting::types::Circuits hawickCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
-        int64_t, int64_t, bool
+        int64_t, int64_t, bool, bool
 );
 
 UniqueCircuits hawickUniqueCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
-        int64_t, int64_t, bool
+        int64_t, int64_t, bool, bool
 );
 
 }  // namespace functions
