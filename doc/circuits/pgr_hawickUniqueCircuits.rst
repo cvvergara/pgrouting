@@ -60,7 +60,8 @@ All circuits
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_ [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -80,7 +81,8 @@ Single start vertex
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vid** [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -100,7 +102,8 @@ Many start vertices
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vids** [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET

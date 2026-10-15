@@ -70,7 +70,8 @@ All circuits
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
+   | pgr_hawickCircuits(`Edges SQL`_ [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -93,7 +94,8 @@ Single start vertex
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
+   | pgr_hawickCircuits(`Edges SQL`_, **start vid** [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -116,7 +118,8 @@ Many start vertices
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
+   | pgr_hawickCircuits(`Edges SQL`_, **start vids** [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -137,26 +140,6 @@ Parameters
 .. include:: circuits-family.rst
     :start-after: circuits_parameters_start
     :end-before: circuits_parameters_end
-
-.. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``start vid``
-     - ``BIGINT``
-     -
-     - Identifier of the starting vertex of the circuits. When ``0`` all the
-       circuits are returned.
-   * - ``start vids``
-     - ``BIGINT[]``
-     -
-     - Array of identifiers of the starting vertices of the circuits. When
-       empty all the circuits are returned.
 
 Optional parameters
 ...............................................................................

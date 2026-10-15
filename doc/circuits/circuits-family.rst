@@ -40,17 +40,6 @@ This algorithm solves the problem of detecting and enumerating circuits in graph
 It is capable of circuit enumeration in graphs with directed-arcs, multiple arcs
 and self arcs with a memory efficient and high-performance implementation.
 
-It is an extension of Johnson's Algorithm of finding all the elementary circuits
-of a directed graph.
-
-There are 2 variations defined in the Boost Graph Library.
-pgRouting provides:
-
-* :doc:`pgr_hawickCircuits` - Hawick's circuits algorithm. Each combination of
-  parallel arcs between two vertices is reported as a different circuit.
-* :doc:`pgr_hawickUniqueCircuits` - Hawick's unique circuits algorithm, where
-  the circuits caused by parallel edges are filtered out.
-
 **The main characteristics are:**
 
 - The algorithm implementation works only for directed graph
@@ -77,17 +66,24 @@ Parameters
 
 .. list-table::
    :width: 81
-   :widths: auto
+   :widths: 10,15,40
    :header-rows: 1
 
    * - Parameter
      - Type
-     - Default
      - Description
    * - `Edges SQL`_
      - ``TEXT``
-     -
      - `Edges SQL`_ as described below.
+   * - ``start vid``
+     - |ANY-INTEGER|
+     - Identifier of the starting vertex of the circuits. When ``0`` all the
+       circuits are returned.
+   * - ``start vids``
+     - ``ARRAY[`` |ANY-INTEGER| ``]``
+     - Array of identifiers of the starting vertices of the circuits. When
+       empty all the circuits are returned.
+
 
 .. circuits_parameters_end
 
