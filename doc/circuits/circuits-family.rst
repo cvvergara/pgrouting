@@ -32,33 +32,6 @@ The following functions work on circuits of directed graphs.
 Description
 -------------------------------------------------------------------------------
 
-.. circuits_characteristics_start
-
-Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
-This algorithm solves the problem of detecting and enumerating circuits in graphs.
-
-It is capable of circuit enumeration in graphs with directed-arcs, multiple arcs
-and self arcs with a memory efficient and high-performance implementation.
-
-**The main characteristics are:**
-
-- The algorithm implementation works only for directed graph
-- The algorithm outputs the distinct circuits present in the graph.
-- A circuit is elementary: a vertex is not repeated within a circuit, except the
-  starting vertex that closes the circuit.
-- How the parallel arcs between the same pair of vertices are reported depends
-  on the function, see :doc:`pgr_hawickCircuits` and
-  :doc:`pgr_hawickUniqueCircuits`.
-- Time Complexity: :math:`O((V + E) (c + 1))`
-
-  - where :math:`|E|` is the number of edges in the graph,
-  - where :math:`|V|` is the number of vertices in the graph.
-  - where :math:`|c|` is the number of circuits in the graph.
-
-.. circuits_characteristics_end
-
-|Boost| Boost Graph Inside
-
 Parameters
 -------------------------------------------------------------------------------
 

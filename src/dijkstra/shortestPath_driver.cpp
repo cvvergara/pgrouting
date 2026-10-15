@@ -247,8 +247,14 @@ do_shortestPath(
                     digraph.insert_no_edge_cycle(edges);
                     break;
                 case HAWICKUNIQUECIRCUITS:
-                    digraph.insert_edges_no_parallel(edges);
-                    break;
+                    {
+                        if (u_turn_on_edge) {
+                            digraph.insert_min_edges_no_parallel(edges);
+                        } else {
+                            digraph.insert_edges_no_parallel(edges);
+                        }
+                        break;
+                    }
                 case KSP:
                 case OLDKSP:
                     digraph.insert_min_edges_no_parallel(edges);

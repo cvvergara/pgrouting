@@ -27,13 +27,25 @@ circuits algorithm.
 Description
 -------------------------------------------------------------------------------
 
-.. include:: circuits-family.rst
-   :start-after: circuits_characteristics_start
-   :end-before: circuits_characteristics_end
+Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
+This algorithm solves the problem of detecting and enumerating circuits in graphs.
 
-When two vertices are connected by parallel arcs, each elementary circuit is
-reported once: the parallel arcs do not produce extra circuits. Each hop of a
-circuit uses a single edge.
+It is capable of circuit enumeration in graphs with directed arcs, multiple arcs
+and self arcs with a memory efficient and high-performance implementation.
+
+**The main characteristics are:**
+
+- The algorithm implementation works only for directed graph
+- The algorithm outputs the distinct circuits present in the graph.
+- A circuit is elementary: a vertex is not repeated within a circuit, except the
+  starting vertex that closes the circuit.
+- Time Complexity: :math:`O((V + E) (c + 1))`
+
+  - where :math:`|E|` is the number of edges in the graph,
+  - where :math:`|V|` is the number of vertices in the graph.
+  - where :math:`|c|` is the number of circuits in the graph.
+
+|Boost| Boost Graph Inside
 
 Signatures
 -------------------------------------------------------------------------------
@@ -121,26 +133,6 @@ Parameters
     :start-after: circuits_parameters_start
     :end-before: circuits_parameters_end
 
-.. list-table::
-   :width: 81
-   :widths: auto
-   :header-rows: 1
-
-   * - Parameter
-     - Type
-     - Default
-     - Description
-   * - ``start vid``
-     - ``BIGINT``
-     - ``0``
-     - Identifier of the starting vertex of the circuits. When ``0`` (the
-       default value) all the circuits are returned.
-   * - ``start vids``
-     - ``BIGINT[]``
-     - ``'{}'``
-     - Array of identifiers of the starting vertices of the circuits. When
-       empty all the circuits are returned.
-
 Optional parameters
 ...............................................................................
 
@@ -168,128 +160,125 @@ Result columns
 Additional Examples
 -------------------------------------------------------------------------------
 
-The edges of the pgRouting :doc:`sampledata` do not have self loops, a
-temporary self loop is added:
+.. graph_start
+
+The examples use the followeing table ``c_example``, that represent a cul_de_sac
+where the exit is on vertex :math:`5` and the vehicle is on vertex :math:`1` but
+pointing at the wrong direction of the exit.
+
+.. graphviz::
+
+   digraph G {
+     graph [splines=false, sep=1];
+     node [shape=circle;style=filled;fontsize=8;fixedsize=true;width=.4;color=deepskyblue];
+     edge [arrowsize=0.5;color=blue;fontsize=8];
+
+     1 [pos="0,0!"];
+     2 [pos="0,2!"];
+     3 [pos="2,0!"];
+     4 [pos="-1,0!"];
+     5 [pos="-1,1!"];
+
+     1 -> 2 [label="1"];
+     2 -> 1 [label="1"];
+     2 -> 3 [label="2"];
+     3 -> 2 [label="2"];
+     1 -> 3 [label="3(1.5)"];
+     3 -> 1 [label="3 (1.7)"];
+     1 -> 3 [label="4"];
+     3 -> 1 [label="4"];
+     1 -> 4 [label="5"];
+     4 -> 1 [label="5"];
+     1 -> 5 [label="6"];
+     1 -> 1 [headport=s, tailport=s, label="7"];
+   }
+
+.. graph_end
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q4
    :end-before: -- q5
 
-.. index::
-    single: pgr_hawickUniqueCircuits ; All circuits
-
-:Example 1: All circuits
-
-``c_example`` has two arcs from vertex :math:`7` to vertex :math:`8`: the arc
-with ``id`` :math:`10` (cost :math:`1`) and the arc with ``id`` :math:`104`
-(cost :math:`1.5`). Because ``pgr_hawickUniqueCircuits`` is not arc-distinct,
-the circuit between :math:`7` and :math:`8` is returned once, using both arcs:
+:Example 1: All possible unique ways to return to vertex :math:`1`.
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q5
    :end-before: -- q6
 
-.. index::
-    single: pgr_hawickUniqueCircuits ; Self loops
+:Example 2: Exclude self loops.
 
-:Example 2: Self loops
+- red is :math:`path\_id = 1`
+- green is :math:`path\_id = 2`
+- blue is :math:`path\_id = 3`
 
-``c_example`` has the self loop with ``id`` :math:`100` on vertex :math:`7`.
-With the default ``self_loops => true`` it is part of the result (``path_id``
-2):
+.. graphviz::
+
+   digraph G {
+       forcelabels=true;
+     graph [splines=line, sep=1];
+     node [shape=circle;style=filled;fontsize=8;fixedsize=true;width=.4;color=deepskyblue];
+     edge [arrowsize=0.5;fontsize=8];
+
+     1 [pos="0,0!"];
+     2 [pos="0,2!"];
+     3 [pos="2,1!"];
+     4 [pos="-1,0!"];
+     5 [pos="-1,1!"];
+
+
+     1 -> 2 [color=red,xlabel="1  "];
+     2 -> 3 [color=red,xlabel="2    "];
+     3 -> 1 [color=red,xlabel="4    "];
+
+     1 -> 3 [color=green,xlabel="3       "];
+     3 -> 1 [color=green,xlabel="4"];
+
+     1 -> 3 [color=blue,taillabel="                  3"];
+     3 -> 2 [color=blue,xlabel="2  "];
+     2 -> 1 [color=blue,xlabel="1"];
+   }
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q6
    :end-before: -- q7
 
-With ``self_loops => false`` the self loop is excluded:
+:Example 3: Exclude self loops and U-turn on the same edge.
+
+- red is :math:`path\_id = 1`
+- green is :math:`path\_id = 2`
+- blue is :math:`path\_id = 3`
+
+.. graphviz::
+
+   digraph G {
+       forcelabels=true;
+     graph [splines=line, sep=1];
+     node [shape=circle;style=filled;fontsize=8;fixedsize=true;width=.4;color=deepskyblue];
+     edge [arrowsize=0.5;fontsize=8];
+
+     1 [pos="0,0!"];
+     2 [pos="0,2!"];
+     3 [pos="2,1!"];
+     4 [pos="-1,0!"];
+     5 [pos="-1,1!"];
+
+
+     1 -> 2 [color=red,xlabel="1  "];
+     2 -> 3 [color=red,xlabel="2    "];
+     3 -> 1 [color=red,xlabel="4    "];
+
+     1 -> 3 [color=green,xlabel="3       "];
+     3 -> 1 [color=green,xlabel="4"];
+
+     1 -> 3 [color=blue,taillabel="                  3"];
+     3 -> 2 [color=blue,xlabel="2  "];
+     2 -> 1 [color=blue,xlabel="1"];
+   }
+
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q7
    :end-before: -- q8
-
-.. index::
-    single: pgr_hawickUniqueCircuits ; Depth range
-
-:Example 3: ``min_depth`` and ``max_depth``
-
-The ``min_depth`` and ``max_depth`` parameters limit the number of vertices of
-a circuit. The ``depth`` column starts at ``0`` for the first node of a
-circuit. Self loops are not affected by them.
-
-Only circuits with 1 vertex, that is, only the self loop:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q8
-   :end-before: -- q9
-
-Circuits with 1 to 2 vertices:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q9
-   :end-before: -- q10
-
-Circuits with 1 to 3 vertices, that is, all the circuits of ``c_example``:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q10
-   :end-before: -- q11
-
-Only circuits with 3 vertices (plus the self loop):
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q11
-   :end-before: -- q12
-
-.. index::
-    single: pgr_hawickUniqueCircuits ; Single start vertex
-
-:Example 4: Start vertex :math:`7`
-
-The circuits that start and end at vertex :math:`7`, with the default
-``min_depth => 1``:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q12
-   :end-before: -- q13
-
-The circuits of vertex :math:`7` without the self loop:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q13
-   :end-before: -- q14
-
-.. index::
-    single: pgr_hawickUniqueCircuits ; Many start vertices
-
-:Example 5: Start vertices :math:`\{10, 11\}` with a depth range
-
-The circuits that start and end at vertices :math:`10` or :math:`11` with 3 to
-6 vertices. The only circuit that touches vertex :math:`11` has 2 vertices, so
-the result is empty:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q14
-   :end-before: -- q15
-
-.. index::
-    single: pgr_hawickUniqueCircuits ; U-turn on edge
-
-:Example 6: ``u_turn_on_edge``
-
-With the default ``u_turn_on_edge => true`` a circuit can use an edge to go from
-a vertex and immediately return on the same edge (a u-turn).
-
-With ``u_turn_on_edge => false`` a circuit that uses the same edge on two
-consecutive hops is excluded. The two-cycles that use a single edge (edges
-:math:`4`, :math:`7` and :math:`8`) are removed. The self loop (edge
-:math:`100`), the circuit of 3 vertices (edges :math:`101`, :math:`102` and
-:math:`103`) and the two-vertex circuit that uses two different edges between
-vertices :math:`7` and :math:`8` (edges :math:`104` and :math:`10`) are kept:
-
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q15
-   :end-before: -- q16
 
 See Also
 -------------------------------------------------------------------------------

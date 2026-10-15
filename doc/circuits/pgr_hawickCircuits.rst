@@ -102,9 +102,6 @@ Single start vertex
 
 :Example: Circuits starting at vertex :math:`10`
 
-Passing a single **start vid** restricts the result to the circuits that start
-and end at vertex :math:`10`. The result has 12 rows (2 circuits):
-
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q2
    :end-before: -- q3
@@ -125,10 +122,6 @@ Many start vertices
    | OR EMPTY SET
 
 :Example: Circuits starting at vertices :math:`\{10, 11\}`
-
-Passing an array of **start vids** returns the circuits that start and end at
-any of the given vertices. The result has 20 rows: the 2 circuits of vertex
-:math:`10` and the 2 circuits of vertex :math:`11`:
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q3
@@ -168,145 +161,31 @@ Result columns
 Additional Examples
 -------------------------------------------------------------------------------
 
-The examples use a temporary table named ``c_example`` built from the pgRouting
-:doc:`sampledata`. It keeps the edges with ``id`` :math:`4, 7, 8, 10, 11` and
-:math:`12`, adds a self loop on vertex :math:`7` (``id`` :math:`100`), a
-circuit through vertices :math:`20` and :math:`21`, and a parallel arc of the
-arc :math:`10` between vertices :math:`7` and :math:`8` (``id`` :math:`104`):
+.. include:: pgr_hawickUniqueCircuits.rst
+    :start-after: graph_start
+    :end-before: graph_end
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q4
    :end-before: -- q5
 
-.. index::
-    single: pgr_hawickCircuits ; Arc-distinct circuits
-
-:Example 1: Arc-distinct circuits
-
-There are two arcs from vertex :math:`7` to vertex :math:`8`: the arc with
-``id`` :math:`10` (cost :math:`1`) and the arc with ``id`` :math:`104` (cost
-:math:`1.5`). Because ``pgr_hawickCircuits`` is arc-distinct, the circuit
-between :math:`7` and :math:`8` is returned once for each combination of those
-arcs (``path_id`` 4 to 7 of the result):
+:Example 1: All possible ways to return to vertex :math:`1`.
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q5
    :end-before: -- q6
 
-.. index::
-    single: pgr_hawickCircuits ; Deprecated signature
-
-:Example 2: Deprecated signature
-
-Calling ``pgr_hawickCircuits`` with only the `Edges SQL`_ uses the deprecated
-signature. It is equivalent to ``min_depth => 0``, ``self_loops => true`` and
-``u_turn_on_edge => true``, so the same 29 rows of Example 1 are returned:
+:Example 2: Exclude self loops.
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q6
    :end-before: -- q7
 
-.. index::
-    single: pgr_hawickCircuits ; Self loops
-
-:Example 3: Self loops
-
-``c_example`` has the self loop with ``id`` :math:`100` on vertex :math:`7`.
-With the default ``self_loops => true`` it is part of the result; in Examples 1
-and 2 it is reported as ``path_id`` 8 and 9 (once for each direction of the
-self loop).
-
-With ``self_loops => false`` the self loops are removed. The result keeps the
-seven circuits of 2 vertices (four of them are the arc-distinct combinations
-between vertices :math:`7` and :math:`8`) plus the circuit of 3 vertices
-through vertices :math:`20` and :math:`21`:
+:Example 3: Exclude self loops and U-turn on the same edge.
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q7
    :end-before: -- q8
-
-.. index::
-    single: pgr_hawickCircuits ; Depth range
-
-:Example 4: ``min_depth`` and ``max_depth``
-
-The ``min_depth`` and ``max_depth`` parameters limit the number of vertices of
-a circuit. Self loops are not affected by them.
-
-Only circuits with 1 vertex, that is, only the self loops:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q8
-   :end-before: -- q9
-
-Circuits with 1 to 2 vertices:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q9
-   :end-before: -- q10
-
-Circuits with 1 to 3 vertices, that is, all the circuits of ``c_example``:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q10
-   :end-before: -- q11
-
-Only circuits with 3 vertices (plus the self loops):
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q11
-   :end-before: -- q12
-
-.. index::
-    single: pgr_hawickCircuits ; Single start vertex
-
-:Example 5: Start vertex :math:`7`
-
-The circuits that start and end at vertex :math:`7`, with the default
-``min_depth => 1``:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q12
-   :end-before: -- q13
-
-The circuits of vertex :math:`7` without the self loops:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q13
-   :end-before: -- q14
-
-.. index::
-    single: pgr_hawickCircuits ; Many start vertices
-
-:Example 6: Start vertices :math:`\{6, 7\}` with a depth range
-
-The circuits that start and end at vertices :math:`6` or :math:`7` with 3 to 6
-vertices. Vertex :math:`6` only has circuits of 2 vertices, so only the self
-loops and the circuit of vertex :math:`7` are returned:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q14
-   :end-before: -- q15
-
-.. index::
-    single: pgr_hawickCircuits ; U-turn on edge
-
-:Example 7: ``u_turn_on_edge``
-
-With the default ``u_turn_on_edge => true`` a circuit can use an edge to go from
-a vertex and immediately return on the same edge (a u-turn).
-
-With ``u_turn_on_edge => false`` a circuit that uses the same edge on two
-consecutive hops is excluded. The two-cycles that use a single edge (edges
-:math:`4`, :math:`7`, :math:`8`, :math:`10` and :math:`104`) are removed. The
-self loops (edge :math:`100`), the circuit of 3 vertices (edges :math:`101`,
-:math:`102` and :math:`103`) and the two-cycles that use two different edges
-between vertices :math:`7` and :math:`8` (edges :math:`104` and :math:`10`) are
-kept:
-
-.. literalinclude:: hawickCircuits.queries
-   :start-after: -- q15
-   :end-before: -- q16
 
 See Also
 -------------------------------------------------------------------------------
