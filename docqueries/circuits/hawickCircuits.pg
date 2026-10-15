@@ -65,3 +65,8 @@ SELECT * FROM pgr_hawickCircuits(
     ARRAY[6,7], min_depth => 3, max_depth => 6
 );
 /* -- q15 */
+SELECT * FROM pgr_hawickCircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 0,
+    u_turn_on_edge => false
+);
+/* -- q16 */

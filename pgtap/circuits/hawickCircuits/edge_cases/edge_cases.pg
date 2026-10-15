@@ -6,7 +6,7 @@
 BEGIN;
 
 UPDATE edges SET cost = sign(cost), reverse_cost = sign(reverse_cost);
-SELECT CASE WHEN min_version('4.1.0') THEN plan(14) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(10) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION edge_cases()
 RETURNS SETOF TEXT AS
@@ -25,9 +25,6 @@ BEGIN
   SELECT id, source, target, cost, reverse_cost
   FROM edges
   WHERE id > 18;
-
-  RETURN QUERY
-  SELECT is_empty('q1', 'Graph with 0 edge and 0 vertex');
 
   PREPARE hawickCircuits1 AS
   SELECT * FROM pgr_hawickcircuits('q1');
@@ -55,9 +52,6 @@ BEGIN
   SELECT id, source, target, cost, reverse_cost
   FROM edges
   WHERE id = 7;
-
-  RETURN QUERY
-  SELECT set_eq('q3', $$VALUES (7, 3, 7, 1, 1)$$, 'Graph with two connected vertices 3 and 7');
 
   PREPARE hawickCircuits3 AS
   SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
@@ -88,9 +82,6 @@ BEGIN
   FROM edges
   WHERE id <= 2;
 
-  RETURN QUERY
-  SELECT set_eq('q4', $$VALUES (1, 5, 6, 1, 1), (2, 6, 10, -1, 1)$$, 'Graph with three vertices 5, 6 and 10');
-
   PREPARE hawickCircuits4 AS
   SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_hawickcircuits('q4');
@@ -110,16 +101,6 @@ BEGIN
   SELECT id, source, target, cost, reverse_cost
   FROM edges
   WHERE id IN (3, 5, 9, 16);
-
-  RETURN QUERY
-  SELECT set_eq('q5',
-      $$VALUES
-          (3, 10, 15, -1, 1),
-          (5, 10, 11, 1, -1),
-          (9, 11, 16, 1, 1),
-          (16, 15, 16, 1, 1)
-      $$,
-      'Graph with four vertices 10, 11, 15, 16');
 
   PREPARE hawickCircuits5 AS
   SELECT start_vid, end_vid, node, edge, cost, agg_cost FROM pgr_hawickCircuits('q5');

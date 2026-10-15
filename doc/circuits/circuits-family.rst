@@ -55,8 +55,11 @@ pgRouting provides:
 
 - The algorithm implementation works only for directed graph
 - The algorithm outputs the distinct circuits present in the graph.
-- Circuits are arc-distinct: parallel arcs between the same pair of vertices
-  produce a different circuit for each combination of arcs.
+- A circuit is elementary: a vertex is not repeated within a circuit, except the
+  starting vertex that closes the circuit.
+- How the parallel arcs between the same pair of vertices are reported depends
+  on the function, see :doc:`pgr_hawickCircuits` and
+  :doc:`pgr_hawickUniqueCircuits`.
 - Time Complexity: :math:`O((V + E) (c + 1))`
 
   - where :math:`|E|` is the number of edges in the graph,
@@ -116,6 +119,14 @@ Optional parameters
      - * When ``true`` self loops are included in the results.
        * When ``false`` self loops are excluded from the results.
        * Self loops are included or excluded regardless of ``min_depth`` and ``max_depth``.
+   * - ``u_turn_on_edge``
+     - ``BOOLEAN``
+     - ``true``
+     - * When ``true`` a circuit can use an edge to go from a vertex and
+         immediately return on the same edge.
+       * When ``false`` a circuit that uses the same edge on two consecutive
+         hops is excluded from the results.
+       * Self loops are not affected.
 
 .. circuits_optionals_end
 
@@ -150,7 +161,7 @@ Result columns
      - Id of the circuit starting from ``1``
    * - ``depth``
      - ``INTEGER``
-     - Relative position in the circuit. Has value **1** for the beginning of a
+     - Relative position in the circuit. Has value **0** for the beginning of a
        circuit
    * - ``start_vid``
      - ``BIGINT``

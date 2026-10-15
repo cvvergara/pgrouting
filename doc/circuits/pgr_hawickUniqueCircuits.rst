@@ -31,6 +31,10 @@ Description
    :start-after: circuits_characteristics_start
    :end-before: circuits_characteristics_end
 
+When two vertices are connected by parallel arcs, each elementary circuit is
+reported once: the parallel arcs do not produce extra circuits. Each hop of a
+circuit uses a single edge.
+
 Signatures
 -------------------------------------------------------------------------------
 
@@ -39,9 +43,10 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
-   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
-   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_ [, **options**])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vid** [, **options**])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vids** [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -55,7 +60,7 @@ All circuits
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -75,7 +80,7 @@ Single start vertex
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -95,7 +100,7 @@ Many start vertices
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickUniqueCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -167,38 +172,121 @@ temporary self loop is added:
    :start-after: -- q4
    :end-before: -- q5
 
-:Example 1: Circuits with 3 to 6 vertices in the pgRouting :doc:`sampledata`
+.. index::
+    single: pgr_hawickUniqueCircuits ; All circuits
+
+:Example 1: All circuits
+
+``c_example`` has two arcs from vertex :math:`7` to vertex :math:`8`: the arc
+with ``id`` :math:`10` (cost :math:`1`) and the arc with ``id`` :math:`104`
+(cost :math:`1.5`). Because ``pgr_hawickUniqueCircuits`` is not arc-distinct,
+the circuit between :math:`7` and :math:`8` is returned once, using both arcs:
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q5
    :end-before: -- q6
 
-The ``min_depth`` and ``max_depth`` parameters limit the number of vertices of
-each circuit. The ``depth`` column is 1 based and the last row of a circuit
-closes it by repeating the starting vertex, therefore a circuit of 6 vertices
-reaches ``depth = 7``. Self loops are not affected by ``min_depth`` and
-``max_depth``, therefore ``self_loops => false`` is used so the self loop is
-not part of this example.
+.. index::
+    single: pgr_hawickUniqueCircuits ; Self loops
 
 :Example 2: Self loops
 
-With the default ``self_loops => true`` the self loop circuit is included:
+``c_example`` has the self loop with ``id`` :math:`100` on vertex :math:`7`.
+With the default ``self_loops => true`` it is part of the result (``path_id``
+2):
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q6
    :end-before: -- q7
 
-With ``self_loops => false`` the self loop circuit is excluded:
+With ``self_loops => false`` the self loop is excluded:
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q7
    :end-before: -- q8
 
-:Example 3: Circuits from vertices :math:`\{10, 11\}` with a depth range
+.. index::
+    single: pgr_hawickUniqueCircuits ; Depth range
+
+:Example 3: ``min_depth`` and ``max_depth``
+
+The ``min_depth`` and ``max_depth`` parameters limit the number of vertices of
+a circuit. The ``depth`` column starts at ``0`` for the first node of a
+circuit. Self loops are not affected by them.
+
+Only circuits with 1 vertex, that is, only the self loop:
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q8
    :end-before: -- q9
+
+Circuits with 1 to 2 vertices:
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q9
+   :end-before: -- q10
+
+Circuits with 1 to 3 vertices, that is, all the circuits of ``c_example``:
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q10
+   :end-before: -- q11
+
+Only circuits with 3 vertices (plus the self loop):
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q11
+   :end-before: -- q12
+
+.. index::
+    single: pgr_hawickUniqueCircuits ; Single start vertex
+
+:Example 4: Start vertex :math:`7`
+
+The circuits that start and end at vertex :math:`7`, with the default
+``min_depth => 1``:
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q12
+   :end-before: -- q13
+
+The circuits of vertex :math:`7` without the self loop:
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q13
+   :end-before: -- q14
+
+.. index::
+    single: pgr_hawickUniqueCircuits ; Many start vertices
+
+:Example 5: Start vertices :math:`\{10, 11\}` with a depth range
+
+The circuits that start and end at vertices :math:`10` or :math:`11` with 3 to
+6 vertices. The only circuit that touches vertex :math:`11` has 2 vertices, so
+the result is empty:
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q14
+   :end-before: -- q15
+
+.. index::
+    single: pgr_hawickUniqueCircuits ; U-turn on edge
+
+:Example 6: ``u_turn_on_edge``
+
+With the default ``u_turn_on_edge => true`` a circuit can use an edge to go from
+a vertex and immediately return on the same edge (a u-turn).
+
+With ``u_turn_on_edge => false`` a circuit that uses the same edge on two
+consecutive hops is excluded. The two-cycles that use a single edge (edges
+:math:`4`, :math:`7` and :math:`8`) are removed. The self loop (edge
+:math:`100`), the circuit of 3 vertices (edges :math:`101`, :math:`102` and
+:math:`103`) and the two-vertex circuit that uses two different edges between
+vertices :math:`7` and :math:`8` (edges :math:`104` and :math:`10`) are kept:
+
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q15
+   :end-before: -- q16
 
 See Also
 -------------------------------------------------------------------------------

@@ -242,7 +242,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
   16 |       5 |     3 |         7 |       7 |    7 |    7 |   -1 |    0 |        3
 (16 rows)
 
-/* -- q7 */
+/* -- q8 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 1, 1
 );
@@ -252,6 +252,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
    2 |       1 |     1 |         7 |       7 |    7 |    7 |   -1 |    0 |        1
 (2 rows)
 
+/* -- q9 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 1, 2
 );
@@ -273,6 +274,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
   14 |       5 |     2 |         7 |       7 |    7 |    7 |   -1 |    0 |      2.5
 (14 rows)
 
+/* -- q10 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 1, 3
 );
@@ -298,6 +300,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
   18 |       6 |     3 |         7 |       7 |    7 |    7 |   -1 |    0 |        3
 (18 rows)
 
+/* -- q11 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 3, 3
 );
@@ -311,6 +314,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
    6 |       2 |     3 |         7 |       7 |    7 |    7 |   -1 |    0 |        3
 (6 rows)
 
+/* -- q12 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 7
 );
@@ -333,6 +337,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
   15 |       5 |     3 |         7 |       7 |    7 |    7 |   -1 |    0 |        3
 (15 rows)
 
+/* -- q13 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example', 7,
     self_loops => false
@@ -354,7 +359,7 @@ SELECT * FROM pgr_hawickUniqueCircuits(
   13 |       4 |     3 |         7 |       7 |    7 |    7 |   -1 |    0 |        3
 (13 rows)
 
-/* -- q8 */
+/* -- q14 */
 SELECT * FROM pgr_hawickUniqueCircuits(
     'SELECT id, source, target, cost, reverse_cost FROM c_example',
     ARRAY[10,11], min_depth => 3, max_depth => 6
@@ -363,6 +368,24 @@ SELECT * FROM pgr_hawickUniqueCircuits(
 -----+---------+-------+-----------+---------+------+------+------+------+----------
 (0 rows)
 
-/* -- q9 */
+/* -- q15 */
+SELECT * FROM pgr_hawickUniqueCircuits(
+    'SELECT id, source, target, cost, reverse_cost FROM c_example', 0, 0,
+    u_turn_on_edge => false
+);
+ seq | path_id | depth | start_vid | end_vid | pred | node | edge | cost | agg_cost
+-----+---------+-------+-----------+---------+------+------+------+------+----------
+   1 |       1 |     0 |         7 |       7 |    7 |    7 |  100 |    1 |        0
+   2 |       1 |     1 |         7 |       7 |    7 |    7 |   -1 |    0 |        1
+   3 |       2 |     0 |         7 |       7 |    7 |    7 |  104 |  1.5 |        0
+   4 |       2 |     1 |         7 |       7 |    7 |    8 |   10 |    1 |      1.5
+   5 |       2 |     2 |         7 |       7 |    7 |    7 |   -1 |    0 |      2.5
+   6 |       3 |     0 |         7 |       7 |    7 |    7 |  101 |    1 |        0
+   7 |       3 |     1 |         7 |       7 |    7 |   20 |  102 |    1 |        1
+   8 |       3 |     2 |         7 |       7 |   20 |   21 |  103 |    1 |        2
+   9 |       3 |     3 |         7 |       7 |    7 |    7 |   -1 |    0 |        3
+(9 rows)
+
+/* -- q16 */
 ROLLBACK;
 ROLLBACK

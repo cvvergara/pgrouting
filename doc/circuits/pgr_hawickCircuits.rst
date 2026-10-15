@@ -21,12 +21,14 @@
 
 * Version 4.1.0
 
-  * New optional parameters: ``min_depth``, ``max_depth`` and ``self_loops``.
+  * New optional parameters: ``min_depth``, ``max_depth``, ``self_loops`` and
+    ``u_turn_on_edge``.
   * New signatures to select the starting vertices: **start vid** and
     **start vids**.
   * Deprecated signature: ``pgr_hawickCircuits(text)``.
   * The circuits are arc-distinct: each combination of parallel arcs is
     returned as a different circuit.
+  * The ``depth`` column starts at ``0`` for the first node of a circuit.
 
 * Version 3.4.0
 
@@ -51,9 +53,10 @@ Signatures
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
-   | pgr_hawickCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
-   | pgr_hawickCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickCircuits(`Edges SQL`_ [, **options**])
+   | pgr_hawickCircuits(`Edges SQL`_, **start vid** [, **options**])
+   | pgr_hawickCircuits(`Edges SQL`_, **start vids** [, **options**])
+   | **options:** ``[min_depth, max_depth, self_loops, u_turn_on_edge]``
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -67,7 +70,7 @@ All circuits
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickCircuits(`Edges SQL`_ [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -90,7 +93,7 @@ Single start vertex
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickCircuits(`Edges SQL`_, **start vid** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -113,7 +116,7 @@ Many start vertices
 .. admonition:: \ \
    :class: signatures
 
-   | pgr_hawickCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``])
+   | pgr_hawickCircuits(`Edges SQL`_, **start vids** [, ``min_depth``] [, ``max_depth``] [, ``self_loops``] [, ``u_turn_on_edge``])
 
    | Returns set of |circuits-result|
    | OR EMPTY SET
@@ -213,8 +216,8 @@ arcs (``path_id`` 4 to 7 of the result):
 :Example 2: Deprecated signature
 
 Calling ``pgr_hawickCircuits`` with only the `Edges SQL`_ uses the deprecated
-signature. It is equivalent to ``min_depth => 0``, so the same 29 rows of
-Example 1 are returned:
+signature. It is equivalent to ``min_depth => 0``, ``self_loops => true`` and
+``u_turn_on_edge => true``, so the same 29 rows of Example 1 are returned:
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q6
@@ -301,6 +304,26 @@ loops and the circuit of vertex :math:`7` are returned:
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q14
    :end-before: -- q15
+
+.. index::
+    single: pgr_hawickCircuits ; U-turn on edge
+
+:Example 7: ``u_turn_on_edge``
+
+With the default ``u_turn_on_edge => true`` a circuit can use an edge to go from
+a vertex and immediately return on the same edge (a u-turn).
+
+With ``u_turn_on_edge => false`` a circuit that uses the same edge on two
+consecutive hops is excluded. The two-cycles that use a single edge (edges
+:math:`4`, :math:`7`, :math:`8`, :math:`10` and :math:`104`) are removed. The
+self loops (edge :math:`100`), the circuit of 3 vertices (edges :math:`101`,
+:math:`102` and :math:`103`) and the two-cycles that use two different edges
+between vertices :math:`7` and :math:`8` (edges :math:`104` and :math:`10`) are
+kept:
+
+.. literalinclude:: hawickCircuits.queries
+   :start-after: -- q15
+   :end-before: -- q16
 
 See Also
 -------------------------------------------------------------------------------
