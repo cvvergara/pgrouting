@@ -199,7 +199,7 @@ pointing at the wrong direction of the exit.
    :start-after: -- q4
    :end-before: -- q5
 
-:Example 1: All possible unique ways to return to vertex :math:`1`.
+:Example 0: All possible unique ways to return to vertex :math:`1`.
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q5
@@ -207,7 +207,9 @@ pointing at the wrong direction of the exit.
 
 :Example 2: Exclude self loops.
 
-- red is :math:`path\_id = 1`
+- purple is :math:`path\_id = 1`
+- magenta is :math:`path\_id = 1`
+- red is :math:`path\_id = 2`
 - green is :math:`path\_id = 2`
 - blue is :math:`path\_id = 3`
 
@@ -224,6 +226,12 @@ pointing at the wrong direction of the exit.
      3 [pos="2,1!"];
      4 [pos="-1,0!"];
      5 [pos="-1,1!"];
+
+     1 -> 2 [color=purple,xlabel="1       "];
+     2 -> 1 [color=purple,xlabel="1"];
+
+     1 -> 3 [color=magenta,xlabel="4       "];
+     3 -> 1 [color=magenta,xlabel="4"];
 
 
      1 -> 2 [color=red,xlabel="1  "];
@@ -263,16 +271,16 @@ pointing at the wrong direction of the exit.
      5 [pos="-1,1!"];
 
 
-     1 -> 2 [color=red,xlabel="1  "];
-     2 -> 3 [color=red,xlabel="2    "];
-     3 -> 1 [color=red,xlabel="4    "];
+     1 -> 2 [color=red];
+     2 -> 3 [color=red];
+     3 -> 1 [color=red,xlabel="3"];
 
-     1 -> 3 [color=green,xlabel="3       "];
-     3 -> 1 [color=green,xlabel="4"];
+     1 -> 3 [color=green,penwidth=5,xlabel="4"];
+     3 -> 1 [color=green,xlabel="3"];
 
-     1 -> 3 [color=blue,taillabel="                  3"];
-     3 -> 2 [color=blue,xlabel="2  "];
-     2 -> 1 [color=blue,xlabel="1"];
+     1 -> 3 [color=blue,penwidth=5,taillabel="                 4"];
+     3 -> 2 [color=blue];
+     2 -> 1 [color=blue];
    }
 
 
