@@ -77,11 +77,13 @@ Optional parameters
    * - ``min_depth``
      - ``BIGINT``
      - ``1``
-     - Minimum number of vertices in a circuit. Self loops are not affected.
+     - Minimum number of vertices in a circuit.
+       * Exclude self loops with edge circuits by increasing this number.
+       * Exclude 2 edge circuits by increasing this number.
    * - ``max_depth``
      - ``BIGINT``
      - ``9223372036854775807``
-     - Maximum number of vertices in a circuit. Self loops are not affected.
+     - Maximum number of vertices in a circuit.
    * - ``self_loops``
      - ``BOOLEAN``
      - ``true``
@@ -91,10 +93,9 @@ Optional parameters
    * - ``u_turn_on_edge``
      - ``BOOLEAN``
      - ``true``
-     - * When ``true`` a circuit can use an edge to go from a vertex and
-         immediately return on the same edge.
-       * When ``false`` a circuit that uses the same edge on two consecutive
-         hops is excluded from the results.
+     - * When ``true``: 2 edge circuits with same `id` are part of the results.
+       * When ``false``: 2 edge circuits with same ``id`` are not excluded from
+         the results.
        * Self loops are not affected.
 
 .. circuits_optionals_end

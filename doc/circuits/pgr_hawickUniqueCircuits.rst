@@ -35,10 +35,14 @@ and self arcs with a memory efficient and high-performance implementation.
 
 **The main characteristics are:**
 
-- The algorithm implementation works only for directed graph
+- Works for **directed** graphs.
 - The algorithm outputs the distinct circuits present in the graph.
-- A circuit is elementary: a vertex is not repeated within a circuit, except the
-  starting vertex that closes the circuit.
+- The circuits are elementary: a vertex is not repeated within a circuit, except
+  the starting vertex that closes the circuit.
+- The graph passed to the algorithm discard parallel edges with higher costs.
+  keeps the lowest cost edges.
+- When :code:`U_turn_on_edge = false` and there exists more than one edge connecting two nodes, when building the graph, the secondfrom the
+  same  TODO describe.
 - Time Complexity: :math:`O((V + E) (c + 1))`
 
   - where :math:`|E|` is the number of edges in the graph,
@@ -234,8 +238,8 @@ pointing at the wrong direction of the exit.
 - purple is :math:`path\_id = 1`
 - red is :math:`path\_id = 2`
 - green is :math:`path\_id = 3`
-- blue is :math:`path\_id = 2`
-- orange is :math:`path\_id = 3`
+- blue is :math:`path\_id = 4`
+- orange is :math:`path\_id = 5`
 
 .. graphviz::
 
