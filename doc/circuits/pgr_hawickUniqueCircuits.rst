@@ -171,7 +171,7 @@ pointing at the wrong direction of the exit.
    digraph G {
      graph [splines=false, sep=1];
      node [shape=circle;style=filled;fontsize=8;fixedsize=true;width=.4;color=deepskyblue];
-     edge [arrowsize=0.5;color=blue;fontsize=8];
+     edge [arrowsize=0.5,fontsize=8];
 
      1 [pos="0,0!"];
      2 [pos="0,2!"];
@@ -179,18 +179,13 @@ pointing at the wrong direction of the exit.
      4 [pos="-1,0!"];
      5 [pos="-1,1!"];
 
-     1 -> 2 [label="1"];
-     2 -> 1 [label="1"];
-     2 -> 3 [label="2"];
-     3 -> 2 [label="2"];
-     1 -> 3 [label="3(1.5)"];
-     3 -> 1 [label="3 (1.7)"];
-     1 -> 3 [label="4"];
-     3 -> 1 [label="4"];
-     1 -> 4 [label="5"];
-     4 -> 1 [label="5"];
+     1 -> 2 [label="1", dir=both];
+     2 -> 3 [label="2", dir=both];
+     1 -> 3 [label="3", dir=both];
+     1 -> 3 [label="4", dir=both,penwidth=4];
+     1 -> 4 [label="5", color=orange,dir=both];
      1 -> 5 [label="6"];
-     1 -> 1 [headport=s, tailport=s, label="7"];
+     1 -> 1 [label="7", headport=s, tailport=s];
    }
 
 .. graph_end
@@ -199,19 +194,14 @@ pointing at the wrong direction of the exit.
    :start-after: -- q4
    :end-before: -- q5
 
-:Example 0: All possible unique ways to return to vertex :math:`1`.
+:Example 1: All possible unique ways to return to vertex :math:`1`.
 
-.. literalinclude:: hawickUniqueCircuits.queries
-   :start-after: -- q5
-   :end-before: -- q6
-
-:Example 2: Exclude self loops.
-
-- purple is :math:`path\_id = 1`
-- magenta is :math:`path\_id = 1`
-- red is :math:`path\_id = 2`
-- green is :math:`path\_id = 2`
-- blue is :math:`path\_id = 3`
+- black is :math:`path\_id = 1`
+- purple is :math:`path\_id = 2`
+- red is :math:`path\_id = 3`
+- green is :math:`path\_id = 4`
+- blue is :math:`path\_id = 5`
+- orange is :math:`path\_id = 6`
 
 .. graphviz::
 
@@ -227,23 +217,45 @@ pointing at the wrong direction of the exit.
      4 [pos="-1,0!"];
      5 [pos="-1,1!"];
 
-     1 -> 2 [color=purple,xlabel="1       "];
-     2 -> 1 [color=purple,xlabel="1"];
+     1 -> 1 [headport=s, tailport=s];
+     1 -> 2 [color=purple,dir=both];
+     1 -> 2 -> 3 ->1 [color=red];
+     1 -> 3 [color=green,dir=both];
+     1 -> 3 -> 2 ->1 [color=blue];
+     1 -> 4 [color=orange,dir=both]
+   }
 
-     1 -> 3 [color=magenta,xlabel="4       "];
-     3 -> 1 [color=magenta,xlabel="4"];
+.. literalinclude:: hawickUniqueCircuits.queries
+   :start-after: -- q5
+   :end-before: -- q6
 
+:Example 2: Exclude self loops.
 
-     1 -> 2 [color=red,xlabel="1  "];
-     2 -> 3 [color=red,xlabel="2    "];
-     3 -> 1 [color=red,xlabel="4    "];
+- purple is :math:`path\_id = 1`
+- red is :math:`path\_id = 2`
+- green is :math:`path\_id = 3`
+- blue is :math:`path\_id = 2`
+- orange is :math:`path\_id = 3`
 
-     1 -> 3 [color=green,xlabel="3       "];
-     3 -> 1 [color=green,xlabel="4"];
+.. graphviz::
 
-     1 -> 3 [color=blue,taillabel="                  3"];
-     3 -> 2 [color=blue,xlabel="2  "];
-     2 -> 1 [color=blue,xlabel="1"];
+   digraph G {
+       forcelabels=true;
+     graph [splines=line, sep=1];
+     node [shape=circle;style=filled;fontsize=8;fixedsize=true;width=.4;color=deepskyblue];
+     edge [arrowsize=0.5;fontsize=8];
+
+     1 [pos="0,0!"];
+     2 [pos="0,2!"];
+     3 [pos="2,1!"];
+     4 [pos="-1,0!"];
+     5 [pos="-1,1!"];
+
+     1 -> 2 [color=purple,dir=both];
+     1 -> 2 -> 3 ->1 [color=red];
+     1 -> 3 [color=green,dir=both];
+     1 -> 3 -> 2 ->1[color=blue];
+     1 -> 4 [color=orange,dir=both]
    }
 
 .. literalinclude:: hawickUniqueCircuits.queries
@@ -271,16 +283,11 @@ pointing at the wrong direction of the exit.
      5 [pos="-1,1!"];
 
 
-     1 -> 2 [color=red];
-     2 -> 3 [color=red];
-     3 -> 1 [color=red,xlabel="3"];
-
-     1 -> 3 [color=green,penwidth=5,xlabel="4"];
-     3 -> 1 [color=green,xlabel="3"];
-
-     1 -> 3 [color=blue,penwidth=5,taillabel="                 4"];
-     3 -> 2 [color=blue];
-     2 -> 1 [color=blue];
+     1 -> 2 -> 3 -> 1 [color=red];
+     1 -> 3 [color=green,penwidth=2];
+     3 -> 1 [color=green];
+     1 -> 3 [color=blue,penwidth=2];
+     3 -> 2 -> 1[color=blue];
    }
 
 
