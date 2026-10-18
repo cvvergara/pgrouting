@@ -94,7 +94,7 @@ expand_parallel_arcs(
 
         /*
         * Guard:
-        * If one vertex pair of the cycle has no connecting arc, the vertex cycle cannot be realized i
+        * If one vertex pair of the cycle has no connecting arc, the vertex cycle cannot be realized
         * as an edge circuit at all.
         * So a partial expansion must not be emitted
         * — drop the whole circuit.
@@ -103,6 +103,9 @@ expand_parallel_arcs(
     }
 
     std::vector<size_t> indexes(size, 0);
+    pgrouting::types::Circuits u_turns;
+    size_t kept = 0;
+
     while (true) {
         pgrouting::types::Circuit circuit;
         circuit.reserve(size);
@@ -112,17 +115,21 @@ expand_parallel_arcs(
             circuit.push_back({graph[vertex_circuit[i]].id, graph[edge].id, graph[edge].cost});
         }
 
+        /*
+         * A circuit with 2 edges total that uses the same edge id on both hops
+         * is a u-turn on that edge: when u_turn_on_edge is false it is dropped
+         * in favor of expansions using different edges.
+         */
         bool keep = true;
         if (!u_turn_on_edge && size == 2) {
-            for (size_t i = 0; i < size && keep; ++i) {
-                const auto next = (i + 1) % size;
-                if (circuit[i].edge == circuit[next].edge) {
-                    keep = false;
-                }
-            }
+            keep = circuit[0].edge != circuit[1].edge;
         }
+
         if (keep) {
+            ++kept;
             circuits.push_back(std::move(circuit));
+        } else {
+            u_turns.push_back(std::move(circuit));
         }
 
         size_t i = 0;
@@ -131,6 +138,13 @@ expand_parallel_arcs(
             ++i;
         }
         if (i == size) break;
+    }
+
+    /* No expansion using different edges exists: keep the only option. */
+    if (kept == 0) {
+        for (auto& u_turn : u_turns) {
+            circuits.push_back(std::move(u_turn));
+        }
     }
 }
 
