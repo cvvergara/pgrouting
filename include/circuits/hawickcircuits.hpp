@@ -48,7 +48,7 @@ pgrouting::types::Circuits hawickCircuits(
 pgrouting::types::Circuits hawickUniqueCircuits(
         const pgrouting::DirectedGraph&,
         const std::set<int64_t>&,
-        int64_t, int64_t, bool, bool
+        int64_t, int64_t, bool
 );
 
 }  // namespace functions

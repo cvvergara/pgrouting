@@ -78,7 +78,6 @@ Optional parameters
      - ``BIGINT``
      - ``1``
      - Minimum number of vertices in a circuit.
-       * Exclude self loops with edge circuits by increasing this number.
        * Exclude 2 edge circuits by increasing this number.
    * - ``max_depth``
      - ``BIGINT``

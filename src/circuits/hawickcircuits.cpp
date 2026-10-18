@@ -127,35 +127,23 @@ expand_parallel_arcs(
 
 /** @brief Resolves one unique circuit over the graph's edges
  *
- * Every hop of the vertex cycle is resolved to exactly one edge, the one
- * `get_edge_id` returns, keeping a single circuit per vertex cycle.
- * When u-turns are not wanted, circuits with a hop and its successor using
- * the same edge are discarded.
+ * Every hop of the vertex cycle is resolved to exactly one edge
+ * keeping a single circuit per vertex cycle.
  */
 void
 resolve_unique_circuit(
         const pgrouting::DirectedGraph& graph,
         const std::vector<pgrouting::DirectedGraph::V>& vertex_circuit,
-        pgrouting::types::Circuits& circuits,
-        bool u_turn_on_edge) {
+        pgrouting::types::Circuits& circuits) {
     const size_t size = vertex_circuit.size();
     pgrouting::types::Circuit circuit;
     circuit.reserve(size);
+
     for (size_t i = 0; i < size; ++i) {
         const auto to = vertex_circuit[(i + 1) % size];
         double cost = 0;
         const auto edge_id = graph.get_edge_id(vertex_circuit[i], to, cost);
         circuit.push_back({graph[vertex_circuit[i]].id, edge_id, cost});
-    }
-
-    if (!u_turn_on_edge && size >= 2) {
-        for (size_t i = 0; i < size; ++i) {
-            const auto next = (i + 1) % size;
-            if (circuit[i].edge != -1 && circuit[next].edge != -1
-                    && circuit[i].edge == circuit[next].edge) {
-                return;
-            }
-        }
     }
 
     circuits.push_back(std::move(circuit));
@@ -222,8 +210,7 @@ hawickUniqueCircuits(
         const std::set<int64_t> &vertices,
         int64_t min_depth,
         int64_t max_depth,
-        bool self_loops,
-        bool u_turn_on_edge) {
+        bool self_loops) {
     std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
     circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops, {}};
@@ -243,7 +230,7 @@ hawickUniqueCircuits(
 
     pgrouting::types::Circuits circuits;
     for (const auto& vertex_circuit : vertex_circuits) {
-        resolve_unique_circuit(graph, vertex_circuit, circuits, u_turn_on_edge);
+        resolve_unique_circuit(graph, vertex_circuit, circuits);
     }
 
     return circuits;
