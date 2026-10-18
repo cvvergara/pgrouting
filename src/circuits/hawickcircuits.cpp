@@ -48,7 +48,6 @@ struct circuit_collector {
     int64_t min_depth;
     int64_t max_depth;
     bool self_loops;
-    std::set<std::vector<pgrouting::DirectedGraph::V>> seen;
 
     template <typename Vertices, typename G>
     void cycle(const Vertices& circuit, const G& g) {
@@ -61,7 +60,6 @@ struct circuit_collector {
         if (!vertices.empty() && vertices.find(g[circuit.front()].id) == vertices.end()) return;
 
         std::vector<pgrouting::DirectedGraph::V> vertex_circuit(circuit.begin(), circuit.end());
-        if (!seen.insert(vertex_circuit).second) return;
         circuits.push_back(std::move(vertex_circuit));
     }
 };
@@ -82,15 +80,25 @@ expand_parallel_arcs(
 
     const size_t size = vertex_circuit.size();
     std::vector<std::vector<E>> hops(size);
+
     for (size_t i = 0; i < size; ++i) {
         auto from = vertex_circuit[i];
         auto to = vertex_circuit[(i + 1) % size];
         auto edges = boost::out_edges(from, graph.graph);
+
         for (auto edge = edges.first; edge != edges.second; ++edge) {
             if (graph.target(*edge) == to) {
                 hops[i].push_back(*edge);
             }
         }
+
+        /*
+        * Guard:
+        * If one vertex pair of the cycle has no connecting arc, the vertex cycle cannot be realized i
+        * as an edge circuit at all.
+        * So a partial expansion must not be emitted
+        * — drop the whole circuit.
+        */
         if (hops[i].empty()) return;
     }
 
@@ -98,13 +106,14 @@ expand_parallel_arcs(
     while (true) {
         pgrouting::types::Circuit circuit;
         circuit.reserve(size);
+
         for (size_t i = 0; i < size; ++i) {
             const auto edge = hops[i][indexes[i]];
             circuit.push_back({graph[vertex_circuit[i]].id, graph[edge].id, graph[edge].cost});
         }
 
         bool keep = true;
-        if (!u_turn_on_edge && size >= 2) {
+        if (!u_turn_on_edge && size == 2) {
             for (size_t i = 0; i < size && keep; ++i) {
                 const auto next = (i + 1) % size;
                 if (circuit[i].edge == circuit[next].edge) {
@@ -172,11 +181,11 @@ hawickCircuits(
         bool u_turn_on_edge) {
     std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
-    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops, {}};
+    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops};
 
     CHECK_FOR_INTERRUPTS();
     try {
-        boost::hawick_circuits(graph.graph, collector);
+        boost::hawick_unique_circuits(graph.graph, collector);
     } catch (boost::exception const& ex) {
         (void)ex;
         throw;
@@ -213,7 +222,7 @@ hawickUniqueCircuits(
         bool self_loops) {
     std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
-    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops, {}};
+    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops};
 
     CHECK_FOR_INTERRUPTS();
     try {
