@@ -30,19 +30,19 @@ Description
 Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
 This algorithm solves the problem of detecting and enumerating circuits in graphs.
 
-It is capable of circuit enumeration in graphs with directed arcs, multiple arcs
-and self arcs with a memory efficient and high-performance implementation.
+Circuit enumeration in directed graphs, where parallel circuits are listed only
+once.
+
+.. circuits_characteristics_start
 
 **The main characteristics are:**
 
-- Works for **directed** graphs.
+- Works for directed graphs.
 - The algorithm outputs the distinct circuits present in the graph.
 - The circuits are elementary: a vertex is not repeated within a circuit, except
   the starting vertex that closes the circuit.
 - The graph passed to the algorithm discard parallel edges with higher costs.
   keeps the lowest cost edges.
-- When :code:`U_turn_on_edge = false` and there exists more than one edge connecting two nodes, when building the graph, the secondfrom the
-  same  TODO describe.
 - Time Complexity: :math:`O((V + E) (c + 1))`
 
   - where :math:`|E|` is the number of edges in the graph,
@@ -50,6 +50,8 @@ and self arcs with a memory efficient and high-performance implementation.
   - where :math:`|c|` is the number of circuits in the graph.
 
 |Boost| Boost Graph Inside
+
+.. circuits_characteristics_end
 
 Signatures
 -------------------------------------------------------------------------------

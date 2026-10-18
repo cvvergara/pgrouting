@@ -37,13 +37,14 @@
 Description
 -------------------------------------------------------------------------------
 
-.. include:: circuits-family.rst
+Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
+This algorithm solves the problem of detecting and enumerating circuits in graphs.
+
+Circuit enumeration in directed graphs, where parallel circuits are enumerated.
+
+.. include:: pgr_hawickUniqueCircuits.rst
    :start-after: circuits_characteristics_start
    :end-before: circuits_characteristics_end
-
-The circuits are arc-distinct: when there are parallel arcs between two
-vertices, each combination of arcs is returned as a different circuit.
-:doc:`pgr_hawickUniqueCircuits` can be used to filter those duplicates out.
 
 Signatures
 -------------------------------------------------------------------------------

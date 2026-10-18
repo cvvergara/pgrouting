@@ -51,13 +51,15 @@ BEGIN
       $$,
       'u_turn_on_edge => true -> the u-turn two-cycle is returned');
 
-  -- u_turn_on_edge => false discards the u-turn two-cycle
+  -- u_turn_on_edge => false keeps the u-turn two-cycle when no different-edge circuit exists
+
+  PREPARE a_false AS
+  SELECT seq, path_id, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_hawickCircuits('a', 3, 1, 5, true, false);
 
   RETURN QUERY
-  SELECT is_empty($$
-      SELECT * FROM pgr_hawickCircuits('a', 3, 1, 5, true, false)
-      $$,
-      'u_turn_on_edge => false -> the u-turn two-cycle is discarded');
+  SELECT set_eq('a_false', 'a_true_cyc',
+      'u_turn_on_edge => false -> the two-cycle has no alternative and is kept');
 
   -- a two-cycle that uses two different edges is not a u-turn
 
@@ -129,11 +131,14 @@ BEGIN
   SELECT set_eq('d_false',
       $$VALUES
           (1, 1, 1, 1, 1, 1, 1, 0),
-          (2, 1, 1, 1, 2, 2, 1, 1),
-          (3, 1, 1, 1, 3, 3, 1, 2),
-          (4, 1, 1, 1, 1, -1, 0, 3)
+          (2, 1, 1, 1, 2, 1, 1, 1),
+          (3, 1, 1, 1, 1, -1, 0, 2),
+          (4, 2, 1, 1, 1, 1, 1, 0),
+          (5, 2, 1, 1, 2, 2, 1, 1),
+          (6, 2, 1, 1, 3, 3, 1, 2),
+          (7, 2, 1, 1, 1, -1, 0, 3)
       $$,
-      'u_turn_on_edge => false -> only the triangle is returned');
+      'u_turn_on_edge => false -> the u-turn two-cycle has no alternative, both circuits are returned');
 
   -- the flag does not affect self loops
 

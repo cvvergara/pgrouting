@@ -65,6 +65,39 @@ struct circuit_collector {
 };
 
 
+/** @brief Enumerates the vertex cycles of the graph
+ *
+ * Uses boost::hawick_unique_circuits with the depth, start vertex and
+ * self loops filters of the circuit functions.
+ */
+std::vector<std::vector<pgrouting::DirectedGraph::V>>
+enumerate_vertex_circuits(
+        const pgrouting::DirectedGraph& graph,
+        const std::set<int64_t>& vertices,
+        int64_t min_depth,
+        int64_t max_depth,
+        bool self_loops) {
+    std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
+
+    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops};
+
+    CHECK_FOR_INTERRUPTS();
+    try {
+        boost::hawick_unique_circuits(graph.graph, collector);
+    } catch (boost::exception const& ex) {
+        (void)ex;
+        throw;
+    } catch (std::exception &e) {
+        (void)e;
+        throw;
+    } catch (...) {
+        throw;
+    }
+
+    return vertex_circuits;
+}
+
+
 /** @brief Expands one vertex cycle over all its parallel arcs
  *
  * Every hop of the cycle is replaced by each of the parallel arcs that connect
@@ -193,22 +226,7 @@ hawickCircuits(
         int64_t max_depth,
         bool self_loops,
         bool u_turn_on_edge) {
-    std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
-
-    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops};
-
-    CHECK_FOR_INTERRUPTS();
-    try {
-        boost::hawick_unique_circuits(graph.graph, collector);
-    } catch (boost::exception const& ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
-    } catch (...) {
-        throw;
-    }
+    auto vertex_circuits = enumerate_vertex_circuits(graph, vertices, min_depth, max_depth, self_loops);
 
     pgrouting::types::Circuits circuits;
     for (const auto& vertex_circuit : vertex_circuits) {
@@ -234,22 +252,7 @@ hawickUniqueCircuits(
         int64_t min_depth,
         int64_t max_depth,
         bool self_loops) {
-    std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
-
-    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops};
-
-    CHECK_FOR_INTERRUPTS();
-    try {
-        boost::hawick_unique_circuits(graph.graph, collector);
-    } catch (boost::exception const& ex) {
-        (void)ex;
-        throw;
-    } catch (std::exception &e) {
-        (void)e;
-        throw;
-    } catch (...) {
-        throw;
-    }
+    auto vertex_circuits = enumerate_vertex_circuits(graph, vertices, min_depth, max_depth, self_loops);
 
     pgrouting::types::Circuits circuits;
     for (const auto& vertex_circuit : vertex_circuits) {
