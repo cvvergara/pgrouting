@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include "circuits/hawickcircuits.hpp"
 
+#include <algorithm>
 #include <cstdint>
 #include <set>
 #include <utility>
@@ -72,10 +73,26 @@ struct circuit_collector {
         } else if (depth < min_depth || depth > max_depth) {
             return;
         }
-        if (!vertices.empty() && vertices.find(g[circuit.front()].id) == vertices.end()) return;
+        if (vertices.empty()) {
+            std::vector<pgrouting::DirectedGraph::V> vertex_circuit(circuit.begin(), circuit.end());
+            circuits.push_back(std::move(vertex_circuit));
+            return;
+        }
 
-        std::vector<pgrouting::DirectedGraph::V> vertex_circuit(circuit.begin(), circuit.end());
-        circuits.push_back(std::move(vertex_circuit));
+        /* A circuit is defined up to rotation: filter by containment and, for
+         * each requested vertex present, save a rotation starting there. This
+         * makes the result independent of the input edge order. */
+        const size_t size = circuit.size();
+        for (size_t p = 0; p < size; ++p) {
+            if (vertices.find(g[circuit[p]].id) == vertices.end()) continue;
+
+            std::vector<pgrouting::DirectedGraph::V> rotation;
+            rotation.reserve(size);
+            for (size_t i = 0; i < size; ++i) {
+                rotation.push_back(circuit[(p + i) % size]);
+            }
+            circuits.push_back(std::move(rotation));
+        }
     }
 };
 
@@ -84,9 +101,13 @@ struct circuit_collector {
  *
  * Uses boost::hawick_unique_circuits with the depth, start vertex and
  * self loops filters of the circuit functions.
- * When start vertices are requested the enumeration stops early: the roots
- * are enumerated on vertex index order, so once the last requested root is
- * exceeded the remaining circuits are not requested.
+ * When start vertices are requested, a circuit is kept when it contains any
+ * requested vertex and one rotation per requested vertex is saved, starting
+ * at that vertex.
+ * The enumeration stops early: the roots are enumerated on vertex index order
+ * and, because the requested vertices are inserted first, once the last
+ * requested root is exceeded the remaining circuits contain no requested
+ * vertex.
  */
 std::vector<std::vector<pgrouting::DirectedGraph::V>>
 enumerate_vertex_circuits(
@@ -241,6 +262,23 @@ resolve_unique_circuit(
     circuits.push_back(std::move(circuit));
 }
 
+/** @brief Orders the circuits by start_vid when start vertices were requested
+ *
+ * With rotation-based filtering a circuit can be emitted under any requested
+ * start vertex, so the emission order is not grouped by start_vid.
+ * When no start vertex is requested the canonical enumeration order is kept:
+ * circuits are grouped by their root and a circuit before a given start_vid
+ * might still contain that vertex.
+ */
+void
+sort_by_start_vid(pgrouting::types::Circuits& circuits, const std::set<int64_t>& vertices) {
+    if (vertices.empty()) return;
+    std::stable_sort(circuits.begin(), circuits.end(),
+            [](const pgrouting::types::Circuit &lhs, const pgrouting::types::Circuit &rhs) {
+                return lhs.front().node < rhs.front().node;
+            });
+}
+
 }  // namespace
 
 namespace pgrouting {
@@ -268,6 +306,7 @@ hawickCircuits(
     for (const auto& vertex_circuit : vertex_circuits) {
         expand_parallel_arcs(graph, vertex_circuit, circuits, u_turn_on_edge);
     }
+    sort_by_start_vid(circuits, vertices);
 
     return circuits;
 }
@@ -294,6 +333,7 @@ hawickUniqueCircuits(
     for (const auto& vertex_circuit : vertex_circuits) {
         resolve_unique_circuit(graph, vertex_circuit, circuits);
     }
+    sort_by_start_vid(circuits, vertices);
 
     return circuits;
 }
