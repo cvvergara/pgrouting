@@ -41,6 +41,15 @@ once.
 - The algorithm outputs the distinct circuits present in the graph.
 - The circuits are elementary: a vertex is not repeated within a circuit, except
   the starting vertex that closes the circuit.
+
+- When no initial vertices are given all circuits are in canonical order of the
+  vertices insertion of the graph: A circuit with vertices ``u``, ``v``: ``u``
+  starting circuits containg ``v`` will not be listed on ``start_vid = v`` rows.
+
+  - Different edge ordering gives different cannonical ordering.
+
+- When start vertices are given, all circuits are returned for each requested
+  vertex it contains, and the results are grouped by ``start_vid``.
 - The graph passed to the algorithm discard parallel edges with higher costs.
   keeps the lowest cost edges.
 - Time Complexity: :math:`O((V + E) (c + 1))`
@@ -84,7 +93,8 @@ All circuits
    | Returns set of |circuits-result|
    | OR EMPTY SET
 
-:Example: Circuits present in the pgRouting :doc:`sampledata`
+:Example: Circuits present in the pgRouting :doc:`sampledata` in canonical
+          order.
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q1
@@ -105,7 +115,7 @@ Single start vertex
    | Returns set of |circuits-result|
    | OR EMPTY SET
 
-:Example: Circuits starting at vertex :math:`10`
+:Example: All circuits that contain vertex :math:`10`
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q2
@@ -126,7 +136,7 @@ Many start vertices
    | Returns set of |circuits-result|
    | OR EMPTY SET
 
-:Example: Circuits starting at vertices :math:`\{10, 11\}`
+:Example: All circuits that contain vertices :math:`\{10, 11\}`
 
 .. literalinclude:: hawickUniqueCircuits.queries
    :start-after: -- q3

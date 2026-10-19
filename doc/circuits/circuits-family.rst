@@ -50,12 +50,14 @@ Parameters
      - `Edges SQL`_ as described below.
    * - ``start vid``
      - |ANY-INTEGER|
-     - Identifier of the starting vertex of the circuits. When ``0`` all the
-       circuits are returned.
+     - A vertex of the circuits:
+       - All the circuits that contain the vertex are returned.
+       - When ``0`` all the circuits are returned in canonical order.
    * - ``start vids``
      - ``ARRAY[`` |ANY-INTEGER| ``]``
-     - Array of identifiers of the starting vertices of the circuits. When
-       empty all the circuits are returned.
+     - Vertices of the circuits: for each requested vertex:
+       - All the circuits that contain the vertex are returned:
+       - When empty all the circuits are returned in canonical order.
 
 
 .. circuits_parameters_end
@@ -92,9 +94,13 @@ Optional parameters
    * - ``u_turn_on_edge``
      - ``BOOLEAN``
      - ``true``
-     - * When ``true``: 2 edge circuits with same `id` are part of the results.
-       * When ``false``: 2 edge circuits with same ``id`` are not excluded from
-         the results.
+     - * A u-turn on an edge is a 2 edge circuit that uses the same ``id`` on
+         both directions of the edge.
+       * When ``true``: u-turns are part of the results.
+       * When ``false``: u-turns are discarded when the circuit can be formed
+         with two different edges; a u-turn is kept when it is the only
+         option, that is, when the two vertices are connected by a single
+         edge.
        * Self loops are not affected.
 
 .. circuits_optionals_end
@@ -140,16 +146,16 @@ Result columns
      - Identifier of the ending vertex of the circuit.
    * - ``pred``
      - ``BIGINT``
-     - Identifier of the node that precedes ``node`` in the circuit. When
-       ``node`` is the first node of the circuit, it has the same value as
-       ``node``.
+     - Identifier of the node that precedes ``node`` in the circuit.
+       - When ``node`` is the first node of the circuit, it has the same value
+         as ``node``.
    * - ``node``
      - ``BIGINT``
      - Identifier of the node in the path from a vid to next vid.
    * - ``edge``
      - ``BIGINT``
-     - Identifier of the edge used to go from ``node`` to the next node in
-       the path sequence. ``-1`` for the last node of the path.
+     - Identifier of the edge used to arrive from ``pred`` to ``node``.
+       - ``-1`` when :math:`depth = 0`.
    * - ``cost``
      - ``FLOAT``
      - Cost to traverse from ``node`` using ``edge`` to the next node in the

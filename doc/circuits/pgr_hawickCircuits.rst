@@ -101,7 +101,7 @@ Single start vertex
    | Returns set of |circuits-result|
    | OR EMPTY SET
 
-:Example: Circuits starting at vertex :math:`10`
+:Example: Circuits that contain vertex :math:`10`
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q2
@@ -122,7 +122,7 @@ Many start vertices
    | Returns set of |circuits-result|
    | OR EMPTY SET
 
-:Example: Circuits starting at vertices :math:`\{10, 11\}`
+:Example: Circuits that contain vertices :math:`\{10, 11\}`
 
 .. literalinclude:: hawickCircuits.queries
    :start-after: -- q3
