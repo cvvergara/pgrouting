@@ -147,6 +147,7 @@ Result columns
    * - ``pred``
      - ``BIGINT``
      - Identifier of the node that precedes ``node`` in the circuit.
+
        - When ``node`` is the first node of the circuit, it has the same value
          as ``node``.
    * - ``node``
@@ -158,8 +159,8 @@ Result columns
        - ``-1`` when :math:`depth = 0`.
    * - ``cost``
      - ``FLOAT``
-     - Cost to traverse from ``node`` using ``edge`` to the next node in the
-       path sequence.
+     - Cost to traverse from ``pred`` to ``node`` using ``edge``.
+       - ``0`` when :math:`depth = 0`.
    * - ``agg_cost``
      - ``FLOAT``
      - Aggregate cost from ``start_vid`` to ``node``.
