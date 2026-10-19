@@ -246,34 +246,15 @@ do_shortestPath(
                     digraph.insert_no_edge_cycle(edges);
                     break;
                 case HAWICKUNIQUECIRCUITS:
-                    {
-                        /* Insert requested vertices first: they get the lowest
-                         * vertex indexes, so the enumeration stops early once
-                         * the last requested root is exceeded. */
-                        for (const auto &vid : circuit_starts) {
-                            if (digraph.has_vertex(vid)) continue;
-                            digraph.get_V(pgrouting::Basic_vertex(vid));
-                        }
-                        if (u_turn_on_edge) {
-                            digraph.insert_min_edges_no_parallel(edges);
-                        } else {
-                            digraph.insert_edges_no_parallel(edges);
-                        }
-                        break;
+                    if (u_turn_on_edge) {
+                        digraph.insert_min_edges_no_parallel(edges, circuit_starts);
+                    } else {
+                        digraph.insert_edges_no_parallel(edges, circuit_starts);
                     }
+                    break;
                 case HAWICKCIRCUITS:
-                    {
-                        /* Insert requested vertices first: they get the lowest
-                         * vertex indexes, so the enumeration stops early once
-                         * the last requested root is exceeded. */
-                        for (const auto &vid : circuit_starts) {
-                            if (digraph.has_vertex(vid)) continue;
-                            digraph.get_V(pgrouting::Basic_vertex(vid));
-                        }
-
-                        digraph.insert_edges(edges);
-                        break;
-                    }
+                    digraph.insert_edges(edges, circuit_starts);
+                    break;
 
                 case KSP:
                 case OLDKSP:

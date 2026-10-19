@@ -331,6 +331,17 @@ class Pgr_base_graph {
          }
      }
 
+     /** @brief Inserts the vertices first, then the edges
+       The vertices are inserted so they get the lowest vertex indexes.
+       @param edges
+       @param vids vertices to insert before the edges
+     */
+     template <typename T>
+     void insert_edges(const std::vector<T> &edges, const std::set<int64_t> &vids) {
+         insert_vertices(vids);
+         insert_edges(edges);
+     }
+
 
      template <typename T> void insert_edges_no_parallel(const std::vector<T> &edges) {
          for (const auto &edge : edges) {
@@ -338,10 +349,32 @@ class Pgr_base_graph {
          }
      }
 
+     /** @brief Inserts the vertices first, then the non parallel edges
+       The vertices are inserted so they get the lowest vertex indexes.
+       @param edges
+       @param vids vertices to insert before the edges
+     */
+     template <typename T>
+     void insert_edges_no_parallel(const std::vector<T> &edges, const std::set<int64_t> &vids) {
+         insert_vertices(vids);
+         insert_edges_no_parallel(edges);
+     }
+
      template <typename T> void insert_min_edges_no_parallel(const std::vector<T> &edges) {
          for (const auto &edge : edges) {
              graph_add_min_edge_no_parallel(edge);
          }
+     }
+
+     /** @brief Inserts the vertices first, then the min non parallel edges
+       The vertices are inserted so they get the lowest vertex indexes.
+       @param edges
+       @param vids vertices to insert before the edges
+     */
+     template <typename T>
+     void insert_min_edges_no_parallel(const std::vector<T> &edges, const std::set<int64_t> &vids) {
+         insert_vertices(vids);
+         insert_min_edges_no_parallel(edges);
      }
 
      template <typename T> void insert_no_edge_cycle(const std::vector<T> &edges) {
@@ -729,6 +762,16 @@ class Pgr_base_graph {
          }
 
  private:
+     /* @brief Inserts vertices so they get the lowest vertex indexes
+      * @param[in] vids vertices to insert
+      */
+     void insert_vertices(const std::set<int64_t> &vids) {
+         for (const auto &vid : vids) {
+             if (has_vertex(vid)) continue;
+             get_V(T_V(vid));
+         }
+     }
+
      void restore_edge(const T_E &edge) {
          E e;
 
