@@ -42,15 +42,30 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 namespace  {
 
 
+/** @brief Thrown by the collector to stop the enumeration early
+ *
+ * The roots are enumerated on vertex index order: when a root with an index
+ * bigger than the last requested one is reached, the remaining roots can only
+ * produce circuits that are not requested.
+ */
+struct stop_enumeration {};
+
+
 struct circuit_collector {
     std::vector<std::vector<pgrouting::DirectedGraph::V>>& circuits;
     const std::set<int64_t>& vertices;
     int64_t min_depth;
     int64_t max_depth;
     bool self_loops;
+    pgrouting::DirectedGraph::V last_root_index;
+    bool has_last_root;
 
     template <typename Vertices, typename G>
     void cycle(const Vertices& circuit, const G& g) {
+        if (has_last_root && boost::get(boost::vertex_index, g)[circuit.front()] > last_root_index) {
+            throw stop_enumeration();
+        }
+
         const auto depth = static_cast<int64_t>(circuit.size());
         if (depth == 1) {
             if (!self_loops) return;
@@ -69,6 +84,9 @@ struct circuit_collector {
  *
  * Uses boost::hawick_unique_circuits with the depth, start vertex and
  * self loops filters of the circuit functions.
+ * When start vertices are requested the enumeration stops early: the roots
+ * are enumerated on vertex index order, so once the last requested root is
+ * exceeded the remaining circuits are not requested.
  */
 std::vector<std::vector<pgrouting::DirectedGraph::V>>
 enumerate_vertex_circuits(
@@ -79,11 +97,29 @@ enumerate_vertex_circuits(
         bool self_loops) {
     std::vector<std::vector<pgrouting::DirectedGraph::V>> vertex_circuits;
 
-    circuit_collector collector{vertex_circuits, vertices, min_depth, max_depth, self_loops};
+    pgrouting::DirectedGraph::V last_root_index = 0;
+    bool has_last_root = false;
+    for (auto vid : vertices) {
+        if (!graph.has_vertex(vid)) continue;
+        auto root_index = graph.get_V(vid);
+        if (!has_last_root || root_index > last_root_index) {
+            last_root_index = root_index;
+            has_last_root = true;
+        }
+    }
+
+    /* no requested root exists on the graph: no circuit is requested */
+    if (!vertices.empty() && !has_last_root) return vertex_circuits;
+
+    circuit_collector collector{
+        vertex_circuits, vertices, min_depth, max_depth, self_loops, last_root_index, has_last_root};
 
     CHECK_FOR_INTERRUPTS();
     try {
         boost::hawick_unique_circuits(graph.graph, collector);
+    } catch (stop_enumeration const& ex) {
+        (void)ex;
+        /* all the requested roots were enumerated */
     } catch (boost::exception const& ex) {
         (void)ex;
         throw;
