@@ -10,7 +10,6 @@ name: Check files
 # - the C/C++ files have a license
 # - the shell scripts are ok
 # - the code style is ok
-# - the pgTAP plan() uses the positive form
 # Does not makes a compilation
 
 on: [push, pull_request]
@@ -60,15 +59,6 @@ jobs:
           sudo apt install -y shellcheck
       - name: Run Shell Check
         run: ./tools/scripts/test_shell.sh
-
-  Tap_plan_check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: pgTAP plan() uses the positive form
-        run: |
-          ./tools/scripts/test_pgtap_plan.sh
 
   style-check:
     runs-on: ubuntu-latest

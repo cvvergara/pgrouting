@@ -288,8 +288,14 @@ namespace functions {
  *
  * It does all the processing and returns the results.
  * @param graph  the graph containing the edges
+ * @param vertices  requested start vertices: a circuit containing one of them
+ * is returned once per requested vertex, rotated to start at that vertex, and
+ * an empty set returns every circuit
  * @param min_depth  minimum depth of the circuits to be returned
  * @param max_depth  maximum depth of the circuits to be returned
+ * @param self_loops  when false, the circuits of depth 1 are not returned
+ * @param u_turn_on_edge  when false, a circuit of two hops using the same edge
+ * on both hops is returned only when no expansion using different edges exists
  * @returns results, when results are found
  */
 pgrouting::types::Circuits
@@ -316,8 +322,12 @@ hawickCircuits(
  *
  * It does all the processing and returns the results.
  * @param graph  the graph containing the edges
+ * @param vertices  requested start vertices: a circuit containing one of them
+ * is returned once per requested vertex, rotated to start at that vertex, and
+ * an empty set returns every circuit
  * @param min_depth  minimum depth of the circuits to be returned
  * @param max_depth  maximum depth of the circuits to be returned
+ * @param self_loops  when false, the circuits of depth 1 are not returned
  * @returns results, when results are found
  */
 pgrouting::types::Circuits
