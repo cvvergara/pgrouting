@@ -5,7 +5,7 @@ copyright: Copyright (c) 2026 pgRouting developers
 
 BEGIN;
 
-SELECT CASE WHEN min_version('4.1.0') THEN plan(5) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.1.0') THEN plan(6) ELSE plan(1) END;
 
 CREATE OR REPLACE FUNCTION many_circuits()
 RETURNS SETOF TEXT AS
@@ -51,6 +51,14 @@ BEGIN
           FROM pgr_hawickcircuits('q1')
           GROUP BY path_id
       ) s), 'K4: every circuit is elementary, closed and agg_cost is consistent');
+
+  RETURN QUERY
+  SELECT ok((
+      SELECT bool_and(pred_ok) FROM (
+          SELECT pred = COALESCE(lag(node) OVER (PARTITION BY path_id ORDER BY seq), start_vid)
+              AS pred_ok
+          FROM pgr_hawickcircuits('q1')) s),
+      'K4: pred is the start vertex at depth 0 and the previous vertex afterwards');
 
   -- complete digraph K5: 10 bidirected edges -> 20 arcs
   -- elementary circuits: C(5,2)*1! + C(5,3)*2! + C(5,4)*3! + C(5,5)*4! = 10 + 20 + 30 + 24 = 84
