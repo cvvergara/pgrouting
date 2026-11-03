@@ -1045,10 +1045,11 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_s, vm_t, graph);
              if (found) {
                  if (edge.cost < graph[e1].cost) {
+                     utility_bookkeep_parallel(graph[e1].id, edge.source, edge.target, graph[e1].cost);
                      graph[e1].cost = edge.cost;
                      graph[e1].id = edge.id;
                  } else {
-                     utility_bookkeep_parallel(edge);
+                     utility_bookkeep_parallel(edge.id, edge.source, edge.target, edge.cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
@@ -1064,20 +1065,81 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_t, vm_s, graph);
              if (found) {
                  if (edge.reverse_cost < graph[e1].cost) {
+                     utility_bookkeep_parallel(graph[e1].id, edge.target, edge.source, graph[e1].cost);
                      graph[e1].cost = edge.reverse_cost;
                      graph[e1].id = edge.id;
                  } else {
-                     utility_bookkeep_parallel(edge);
+                     utility_bookkeep_parallel(edge.id, edge.target, edge.source, edge.cost);
                  }
              } else {
-                 boost::tie(e, inserted) =
-                     boost::add_edge(vm_t, vm_s, graph);
-
+                 boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
                  graph[e].cost = edge.reverse_cost;
                  graph[e].id = edge.id;
              }
          }
      }
+
+  /**
+      * @brief Bookkeep a skipped edge as a parallel candidate.
+      *
+      * The edge is a parallel edge to: en (source, target, min(en.cost, cost))
+      *
+      * Cases in the bookeeping: (X is not found)
+      * f s->t         f s->t        X            X
+      * b t->s            X       b t->s          X
+      *
+      * case 1)
+      * can not happen
+      *
+      * Case 2)
+      * The (target, source) edge exists on the book
+      * So a parallel edge (target->source) has been inserted
+      * if (cost < b.cost) then remove b, and insert the edge into book
+      *
+      * Case 3)
+      * The (target, source) edge exists on the book
+      * So a parallel edge (target->source) has been inserted
+      * if (cost < b.cost) then remove b, and insert the edge into book
+      *
+      * Case 4)
+      * Its the first parallel edge of (source,target)
+      * insert to the map
+      *
+      */
+     void utility_bookkeep_parallel(int64_t id, int64_t source, int64_t target, double cost) {
+         auto keyf = std::make_pair(source, target);
+         auto keyb = std::make_pair(target, source);
+         auto itf = m_parallel_book.find(keyf);
+         auto itb = m_parallel_book.find(keyb);
+
+         /*
+          * Case 1
+          */
+         pgassert(itf != m_parallel_book.end() && itb != m_parallel_book.end());
+
+         if (itf != m_parallel_book.end() && itb == m_parallel_book.end() && cost < itf->second.second) {
+             /*
+              * Case 2
+              */
+             m_parallel_book[keyf] = std::make_pair(id, cost);
+         } else if (itf == m_parallel_book.end() && itb != m_parallel_book.end() && cost < itb->second.second) {
+             /*
+              * Case 3
+              */
+             m_parallel_book.erase(itb);
+             m_parallel_book[keyf] = std::make_pair(id, cost);
+         } else if (itf == m_parallel_book.end() && itb == m_parallel_book.end()) {
+             /*
+              * Case 4
+              */
+             m_parallel_book[keyf] = std::make_pair(id, cost);
+         }
+
+         itf = m_parallel_book.find(keyf);
+         itb = m_parallel_book.find(keyb);
+         pgassert(itf != m_parallel_book.end() && itb != m_parallel_book.end());
+     }
+
 
   /**
       * @brief Bookkeep a skipped edge as a parallel candidate.
@@ -1088,7 +1150,7 @@ class Pgr_base_graph {
       * with one negative cost contributes only its non-negative direction.
       * Equal costs prefer the forward direction (source->target).
       */
-     template <typename T> void utility_bookkeep_parallel(const T &edge) {
+     template <typename T> void utility_bookkeep_parallel1(const T &edge) {
          int64_t cs, ct; double cc;
          if (edge.cost < 0 && edge.reverse_cost < 0) return;
          if (edge.cost < 0) { cs = edge.target; ct = edge.source; cc = edge.reverse_cost; }
@@ -1115,6 +1177,70 @@ class Pgr_base_graph {
       * self-return loop (same edge id in both directions) is in place.
       */
      void graph_add_min_edge_one_parallel() {
+         /*
+          * No parallel edges
+          */
+         if (m_parallel_book.empty()) return;
+
+         for (const auto &[dir, info] : m_parallel_book) {
+             int64_t source = dir.first;
+             int64_t target = dir.second;
+             int64_t eid = info.first;
+             double  cost = info.second;
+
+             auto it_s = vertices_map.find(source);
+             auto it_t = vertices_map.find(target);
+
+             V vm_s = it_s->second;
+             V vm_t = it_t->second;
+
+             E e1,e2;
+             bool found1, found2;
+             boost::tie(e1, found1) = boost::edge(vm_s, vm_t, graph);
+             boost::tie(e2, found2) = boost::edge(vm_t, vm_s, graph);
+
+             /*
+              * just because its a parallel edge of e1
+              */
+             pgassert(found1);
+
+             /*
+              * the edges on the graph do not make a U turn at all
+              */
+             if (!found2) continue;
+
+             /*
+              * There is a one edge cycle
+              */
+             pgassert(found1 && found2);
+
+             /*
+              * the edges on the graph do not make a U turn on the same edge
+              */
+             if (graph[e1].id != graph[e2].id) continue;
+
+             E e;
+             bool inserted;
+             boost::tie(e, inserted) = boost::add_edge(source, target, graph);
+             graph[e].cost = cost;
+             graph[e].id = eid;
+         }
+
+         m_parallel_book.clear();
+     }
+
+     /**
+      * @brief Add at most ONE parallel edge on top of the min edges.
+      *
+      * Must be called AFTER all edges have been inserted with
+      * graph_add_min_edge_no_parallel() (which bookkeeps the skipped
+      * parallel edges in m_parallel_book).
+      *
+      * Adds a single parallel edge (the cheapest bookkept candidate) in the
+      * direction where it provides a different-edge u-turn, but only while a
+      * self-return loop (same edge id in both directions) is in place.
+      */
+     void graph_add_min_edge_one_parallel1() {
          if (m_parallel_book.empty()) return;
 
          // pick the cheapest bookkept candidate across directions
