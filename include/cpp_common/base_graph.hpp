@@ -377,21 +377,6 @@ class Pgr_base_graph {
          insert_min_edges_no_parallel(edges);
      }
 
-     /** @brief Inserts the vertices first, then the min edges plus one parallel.
-       First pass keeps the per-direction minimums (bookkeeping skipped edges),
-       second pass adds at most one parallel edge for a different-edge u-turn.
-       @param edges
-     */
-     template <typename T> void insert_min_edges_one_parallel(const std::vector<T> &edges) {
-         m_parallel_book.clear();
-         for (const auto &edge : edges) {
-             graph_add_min_edge_no_parallel(edge);
-         }
-#if 0
-         graph_add_min_edge_one_parallel();
-#endif
-     }
-
      /** @brief Inserts the vertices first, then the min edges plus one parallel
        The vertices are inserted so they get the lowest vertex indexes.
        @param edges
@@ -399,8 +384,10 @@ class Pgr_base_graph {
      */
      template <typename T>
      void insert_min_edges_one_parallel(const std::vector<T> &edges, const std::set<int64_t> &vids) {
+         m_parallel_book.clear();
          insert_vertices(vids);
-         insert_min_edges_one_parallel(edges);
+         insert_min_edges_no_parallel(edges);
+         add_parallel();
      }
 
      template <typename T> void insert_no_edge_cycle(const std::vector<T> &edges) {
@@ -1165,14 +1152,6 @@ class Pgr_base_graph {
               */
              m_parallel_book[keyf] = std::make_pair(id, cost);
          }
-
-#if 0
-         // exactly one direction of the pair is bookkept
-         pgassert(m_parallel_book.find(keyf) != m_parallel_book.end()
-                 || m_parallel_book.find(keyb) != m_parallel_book.end());
-         pgassert(m_parallel_book.find(keyf) == m_parallel_book.end()
-                 || m_parallel_book.find(keyb) == m_parallel_book.end());
-#endif
      }
 
 
@@ -1211,7 +1190,7 @@ class Pgr_base_graph {
       * direction where it provides a different-edge u-turn, but only while a
       * self-return loop (same edge id in both directions) is in place.
       */
-     void graph_add_min_edge_one_parallel() {
+     void add_parallel() {
          /*
           * No parallel edges
           */
