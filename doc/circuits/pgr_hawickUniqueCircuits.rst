@@ -30,16 +30,18 @@ Description
 Hawick Circuit algorithm, is published in 2008 by Ken Hawick and Heath A. James.
 This algorithm solves the problem of detecting and enumerating circuits in graphs.
 
-Circuit enumeration in directed graphs, where parallel circuits are listed only
-once.
+Circuit enumeration in directed graphs, where circuits that traverse the same
+sequence of vertices are listed only once.
 
 .. include:: pgr_hawickCircuits.rst
    :start-after: circuits_characteristics_start
    :end-before: circuits_characteristics_end
 
-- Of the parallel arcs, a circuit uses the one with the minimum cost, except on
-  a u-turn when ``u_turn_on_edge`` is ``false`` a parallel edge that is not
-  minimum cost might be used.
+- When a circuit has parallel arcs, the expansion with the minimum cost is
+  kept.
+- When ``u_turn_on_edge`` is ``false`` and the circuit can be formed with two
+  different edges, the U-turn on the same edge is discarded, and a parallel arc
+  that is not the minimum cost is used.
 
 |Boost| Boost Graph Inside
 
