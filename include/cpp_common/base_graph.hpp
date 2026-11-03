@@ -1026,22 +1026,6 @@ class Pgr_base_graph {
          auto vm_s = get_V(T_V(edge, true));
          auto vm_t = get_V(T_V(edge, false));
 
-#if 0
-         /*
-          * Direction of the cheaper half of the edge: only that direction is
-          * bookkept, so one edge never books both (source,target) and
-          * (target,source).
-          */
-         bool forward_candidate;
-         if (edge.cost < 0) {
-             forward_candidate = false;
-         } else if (edge.reverse_cost < 0) {
-             forward_candidate = true;
-         } else {
-             forward_candidate = (edge.cost <= edge.reverse_cost);
-         }
-#endif
-
          pgassert(vertices_map.find(edge.source) != vertices_map.end());
          pgassert(vertices_map.find(edge.target) != vertices_map.end());
          if (edge.cost >= 0) {
@@ -1153,6 +1137,7 @@ class Pgr_base_graph {
      }
 
 
+#if 0
   /**
       * @brief Bookkeep a skipped edge as a parallel candidate.
       *
@@ -1175,6 +1160,7 @@ class Pgr_base_graph {
          if (it == m_parallel_book.end() || cc < it->second.second)
              m_parallel_book[key] = std::make_pair(edge.id, cc);
      }
+#endif
 
 
      /**
@@ -1241,6 +1227,7 @@ class Pgr_base_graph {
          m_parallel_book.clear();
      }
 
+#if 0
      /**
       * @brief Add at most ONE parallel edge on top of the min edges.
       *
@@ -1299,6 +1286,7 @@ class Pgr_base_graph {
 
          m_parallel_book.clear();
      }
+#endif
 
      /**
        Add edges with negative cost(either cost or reverse_cost or both)
