@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <algorithm>
 #include <cstdint>
+#include <map>
 #include <set>
 #include <utility>
 #include <vector>
@@ -238,82 +239,42 @@ expand_parallel_arcs(
     }
 }
 
-/** @brief Collects the parallel arcs between two vertices
+/** @brief Keeps one circuit per vertex sequence
  *
- * The arcs are returned in the graph's out-edge order.
+ * hawickCircuits expands every vertex cycle over its parallel arcs; the unique
+ * variant keeps a single circuit per vertex sequence.
+ *
+ * Of the parallel arcs, the circuit with the minimum cost is kept.  When
+ * u_turn_on_edge is false, hawickCircuits already discarded the u-turn
+ * expansions (unless a u-turn is the only option), so a parallel arc that is
+ * not minimum cost can be the one kept on a u-turn.
  */
-std::vector<pgrouting::DirectedGraph::E>
-parallel_arcs(
-        const pgrouting::DirectedGraph& graph,
-        pgrouting::DirectedGraph::V from,
-        pgrouting::DirectedGraph::V to) {
-    std::vector<pgrouting::DirectedGraph::E> arcs;
-    auto edges = boost::out_edges(from, graph.graph);
-    for (auto edge = edges.first; edge != edges.second; ++edge) {
-        if (graph.target(*edge) == to) {
-            arcs.push_back(*edge);
-        }
-    }
-    return arcs;
-}
+pgrouting::types::Circuits
+unique_circuits(pgrouting::types::Circuits&& circuits) {
+    pgrouting::types::Circuits unique;
+    std::map<std::vector<int64_t>, size_t> position;
+    std::vector<double> total_cost;
 
-/** @brief Resolves one unique circuit over the graph's edges
- *
- * Every hop of the vertex cycle is resolved to exactly one edge
- * keeping a single circuit per vertex cycle.
- *
- * When u_turn_on_edge is false, a 2 edge circuit that resolves to the same
- * edge id on both hops is a u-turn: it is replaced by the cheapest pair of
- * parallel arcs that uses different edge ids.  When no such pair exists the
- * u-turn is the only option and it is kept.
- */
-void
-resolve_unique_circuit(
-        const pgrouting::DirectedGraph& graph,
-        const std::vector<pgrouting::DirectedGraph::V>& vertex_circuit,
-        pgrouting::types::Circuits& circuits,
-        bool u_turn_on_edge) {
-    const size_t size = vertex_circuit.size();
-    pgrouting::types::Circuit circuit;
-    circuit.reserve(size);
-
-    for (size_t i = 0; i < size; ++i) {
-        const auto to = vertex_circuit[(i + 1) % size];
+    for (auto& circuit : circuits) {
+        std::vector<int64_t> vertex_sequence;
+        vertex_sequence.reserve(circuit.size());
         double cost = 0;
-        const auto edge_id = graph.get_edge_id(vertex_circuit[i], to, cost);
-        circuit.push_back({graph[vertex_circuit[i]].id, edge_id, cost});
-    }
-
-    if (!u_turn_on_edge && size == 2 && circuit[0].edge == circuit[1].edge) {
-        const auto hop0 = parallel_arcs(graph, vertex_circuit[0], vertex_circuit[1]);
-        const auto hop1 = parallel_arcs(graph, vertex_circuit[1], vertex_circuit[0]);
-
-        bool found = false;
-        double best_total = 0;
-        pgrouting::types::Circuit_step best0{};
-        pgrouting::types::Circuit_step best1{};
-
-        for (const auto edge0 : hop0) {
-            for (const auto edge1 : hop1) {
-                if (graph[edge0].id == graph[edge1].id) continue;
-
-                const auto total = graph[edge0].cost + graph[edge1].cost;
-                if (!found || total < best_total) {
-                    found = true;
-                    best_total = total;
-                    best0 = {graph[vertex_circuit[0]].id, graph[edge0].id, graph[edge0].cost};
-                    best1 = {graph[vertex_circuit[1]].id, graph[edge1].id, graph[edge1].cost};
-                }
-            }
+        for (const auto& step : circuit) {
+            vertex_sequence.push_back(step.node);
+            cost += step.cost;
         }
 
-        if (found) {
-            circuit[0] = best0;
-            circuit[1] = best1;
+        auto it = position.find(vertex_sequence);
+        if (it == position.end()) {
+            position.emplace(std::move(vertex_sequence), unique.size());
+            unique.push_back(std::move(circuit));
+            total_cost.push_back(cost);
+        } else if (cost < total_cost[it->second]) {
+            unique[it->second] = std::move(circuit);
+            total_cost[it->second] = cost;
         }
     }
-
-    circuits.push_back(std::move(circuit));
+    return unique;
 }
 
 /** @brief Orders the circuits by start_vid when start vertices were requested
@@ -372,9 +333,14 @@ hawickCircuits(
 }
 
 
-/** @brief Connector to boost::hawick_unique_circuits
+/** @brief Unique circuits connector
  *
  * It does all the processing and returns the results.
+ *
+ * It is the arc expansion of hawickCircuits filtered to a single circuit per
+ * vertex sequence, so of the parallel arcs the minimum cost is used, except on
+ * a u-turn when u_turn_on_edge is false.
+ *
  * @param graph  the graph containing the edges
  * @param vertices  requested start vertices: a circuit containing one of them
  * is returned once per requested vertex, rotated to start at that vertex, and
@@ -383,8 +349,7 @@ hawickCircuits(
  * @param max_depth  maximum depth of the circuits to be returned
  * @param self_loops  when false, the circuits of depth 1 are not returned
  * @param u_turn_on_edge  when false, a circuit of two hops using the same edge
- * on both hops is replaced by parallel arcs using different edges, when they
- * exist
+ * on both hops is returned only when no expansion using different edges exists
  * @returns results, when results are found
  */
 pgrouting::types::Circuits
@@ -395,15 +360,8 @@ hawickUniqueCircuits(
         int64_t max_depth,
         bool self_loops,
         bool u_turn_on_edge) {
-    auto vertex_circuits = enumerate_vertex_circuits(graph, vertices, min_depth, max_depth, self_loops);
-
-    pgrouting::types::Circuits circuits;
-    for (const auto& vertex_circuit : vertex_circuits) {
-        resolve_unique_circuit(graph, vertex_circuit, circuits, u_turn_on_edge);
-    }
-    sort_by_start_vid(circuits, vertices);
-
-    return circuits;
+    return unique_circuits(
+            hawickCircuits(graph, vertices, min_depth, max_depth, self_loops, u_turn_on_edge));
 }
 
 
