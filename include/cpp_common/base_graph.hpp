@@ -1026,6 +1026,7 @@ class Pgr_base_graph {
          auto vm_s = get_V(T_V(edge, true));
          auto vm_t = get_V(T_V(edge, false));
 
+#if 0
          /*
           * Direction of the cheaper half of the edge: only that direction is
           * bookkept, so one edge never books both (source,target) and
@@ -1039,6 +1040,7 @@ class Pgr_base_graph {
          } else {
              forward_candidate = (edge.cost <= edge.reverse_cost);
          }
+#endif
 
          pgassert(vertices_map.find(edge.source) != vertices_map.end());
          pgassert(vertices_map.find(edge.target) != vertices_map.end());
@@ -1048,13 +1050,11 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_s, vm_t, graph);
              if (found) {
                  if (edge.cost < graph[e1].cost) {
-                     if (forward_candidate)
-                         utility_bookkeep_parallel(graph[e1].id, edge.source, edge.target, graph[e1].cost);
+                     utility_bookkeep_parallel(graph[e1].id, edge.source, edge.target, graph[e1].cost);
                      graph[e1].cost = edge.cost;
                      graph[e1].id = edge.id;
                  } else {
-                     if (forward_candidate)
-                         utility_bookkeep_parallel(edge.id, edge.source, edge.target, edge.cost);
+                     utility_bookkeep_parallel(edge.id, edge.source, edge.target, edge.cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
@@ -1070,13 +1070,11 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_t, vm_s, graph);
              if (found) {
                  if (edge.reverse_cost < graph[e1].cost) {
-                     if (!forward_candidate)
-                         utility_bookkeep_parallel(graph[e1].id, edge.target, edge.source, graph[e1].cost);
+                     utility_bookkeep_parallel(graph[e1].id, edge.target, edge.source, graph[e1].cost);
                      graph[e1].cost = edge.reverse_cost;
                      graph[e1].id = edge.id;
                  } else {
-                     if (!forward_candidate)
-                         utility_bookkeep_parallel(edge.id, edge.target, edge.source, edge.reverse_cost);
+                     utility_bookkeep_parallel(edge.id, edge.target, edge.source, edge.reverse_cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);

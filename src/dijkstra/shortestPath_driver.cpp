@@ -292,7 +292,8 @@ do_shortestPath(
                     break;
                 case HAWICKUNIQUECIRCUITS:
                     return_count = get_tuples(
-                            hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops),
+                            hawickUniqueCircuits(
+                                digraph, circuit_starts, min_depth, max_depth, self_loops, u_turn_on_edge),
                             return_tuples);
                     break;
                 case BINARYBFS:
