@@ -387,7 +387,9 @@ class Pgr_base_graph {
          for (const auto &edge : edges) {
              graph_add_min_edge_no_parallel(edge);
          }
+#if 0
          graph_add_min_edge_one_parallel();
+#endif
      }
 
      /** @brief Inserts the vertices first, then the min edges plus one parallel
@@ -1037,6 +1039,20 @@ class Pgr_base_graph {
          auto vm_s = get_V(T_V(edge, true));
          auto vm_t = get_V(T_V(edge, false));
 
+         /*
+          * Direction of the cheaper half of the edge: only that direction is
+          * bookkept, so one edge never books both (source,target) and
+          * (target,source).
+          */
+         bool forward_candidate;
+         if (edge.cost < 0) {
+             forward_candidate = false;
+         } else if (edge.reverse_cost < 0) {
+             forward_candidate = true;
+         } else {
+             forward_candidate = (edge.cost <= edge.reverse_cost);
+         }
+
          pgassert(vertices_map.find(edge.source) != vertices_map.end());
          pgassert(vertices_map.find(edge.target) != vertices_map.end());
          if (edge.cost >= 0) {
@@ -1045,11 +1061,13 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_s, vm_t, graph);
              if (found) {
                  if (edge.cost < graph[e1].cost) {
-                     utility_bookkeep_parallel(graph[e1].id, edge.source, edge.target, graph[e1].cost);
+                     if (forward_candidate)
+                         utility_bookkeep_parallel(graph[e1].id, edge.source, edge.target, graph[e1].cost);
                      graph[e1].cost = edge.cost;
                      graph[e1].id = edge.id;
                  } else {
-                     utility_bookkeep_parallel(edge.id, edge.source, edge.target, edge.cost);
+                     if (forward_candidate)
+                         utility_bookkeep_parallel(edge.id, edge.source, edge.target, edge.cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
@@ -1065,11 +1083,13 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_t, vm_s, graph);
              if (found) {
                  if (edge.reverse_cost < graph[e1].cost) {
-                     utility_bookkeep_parallel(graph[e1].id, edge.target, edge.source, graph[e1].cost);
+                     if (!forward_candidate)
+                         utility_bookkeep_parallel(graph[e1].id, edge.target, edge.source, graph[e1].cost);
                      graph[e1].cost = edge.reverse_cost;
                      graph[e1].id = edge.id;
                  } else {
-                     utility_bookkeep_parallel(edge.id, edge.target, edge.source, edge.cost);
+                     if (!forward_candidate)
+                         utility_bookkeep_parallel(edge.id, edge.target, edge.source, edge.reverse_cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
@@ -1114,8 +1134,19 @@ class Pgr_base_graph {
 
          /*
           * Case 1
+          * Both directions are bookkept (can happen when different edges pick
+          * opposite directions for the same vertex pair).  Invariant: at most
+          * one direction is kept, so keep the cheaper one.
           */
-         pgassert(itf != m_parallel_book.end() && itb != m_parallel_book.end());
+         if (itf != m_parallel_book.end() && itb != m_parallel_book.end()) {
+             if (itf->second.second <= itb->second.second) {
+                 m_parallel_book.erase(itb);
+             } else {
+                 m_parallel_book.erase(itf);
+             }
+             itf = m_parallel_book.find(keyf);
+             itb = m_parallel_book.find(keyb);
+         }
 
          if (itf != m_parallel_book.end() && itb == m_parallel_book.end() && cost < itf->second.second) {
              /*
@@ -1128,16 +1159,20 @@ class Pgr_base_graph {
               */
              m_parallel_book.erase(itb);
              m_parallel_book[keyf] = std::make_pair(id, cost);
-         } else if (itf == m_parallel_book.end() && itb == m_parallel_book.end()) {
+         } else {
              /*
               * Case 4
               */
              m_parallel_book[keyf] = std::make_pair(id, cost);
          }
 
-         itf = m_parallel_book.find(keyf);
-         itb = m_parallel_book.find(keyb);
-         pgassert(itf != m_parallel_book.end() && itb != m_parallel_book.end());
+#if 0
+         // exactly one direction of the pair is bookkept
+         pgassert(m_parallel_book.find(keyf) != m_parallel_book.end()
+                 || m_parallel_book.find(keyb) != m_parallel_book.end());
+         pgassert(m_parallel_book.find(keyf) == m_parallel_book.end()
+                 || m_parallel_book.find(keyb) == m_parallel_book.end());
+#endif
      }
 
 
@@ -1221,7 +1256,7 @@ class Pgr_base_graph {
 
              E e;
              bool inserted;
-             boost::tie(e, inserted) = boost::add_edge(source, target, graph);
+             boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
              graph[e].cost = cost;
              graph[e].id = eid;
          }
