@@ -333,14 +333,9 @@ hawickCircuits(
 }
 
 
-/** @brief Unique circuits connector
+/** @brief Connector to boost::hawick_unique_circuits
  *
  * It does all the processing and returns the results.
- *
- * It is the arc expansion of hawickCircuits filtered to a single circuit per
- * vertex sequence, so of the parallel arcs the minimum cost is used, except on
- * a u-turn when u_turn_on_edge is false.
- *
  * @param graph  the graph containing the edges
  * @param vertices  requested start vertices: a circuit containing one of them
  * is returned once per requested vertex, rotated to start at that vertex, and
