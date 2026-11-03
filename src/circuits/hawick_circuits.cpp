@@ -275,7 +275,7 @@ namespace functions {
  * @returns results, when results are found
  */
 pgrouting::types::Circuits
-hawickCircuits(
+hawickUniqueCircuits(
         const pgrouting::DirectedGraph &graph,
         const std::set<int64_t> &vertices,
         int64_t min_depth,
