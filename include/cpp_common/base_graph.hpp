@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 #include <string>
 #include <cstdint>
+#include <utility>
 
 #include <boost/graph/iteration_macros.hpp>
 #include <boost/config.hpp>
@@ -384,10 +385,12 @@ class Pgr_base_graph {
      */
      template <typename T>
      void insert_min_edges_one_parallel(const std::vector<T> &edges, const std::set<int64_t> &vids) {
-         m_parallel_book.clear();
+         std::map<std::pair<int64_t, int64_t>, std::pair<int64_t, double>> parallel_book;
          insert_vertices(vids);
-         insert_min_edges_no_parallel(edges);
-         add_parallel();
+         for (const auto &edge : edges) {
+             graph_add_min_edge_no_parallel(edge, &parallel_book);
+         }
+         add_parallel(parallel_book);
      }
 
      template <typename T> void insert_no_edge_cycle(const std::vector<T> &edges) {
@@ -1013,7 +1016,11 @@ class Pgr_base_graph {
      }
 
 
-     template <typename T> void graph_add_min_edge_no_parallel(const T &edge) {
+     template <typename T>
+     void graph_add_min_edge_no_parallel(
+             const T &edge,
+             std::map<std::pair<int64_t, int64_t>, std::pair<int64_t, double>>
+                 *parallel_book = nullptr) {
          E e;
          bool inserted = false;
 
@@ -1034,11 +1041,11 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_s, vm_t, graph);
              if (found) {
                  if (edge.cost < graph[e1].cost) {
-                     utility_bookkeep_parallel(graph[e1].id, edge.source, edge.target, graph[e1].cost);
+                     utility_bookkeep_parallel(parallel_book, graph[e1].id, edge.source, edge.target, graph[e1].cost);
                      graph[e1].cost = edge.cost;
                      graph[e1].id = edge.id;
                  } else {
-                     utility_bookkeep_parallel(edge.id, edge.source, edge.target, edge.cost);
+                     utility_bookkeep_parallel(parallel_book, edge.id, edge.source, edge.target, edge.cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_s, vm_t, graph);
@@ -1054,11 +1061,11 @@ class Pgr_base_graph {
              boost::tie(e1, found) = boost::edge(vm_t, vm_s, graph);
              if (found) {
                  if (edge.reverse_cost < graph[e1].cost) {
-                     utility_bookkeep_parallel(graph[e1].id, edge.target, edge.source, graph[e1].cost);
+                     utility_bookkeep_parallel(parallel_book, graph[e1].id, edge.target, edge.source, graph[e1].cost);
                      graph[e1].cost = edge.reverse_cost;
                      graph[e1].id = edge.id;
                  } else {
-                     utility_bookkeep_parallel(edge.id, edge.target, edge.source, edge.reverse_cost);
+                     utility_bookkeep_parallel(parallel_book, edge.id, edge.target, edge.source, edge.reverse_cost);
                  }
              } else {
                  boost::tie(e, inserted) = boost::add_edge(vm_t, vm_s, graph);
@@ -1095,11 +1102,16 @@ class Pgr_base_graph {
       * insert to the map
       *
       */
-     void utility_bookkeep_parallel(int64_t id, int64_t source, int64_t target, double cost) {
+     void utility_bookkeep_parallel(
+             std::map<std::pair<int64_t, int64_t>, std::pair<int64_t, double>> *parallel_book,
+             int64_t id, int64_t source, int64_t target, double cost) {
+         if (parallel_book == nullptr) return;
+
+         auto &book = *parallel_book;
          auto keyf = std::make_pair(source, target);
          auto keyb = std::make_pair(target, source);
-         auto itf = m_parallel_book.find(keyf);
-         auto itb = m_parallel_book.find(keyb);
+         auto itf = book.find(keyf);
+         auto itb = book.find(keyb);
 
          /*
           * Case 1
@@ -1107,32 +1119,32 @@ class Pgr_base_graph {
           * opposite directions for the same vertex pair).  Invariant: at most
           * one direction is kept, so keep the cheaper one.
           */
-         if (itf != m_parallel_book.end() && itb != m_parallel_book.end()) {
+         if (itf != book.end() && itb != book.end()) {
              if (itf->second.second <= itb->second.second) {
-                 m_parallel_book.erase(itb);
+                 book.erase(itb);
              } else {
-                 m_parallel_book.erase(itf);
+                 book.erase(itf);
              }
-             itf = m_parallel_book.find(keyf);
-             itb = m_parallel_book.find(keyb);
+             itf = book.find(keyf);
+             itb = book.find(keyb);
          }
 
-         if (itf != m_parallel_book.end() && itb == m_parallel_book.end() && cost < itf->second.second) {
+         if (itf != book.end() && itb == book.end() && cost < itf->second.second) {
              /*
               * Case 2
               */
-             m_parallel_book[keyf] = std::make_pair(id, cost);
-         } else if (itf == m_parallel_book.end() && itb != m_parallel_book.end() && cost < itb->second.second) {
+             book[keyf] = std::make_pair(id, cost);
+         } else if (itf == book.end() && itb != book.end() && cost < itb->second.second) {
              /*
               * Case 3
               */
-             m_parallel_book.erase(itb);
-             m_parallel_book[keyf] = std::make_pair(id, cost);
+             book.erase(itb);
+             book[keyf] = std::make_pair(id, cost);
          } else {
              /*
               * Case 4
               */
-             m_parallel_book[keyf] = std::make_pair(id, cost);
+             book[keyf] = std::make_pair(id, cost);
          }
      }
 
@@ -1144,19 +1156,20 @@ class Pgr_base_graph {
       *
       * Must be called AFTER all edges have been inserted with
       * graph_add_min_edge_no_parallel() (which bookkeeps the skipped
-      * parallel edges in m_parallel_book).
+      * parallel edges in parallel_book).
       *
       * Adds a single parallel edge (the cheapest bookkept candidate) in the
       * direction where it provides a different-edge u-turn, but only while a
       * self-return loop (same edge id in both directions) is in place.
       */
-     void add_parallel() {
+     void add_parallel(
+             std::map<std::pair<int64_t, int64_t>, std::pair<int64_t, double>> &parallel_book) {
          /*
           * No parallel edges
           */
-         if (m_parallel_book.empty()) return;
+         if (parallel_book.empty()) return;
 
-         for (const auto &[dir, info] : m_parallel_book) {
+         for (const auto &[dir, info] : parallel_book) {
              int64_t source = dir.first;
              int64_t target = dir.second;
              int64_t eid = info.first;
@@ -1168,7 +1181,7 @@ class Pgr_base_graph {
              V vm_s = it_s->second;
              V vm_t = it_t->second;
 
-             E e1,e2;
+             E e1, e2;
              bool found1, found2;
              boost::tie(e1, found1) = boost::edge(vm_s, vm_t, graph);
              boost::tie(e2, found2) = boost::edge(vm_t, vm_s, graph);
@@ -1199,8 +1212,6 @@ class Pgr_base_graph {
              graph[e].cost = cost;
              graph[e].id = eid;
          }
-
-         m_parallel_book.clear();
      }
 
 
@@ -1343,10 +1354,6 @@ class Pgr_base_graph {
      /**@{*/
      /** Used for storing the removed_edges */
      std::deque<T_E> removed_edges;
-     /** Bookkept parallel-edge candidates for the second pass (graph_add_min_edge_one_parallel).
-      *  Keyed by candidate direction (source, target); stores (edge_id, cost) of the
-      *  cheapest skipped parallel for that direction, so only the min is kept. */
-     std::map<std::pair<int64_t, int64_t>, std::pair<int64_t, double>> m_parallel_book;
      /**@}*/
 };
 
