@@ -199,7 +199,6 @@ do_shortestPath(
         using pgrouting::functions::edgeDisjoint;
         using pgrouting::functions::binaryBreadthFirstSearch;
         using pgrouting::functions::hawickCircuits;
-        using pgrouting::functions::hawickUniqueCircuits;
         using pgrouting::algorithms::Yen;
 
         hint = combinations_sql;
@@ -286,14 +285,10 @@ do_shortestPath(
                     break;
                 case OLDHAWICKCIRCUITS:
                 case HAWICKCIRCUITS:
-                    return_count = get_tuples(
-                            hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops, u_turn_on_edge),
-                            return_tuples);
-                    break;
                 case HAWICKUNIQUECIRCUITS:
                     return_count = get_tuples(
-                            hawickUniqueCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops, u_turn_on_edge),
-                            return_tuples);
+                            hawickCircuits(digraph, circuit_starts, min_depth, max_depth, self_loops, u_turn_on_edge),
+                            return_tuples, which);
                     break;
                 case BINARYBFS:
                     return_count = get_tuples(binaryBreadthFirstSearch(digraph, combinations), return_tuples);

@@ -29,7 +29,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 #include <algorithm>
 #include <cstdint>
-#include <map>
 #include <set>
 #include <utility>
 #include <vector>
@@ -239,44 +238,6 @@ expand_parallel_arcs(
     }
 }
 
-/** @brief Keeps one circuit per vertex sequence
- *
- * hawickCircuits expands every vertex cycle over its parallel arcs; the unique
- * variant keeps a single circuit per vertex sequence.
- *
- * Of the parallel arcs, the circuit with the minimum cost is kept.  When
- * u_turn_on_edge is false, hawickCircuits already discarded the u-turn
- * expansions (unless a u-turn is the only option), so a parallel arc that is
- * not minimum cost can be the one kept on a u-turn.
- */
-pgrouting::types::Circuits
-unique_circuits(pgrouting::types::Circuits&& circuits) {
-    pgrouting::types::Circuits unique;
-    std::map<std::vector<int64_t>, size_t> position;
-    std::vector<double> total_cost;
-
-    for (auto& circuit : circuits) {
-        std::vector<int64_t> vertex_sequence;
-        vertex_sequence.reserve(circuit.size());
-        double cost = 0;
-        for (const auto& step : circuit) {
-            vertex_sequence.push_back(step.node);
-            cost += step.cost;
-        }
-
-        auto it = position.find(vertex_sequence);
-        if (it == position.end()) {
-            position.emplace(std::move(vertex_sequence), unique.size());
-            unique.push_back(std::move(circuit));
-            total_cost.push_back(cost);
-        } else if (cost < total_cost[it->second]) {
-            unique[it->second] = std::move(circuit);
-            total_cost[it->second] = cost;
-        }
-    }
-    return unique;
-}
-
 /** @brief Orders the circuits by start_vid when start vertices were requested
  *
  * With rotation-based filtering a circuit can be emitted under any requested
@@ -330,33 +291,6 @@ hawickCircuits(
     sort_by_start_vid(circuits, vertices);
 
     return circuits;
-}
-
-
-/** @brief Connector to boost::hawick_unique_circuits
- *
- * It does all the processing and returns the results.
- * @param graph  the graph containing the edges
- * @param vertices  requested start vertices: a circuit containing one of them
- * is returned once per requested vertex, rotated to start at that vertex, and
- * an empty set returns every circuit
- * @param min_depth  minimum depth of the circuits to be returned
- * @param max_depth  maximum depth of the circuits to be returned
- * @param self_loops  when false, the circuits of depth 1 are not returned
- * @param u_turn_on_edge  when false, a circuit of two hops using the same edge
- * on both hops is returned only when no expansion using different edges exists
- * @returns results, when results are found
- */
-pgrouting::types::Circuits
-hawickUniqueCircuits(
-        const pgrouting::DirectedGraph &graph,
-        const std::set<int64_t> &vertices,
-        int64_t min_depth,
-        int64_t max_depth,
-        bool self_loops,
-        bool u_turn_on_edge) {
-    return unique_circuits(
-            hawickCircuits(graph, vertices, min_depth, max_depth, self_loops, u_turn_on_edge));
 }
 
 
