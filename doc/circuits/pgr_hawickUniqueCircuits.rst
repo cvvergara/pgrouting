@@ -233,11 +233,13 @@ Additional Examples
    :start-after: -- q6
    :end-before: -- q7
 
-:Example 3: Exclude self loops and U-turn on the same edge.
+:Example 3: Exclude self loops and U-turn on the same edge when possible.
 
-- red is :math:`path\_id = 1`
-- green is :math:`path\_id = 2`
-- blue is :math:`path\_id = 3`
+- purple is :math:`path\_id = 1`
+- red is :math:`path\_id = 2`
+- green is :math:`path\_id = 3`
+- blue is :math:`path\_id = 4`
+- orange is :math:`path\_id = 5`
 
 .. graphviz::
 
@@ -254,11 +256,12 @@ Additional Examples
      5 [pos="-1,1!"];
 
 
+     1 -> 2 [color=purple,dir=both];
      1 -> 2 -> 3 -> 1 [color=red];
      1 -> 3 [color=green,penwidth=2];
      3 -> 1 [color=green];
-     1 -> 3 [color=blue,penwidth=2];
-     3 -> 2 -> 1[color=blue];
+     1 -> 3 -> 2 -> 1 [color=blue];
+     1 -> 4 [color=orange,dir=both]
    }
 
 
