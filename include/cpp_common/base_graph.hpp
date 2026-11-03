@@ -1137,30 +1137,6 @@ class Pgr_base_graph {
      }
 
 
-#if 0
-  /**
-      * @brief Bookkeep a skipped edge as a parallel candidate.
-      *
-      * Records only the cheaper direction of the edge (cost vs reverse_cost)
-      * into m_parallel_book, keeping the minimum per direction. Negative costs
-      * are handled: an edge with both costs negative is ignored, and an edge
-      * with one negative cost contributes only its non-negative direction.
-      * Equal costs prefer the forward direction (source->target).
-      */
-     template <typename T> void utility_bookkeep_parallel1(const T &edge) {
-         int64_t cs, ct; double cc;
-         if (edge.cost < 0 && edge.reverse_cost < 0) return;
-         if (edge.cost < 0) { cs = edge.target; ct = edge.source; cc = edge.reverse_cost; }
-         else if (edge.reverse_cost < 0) { cs = edge.source; ct = edge.target; cc = edge.cost; }
-         else if (edge.cost <= edge.reverse_cost) { cs = edge.source; ct = edge.target; cc = edge.cost; }
-         else { cs = edge.target; ct = edge.source; cc = edge.reverse_cost; }
-         if (cc < 0) return;
-         auto key = std::make_pair(cs, ct);
-         auto it = m_parallel_book.find(key);
-         if (it == m_parallel_book.end() || cc < it->second.second)
-             m_parallel_book[key] = std::make_pair(edge.id, cc);
-     }
-#endif
 
 
      /**
@@ -1227,66 +1203,6 @@ class Pgr_base_graph {
          m_parallel_book.clear();
      }
 
-#if 0
-     /**
-      * @brief Add at most ONE parallel edge on top of the min edges.
-      *
-      * Must be called AFTER all edges have been inserted with
-      * graph_add_min_edge_no_parallel() (which bookkeeps the skipped
-      * parallel edges in m_parallel_book).
-      *
-      * Adds a single parallel edge (the cheapest bookkept candidate) in the
-      * direction where it provides a different-edge u-turn, but only while a
-      * self-return loop (same edge id in both directions) is in place.
-      */
-     void graph_add_min_edge_one_parallel1() {
-         if (m_parallel_book.empty()) return;
-
-         // pick the cheapest bookkept candidate across directions
-         auto best = m_parallel_book.begin();
-         for (auto it = m_parallel_book.begin(); it != m_parallel_book.end(); ++it) {
-             if (it->second.second < best->second.second) best = it;
-         }
-         int64_t best_src = best->first.first;
-         int64_t best_tgt = best->first.second;
-         int64_t best_id = best->second.first;
-         double best_cost = best->second.second;
-
-         // resolve vertices via vertices_map (vertices already inserted)
-         auto it_s = vertices_map.find(best_src);
-         auto it_t = vertices_map.find(best_tgt);
-         if (it_s == vertices_map.end() || it_t == vertices_map.end()) { m_parallel_book.clear(); return; }
-         V vm_s = it_s->second;
-         V vm_t = it_t->second;
-
-         // check self-return loop: min fwd and min rev same id
-         std::vector<E> g, c;
-         for (auto it2 = boost::out_edges(vm_s, graph).first; it2 != boost::out_edges(vm_s, graph).second; ++it2)
-             if (boost::target(*it2, graph) == vm_t) g.push_back(*it2);
-         for (auto it2 = boost::out_edges(vm_t, graph).first; it2 != boost::out_edges(vm_t, graph).second; ++it2)
-             if (boost::target(*it2, graph) == vm_s) c.push_back(*it2);
-         if (g.empty() || c.empty()) { m_parallel_book.clear(); return; }
-         E min_fwd = *std::min_element(g.begin(), g.end(), [&](E a, E b){ return graph[a].cost < graph[b].cost; });
-         E min_rev = *std::min_element(c.begin(), c.end(), [&](E a, E b){ return graph[a].cost < graph[b].cost; });
-         if (graph[min_fwd].id != graph[min_rev].id) { m_parallel_book.clear(); return; }  // no self-return loop
-
-         // candidate direction endpoints
-         V from = vm_s;
-         V to = vm_t;
-
-         std::vector<E> dir_edges;
-         for (auto it2 = boost::out_edges(from, graph).first; it2 != boost::out_edges(from, graph).second; ++it2)
-             if (boost::target(*it2, graph) == to) dir_edges.push_back(*it2);
-         if (dir_edges.size() >= 2) { m_parallel_book.clear(); return; }  // already have a parallel
-
-         E e; bool ins;
-         boost::tie(e, ins) = boost::add_edge(from, to, graph);
-         graph[e].cost = best_cost;
-         graph[e].id = best_id;
-
-         m_parallel_book.clear();
-     }
-#endif
 
      /**
        Add edges with negative cost(either cost or reverse_cost or both)
