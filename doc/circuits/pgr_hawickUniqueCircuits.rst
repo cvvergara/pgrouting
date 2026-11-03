@@ -235,7 +235,7 @@ Additional Examples
    :start-after: -- q6
    :end-before: -- q7
 
-:Example 3: Exclude self loops and U-turn on the same edge when possible.
+:Example 3: Exclude self loops and avoid U-turns when possible.
 
 - purple is :math:`path\_id = 1`
 - red is :math:`path\_id = 2`
