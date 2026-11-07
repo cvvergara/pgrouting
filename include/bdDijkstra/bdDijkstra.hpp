@@ -36,7 +36,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <limits>
 #include <functional>
 
-
 #include "cpp_common/bidirectional.hpp"
 #include "cpp_common/path.hpp"
 

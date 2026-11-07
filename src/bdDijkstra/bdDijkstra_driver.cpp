@@ -141,7 +141,7 @@ pgr_do_bdDijkstra(
             paths = pgr_bdDijkstra(graph, combinations, only_cost);
         } else {
             pgrouting::UndirectedGraph graph;
-            graph.insert_edges(edges);
+            graph.insert_edges_min(edges);
             paths = pgr_bdDijkstra(graph, combinations, only_cost);
         }
 
