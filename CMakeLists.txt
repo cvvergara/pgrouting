@@ -99,14 +99,24 @@ endif()
 # Boost
 #---------------------------------------------
 
-find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
+if (POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+    find_package(Boost CONFIG)
+else (POLICY CMP0167)
+    find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
+endif (POLICY CMP0167)
+
+if (Boost_FOUND OR Boost_INCLUDE_DIR)
+    include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
+endif (Boost_FOUND OR Boost_INCLUDE_DIR)
+
 if (NOT Boost_VERSION_MACRO)
     set(Boost_VERSION_MACRO ${Boost_VERSION})
 endif()
 set(BOOST_VERSION "${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION}")
+message(STATUS "Found Boost: ${BOOST_VERSION}")
 add_definitions(-DBOOST_ALLOW_DEPRECATED_HEADERS)
 
-include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
 
 #---------------------------------------------
 # Clang tidy
