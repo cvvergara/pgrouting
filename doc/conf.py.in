@@ -391,6 +391,7 @@ linkcheck_ignore = [
     r'https://www.overpass-api.de/*',
     # 443 Time out
     r'https://www.postgressql.org/*',
+    r'https://www.highgo.org/*',
     # 403 Client error
     'https://gis.stackexchange.com/questions/tagged/pgrouting'
 ]
