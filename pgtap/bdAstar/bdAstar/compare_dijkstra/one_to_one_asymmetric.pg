@@ -1,0 +1,84 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2016-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+
+BEGIN;
+
+SET client_min_messages TO ERROR;
+
+SELECT plan(544);
+
+UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+UPDATE edges SET cost = sign(cost) * 7, reverse_cost = sign(reverse_cost) * 2;
+
+
+CREATE or REPLACE FUNCTION bdastar_compare_dijkstra(lim INTEGER default 17)
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+inner_sql TEXT;
+dijkstra_sql TEXT;
+bdastar_sql TEXT;
+BEGIN
+    FOR i IN 1.. lim  LOOP
+        FOR j IN 2.. lim BY 2 LOOP
+
+            -- DIRECTED
+            -- with reverse_cost
+            inner_sql := 'SELECT id, source, target, cost, reverse_cost, x1,y1,x2,y2 FROM edges';
+            dijkstra_sql := 'SELECT seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', true)';
+
+            bdastar_sql := 'SELECT seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bdastar($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', true, 0)';
+            RETURN query SELECT set_eq(bdastar_sql, dijkstra_sql, bdastar_sql);
+
+
+            -- DIRECTED
+            -- NO reverse_cost
+            inner_sql := 'SELECT id, source, target, cost, x1,y1,x2,y2 FROM edges';
+            dijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', true)';
+
+            bdastar_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bdastar($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', true, 0)';
+            RETURN query SELECT set_eq(bdastar_sql, dijkstra_sql, bdastar_sql);
+
+            -- UNDIRECTED
+            -- with reverse_cost
+            inner_sql := 'SELECT id, source, target, cost, reverse_cost, x1,y1,x2,y2 FROM edges';
+            dijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', false)';
+
+            bdastar_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bdastar($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', false, 0)';
+            RETURN query SELECT set_eq(bdastar_sql, dijkstra_sql, bdastar_sql);
+
+
+            -- UNDIRECTED
+            -- NO reverse_cost
+            inner_sql := 'SELECT id, source, target, cost, x1,y1,x2,y2 FROM edges';
+            dijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', false)';
+
+            bdastar_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bdastar($$' || inner_sql || '$$, ' || i || ', ' || j
+                || ', false, 0)';
+            RETURN query SELECT set_eq(bdastar_sql, dijkstra_sql, bdastar_sql);
+
+
+        END LOOP;
+    END LOOP;
+
+    RETURN;
+END
+$BODY$
+language plpgsql;
+
+
+SELECT * from bdastar_compare_dijkstra();
+
+
+SELECT * FROM finish();
+ROLLBACK;
+

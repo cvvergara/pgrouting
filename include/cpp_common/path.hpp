@@ -37,6 +37,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #include <algorithm>
 #include <map>
 #include <cstdint>
+#include <limits>
 
 #include "cpp_common/undefPostgresDefine.hpp"
 
@@ -195,7 +196,6 @@ class Path {
 
             typename G::EO_i ei, ei_end;
 
-//            auto last_node = m_start_id;
             for (const auto &p : original.path) {
                 boost::tie(ei, ei_end) = out_edges(
                         graph.get_V(p.node),
@@ -205,12 +205,23 @@ class Path {
                     /* TODO(v4) add correct predecessor node */
                     path.push_back({m_end_id, -1, 0, 0, 0});
                 } else {
-                    for ( ; ei != ei_end; ++ei) {
-                        if (graph[*ei].id == p.edge) {
-                            auto cost = graph[*ei].cost;
-                            /* TODO(v4) add correct predecessor node */
-                            push_back({p.node, p.edge, cost, 0, 0});
+                    double chosen_cost = (std::numeric_limits<double>::max)();
+                    bool found = false;
+                    for (const auto &e : boost::make_iterator_range(out_edges(graph.get_V(p.node), graph.graph))) {
+                        if (graph[e].id != p.edge) continue;
+                        if (graph[e].cost == p.cost) {
+                            chosen_cost = p.cost;
+                            found = true; break;
                         }
+                        if (graph[e].cost < chosen_cost) {
+                            chosen_cost = graph[e].cost;
+                            found = true;
+                        }
+                    }
+
+                    if (found) {
+                        /* TODO(v4) add correct predecessor node */
+                        push_back({p.node, p.edge, chosen_cost, 0, 0});
                     }
                 }
                 //                last_node = p.node;
