@@ -5,7 +5,9 @@
 
 BEGIN;
 
-CREATE TEMP TABLE edges_undirected_asym AS
+SELECT CASE WHEN min_lib_version('4.0.3') THEN plan(3) ELSE plan(1) END;
+
+CREATE TABLE edges_undirected_asym AS
 SELECT * FROM (VALUES
 (1::BIGINT, 1::BIGINT, 2::BIGINT, 7::FLOAT, 2::FLOAT, 0::FLOAT, 0::FLOAT, 1::FLOAT, 0::FLOAT),
 (2, 2, 3, 7, 2, 1, 0, 2, 0),
@@ -14,23 +16,87 @@ SELECT * FROM (VALUES
 (5, 5, 6, 7, 2, 4, 0, 5, 0)
 ) AS t(id, source, target, cost, reverse_cost, x1, y1, x2, y2);
 
-SELECT plan(1);
+CREATE TABLE edges_undi_w_parallel AS
+SELECT * FROM (VALUES
+(1::BIGINT, 1::BIGINT, 2::BIGINT, 7::FLOAT, 2::FLOAT, 0::FLOAT, 0::FLOAT, 1::FLOAT, 0::FLOAT),
+(2, 2, 3, 7, 2, 1, 0, 2, 0),
+(3, 3, 4, 7, 2, 2, 0, 3, 0),
+(4, 4, 5, 7, 2, 3, 0, 4, 0),
+(5, 5, 6, 7, 2, 4, 0, 5, 0),
+(6, 2, 3, 7, 2, 1, 0, 2, 0),
+(7, 3, 4, 7, 2, 2, 0, 3, 0),
+(8, 4, 5, 7, 2, 3, 0, 4, 0),
+(9, 5, 6, 7, 2, 4, 0, 5, 0)
+) AS t(id, source, target, cost, reverse_cost, x1, y1, x2, y2);
 
-PREPARE q_astar AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_astar(
- 'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges_undirected_asym',
- 1, 6, false);
+CREATE TABLE edges_undi_w_dup_ids AS
+SELECT * FROM edges_undirected_asym
+UNION ALL
+SELECT * FROM edges_undirected_asym;
 
-PREPARE q_bdaStar AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_bdaStar(
- 'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges_undirected_asym',
- 1, 6, false);
+CREATE OR REPLACE FUNCTION issue_3180()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
-SELECT set_eq('q_bdaStar', 'q_astar',
-    'bdAstar matches astar on undirected asymmetric graph (issue 3180)');
+  IF NOT min_lib_version('4.0.3') THEN
+    RETURN QUERY SELECT skip(1, 'Function is fixed on 4.0.3');
+    RETURN;
+  END IF;
 
+  PREPARE qe1 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_astar(
+    'SELECT * FROM edges_undirected_asym',
+    1, 6, false);
+
+  PREPARE q1 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_bdAstar(
+    'SELECT * FROM edges_undirected_asym',
+    1, 6, false);
+
+  RETURN QUERY
+  SELECT set_eq('qe1', 'q1',
+    'bdAstar matches astar on undirected asymmetric graph');
+
+
+  PREPARE qe2 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_astar(
+    'SELECT * FROM edges_undi_w_parallel',
+    1, 6, false);
+
+  PREPARE q2 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_bdAstar(
+    'SELECT * FROM edges_undi_w_parallel',
+    1, 6, false);
+
+  RETURN QUERY
+  SELECT set_eq('qe2', 'q2',
+    'bdAstar matches astar on undirected with parallels');
+
+  PREPARE qe3 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_astar(
+    'SELECT * FROM edges_undi_w_dup_ids',
+    1, 6, false);
+
+  PREPARE q3 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_bdAstar(
+    'SELECT * FROM edges_undi_w_dup_ids',
+    1, 6, false);
+
+  RETURN QUERY
+  SELECT set_eq('qe3', 'q3',
+    'bdAstar matches astar on undirectected with duplicate ids');
+
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT issue_3180();
 SELECT finish();
 ROLLBACK;
-EOF

@@ -46,13 +46,13 @@ BEGIN
   PREPARE qe1 AS
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_dijkstra(
-    'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
+    'SELECT * FROM edges_undirected_asym',
     1, 6, false);
 
   PREPARE q1 AS
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_bddijkstra(
-    'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
+    'SELECT * FROM edges_undirected_asym',
     1, 6, false);
 
   RETURN QUERY
@@ -63,13 +63,13 @@ BEGIN
   PREPARE qe2 AS
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_dijkstra(
-    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_parallel',
+    'SELECT * FROM edges_undi_w_parallel',
     1, 6, false);
 
   PREPARE q2 AS
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_bddijkstra(
-    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_parallel',
+    'SELECT * FROM edges_undi_w_parallel',
     1, 6, false);
 
   RETURN QUERY
@@ -79,13 +79,13 @@ BEGIN
   PREPARE qe3 AS
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_dijkstra(
-    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_dup_ids',
+    'SELECT * FROM edges_undi_w_dup_ids',
     1, 6, false);
 
   PREPARE q3 AS
   SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
   FROM pgr_bddijkstra(
-    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_dup_ids',
+    'SELECT * FROM edges_undi_w_dup_ids',
     1, 6, false);
 
   RETURN QUERY
