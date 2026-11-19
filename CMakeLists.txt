@@ -13,10 +13,6 @@ if(POLICY CMP0144)
     cmake_policy(SET CMP0144 OLD)
 endif()
 
-if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 OLD)
-endif()
-
 if(POLICY CMP0148)
     cmake_policy(SET CMP0148 OLD)
 endif()
@@ -99,12 +95,7 @@ endif()
 # Boost
 #---------------------------------------------
 
-if (POLICY CMP0167)
-    cmake_policy(SET CMP0167 NEW)
-    find_package(Boost CONFIG)
-else (POLICY CMP0167)
-    find_package(Boost ${BOOST_MINIMUM_VERSION} REQUIRED)
-endif (POLICY CMP0167)
+find_package(Boost ${BOOST_MINIMUM_VERSION} MODULE REQUIRED)
 
 if (Boost_FOUND OR Boost_INCLUDE_DIR)
     include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
