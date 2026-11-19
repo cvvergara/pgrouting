@@ -1,0 +1,35 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+
+BEGIN;
+
+CREATE TEMP TABLE edges_undirected_asym AS
+SELECT * FROM (VALUES
+(1::BIGINT, 1::BIGINT, 2::BIGINT, 7::FLOAT, 2::FLOAT, 0::FLOAT, 0::FLOAT, 1::FLOAT, 0::FLOAT),
+(2, 2, 3, 7, 2, 1, 0, 2, 0),
+(3, 3, 4, 7, 2, 2, 0, 3, 0),
+(4, 4, 5, 7, 2, 3, 0, 4, 0),
+(5, 5, 6, 7, 2, 4, 0, 5, 0)
+) AS t(id, source, target, cost, reverse_cost, x1, y1, x2, y2);
+
+SELECT plan(1);
+
+PREPARE q_dijkstra AS
+SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+FROM pgr_dijkstra(
+ 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
+ 1, 6, false);
+
+PREPARE q_astar AS
+SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+FROM pgr_astar(
+ 'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges_undirected_asym',
+ 1, 6, false);
+
+SELECT set_eq('q_astar', 'q_dijkstra',
+    'astar matches dijkstra on undirected asymmetric graph (issue 3180)');
+
+SELECT finish();
+ROLLBACK;
