@@ -95,12 +95,6 @@ endif()
 # Boost
 #---------------------------------------------
 
-if(POLICY CMP0167)
-    cmake_policy(SET CMP0167 NEW)
-else()
-    cmake_policy(SET CMP0167 OLD)
-endif()
-
 find_package(Boost ${BOOST_MINIMUM_VERSION} MODULE REQUIRED)
 
 if (Boost_FOUND OR Boost_INCLUDE_DIR)
