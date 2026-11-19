@@ -2,8 +2,9 @@
 :copyright: Copyright (c) 2026 pgRouting developers
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
 
-
 BEGIN;
+
+SELECT CASE WHEN min_lib_version('4.0.3') THEN plan(3) ELSE plan(1) END;
 
 CREATE TABLE edges_undirected_asym AS
 SELECT * FROM (VALUES
@@ -14,7 +15,7 @@ SELECT * FROM (VALUES
 (5, 5, 6, 7, 2)
 ) AS t(id, source, target, cost, reverse_cost);
 
-CREATE TABLE edges_undirected_asym1 AS
+CREATE TABLE edges_undi_w_parallel AS
 SELECT * FROM (VALUES
 (1::BIGINT, 1::BIGINT, 2::BIGINT, 7::FLOAT, 2::FLOAT),
 (2, 2, 3, 7, 2),
@@ -27,60 +28,74 @@ SELECT * FROM (VALUES
 (9, 5, 6, 5, 1)
 ) AS t(id, source, target, cost, reverse_cost);
 
-CREATE TABLE edges_undirected_asym2 AS
+CREATE TABLE edges_undi_w_dup_ids AS
 SELECT * FROM edges_undirected_asym
 UNION ALL
 SELECT * FROM edges_undirected_asym;
 
-SELECT plan(3);
+CREATE OR REPLACE FUNCTION issue_3180()
+RETURNS SETOF TEXT AS
+$BODY$
+BEGIN
 
-PREPARE q_dijkstra AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_dijkstra(
- 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
- 1, 6, false);
+  IF NOT min_lib_version('4.0.3') THEN
+    RETURN QUERY SELECT skip(1, 'Function is fixed on 4.0.3');
+    RETURN;
+  END IF;
 
-PREPARE q_bddijkstra AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_bddijkstra(
- 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
- 1, 6, false);
+  PREPARE qe1 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_dijkstra(
+    'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
+    1, 6, false);
 
-SELECT set_eq('q_bddijkstra', 'q_dijkstra',
-    'bdDijkstra matches dijkstra on undirected asymmetric graph (issue 3180)');
+  PREPARE q1 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_bddijkstra(
+    'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym',
+    1, 6, false);
 
-
-PREPARE q_dijkstra1 AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_dijkstra(
- 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym1',
- 1, 6, false);
-
-PREPARE q_bddijkstra1 AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_bddijkstra(
- 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym1',
- 1, 6, false);
-
-SELECT set_eq('q_bddijkstra1', 'q_dijkstra1',
-    'bdDijkstra matches dijkstra on undirected asymmetric graph (issue 3180)');
-
-PREPARE q_dijkstra2 AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_dijkstra(
- 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym2',
- 1, 6, false);
-
-PREPARE q_bddijkstra2 AS
-SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
-FROM pgr_bddijkstra(
- 'SELECT id, source, target, cost, reverse_cost FROM edges_undirected_asym2',
- 1, 6, false);
-
-SELECT set_eq('q_bddijkstra2', 'q_dijkstra2',
-    'bdDijkstra matches dijkstra on undirected asymmetric graph (issue 3180)');
+  RETURN QUERY
+  SELECT set_eq('qe1', 'q1',
+    'bdDijkstra matches dijkstra on undirected asymmetric graph');
 
 
+  PREPARE qe2 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_dijkstra(
+    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_parallel',
+    1, 6, false);
+
+  PREPARE q2 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_bddijkstra(
+    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_parallel',
+    1, 6, false);
+
+  RETURN QUERY
+  SELECT set_eq('qe2', 'q2',
+    'bdDijkstra matches dijkstra on undirected with parallels');
+
+  PREPARE qe3 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_dijkstra(
+    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_dup_ids',
+    1, 6, false);
+
+  PREPARE q3 AS
+  SELECT seq, path_seq, start_vid, end_vid, node, edge, cost, agg_cost
+  FROM pgr_bddijkstra(
+    'SELECT id, source, target, cost, reverse_cost FROM edges_undi_w_dup_ids',
+    1, 6, false);
+
+  RETURN QUERY
+  SELECT set_eq('qe3', 'q3',
+    'bdDijkstra matches dijkstra on undirectected with duplicate ids');
+
+END;
+$BODY$
+LANGUAGE plpgsql VOLATILE;
+
+SELECT issue_3180();
 SELECT finish();
 ROLLBACK;
-
