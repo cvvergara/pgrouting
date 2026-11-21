@@ -156,7 +156,6 @@ $BODY$
 language plpgsql;
 
 
-
 CREATE or REPLACE FUNCTION compare_dijkstra_many_to_many(fn TEXT, extra_inner_cols TEXT, tbl TEXT, heuristic TEXT)RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
@@ -190,6 +189,46 @@ BEGIN
 
   dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, %s, false)', return_cols, 'pgr_dijkstra', inner_no_rev_sql, vids, vids);
   fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, %s, false %s)', return_cols, fn, inner_no_rev_sql, vids, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+END
+$BODY$
+language plpgsql;
+
+
+CREATE or REPLACE FUNCTION compare_dijkstra_combinations(fn TEXT, extra_inner_cols TEXT, tbl TEXT, heuristic TEXT)RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+inner_w_rev_sql TEXT;
+inner_no_rev_sql TEXT;
+return_cols TEXT;
+vids TEXT;
+dijkstra_sql TEXT;
+fn_sql TEXT;
+
+BEGIN
+
+  return_cols := 'seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost';
+  inner_w_rev_sql := 'SELECT id, source, target, cost, reverse_cost' || extra_inner_cols || ' FROM ' || tbl;
+  inner_no_rev_sql := regexp_replace(inner_w_rev_sql, ',\s*reverse_cost', '', 'g');
+  vids = ' SELECT * FROM combinations ';
+
+  -- DIRECTED
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, true)', return_cols, 'pgr_dijkstra', inner_w_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, true %s)', return_cols, fn, inner_w_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, true)', return_cols, 'pgr_dijkstra', inner_no_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, true %s)', return_cols, fn, inner_no_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+  -- UNDIRECTED
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, false)', return_cols, 'pgr_dijkstra', inner_w_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, false %s)', return_cols, fn, inner_w_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, false)', return_cols, 'pgr_dijkstra', inner_no_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, false %s)', return_cols, fn, inner_no_rev_sql, vids, heuristic);
   RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
 
 END
