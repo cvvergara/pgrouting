@@ -8,10 +8,9 @@ SELECT CASE WHEN min_version('3.2.0') AND min_lib_version('4.0.3') THEN plan(16)
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
-CREATE or REPLACE FUNCTION astarCompareDijkstra(lim INTEGER default 17)
+CREATE or REPLACE FUNCTION astarCompareDijkstra()
 RETURNS SETOF TEXT AS
 $BODY$
-
 BEGIN
 
   IF NOT min_version('3.2.0') THEN
@@ -46,4 +45,3 @@ SELECT * from astarCompareDijkstra();
 
 SELECT * FROM finish();
 ROLLBACK;
-
