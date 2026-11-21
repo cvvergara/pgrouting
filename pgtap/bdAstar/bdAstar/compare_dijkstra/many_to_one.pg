@@ -1,0 +1,54 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2016-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+BEGIN;
+
+SELECT plan(144);
+
+UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
+
+CREATE or REPLACE FUNCTION bdastarCompareDijkstra(lim INTEGER default 17)
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+inner_sql TEXT;
+dijkstra_sql TEXT;
+bdastar_sql TEXT;
+vids TEXT;
+return_cols TEXT;
+BEGIN
+  IF min_version('3.6.0') THEN
+
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges', ',0');
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+
+  ELSE
+    return_cols := ' seq, path_seq, end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
+
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges', ',0', return_cols);
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym', ',0', return_cols);
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0', return_cols);
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0', return_cols);
+
+END IF;
+
+END
+$BODY$
+language plpgsql;
+
+SELECT * from bdastarCompareDijkstra();
+
+SELECT * FROM finish();
+ROLLBACK;
+

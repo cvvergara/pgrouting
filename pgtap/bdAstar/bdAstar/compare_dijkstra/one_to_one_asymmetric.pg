@@ -6,9 +6,9 @@ BEGIN;
 
 SELECT plan(648);
 
-SELECT * from compare_dijkstra_one_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
-SELECT * from compare_dijkstra_one_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
-SELECT * from compare_dijkstra_one_to_one('pgr_bdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+SELECT * from compare_dijkstra_one_to_one('pgr_bdbdastar', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
+SELECT * from compare_dijkstra_one_to_one('pgr_bdbdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
+SELECT * from compare_dijkstra_one_to_one('pgr_bdbdastar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
 
 SELECT * FROM finish();
 ROLLBACK;
