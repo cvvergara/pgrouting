@@ -19,7 +19,6 @@ BEGIN
     RETURN;
   END IF;
 
-  IF min_version('3.6.0') THEN
 
     RETURN QUERY
     SELECT * from compare_dijkstraCost_combinations('pgr_astarcost', ', x1,y1,x2,y2 ', 'edges', ',0');
@@ -30,7 +29,6 @@ BEGIN
     RETURN QUERY
     SELECT * from compare_dijkstraCost_combinations('pgr_astarcost', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
 
-  END IF;
 
 END
 $BODY$
