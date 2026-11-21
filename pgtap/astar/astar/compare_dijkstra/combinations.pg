@@ -11,11 +11,6 @@ UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(revers
 CREATE or REPLACE FUNCTION astarCompareDijkstra(lim INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
-DECLARE
-inner_sql TEXT;
-dijkstra_sql TEXT;
-astar_sql TEXT;
-vids TEXT;
 
 BEGIN
   IF NOT min_version('3.2.0') THEN
@@ -24,18 +19,16 @@ BEGIN
     RETURN;
   END IF;
 
-  vids := ' SELECT * FROM combinations ';
-
   IF min_version('3.6.0') THEN
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
+    SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
+    SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
+    SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+    SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
 
   END IF;
 

@@ -12,10 +12,8 @@ CREATE or REPLACE FUNCTION bddijkstraCompareDijkstra(lim INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-inner_sql TEXT;
-dijkstra_sql TEXT;
-bddijkstra_sql TEXT;
 result_columns TEXT;
+
 BEGIN
 
   IF min_version('3.6.0') THEN

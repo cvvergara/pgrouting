@@ -12,12 +12,10 @@ CREATE or REPLACE FUNCTION bddijkstraCompareDijkstra(lim INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-inner_sql TEXT;
-dijkstra_sql TEXT;
-bddijkstra_sql TEXT;
-vids TEXT;
 return_cols TEXT;
+
 BEGIN
+
   IF min_version('3.6.0') THEN
 
     RETURN QUERY
@@ -33,15 +31,15 @@ BEGIN
     return_cols := ' seq, path_seq, end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', ' ', return_cols);
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym', ' ', return_cols);
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', ' ', return_cols);
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels',  ' ', return_cols);
 
-END IF;
+  END IF;
 
 END
 $BODY$
