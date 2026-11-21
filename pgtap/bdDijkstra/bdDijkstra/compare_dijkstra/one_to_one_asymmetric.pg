@@ -25,64 +25,9 @@ INSERT INTO edges_asym_w_parallels
 SELECT * FROM edges_asym;
 
 
-
-CREATE or REPLACE FUNCTION bddijkstra_compare_dijkstra(tbl TEXT, lim INTEGER default 17)
-RETURNS SETOF TEXT AS
-$BODY$
-DECLARE
-inner_w_rev_sql TEXT;
-inner_no_rev_sql TEXT;
-dijkstra_sql TEXT;
-bddijkstra_sql TEXT;
-BEGIN
-
-    inner_w_rev_sql := 'SELECT * FROM ' || tbl;
-    inner_no_rev_sql := 'SELECT id, source, target, cost FROM ' || tbl;
-
-    FOR i IN 1.. lim  BY 2 LOOP
-        FOR j IN 2.. lim BY 3 LOOP
-
-            -- DIRECTED
-            dijkstra_sql := 'SELECT seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_w_rev_sql || '$$, ' || i || ', ' || j
-                || ', true)';
-            bddijkstra_sql := 'SELECT seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bddijkstra($$' || inner_w_rev_sql || '$$, ' || i || ', ' || j
-                || ', true)';
-            RETURN query SELECT set_eq(bddijkstra_sql, dijkstra_sql, bddijkstra_sql);
-
-
-            dijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_no_rev_sql || '$$, ' || i || ', ' || j
-                || ', true)';
-            bddijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bddijkstra($$' || inner_no_rev_sql || '$$, ' || i || ', ' || j
-                || ', true)';
-            RETURN query SELECT set_eq(bddijkstra_sql, dijkstra_sql, bddijkstra_sql);
-
-            -- UNDIRECTED
-            dijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_w_rev_sql || '$$, ' || i || ', ' || j
-                || ', false)';
-            bddijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bddijkstra($$' || inner_w_rev_sql || '$$, ' || i || ', ' || j
-                || ', false)';
-            RETURN query SELECT set_eq(bddijkstra_sql, dijkstra_sql, bddijkstra_sql);
-
-
-            dijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_dijkstra($$' || inner_no_rev_sql || '$$, ' || i || ', ' || j
-                || ', false)';
-            bddijkstra_sql := 'SELECT  seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost  FROM pgr_bddijkstra($$' || inner_no_rev_sql || '$$, ' || i || ', ' || j
-                || ', false)';
-            RETURN query SELECT set_eq(bddijkstra_sql, dijkstra_sql, bddijkstra_sql);
-
-
-        END LOOP;
-    END LOOP;
-
-    RETURN;
-END
-$BODY$
-language plpgsql;
-
-
-SELECT * from bddijkstra_compare_dijkstra('edges_asym');
-SELECT * from bddijkstra_compare_dijkstra('edges_asym_w_dup_ids');
-SELECT * from bddijkstra_compare_dijkstra('edges_asym_w_parallels');
+SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym', '');
+SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', '');
+SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels', '');
 
 SELECT * FROM finish();
 ROLLBACK;
