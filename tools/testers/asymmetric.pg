@@ -24,7 +24,7 @@ DROP TABLE edges1;
 CREATE or REPLACE FUNCTION compare_dijkstra_one_to_one(fn TEXT,
  extra_inner_cols TEXT,
  tbl TEXT,
- heuristic TEXT,
+ heuristic TEXT DEFAULT ' ',
  return_cols TEXT DEFAULT 'seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost'
 )RETURNS SETOF TEXT AS
 $BODY$

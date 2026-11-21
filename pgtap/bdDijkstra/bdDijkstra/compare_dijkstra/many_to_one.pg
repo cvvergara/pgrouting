@@ -21,25 +21,25 @@ BEGIN
   IF min_version('3.6.0') THEN
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', ',0');
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym', ',0');
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', ',0');
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels', ',0');
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels');
 
   ELSE
     return_cols := ' seq, path_seq, end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', ',0', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', return_cols);
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym', ',0', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym', return_cols);
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', ',0', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', return_cols);
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels', ',0', return_cols);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels', return_cols);
 
 END IF;
 
