@@ -1,10 +1,10 @@
 /* :file: This file is part of the pgRouting project.
-:copyright: Copyright (c) 2023-2026 pgRouting developers
+:copyright: Copyright (c) 2016-2026 pgRouting developers
 :license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
 
 BEGIN;
 
-SELECT CASE WHEN min_version('3.2.0') THEN plan(16) ELSE plan(1) END;
+SELECT CASE WHEN min_version('4.0.3') THEN plan(16) WHEN min_version('3.2.0') THEN plan(4) WHEN ELSE plan(1) END;
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
@@ -20,7 +20,7 @@ BEGIN
     RETURN;
   END IF;
 
-  IF min_version('3.6.0') THEN
+  IF min_lib_version('4.0.3') THEN
 
     RETURN QUERY
     SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
@@ -30,6 +30,11 @@ BEGIN
     SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
     RETURN QUERY
     SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+
+  ELSE
+
+    RETURN QUERY
+    SELECT * from compare_dijkstra_combinations('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
 
   END IF;
 
