@@ -6,25 +6,6 @@ BEGIN;
 
 SELECT plan(648);
 
-UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
-
-CREATE TABLE edges_asym AS
-SELECT * FROM edges;
-UPDATE edges_asym SET cost = cost * 7, reverse_cost = reverse_cost * 2;
-
-CREATE TABLE edges_asym_w_dup_ids AS
-SELECT * FROM edges_asym
-UNION ALL
-SELECT * FROM edges_asym;
-
-CREATE TABLE edges_asym_w_parallels AS
-SELECT * FROM edges;
-UPDATE edges_asym_w_parallels SET cost = cost * 4, reverse_cost = reverse_cost * 3, id = id * 100;
-
-INSERT INTO edges_asym_w_parallels
-SELECT * FROM edges_asym;
-
-
 SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym', '');
 SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids', '');
 SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels', '');

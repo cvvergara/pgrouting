@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT plan(612);
+SELECT plan(864);
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
@@ -18,60 +18,31 @@ astar_sql TEXT;
 result_columns TEXT;
 BEGIN
   IF min_version('3.6.0') THEN
-    result_columns := ' seq, path_seq, start_vid, end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
+
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+
   ELSE
     result_columns := ' seq, path_seq, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
+
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0', result_cols);
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym', ',0', result_cols);
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0', result_cols);
+    RETURN QUERY
+    SELECT * from compare_dijkstra_one_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0', result_cols);
+
   END IF;
 
-    FOR i IN 1.. lim BY 2 LOOP
-        FOR j IN 1.. lim LOOP
-
-            -- DIRECTED WITH REVERSE COST
-            inner_sql := 'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges';
-            dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', true)';
-
-            astar_sql := 'SELECT ' || result_columns || ' FROM pgr_astar($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', true, heuristic:=0)';
-            RETURN query SELECT set_eq(astar_sql, dijkstra_sql, astar_sql);
-
-
-            -- DIRECTED WITHOUT REVERSE COST
-            inner_sql := 'SELECT id, source, target, cost, x1, y1, x2, y2 FROM edges';
-            dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', true)';
-
-            astar_sql := 'SELECT ' || result_columns || ' FROM pgr_astar($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', true, heuristic:=0)';
-            RETURN query SELECT set_eq(astar_sql, dijkstra_sql, astar_sql);
-
-
-            -- UNDIRECTED WITH REVERSE COST
-            inner_sql := 'SELECT id, source, target, cost, reverse_cost, x1, y1, x2, y2 FROM edges';
-            dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', false)';
-
-            astar_sql := 'SELECT ' || result_columns || ' FROM pgr_astar($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', false, heuristic:=0)';
-            RETURN query SELECT set_eq(astar_sql, dijkstra_sql, astar_sql);
-
-
-            -- UNDIRECTED WITHOUT REVERSE COST
-            inner_sql := 'SELECT id, source, target, cost, x1, y1, x2, y2 FROM edges';
-            dijkstra_sql := 'SELECT ' || result_columns || ' FROM pgr_dijkstra($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', false)';
-
-            astar_sql := 'SELECT ' || result_columns || ' FROM pgr_astar($$' || inner_sql || '$$, ' || i || ', ' || j
-                || ', false, heuristic:=0)';
-            RETURN query SELECT set_eq(astar_sql, dijkstra_sql, astar_sql);
-
-
-
-
-        END LOOP;
-    END LOOP;
-
-    RETURN;
+RETURN;
 END
 $BODY$
 language plpgsql;
