@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT plan(16);
+SELECT CASE WHEN min_version('4.0.3') THEN plan(16) ELSE plan(4) END;
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
@@ -12,13 +12,11 @@ CREATE or REPLACE FUNCTION astarCompareDijkstra(lim INTEGER default 17)
 RETURNS SETOF TEXT AS
 $BODY$
 DECLARE
-inner_sql TEXT;
-dijkstra_sql TEXT;
-astar_sql TEXT;
-vids TEXT;
-return_cols TEXT;
+result_columns TEXT;
+
 BEGIN
-  IF min_version('3.6.0') THEN
+
+  IF min_lib_version('4.0.3') THEN
 
     RETURN QUERY
     SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
@@ -27,21 +25,21 @@ BEGIN
     RETURN QUERY
     SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+    SELECT * from compare_dijkstra_one_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+
+  ELSIF min_version('3.6.0') THEN
+
+    RETURN QUERY
+    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0', result_cols);
 
   ELSE
-    return_cols := ' seq, path_seq, end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
+
+    result_columns := ' seq, path_seq,end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0', return_cols);
-    RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym', ',0', return_cols);
-    RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0', return_cols);
-    RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0', return_cols);
+    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0', result_cols);
 
-END IF;
+  END IF;
 
 END
 $BODY$

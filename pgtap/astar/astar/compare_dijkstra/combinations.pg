@@ -13,6 +13,7 @@ RETURNS SETOF TEXT AS
 $BODY$
 
 BEGIN
+
   IF NOT min_version('3.2.0') THEN
     RETURN query
     SELECT skip(1, 'Combinations signature added on version 3.2');
@@ -37,7 +38,6 @@ $BODY$
 language plpgsql;
 
 SELECT * from astarCompareDijkstra();
-
 
 SELECT * FROM finish();
 ROLLBACK;
