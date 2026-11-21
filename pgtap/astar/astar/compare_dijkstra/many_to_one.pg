@@ -34,7 +34,7 @@ BEGIN
 
   ELSE
 
-    result_columns := ' seq, path_seq,end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
+    result_columns := ' seq, path_seq, start_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
     SELECT * from compare_dijkstra_many_to_one('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0', result_columns);
