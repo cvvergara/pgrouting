@@ -36,8 +36,8 @@ bdastar_sql TEXT;
 
 BEGIN
 
-    inner_w_rev_sql := 'SELECT * FROM ' || tbl;
-    inner_no_rev_sql := 'SELECT id, source, target, cost, x1,y1,x2,y2 FROM ' || tbl;
+    inner_w_rev_sql := 'SELECT id, source, target, cost, reverse_cost, x1,y1,x2,y2 FROM ' || tbl;
+    inner_no_rev_sql := regexp_replace(inner_w_rev_sql, ',\s*reverse_cost', '', 'g');
 
     FOR i IN 1.. lim  BY 2 LOOP
         FOR j IN 2.. lim BY 3 LOOP

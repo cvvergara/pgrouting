@@ -1,0 +1,48 @@
+/* :file: This file is part of the pgRouting project.
+:copyright: Copyright (c) 2016-2026 pgRouting developers
+:license: Creative Commons Attribution-Share Alike 3.0 https://creativecommons.org/licenses/by-sa/3.0 */
+
+CREATE or REPLACE FUNCTION compare_dijkstra_one_to_one(fn TEXT, extra_inner_cols TEXT, tbl TEXT, lim INTEGER default 17)RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+inner_w_rev_sql TEXT;
+inner_no_rev_sql TEXT;
+return_cols TEXT;
+dijkstra_sql TEXT;
+fn_sql TEXT;
+
+BEGIN
+
+  return_cols := 'seq,node,edge,round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost';
+  inner_w_rev_sql := 'SELECT id, source, target, cost, reverse_cost' || extra_inner_cols || ' FROM ' || tbl;
+  inner_no_rev_sql := regexp_replace(inner_w_rev_sql, ',\s*reverse_cost', '', 'g');
+
+  FOR i IN 1.. lim  BY 2 LOOP
+    FOR j IN 2.. lim BY 3 LOOP
+
+      -- DIRECTED
+      dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, true)', return_cols, 'pgr_dijkstra', inner_w_rev_sql, i , j);
+      fn_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, true, 0)', return_cols, fn, inner_w_rev_sql, i , j);
+      RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+      dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, true)', return_cols, 'pgr_dijkstra', inner_no_rev_sql, i , j);
+      fn_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, true, 0)', return_cols, fn, inner_no_rev_sql, i , j);
+      RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+      -- UNDIRECTED
+      dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, false)', return_cols, 'pgr_dijkstra', inner_w_rev_sql, i , j);
+      fn_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, false, 0)', return_cols, fn, inner_w_rev_sql, i , j);
+      RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+      dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, false)', return_cols, 'pgr_dijkstra', inner_no_rev_sql, i , j);
+      fn_sql := format('SELECT %s FROM %s($$ %s $$, %s , %s, false, 0)', return_cols, fn, inner_no_rev_sql, i , j);
+      RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+      END LOOP;
+  END LOOP;
+
+  RETURN;
+END
+$BODY$
+language plpgsql;
+
