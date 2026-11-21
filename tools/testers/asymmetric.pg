@@ -356,3 +356,48 @@ END
 $BODY$
 language plpgsql;
 
+CREATE or REPLACE FUNCTION compare_dijkstraCostMatrix(fn TEXT,
+  extra_inner_cols TEXT,
+  tbl TEXT,
+  heuristic TEXT DEFAULT ' ',
+  return_cols TEXT DEFAULT 'start_vid, end_vid, round(agg_cost::numeric,8) AS agg_cost'
+)
+RETURNS SETOF TEXT AS
+$BODY$
+DECLARE
+inner_w_rev_sql TEXT;
+inner_no_rev_sql TEXT;
+return_cols TEXT;
+vids TEXT;
+dijkstra_sql TEXT;
+fn_sql TEXT;
+dfn TEXT DEFAULT 'pgr_dijkstraCostMatrix';
+
+BEGIN
+
+  inner_w_rev_sql := 'SELECT id, source, target, cost, reverse_cost' || extra_inner_cols || ' FROM ' || tbl;
+  inner_no_rev_sql := regexp_replace(inner_w_rev_sql, ',\s*reverse_cost', '', 'g');
+  vids = ' ARRAY[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18] ';
+
+  -- DIRECTED
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, true)', return_cols, dfn, inner_w_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, true %s)', return_cols, fn, inner_w_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, true)', return_cols, dfn, inner_no_rev_sql, vids, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, true %s)', return_cols, fn, inner_no_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+  -- UNDIRECTED
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, false)', return_cols, dfn, inner_w_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, false %s)', return_cols, fn, inner_w_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+  dijkstra_sql := format('SELECT %s FROM %s($$ %s $$, %s, false)', return_cols, dfn, inner_no_rev_sql, vids);
+  fn_sql := format('SELECT %s FROM %s($$ %s $$, %s, false %s)', return_cols, fn, inner_no_rev_sql, vids, heuristic);
+  RETURN query SELECT set_eq(fn_sql, dijkstra_sql, fn_sql);
+
+END
+$BODY$
+language plpgsql;
+
