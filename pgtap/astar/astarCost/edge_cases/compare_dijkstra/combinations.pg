@@ -8,7 +8,7 @@ SELECT CASE WHEN min_version('3.2.0') AND min_lib_version('4.0.3') THEN plan(16)
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
-CREATE or REPLACE FUNCTION astarCostCompareDijkstra()
+CREATE or REPLACE FUNCTION CompareDijkstra()
 RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
@@ -41,7 +41,7 @@ END
 $BODY$
 language plpgsql;
 
-SELECT * from astarCostCompareDijkstra();
+SELECT * from CompareDijkstra();
 
 SELECT * FROM finish();
 ROLLBACK;
