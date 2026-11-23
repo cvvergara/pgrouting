@@ -4,7 +4,7 @@
 
 BEGIN;
 
-SELECT CASE WHEN min_version('3.1.1') AND min_lib_version('4.0.3') THEN plan(144) WHEN min_version('3.1.1') THEN plan(36) ELSE PLAN(1) END;
+SELECT CASE WHEN min_version('3.1.2') AND min_lib_version('4.0.3') THEN plan(144) WHEN min_version('3.1.2') THEN plan(36) ELSE PLAN(1) END;
 
 UPDATE edges SET cost = sign(cost) + 0.001 * id * id, reverse_cost = sign(reverse_cost) + 0.001 * id * id;
 
@@ -13,7 +13,7 @@ RETURNS SETOF TEXT AS
 $BODY$
 BEGIN
 
-  IF min_lib_version('4.0.3') THEN
+  IF min_version('3.1.2') AND min_lib_version('4.0.3') THEN
 
     RETURN QUERY
     SELECT * from compare_dijkstraCost_one_to_many('pgr_bddijkstracost', ' ', 'edges');
@@ -24,7 +24,7 @@ BEGIN
     RETURN QUERY
     SELECT * from compare_dijkstraCost_one_to_many('pgr_bddijkstracost', ' ', 'edges_asym_w_parallels');
 
-  ELSIF min_version('3.1.1') THEN
+  ELSIF min_version('3.1.2') THEN
 
     RETURN QUERY
     SELECT * from compare_dijkstraCost_one_to_many('pgr_bddijkstracost', ' ', 'edges');
@@ -32,7 +32,7 @@ BEGIN
   ELSE
 
     RETURN QUERY
-    SELECT skip(1, 'A server crash was fixed on v3.1.1');
+    SELECT skip(1, 'A server crash was fixed on v3.1.2');
 
   END IF;
 
