@@ -16,24 +16,7 @@ BEGIN
   IF min_version('3.6.0') THEN
 
     RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges', ',0');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
-
-  ELSE
-
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges', ',0');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges_asym', ',0');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges_asym_w_dup_ids', ',0');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCostMatrix_one_to_one('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
+    SELECT * from compare_dijkstraCostMatrix('pgr_astarCostMatrix', ', x1,y1,x2,y2 ', 'edges', ',0');
 
   END IF;
 
