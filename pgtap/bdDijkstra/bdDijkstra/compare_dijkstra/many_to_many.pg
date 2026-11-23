@@ -28,7 +28,7 @@ BEGIN
   ELSE
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges', result_columns);
+    SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges');
 
   END IF;
 

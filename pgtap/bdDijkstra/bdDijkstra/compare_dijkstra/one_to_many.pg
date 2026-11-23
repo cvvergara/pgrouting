@@ -30,11 +30,11 @@ BEGIN
   ELSIF min_version('3.6.0') THEN
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_one_to_many('pgr_bddijkstra', ' ', 'edges', result_columns);
+    SELECT * from compare_dijkstra_one_to_many('pgr_bddijkstra', ' ', 'edges');
 
   ELSE
 
-    result_columns := ' seq, path_seq,end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
+    result_columns := ' seq, path_seq, `end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
     SELECT * from compare_dijkstra_one_to_many('pgr_bddijkstra', ' ', 'edges', result_columns);

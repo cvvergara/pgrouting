@@ -30,7 +30,7 @@ BEGIN
   ELSIF min_version('3.6.0') THEN
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges', result_columns);
+    SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges');
 
   ELSE
 
