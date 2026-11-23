@@ -47,6 +47,5 @@ language plpgsql;
 
 SELECT * from CompareDijkstra();
 
-
 SELECT * FROM finish();
 ROLLBACK;

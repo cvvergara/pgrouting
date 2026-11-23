@@ -24,10 +24,15 @@ BEGIN
     RETURN QUERY
     SELECT * from compare_dijkstraCost_one_to_many('pgr_bdastarcost', ', x1,y1,x2,y2 ', 'edges_asym_w_parallels', ',0');
 
-  ELSE
+  ELSIF min_version('3.1.1') THEN
 
     RETURN QUERY
     SELECT * from compare_dijkstraCost_one_to_many('pgr_bdastarcost', ', x1,y1,x2,y2 ', 'edges', ',0');
+
+  ELSE
+
+    RETURN QUERY
+    SELECT skip(1, 'A server crash was fixed on v3.1.1');
 
   END IF;
 
