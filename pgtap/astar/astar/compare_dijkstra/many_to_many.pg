@@ -28,7 +28,7 @@ BEGIN
   ELSE
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0', result_columns);
+    SELECT * from compare_dijkstra_many_to_many('pgr_astar', ', x1,y1,x2,y2 ', 'edges', ',0');
 
   END IF;
 
