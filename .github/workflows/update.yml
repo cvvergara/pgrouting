@@ -124,6 +124,7 @@ jobs:
           bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "${{ matrix.old_pgr }}"
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           pg_prove  -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/bdAstar"
+          pg_prove  -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/bdDijkstra"
           #pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
 
       - name: Build current version
@@ -144,6 +145,7 @@ jobs:
           bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "${{ matrix.old_pgr }}"
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           pg_prove  -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/bdAstar"
+          pg_prove  -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/bdDijkstra"
           #pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
 
       - name: Test old version with current tests after update
@@ -153,4 +155,5 @@ jobs:
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "ALTER EXTENSION pgrouting UPDATE  TO '4.0.3';"
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
           pg_prove  -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/bdAstar"
+          pg_prove  -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap/bdDijkstra"
           #pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
