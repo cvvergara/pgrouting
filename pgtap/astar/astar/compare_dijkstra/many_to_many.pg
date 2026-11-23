@@ -49,4 +49,3 @@ SELECT * from astarCompareDijkstra();
 
 SELECT * FROM finish();
 ROLLBACK;
-
