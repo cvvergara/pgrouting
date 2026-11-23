@@ -32,12 +32,17 @@ BEGIN
     RETURN QUERY
     SELECT * from compare_dijkstra_one_to_many('pgr_bddijkstra', ' ', 'edges');
 
-  ELSE
+  ELSIF min_version('3.1.1') THEN
 
     result_columns := ' seq, path_seq, end_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
     SELECT * from compare_dijkstra_one_to_many('pgr_bddijkstra', ' ', 'edges', ' ', result_columns);
+
+  ELSE
+
+    RETURN QUERY
+    SELECT skip(1, 'A server crash was fixed on v3.1.1');
 
   END IF;
 
