@@ -14,26 +14,24 @@ $BODY$
 
 BEGIN
 
+  IF NOT min_version('3.1.2') THEN
+    RETURN query
+    SELECT skip(1, 'A server crash was fixed on v3.1.2');
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges');
+
+  /* fix for asymetric graphs start on v4.0.3 */
   IF min_lib_version('4.0.3') THEN
 
-    RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges');
     RETURN QUERY
     SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges_asym');
     RETURN QUERY
     SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids');
     RETURN QUERY
     SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges_asym_w_parallels');
-
-  ELSIF min_version('3.1.2') THEN
-
-    RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_many('pgr_bddijkstra', ' ', 'edges');
-
-  ELSE
-
-    RETURN QUERY
-    SELECT skip(1, 'A server crash was fixed on v3.1.2');
 
   END IF;
 
