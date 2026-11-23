@@ -37,7 +37,7 @@ BEGIN
     result_columns := ' seq, path_seq, start_vid, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', result_columns);
+    SELECT * from compare_dijkstra_many_to_one('pgr_bddijkstra', ' ', 'edges', ' ', result_columns);
 
   END IF;
 
