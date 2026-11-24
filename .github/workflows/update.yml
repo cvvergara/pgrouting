@@ -178,11 +178,9 @@ jobs:
       - name: Test old version with currrent tests after installing current
         run: |
           sudo service postgresql start
-          dropdb -p "${PGPORT}"  ___pgr___test___
-          createdb -p "${PGPORT}"  ___pgr___test___
-          DIR=$(git rev-parse --show-toplevel)
-          bash "${DIR}/tools/testers/setup_db.sh" "${PGPORT}" ___pgr___test___ "${PG_RUNNER_USER}" "${{ matrix.old_pgr }}"
+          # Reuse the existing database (old extension + data, current .so).
           psql -p "${PGPORT}"  -d ___pgr___test___ -c "SELECT * FROM pgr_full_version();"
+          DIR=$(git rev-parse --show-toplevel)
           pg_prove  -Q -f --normalize --directives --recurse -U "${PG_RUNNER_USER}" -d ___pgr___test___ "pgtap"
 
       - name: Test old version with current tests after update
