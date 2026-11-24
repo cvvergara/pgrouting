@@ -377,13 +377,13 @@ class Pgr_base_graph {
 
 
      template <typename T> void insert_min_edges_no_parallel(const std::vector<T> &edges) {
-         for (const auto edge : edges) {
+         for (const auto &edge : edges) {
              graph_add_min_edge_no_parallel(edge);
          }
      }
 
      template <typename T> void insert_negative_edges(const std::vector<T> &edges, bool normal = true) {
-         for (const auto edge : edges) {
+         for (const auto &edge : edges) {
              graph_add_neg_edge(edge, normal);
          }
      }
