@@ -53,7 +53,20 @@ jobs:
           sudo service postgresql start
           pgver=$(psql --version | grep -Po '(?<=psql \(PostgreSQL\) )[^;]+(?=\.\d+ \()')
           echo "PGVER=${pgver}" >> $GITHUB_ENV
-          sudo apt-get install -y postgresql-server-dev-${pgver} 2>/dev/null || true
+          echo "PGIS=3" >> $GITHUB_ENV
+
+      - name: Add PostgreSQL APT repository
+        run: .github/scripts/setup_pg_repo.sh
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            postgresql-${PGVER} \
+            postgresql-${PGVER}-postgis-${PGIS} \
+            postgresql-${PGVER}-postgis-${PGIS}-scripts \
+            postgresql-server-dev-${PGVER} \
+            libboost-graph-dev
 
       - name: Build
         run: |
@@ -80,7 +93,6 @@ jobs:
     strategy:
         fail-fast: false
         matrix:
-          boost_minor: [56]
           old_pgr: [4.0.2, 4.0.1, 4.0.0, 3.8.0, 3.7.3, 3.7.2, 3.7.1, 3.7.0, 3.6.3, 3.6.2, 3.6.1, 3.6.0, 3.5.1, 3.5.0, 3.4.2, 3.4.1, 3.4.0, 3.3.5, 3.3.4, 3.3.3, 3.3.2, 3.3.1, 3.3.0, 3.0.0, 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.6, 3.1.0, 3.1.1, 3.1.2, 3.1.3, 3.2.0, 3.2.1, 3.2.2]
 
     steps:
@@ -96,9 +108,6 @@ jobs:
           echo "PG_RUNNER_USER=${PG_USER}" >> $GITHUB_ENV
           PG_PORT=5432
           echo "PGPORT=${PG_PORT}" >> $GITHUB_ENV
-          sudo -u postgres psql -p "${PG_PORT}" -c "DROP ROLE IF EXISTS \"${PG_USER}\";"
-          sudo -u postgres psql -p "${PG_PORT}" -c "CREATE ROLE \"${PG_USER}\" WITH LOGIN SUPERUSER;"
-          sudo -u postgres psql -p "${PG_PORT}" -c "CREATE DATABASE \"${PG_USER}\";"
 
       - name: Add PostgreSQL APT repository
         run: .github/scripts/setup_pg_repo.sh
@@ -112,11 +121,8 @@ jobs:
             postgresql-${PGVER}-pgtap \
             postgresql-${PGVER}-postgis-${PGIS} \
             postgresql-${PGVER}-postgis-${PGIS}-scripts \
-            postgresql-server-dev-${PGVER}
-
-          wget -q https://sourceforge.net/projects/boost/files/boost/1.${{ matrix.boost_minor }}.0/boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          sudo tar --bzip2 -xf boost_1_${{ matrix.boost_minor }}_0.tar.bz2
-          sudo mv boost_1_${{ matrix.boost_minor }}_0/boost /usr/include/
+            postgresql-server-dev-${PGVER} \
+            libboost-graph-dev
 
       - name: Recreate runner role after reinstall
         run: |
