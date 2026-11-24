@@ -16,28 +16,28 @@ result_columns TEXT;
 
 BEGIN
 
-  IF min_lib_version('4.0.3') THEN
+  IF NOT min_lib_version('3.6.0') THEN
+
+    result_columns := ' seq, path_seq, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
 
     RETURN QUERY
-    SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges');
+    SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges', ' ', result_columns);
+
+    RETURN;
+  END IF;
+
+  RETURN QUERY
+  SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges');
+
+  /* fix for asymetric graphs start on v4.0.3 */
+  IF min_lib_version('4.0.3') THEN
+
     RETURN QUERY
     SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym');
     RETURN QUERY
     SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_dup_ids');
     RETURN QUERY
     SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges_asym_w_parallels');
-
-  ELSIF min_version('3.6.0') THEN
-
-    RETURN QUERY
-    SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges');
-
-  ELSE
-
-    result_columns := ' seq, path_seq, round(cost::numeric,8) AS cost, round(agg_cost::numeric,8) AS agg_cost ';
-
-    RETURN QUERY
-    SELECT * from compare_dijkstra_one_to_one('pgr_bddijkstra', ' ', 'edges', ' ', result_columns);
 
   END IF;
 
@@ -46,7 +46,6 @@ $BODY$
 language plpgsql;
 
 SELECT * from CompareDijkstra();
-
 
 SELECT * FROM finish();
 ROLLBACK;

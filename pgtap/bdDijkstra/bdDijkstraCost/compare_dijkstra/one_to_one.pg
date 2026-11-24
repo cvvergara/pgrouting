@@ -14,21 +14,19 @@ $BODY$
 
 BEGIN
 
+
+  RETURN QUERY
+ SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstracost', ' ', 'edges');
+
+  /* fix for asymetric graphs start on v4.0.3 */
   IF min_lib_version('4.0.3') THEN
 
     RETURN QUERY
-    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstraCost', ' ', 'edges');
+    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstracost', ' ', 'edges_asym');
     RETURN QUERY
-    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstraCost', ' ', 'edges_asym');
+    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstracost', ' ', 'edges_asym_w_dup_ids');
     RETURN QUERY
-    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstraCost', ' ', 'edges_asym_w_dup_ids');
-    RETURN QUERY
-    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstraCost', ' ', 'edges_asym_w_parallels');
-
-  ELSE
-
-    RETURN QUERY
-    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstraCost', ' ', 'edges');
+    SELECT * from compare_dijkstraCost_one_to_one('pgr_bddijkstracost', ' ', 'edges_asym_w_parallels');
 
   END IF;
 
