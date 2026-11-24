@@ -82,6 +82,7 @@ jobs:
           name: pgrouting-current-build
           path: |
             build/lib/libpgrouting-*.so
+            build/sql/pgrouting.control
             build/sql/pgrouting--*.sql
             build/sql/pgrouting--*--*.sql
 
@@ -171,6 +172,7 @@ jobs:
       - name: Install current version
         run: |
           sudo cp current-build/lib/libpgrouting-*.so /usr/lib/postgresql/${PGVER}/lib/
+          sudo cp current-build/sql/pgrouting.control /usr/share/postgresql/${PGVER}/extension/ 2>/dev/null || true
           sudo cp current-build/sql/*.sql /usr/share/postgresql/${PGVER}/extension/ 2>/dev/null || true
 
       - name: Test old version with currrent tests after installing current
